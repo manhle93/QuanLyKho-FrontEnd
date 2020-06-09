@@ -1,0 +1,203 @@
+<template>
+  <div class="app-container">
+    <edit-Tinh :TinhEdit="Tinh" :active="showEditForm" @onClose="handleClose()"></edit-Tinh>
+    <h4>Danh sách tỉnh, thành phố</h4>
+    <el-form class="search" :model="form">
+      <el-row :gutter="24" justify="space-around">
+        <el-col :span="7">
+          <el-input
+            placeholder="Tìm tên hoặc mã tỉnh thành"
+            v-model="form.search"
+            suffix-icon="el-icon-school"
+          ></el-input>
+        </el-col>
+        <el-col :span="5">
+          <el-button type="primary" icon="el-icon-search" @click="searchData()">Tìm kiếm</el-button>
+        </el-col>
+        <el-col :span="12">
+          <div class="adds" style="float:right">
+            <create-Tinh @onCreateTinh="Tinh => handleCreateTinh(Tinh)"></create-Tinh>
+          </div>
+        </el-col>
+      </el-row>
+    </el-form>
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+    >
+      <el-table-column align="center" label="STT" min-width="65">
+        <template slot-scope="scope">{{ scope.$index +1 }}</template>
+      </el-table-column>
+      <el-table-column sortable prop="code" label="Mã" min-width="102">
+        <template slot-scope="scope">{{ scope.row.code }}</template>
+      </el-table-column>
+      <el-table-column sortable prop="name" label="Tên tỉnh, thành phố" min-width="615">
+        <template slot-scope="scope">
+          <span>{{ scope.row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="110" align="center" fixed="right" label="Hoạt động">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+            <el-button
+              size="medium"
+              type="primary"
+              icon="el-icon-edit"
+              circle
+              @click="showUpdate(scope.row)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+            <el-button
+              size="medium"
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              @click="deleteAppTinhID(scope.$index, scope.row)"
+            ></el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="block" style="margin-top: 20px">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :page-sizes="[5, 10, 15, 20]"
+        background
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
+  </div>
+</template>
+<script>
+import { getTinhThanh, deleteTinhThanh } from "@/api/TinhThanh";
+import CreateTinh from "./create";
+import EditTinh from "./edit";
+
+export default {
+  name: "tinh",
+  components: {
+    CreateTinh,
+    EditTinh
+  },
+  data() {
+    return {
+      list: null,
+      page: 1,
+      per_page: 10,
+      listLoading: true,
+      labelPosition: "top",
+      Tinh: null,
+      showEditForm: false,
+      total: 10,
+      form: {},
+      search: ""
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    showUpdate(Tinh) {
+      this.showEditForm = true;
+      this.Tinh = Tinh;
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.updateDataTable();
+    },
+
+    handleSizeChange(val) {
+      this.per_page = val;
+      this.updateDataTable();
+    },
+    async fetchData(page = 1, per_page = 10) {
+      this.listLoading = true;
+      getTinhThanh({ page: this.page, per_page: this.per_page }).then(
+        response => {
+          this.list = response.data.data;
+          this.page = response.data.current_page;
+          this.per_page = response.data.per_page;
+          this.total = response.data.total;
+          this.listLoading = false;
+        }
+      );
+    },
+    async searchData(page = 1, per_page = 10) {
+      this.listLoading = true;
+      this.form.page = this.page;
+      this.form.per_page = this.per_page;
+      getTinhThanh(this.form).then(response => {
+        this.list = response.data.data;
+        this.page = response.data.current_page;
+        this.per_page = response.data.per_page;
+        this.total = response.data.total;
+        this.listLoading = false;
+      });
+    },
+    updateDataTable() {
+      let first = (this.page - 1) * this.per_page;
+      let last = first + this.per_page;
+      last = last > this.list.length ? this.list.length : last;
+      this.fetchData(this.page, this.per_page);
+    },
+    handleCreateTinh(result) {
+      if (result === true) {
+        this.$message({
+          title: "Thành công",
+          message: "Thành công, đã thêm tỉnh thành phố",
+          type: "success"
+        });
+        this.fetchData();
+      }
+    },
+    handleClose() {
+      this.showEditForm = false;
+      this.$emit("onRefresh");
+    },
+    // handleEdittinh(result) {
+    //   if (result === true) {
+    //     this.showEditForm = false;
+    //     this.$emit("onEditTinh", true);
+    //     this.$message({
+    //       title: "Thành công",
+    //       message: "Cập nhật thành công",
+    //       type: "success"
+    //     });
+    //   }
+    // },
+    deleteAppTinhID(index, item) {
+      this.$confirm(
+        "Bạn chắc chắn muốn xóa tỉnh thành này?",
+        "Xóa tỉnh thành",
+        {
+          confirmButtonText: "Xóa",
+          cancelButtonText: "Hủy",
+          type: "warning"
+        }
+      )
+        .then(_ => {
+          deleteTinhThanh(item.id).then(res => {
+            this.$message({
+              message: "Xóa thành công",
+              type: "success"
+            });
+            this.fetchData();
+          });
+        })
+        .catch(_ => {});
+    }
+  }
+};
+</script>
+<style scoped>
+.search {
+  margin-bottom: 25px;
+}
+</style>

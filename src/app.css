@@ -1,0 +1,87 @@
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.primary-button {
+  background-color: #2E86C1;
+  color: white
+}
+.primary-button:focus {
+  background-color: #2E86C1;
+  color: white
+}
+.primary-button:hover {
+  color: white;
+  background-color: #154360;
+}
+
+.c-align-center {
+  align-items: center;
+}
+
+.c-justify-center {
+  justify-content: center;
+}
+
+.z-index-up * {
+  z-index: 10000;
+}
+
+.full-width {
+  width: 100%
+}
+
+.el-container {
+  flex-basis: 320px;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.c-flex {
+  display: flex;
+}
+
+.c-column {
+  flex-direction: column;
+}
+
+.fh {
+  height: 100%;
+}
+
+.c-grow {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
+.el-tabs.c-flex {
+  flex-direction: column;
+}
+
+.el-tabs.c-flex .el-tabs__content {
+  flex: 1;
+}
+
+.el-tabs.c-flex .el-tabs__content > div {
+  height: 100%;
+}
+
+.main-container.dark .navbar * {
+  background: #2B2B2B;
+  color: white!important;
+}
+
+.main-container.dark .navbar .hamburger-container {
+  color: white;
+}
+
+.el-message-box__title {
+  color: #2E86C1;
+}
