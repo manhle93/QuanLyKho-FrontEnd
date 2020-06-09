@@ -82,14 +82,7 @@ export const constantRoutes = [
         path: "/404",
         component: () => import("@/views/404_2"),
         hidden: true
-    }
-];
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
+    },
     {
         path: "/users",
         component: Layout,
@@ -147,6 +140,14 @@ export const asyncRoutes = [
             }
         ]
     },
+    
+];
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
     {
         path: "/quanlykhuvuc",
         component: Layout,
