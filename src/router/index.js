@@ -176,7 +176,7 @@ export const asyncRoutes = [
             {
                 path: "loaihanghoa",
                 name: "Loại hàng hóa",
-                component: () => import("@/views/user/thongtintaikhoan/index"),
+                component: () => import("@/views/quanlykho/danhmucsanpham/index"),
                 meta: {
                     title: "Loại hàng hóa",
                     icon: "eyes"
