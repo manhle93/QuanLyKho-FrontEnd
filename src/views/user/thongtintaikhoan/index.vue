@@ -56,27 +56,6 @@
               <el-input v-model="formLabelAlign.phone"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="10" :offset="4" v-if="formLabelAlign.role_id != 1">
-            <el-form-item
-              label="Tỉnh thành"
-              prop="Tỉnh thành"
-              :error="error.tinh_thanh_id"
-            >
-              <el-select
-                :disabled="true"
-                filterable
-                v-model="formLabelAlign.tinh_thanh_id"
-                placeholder="Chọn một tỉnh thành"
-              >
-                <el-option
-                  v-for="item in tinhthanhs"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-button
           class="primary-button block"

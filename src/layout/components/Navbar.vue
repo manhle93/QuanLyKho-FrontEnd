@@ -179,17 +179,17 @@ export default {
     ...mapGetters(["sidebar", "avatar"])
   },
   created() {
-    this.fetchData();
-    this.getSoThietBi();
-    this.getThongBao(false);
-    try {
-      realTimeThongBao = setInterval(() => {
-        this.getThongBao(true);
-        this.getSoThietBi();
-      }, 15000);
-    } catch (error) {
-      return;
-    }
+    // this.fetchData();
+    // this.getSoThietBi();
+    // this.getThongBao(false);
+    // try {
+    //   realTimeThongBao = setInterval(() => {
+    //     this.getThongBao(true);
+    //     this.getSoThietBi();
+    //   }, 15000);
+    // } catch (error) {
+    //   return;
+    // }
   },
   methods: {
     toggleSideBar() {

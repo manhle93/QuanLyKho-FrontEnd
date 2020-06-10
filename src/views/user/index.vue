@@ -59,27 +59,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="4">
-          <el-select
-            size="small"
-            filterable
-            multiple
-            v-model="form.toa_nha_id"
-            allow-create
-            clearable
-            default-first-option
-            placeholder="Tòa nhà"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in toanhas"
-              :key="item.id"
-              :label="item.ten"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="3">
+        <el-col :span="7">
           <el-button
             size="small"
             class="primary-button"
@@ -131,11 +111,6 @@
       <el-table-column label="Tỉnh thành" min-width="157">
         <template slot-scope="scope" v-if="scope.row.tinh_thanh !== null">{{
           scope.row.tinh_thanh.name
-        }}</template>
-      </el-table-column>
-      <el-table-column label="Tòa nhà" min-width="157">
-        <template slot-scope="scope" v-if="scope.row.toa_nha !== null">{{
-          scope.row.toa_nha.ten
         }}</template>
       </el-table-column>
       <el-table-column
@@ -203,7 +178,6 @@ import { getUser, deleteUser } from "@/api/user";
 import CreateUser from "./create";
 import EditUser from "./edit";
 import { getTinhThanh } from "@/api/TinhThanh";
-import { getAllToaNha } from "@/api/toanha";
 import { getInfor } from "@/api/taikhoan";
 
 export default {
@@ -262,7 +236,6 @@ export default {
   },
   created() {
     this.fetchData();
-    this.getToaNha();
     this.tinhThanh();
   },
   methods: {
@@ -309,11 +282,6 @@ export default {
         this.per_page = response.data.per_page;
         this.total = response.data.total;
         this.listLoading = false;
-      });
-    },
-    async getToaNha() {
-      getAllToaNha().then(res => {
-        this.toanhas = res.data;
       });
     },
     async tinhThanh() {
