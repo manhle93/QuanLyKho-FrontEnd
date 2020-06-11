@@ -185,11 +185,21 @@ export const asyncRoutes = [
             {
                 path: "loaimathang",
                 name: "Loại mặt hàng",
-                component: () => import("@/views/user/thongtintaikhoan/index"),
+                component: () => import("@/views/quanlykho/sanpham/index"),
                 meta: {
                     title: "Loại mặt hàng",
                     icon: "eyes"
                 }
+            },
+            {
+                path: "themsanpham",
+                name: "Thêm sản phẩm",
+                component: () => import("@/views/quanlykho/sanpham/create"),
+                meta: {
+                    title: "Thêm sản phẩm",
+                    icon: "eyes"
+                },
+                hidden: true
             },
             {
                 path: "hanghoa",

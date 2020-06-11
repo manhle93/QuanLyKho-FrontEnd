@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách người dùng</h4>
+    <h4>Danh mục sản phẩm hàng hóa</h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
           <el-input
             size="small"
             placeholder="Thông tin tìm kiếm"
-            v-model="form.search"
+            v-model="search"
             suffix-icon="el-icon-search"
             @keyup.enter.native="searchData"
           ></el-input>
@@ -39,43 +39,15 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" align="center">
-        <template slot-scope="scope">{{ scope.$index + 1 }}</template>
-      </el-table-column>
-      <el-table-column sortable prop="name" min-width="160" label="Tên">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
-      </el-table-column>
-      <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="150">
-        <template slot-scope="scope">{{ scope.row.username }}</template>
-      </el-table-column>
-      <el-table-column label="Email" min-width="150">
+      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+            <el-image v-if="scope.row.anh_dai_dien" :src="endPointImage + scope.row.anh_dai_dien" style="max-height: 90px; max-width: 90px"></el-image>
         </template>
       </el-table-column>
-      <el-table-column label="Số điện thoại" min-width="157">
-        <template slot-scope="scope">{{ scope.row.phone }}</template>
-      </el-table-column>
-      <el-table-column label="Tỉnh thành" min-width="157">
-        <template slot-scope="scope" v-if="scope.row.tinh_thanh !== null">
-          {{
-          scope.row.tinh_thanh.name
-          }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="active"
-        class-name="status-col"
-        label="Trạng thái"
-        align="center"
-        min-width="157"
-      >
-        <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.active">Hoạt động</el-tag>
-          <el-tag type="danger" v-else>Không hoạt động</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
+      <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
+      <el-table-column label="Số mặt hàng" min-width="157"></el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -93,30 +65,19 @@
               type="danger"
               icon="el-icon-delete"
               circle
-              @click="deleteAppUserID(scope.$index, scope.row)"
+              @click="deleteAppUserID(scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
-    <br />
-    <div class="block">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 15, 20]"
-        layout="total, sizes, prev, pager, next"
-        :total="total"
-      ></el-pagination>
-    </div>
     <el-dialog
       :title="edit ? 'Cập nhật danh mục sản phẩm' :'Thêm danh mục sản phẩm'"
       :visible.sync="showForm"
       width="30%"
       center
     >
-      <el-form>
+      <el-form :model="form" :rules="rules" ref="form">
         <el-row>
           <el-col style="text-align: center">
             <div class="block">
@@ -148,7 +109,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="Tên danh mục">
+            <el-form-item label="Tên danh mục" prop="ten_danh_muc">
               <el-input v-model="form.ten_danh_muc"></el-input>
             </el-form-item>
           </el-col>
@@ -161,15 +122,33 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button>
-        <el-button class="primary-button" size="small" v-if="!edit" @click="addDanhMuc()">Thêm mới</el-button>
-        <el-button class="primary-button" size="small" v-else @click="showForm = false">Cập nhật</el-button>
+        <el-button
+          class="primary-button"
+          size="small"
+          v-if="!edit"
+          icon="el-icon-plus"
+          @click="addDanhMuc('form')"
+        >Thêm mới</el-button>
+        <el-button
+          class="primary-button"
+          size="small"
+          v-else
+          icon="el-icon-check"
+          @click="updateDanhMuc('form')"
+        >Cập nhật</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { addDanhMuc, index } from "@/api/danhmucsanpham";
+import {
+  addDanhMuc,
+  index,
+  updateDanhMuc,
+  upAnhDanhMuc,
+  xoaDanhMuc
+} from "@/api/danhmucsanpham";
 import { getTinhThanh } from "@/api/TinhThanh";
 import { getInfor } from "@/api/taikhoan";
 
@@ -187,7 +166,8 @@ export default {
   data() {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
-      list: null,
+      endPointImage: process.env.VUE_APP_BASE,
+      list: [],
       showForm: false,
       edit: false,
       page: 1,
@@ -198,52 +178,62 @@ export default {
       labelPosition: "top",
       user: null,
       form: {
+        id: null,
         anh_dai_dien: "",
         mo_ta: "",
         ten_danh_muc: ""
+      },
+      rules: {
+        ten_danh_muc: [
+          {
+            required: true,
+            message: "Tên danh mục không thể bỏ trống",
+            trigger: "blur"
+          },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+        ]
       }
     };
   },
-  created() {},
+  created() {
+    this.getData();
+  },
   methods: {
-    showUpdate(user) {
-      this.showEditForm = true;
-      this.user = user;
+    showUpdate(data) {
+      this.resetForm();
+      this.edit = true;
+      this.showForm = true;
+      this.form.ten_danh_muc = data.ten_danh_muc;
+      this.form.mo_ta = data.mo_ta;
+      this.form.id = data.id;
+      if (data.anh_dai_dien) {
+        this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
+      } else {
+        this.src =
+          process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
+      }
     },
-    handleCurrentChange(val) {
-      this.page = val;
-      this.updateDataTable();
-    },
-
-    handleSizeChange(val) {
-      this.per_page = val;
-      this.updateDataTable();
-    },
-    searchData(page = 1, per_page = 10) {
+    async getData() {
       this.listLoading = true;
-      this.form.page = this.page;
-      this.form.per_page = this.per_page;
-      getUser(this.form).then(response => {
-        this.list = response.data.data;
-        this.page = response.data.current_page;
-        this.per_page = response.data.per_page;
-        this.total = response.data.total;
+      let data = await index();
+      this.list = data.data;
+      this.listLoading = false;
+    },
+    searchData() {
+      this.listLoading = true;
+      index({ search: this.search }).then(response => {
+        this.list = response.data
         this.listLoading = false;
       });
     },
-    updateDataTable() {
-      let first = (this.page - 1) * this.per_page;
-      let last = first + this.per_page;
-      last = last > this.list.length ? this.list.length : last;
-      this.fetchData(this.page, this.per_page);
-    },
-    deleteAppUserID(index, item) {
+    deleteAppUserID(item) {
       this.$confirm(
-        "Bạn chắc chắn muốn xóa người dùng: " +
+        "Bạn chắc chắn muốn xóa danh mục: " +
           "<strong>" +
-          item.name +
-          "</strong>",
-        "Xóa người dùng",
+          item.ten_danh_muc +
+          "</strong>" +
+          ", cùng toàn bộ sản phẩm bên trong",
+        "Xóa danh mục sản phẩm",
         {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
@@ -252,34 +242,72 @@ export default {
         }
       )
         .then(_ => {
-          deleteUser(item.id).then(res => {
+          xoaDanhMuc(item.id).then(res => {
             this.$message({
               message: "Xóa thành công",
               type: "success"
             });
-            this.fetchData();
+            this.getData();
           });
         })
         .catch(_ => {});
     },
     showFormAdd() {
+      this.resetForm();
       this.showForm = true;
     },
-    addDanhMuc() {
-      addDanhMuc(this.form).then(res => {
-        this.$message({
-          type: "success",
-          message: "Thêm mới thành công"
-        });
+    addDanhMuc(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          addDanhMuc(this.form).then(res => {
+            this.resetForm();
+            this.getData();
+            this.$message({
+              type: "success",
+              message: "Thêm mới thành công"
+            });
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
+    },
+    updateDanhMuc(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          updateDanhMuc(this.form).then(res => {
+            this.resetForm();
+            this.getData();
+            this.$message({
+              type: "success",
+              message: "Cập nhật thành công"
+            });
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm() {
+      this.showForm = false;
+      this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
+      this.form = {
+        id: null,
+        anh_dai_dien: "",
+        mo_ta: "",
+        ten_danh_muc: ""
+      };
     },
     handleChange(e) {
       let files = e.target.files;
       let data = new FormData();
       data.append("file", files[0]);
-      userAvatar(this.userId, data)
+      upAnhDanhMuc(data)
         .then(res => {
-          this.formLabelAlign.avatar_url = process.env.VUE_APP_BASE + res;
+          this.form.anh_dai_dien = res;
+          this.src = process.env.VUE_APP_BASE + res;
         })
         .catch(error => {});
     },
