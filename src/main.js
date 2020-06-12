@@ -17,6 +17,11 @@ import '@/permission' // permission control
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import './app.css'
 
+import VueSimplemde from 'vue-simplemde'
+import 'simplemde/dist/simplemde.min.css'
+
+Vue.component('vue-simplemde', VueSimplemde)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

@@ -88,8 +88,8 @@
             </el-col>
             <el-col :span="24">
               <label>Mô tả sản phẩm</label>
-              <br>
-              <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
+              <br />
+              <vue-simplemde v-model="form.mo_ta" ref="markdownEditor" />
             </el-col>
             <el-col :span="24">
               <el-form-item label="Album ảnh">
@@ -120,9 +120,9 @@
               <el-button
                 style="float: right"
                 class="primary-button"
-                icon="el-icon-plus"
+                icon="el-icon-check"
                 @click="addSanPham('form')"
-              >Thêm mới</el-button>
+              >Cập nhật</el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -133,13 +133,13 @@
 <script>
 import { index } from "@/api/danhmucsanpham";
 import { getToken } from "@/utils/auth";
-import { listSanPham, addSanPham } from "@/api/sanpham";
-
+import { listSanPham, addSanPham, chiTietSP, xoaAnh, editSanPham } from "@/api/sanpham";
+import { upAnhDanhMuc } from "@/api/danhmucsanpham";
 export default {
   data() {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
-      urlUploadSanPham: process.env.VUE_APP_BASE_API + "uploadanhsanpham",
+      urlUploadSanPham: "",
       endPointImage: process.env.VUE_APP_BASE,
       dialogImageUrl: "",
       dialogAlbum: false,
@@ -190,10 +190,20 @@ export default {
     this.token = {
       Authorization: "Bearer " + getToken()
     };
+    this.urlUploadSanPham =
+      process.env.VUE_APP_BASE_API + "uploadedit/" + this.$route.params.id;
+    this.getChiTietSanPham();
   },
   methods: {
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      xoaAnh({ id: file.id })
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "Xóa ảnh thành công"
+          });
+        })
+        .catch(res => {});
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -241,13 +251,12 @@ export default {
     addSanPham(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          addSanPham(this.form)
+          editSanPham(this.$route.params.id, this.form)
             .then(res => {
               this.$message({
                 type: "success",
-                message: "Thêm mới thành công"
+                message: "Cập nhật thành công"
               });
-              this.resetForm()
             })
             .catch(res => {});
         } else {
@@ -255,6 +264,22 @@ export default {
           return false;
         }
       });
+    },
+    async getChiTietSanPham() {
+      let data = await chiTietSP(this.$route.params.id);
+      this.form = data;
+      this.form.fileList = [];
+      if(this.form.anh_dai_dien){
+        this.src = process.env.VUE_APP_BASE + this.form.anh_dai_dien
+      }else {
+        this.src =  process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png"
+      }
+      if (data.hinh_anhs.length > 0) {
+        for (let item of data.hinh_anhs) {
+          let ob = { id: item.id, url: this.endPointImage + item.url_hinh_anh };
+          this.form.fileList.push(ob);
+        }
+      }
     }
   }
 };

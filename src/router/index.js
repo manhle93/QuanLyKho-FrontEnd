@@ -202,6 +202,16 @@ export const asyncRoutes = [
                 hidden: true
             },
             {
+                path: "capnhatsanpham/:id",
+                name: "Cập nhật sản phẩm",
+                component: () => import("@/views/quanlykho/sanpham/edit"),
+                meta: {
+                    title: "Cập nhật sản phẩm",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
                 path: "hanghoa",
                 name: "Danh sách hàng hóa",
                 component: () => import("@/views/user/thongtintaikhoan/index"),

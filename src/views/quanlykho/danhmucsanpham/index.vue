@@ -20,8 +20,9 @@
             @click="searchData()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="12">
           <el-button
+            style="float: right"
             @click="showFormAdd"
             size="small"
             icon="el-icon-plus"
@@ -42,7 +43,11 @@
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
-            <el-image v-if="scope.row.anh_dai_dien" :src="endPointImage + scope.row.anh_dai_dien" style="max-height: 90px; max-width: 90px"></el-image>
+          <el-image
+            v-if="scope.row.anh_dai_dien"
+            :src="endPointImage + scope.row.anh_dai_dien"
+            style="max-height: 90px; max-width: 90px"
+          ></el-image>
         </template>
       </el-table-column>
       <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
@@ -222,7 +227,7 @@ export default {
     searchData() {
       this.listLoading = true;
       index({ search: this.search }).then(response => {
-        this.list = response.data
+        this.list = response.data;
         this.listLoading = false;
       });
     },
