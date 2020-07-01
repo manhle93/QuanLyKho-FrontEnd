@@ -38,13 +38,14 @@
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
-          <el-button
-            style="float: right"
-            size="small"
-            class="primary-button"
-            icon="el-icon-plus"
-            @click="showCreateDonHang"
-          >Tạo đơn</el-button>
+          <router-link to="/quanlydonhang/taodonnhacungcap">
+            <el-button
+              style="float: right"
+              size="small"
+              class="primary-button"
+              icon="el-icon-plus"
+            >Tạo đơn</el-button>
+          </router-link>
         </el-col>
       </el-row>
     </el-form>
@@ -60,14 +61,14 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column prop="thoi_gian" label="Thời gian">
-            <template slot-scope="scope">{{formatDate(scope.row.thoi_gian)}}</template>
-          </el-table-column>
-          <el-table-column property="ma" label="Mã " min-width="125"></el-table-column>
+          <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
           <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
-          <el-table-column property="tinh_thanh.name" label="Tỉnh thành" min-width="123"></el-table-column>
-          <el-table-column property="toa_nha.ten" label="Tòa nhà" min-width="143"></el-table-column>
-          <el-table-column label="Nhân viên triển khai" min-width="115" prop="user_nhan_vien.name"></el-table-column>
+          <el-table-column prop="thoi_gian" label="Thời gian giao dự kiến">
+            <!-- <template slot-scope="scope">{{formatDate(scope.row.thoi_gian)}}</template> -->
+          </el-table-column>
+          <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
+          <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau"></el-table-column>
+           <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
@@ -94,13 +95,13 @@
               >Hoàn thành</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Đơn tạo bởi" min-width="95" prop="user_nguoi_tao.name"></el-table-column>
+          <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="120">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
                 <el-button
                   size="small"
-                  @click="showEdit(scope.row)"
+                  @click="edit(scope.row.id)"
                   class="primary-button"
                   icon="el-icon-edit"
                   circle
@@ -134,6 +135,8 @@
   </div>
 </template>
 <script>
+import { listDonHang } from "@/api/donhangnhacungcap";
+
 export default {
   data() {
     return {
@@ -146,7 +149,6 @@ export default {
       loading: false,
       search: "",
       list: [],
-      edit: false,
       form: {
         date: [],
         nha_cung_cap: []
@@ -218,18 +220,13 @@ export default {
     };
   },
 
-  created() {},
+  created() {
+    this.getDonHang();
+  },
 
   mounted() {},
 
   methods: {
-    showCreateDonHang() {
-      this.resetForm();
-      this.showCreate = true;
-      this.edit = false;
-      this.getDataThietBi(null);
-      this.getDataCamBien();
-    },
     handleCurrentChange(val) {
       this.page = val;
       this.updateDataTable();
@@ -245,30 +242,7 @@ export default {
       last = last > this.tableData.length ? this.tableData.length : last;
       this.searchData(this.page, this.per_page);
     },
-    resetForm() {
-      this.showCreate = false;
-      this.chiTietToaNha = {};
-      this.so_dien_thoai_toa_nha = "";
-      this.formAdd = {
-        id: null,
-        ten: "",
-        ma: "",
-        tinh_thanh_id: null,
-        toa_nha_id: null,
-        ma_don_hang: "",
-        ten_don_hang: "",
-        thiet_bi: [],
-        cam_bien: [],
-        trang_thai: "moi_tao",
-        nhan_vien_id: null,
-        ghi_chu: "",
-        thoi_gian: null,
-        nguoi_mua_hang: "",
-        tong_tien: 0,
-        hinh_anhs: []
-      };
-      this.toanhas = [];
-    },
+
     async handleDelete(data) {
       try {
         let comfirm = await this.$confirm(
@@ -296,44 +270,12 @@ export default {
         this.listLoading = false;
       }
     },
-    showEdit(data) {
-      this.edit = true;
-      this.resetForm();
-      this.showCreate = true;
-      this.formAdd.ma = data.ma;
-      this.formAdd.ten = data.ten;
-      this.formAdd.tinh_thanh_id = data.tinh_thanh_id;
-      this.formAdd.toa_nha_id = data.toa_nha_id;
-      this.formAdd.trang_thai = data.trang_thai;
-      this.formAdd.nhan_vien_id = data.nhan_vien_id;
-      this.formAdd.thoi_gian = data.thoi_gian;
-      this.formAdd.ghi_chu = data.ghi_chu;
-      this.formAdd.id = data.id;
-      this.formAdd.nguoi_mua_hang = data.nguoi_mua_hang;
-      this.formAdd.tong_tien = data.tong_tien;
-      this.formAdd.hinh_anhs = data.hinh_anhs;
-      getToaNhaSearch({
-        tinh_thanh_id: this.formAdd.tinh_thanh_id,
-        per_page: 20,
-        id: [this.formAdd.toa_nha_id]
-      }).then(res => {
-        this.toanhas = res.data.data;
-      });
-      this.chonToaNha(data.toa_nha_id);
-      for (let cb of data.cam_biens) {
-        this.formAdd.cam_bien.push(cb.cam_bien_id);
-      }
-      for (let tb of data.thiet_bis) {
-        this.formAdd.thiet_bi.push(tb.thiet_bi_id);
-      }
-      queryThietBi({ id: this.formAdd.thiet_bi }).then(res => {
-        this.thietBis = res.data;
-        this.loadingQuery = false;
-      });
-      getCamBien({ id: this.formAdd.cam_bien }).then(res => {
-        this.camBiens = res.data;
-        this.loadingQuery = false;
-      });
+    async getDonHang() {
+      let data = await listDonHang();
+      this.tableData = data.data.data;
+    },
+    edit(id){
+      this.$router.push('/quanlydonhang/capnhatdonhang/' + id)
     }
   }
 };

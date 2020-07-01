@@ -260,6 +260,26 @@ export const asyncRoutes = [
                 }
             },
             {
+                path: "taodonnhacungcap",
+                name: "Tạo đơn hàng nhà cung cấp",
+                component: () => import("@/views/quanlydonhang/donhangnhacungcap/taodon"),
+                meta: {
+                    title: "Tạo đơn hàng nhà cung cấp",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
+                path: "capnhatdonhang/:id",
+                name: "Cập nhật đơn hàng nhà cung cấp",
+                component: () => import("@/views/quanlydonhang/donhangnhacungcap/edit"),
+                meta: {
+                    title: "Cập nhật đơn hàng nhà cung cấp",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
                 path: "dathang",
                 name: "Đơn đặt hàng",
                 component: () => import("@/views/quanlydonhang/dondathang"),
