@@ -3,10 +3,15 @@
     <h3>Cập nhật đơn hàng</h3>
     <el-row>
       <el-col :span="10" :offset="0">
-        <el-steps :active="active" finish-status="success">
+        <el-steps :active="active" finish-status="success" v-if="form.trang_thai != 'huy_bo'">
           <el-step title="Tạo đơn"></el-step>
           <el-step title="Duyệt"></el-step>
-          <el-step title="Giao hàng"></el-step>
+          <el-step title="Nhập kho"></el-step>
+        </el-steps>
+        <el-steps :active="3" finish-status="success" v-if="form.trang_thai == 'huy_bo'">
+          <el-step title="Tạo đơn"></el-step>
+          <el-step title="Duyệt"></el-step>
+          <el-step title="Hủy đơn"></el-step>
         </el-steps>
       </el-col>
     </el-row>
@@ -133,23 +138,77 @@
     </el-form>
     <br />
     <el-row>
-      <el-col :span="10">
+      <el-col :span="14">
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
-      <el-col :span="10">
-        <el-button
+      <el-col :span="6">
+        <el-row>
+          <el-col :span="8">
+            <el-button
+              v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh'"
+              style="float: right"
+              icon="el-icon-close"
+              type="danger"
+              @click="huyDon()"
+            >Hủy đơn</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button
+              v-if="form.trang_thai == 'moi_tao'"
+              style="float: right"
+              icon="el-icon-check"
+              type="success"
+              @click="duyetDon()"
+            >Duyệt đơn</el-button>
+            <el-button
+              v-if="form.trang_thai == 'da_duyet'"
+              style="float: right"
+              icon="el-icon-s-home"
+              type="success"
+              @click="duyetDon()"
+            >Nhập kho</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button
+              v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh'"
+              style="float: right"
+              icon="el-icon-edit"
+              class="primary-button"
+              @click="submit('form')"
+            >Cập nhật</el-button>
+          </el-col>
+        </el-row>
+        <!-- <el-button
           style="float: right"
-          icon="el-icon-check"
+          icon="el-icon-edit"
           class="primary-button"
           @click="submit('form')"
         >Cập nhật</el-button>
+        <el-button
+          style="float: right"
+          icon="el-icon-check"
+          type="success"
+          @click="submit('form')"
+        >Duyệt đơn</el-button>
+        <el-button
+          style="float: right"
+          icon="el-icon-close"
+          type="danger"
+          @click="submit('form')"
+        >Hủy đơn</el-button>-->
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
 import { listSanPham } from "@/api/sanpham";
-import { addSanPham, getDonHang } from "@/api/donhangnhacungcap";
+import {
+  addSanPham,
+  getDonHang,
+  updateDonHang,
+  duyetDon,
+  huyDon
+} from "@/api/donhangnhacungcap";
 
 export default {
   data() {
@@ -188,19 +247,29 @@ export default {
   },
   created() {
     this.getSanPham();
-    this.getData()
+    this.getData();
   },
   methods: {
-    async getData(){
-      let data = await getDonHang(this.$route.params.id)
-      console.log(data.data)
-      this.form.ma = data.data.ma
-      this.form.thoi_gian = data.data.thoi_gian
-      this.form.chiet_khau = data.data.chiet_khau
-      this.form.tong_tien = data.data.tong_tien
-      this.form.ten = data.data.ten
-      if(data.data.trang_thai == 'moi_tao'){
-        this.active = 1
+    async getData() {
+      let data = await getDonHang(this.$route.params.id);
+      this.form.ma = data.data.ma;
+      this.form.thoi_gian = data.data.thoi_gian;
+      this.form.chiet_khau = data.data.chiet_khau;
+      this.form.tong_tien = data.data.tong_tien;
+      this.form.ten = data.data.ten;
+      this.form.trang_thai = data.data.trang_thai;
+      if (data.data.trang_thai == "moi_tao") {
+        this.active = 1;
+      }
+      if (data.data.trang_thai == "da_duyet") {
+        this.active = 2;
+      }
+      for (let sp of data.data.san_phams) {
+        let item = {};
+        item.don_gia = sp.don_gia;
+        item.so_luong = sp.so_luong;
+        item.hang_hoa = sp.san_pham;
+        this.form.danhSachHang.push(item);
       }
     },
     async getSanPham() {
@@ -266,13 +335,13 @@ export default {
             });
             return;
           }
-          addSanPham(this.form)
+          updateDonHang(this.$route.params.id, this.form)
             .then(res => {
               this.$message({
-                message: "Tạo đơn hàng thành công",
+                message: "Cập nhật đơn hàng thành công",
                 type: "success"
               });
-              this.resetForm();
+              // this.resetForm();
             })
             .catch(error => {
               console.log(error);
@@ -302,6 +371,22 @@ export default {
       this.so_luong = null;
       this.don_vi_tinh = null;
       this.don_gia = null;
+    },
+    async duyetDon() {
+      let data = await duyetDon(this.$route.params.id);
+      this.$message({
+        message: "Duyệt đơn thành công",
+        type: "success"
+      });
+      this.getData();
+    },
+    async huyDon() {
+      let data = await huyDon(this.$route.params.id);
+      this.$message({
+        message: "Hủy đơn thành công",
+        type: "success"
+      });
+      this.getData();
     }
   }
 };

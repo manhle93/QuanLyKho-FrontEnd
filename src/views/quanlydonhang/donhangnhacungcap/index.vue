@@ -68,31 +68,16 @@
           </el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
           <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau"></el-table-column>
-           <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
+          <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
-              <el-tag
-                effect="dark"
-                v-if="scope.row.trang_thai == 'bao_hong'"
-                type="warning"
-              >Sự cố, báo hỏng</el-tag>
-              <el-tag
-                effect="plain"
-                type="warning"
-                v-if="scope.row.trang_thai == 'dang_trien_khai'"
-              >Đang triển khai</el-tag>
-              <el-tag
-                effect="dark"
-                type="danger"
-                v-if="scope.row.trang_thai == 'nhan_vien_huy_don'"
-              >Nhân viên hủy</el-tag>
               <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
               <el-tag
                 effect="plain"
                 type="success"
-                v-if="scope.row.trang_thai == 'hoan_thanh'"
-              >Hoàn thành</el-tag>
+                v-if="scope.row.trang_thai == 'da_duyet'"
+              >Đã duyệt đơn</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
@@ -227,6 +212,8 @@ export default {
   mounted() {},
 
   methods: {
+    duyetDon() {},
+    huyDon() {},
     handleCurrentChange(val) {
       this.page = val;
       this.updateDataTable();
@@ -274,8 +261,8 @@ export default {
       let data = await listDonHang();
       this.tableData = data.data.data;
     },
-    edit(id){
-      this.$router.push('/quanlydonhang/capnhatdonhang/' + id)
+    edit(id) {
+      this.$router.push("/quanlydonhang/capnhatdonhang/" + id);
     }
   }
 };

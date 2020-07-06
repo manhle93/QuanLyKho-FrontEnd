@@ -22,3 +22,25 @@ export function getDonHang(id) {
     method: "get",
   });
 }
+
+export function updateDonHang(id,data) {
+  return request({
+    url: "donhang/" + id,
+    method: "put",
+    data
+  });
+}
+
+export function duyetDon(id) {
+  return request({
+    url: "duyetdon/" + id,
+    method: "put",
+  });
+}
+
+export function huyDon(id) {
+  return request({
+    url: "huydon/" + id,
+    method: "put",
+  });
+}
