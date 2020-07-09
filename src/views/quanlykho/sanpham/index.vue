@@ -40,8 +40,7 @@
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <el-image
-            v-if="scope.row.anh_dai_dien"
-            :src="endPointImage + scope.row.anh_dai_dien"
+            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien: src"
             style="max-height: 90px; max-width: 90px"
           ></el-image>
         </template>
@@ -51,12 +50,6 @@
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán"></el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái sale" min-width="157">
-        <template slot-scope="scope">
-          <el-tag effect="dark" type="danger" v-if="scope.row.dang_khuyen_mai">Đang sale</el-tag>
-          <el-tag effect="plain" v-else>Không</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -118,7 +111,7 @@ export default {
   },
   data() {
     return {
-      src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
+      src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
       list: [],
       page: 1,
@@ -153,6 +146,8 @@ export default {
         per_page: per_page,
         page: page
       });
+      this.per_page = data.data.per_page
+      this.page = data.data.page
       this.list = data.data.data;
       this.listLoading = false;
     },

@@ -53,11 +53,11 @@ export const constantRoutes = [
         children: [
             {
                 path: "trungtamchihuy",
-                name: "Trung tâm chỉ huy",
+                name: "Tổng quan",
                 component: () => import("@/views/trungtamchihuy/index"),
                 meta: {
-                    title: "Trung tâm chỉ huy",
-                    icon: "home"
+                    title: "Tổng quan",
+                    icon: "tongquan"
                 }
             }
         ]
@@ -83,7 +83,7 @@ export const asyncRoutes = [
         name: "Người dùng",
         meta: {
             title: "Người dùng",
-            icon: "user"
+            icon: "nguoidung"
         },
         children: [
             {
@@ -92,7 +92,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/user/thongtintaikhoan/index"),
                 meta: {
                     title: "Thông tin tài khoản",
-                    icon: "eyes"
+                    icon: "thongtin "
                 }
             },
             {
@@ -101,7 +101,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/user/index"),
                 meta: {
                     title: "Quản lý người dùng",
-                    icon: "multiple-users-silhouette"
+                    icon: "quanlynguoidung"
                 }
             },
             {
@@ -167,28 +167,38 @@ export const asyncRoutes = [
         path: "/quanlykho",
         component: Layout,
         redirect: "/quanlykho",
-        name: "Quản lý kho hàng",
+        name: "Hàng hóa",
         meta: {
-            title: "Quản lý kho hàng",
-            icon: "user"
+            title: "Hàng hóa",
+            icon: "hanghoa"
         },
         children: [
             {
                 path: "loaihanghoa",
-                name: "Loại hàng hóa",
+                name: "Danh mục hàng hóa",
                 component: () => import("@/views/quanlykho/danhmucsanpham/index"),
                 meta: {
-                    title: "Loại hàng hóa",
-                    icon: "eyes"
+                    title: "Danh mục hàng hóa",
+                    icon: "danhmuc"
                 }
             },
+            {
+                path: "thietlapgia",
+                name: "Thiết lập giá",
+                component: () => import("@/views/quanlykho/thietlapgia/index"),
+                meta: {
+                    title: "Thiết lập giá",
+                    icon: "thietlapgia"
+                }
+            },
+
             {
                 path: "loaimathang",
                 name: "Loại mặt hàng",
                 component: () => import("@/views/quanlykho/sanpham/index"),
                 meta: {
                     title: "Loại mặt hàng",
-                    icon: "eyes"
+                    icon: "mathang"
                 }
             },
             {
@@ -212,30 +222,30 @@ export const asyncRoutes = [
                 hidden: true
             },
             {
-                path: "hanghoa",
-                name: "Danh sách hàng hóa",
-                component: () => import("@/views/user/thongtintaikhoan/index"),
-                meta: {
-                    title: "Danh sách hàng hóa",
-                    icon: "eyes"
-                }
-            },
-            {
                 path: "kiemke",
                 name: "Kiểm kê kho",
-                component: () => import("@/views/user/thongtintaikhoan/index"),
+                component: () => import("@/views/quanlykho/kiemke/index"),
                 meta: {
                     title: "Kiểm kê kho",
-                    icon: "eyes"
+                    icon: "kiemkho"
                 }
             },
             {
                 path: "nhapkho",
                 name: "Nhập kho",
-                component: () => import("@/views/user/thongtintaikhoan/index"),
+                component: () => import("@/views/quanlykho/nhapkho/index"),
                 meta: {
                     title: "Nhập kho",
-                    icon: "eyes"
+                    icon: "nhapkho"
+                }
+            },
+            {
+                path: "danhsachkho",
+                name: "Danh sách kho",
+                component: () => import("@/views/quanlykho/danhsachkho/index"),
+                meta: {
+                    title: "Danh sách kho",
+                    icon: "nhapkho"
                 }
             },
         ]
@@ -244,10 +254,10 @@ export const asyncRoutes = [
         path: "/quanlydonhang",
         component: Layout,
         redirect: "/quanlykho",
-        name: "Quản lý đơn hàng",
+        name: "Giao dịch",
         meta: {
-            title: "Quản lý đơn hàng",
-            icon: "user"
+            title: "Giao dịch",
+            icon: "giaodich"
         },
         children: [
             {
@@ -256,7 +266,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlydonhang/donhangnhacungcap/index"),
                 meta: {
                     title: "Đơn hàng nhà cung cấp",
-                    icon: "eyes"
+                    icon: "donhangnhacungcap"
                 }
             },
             {
@@ -285,7 +295,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlydonhang/dondathang"),
                 meta: {
                     title: "Đơn đặt hàng",
-                    icon: "eyes"
+                    icon: "dondathang"
                 }
             },
             {
@@ -294,20 +304,97 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlydonhang/giaodichbanhang"),
                 meta: {
                     title: "Giao dịch bán hàng",
-                    icon: "eyes"
+                    icon: "giaodichbanhang"
                 }
             },
             {
-                path: "lichsugiaohang",
-                name: "Lịch sử giao hàng",
+                path: "hoadon",
+                name: "Hóa đơn",
                 component: () => import("@/views/quanlydonhang/lichsugiaohang"),
                 meta: {
-                    title: "Lịch sử giao hàng",
-                    icon: "eyes"
+                    title: "Hóa đơn",
+                    icon: "hoadon"
+                }
+            },
+            {
+                path: "trahang",
+                name: "Trả hàng",
+                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                meta: {
+                    title: "Trả hàng",
+                    icon: "trahang"
+                }
+            },
+            {
+                path: "nhaphang",
+                name: "Nhập hàng",
+                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                meta: {
+                    title: "Nhập hàng",
+                    icon: "nhaphang"
+                }
+            },
+            // {
+            //     path: "trahangnhap",
+            //     name: "Trả hàng nhập",
+            //     component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+            //     meta: {
+            //         title: "Trả hàng nhập",
+            //         icon: "eyes"
+            //     }
+            // },
+            {
+                path: "trahangnhap",
+                name: "Trả hàng nhập",
+                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                meta: {
+                    title: "Trả hàng nhập",
+                    icon: "trahangnhap"
+                }
+            },
+            {
+                path: "xuathuy",
+                name: "Xuất hủy",
+                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                meta: {
+                    title: "Xuất hủy",
+                    icon: "xuathuy"
+                }
+            },
+
+        ]
+    },
+    {
+        path: "/doitac",
+        component: Layout,
+        redirect: "/doitac",
+        name: "Đối tác",
+        meta: {
+            title: "Đối tác",
+            icon: "doitac"
+        },
+        children: [
+            {
+                path: "nhacungcap",
+                name: "Nhà cung cấp",
+                component: () => import("@/views/doitac/nhacungcap/index"),
+                meta: {
+                    title: "Nhà cung cấp",
+                    icon: "nhacungcap"
+                }
+            },
+            {
+                path: "khachhang",
+                name: "Khách hàng",
+                component: () => import("@/views/doitac/khachhang/index"),
+                meta: {
+                    title: "Khách hàng",
+                    icon: "khachhang"
                 }
             },
         ]
     },
+
     {
         path: "/baocao",
         component: Layout,
@@ -319,10 +406,10 @@ export const asyncRoutes = [
         children: [
             {
                 path: "thietbi",
-                name: "Báo cáo thiết bị",
+                name: "Báo cáo tài chính",
                 component: () => import("@/views/baocao/BaoCaoThietBi"),
                 meta: {
-                    title: "Báo cáo thiết bị lắp đặt",
+                    title: "Báo cáo tài chính",
                     icon: "report"
                 }
             },
@@ -337,10 +424,10 @@ export const asyncRoutes = [
             },
             {
                 path: "sodiemchay",
-                name: "Số điểm cháy",
+                name: "Báo cáo kinh doanh",
                 component: () => import("@/views/baocao/BaoCaoSoDiemChay"),
                 meta: {
-                    title: "Báo cáo điểm cháy",
+                    title: "Báo cáo kinh doanh",
                     icon: "report"
                 }
             },

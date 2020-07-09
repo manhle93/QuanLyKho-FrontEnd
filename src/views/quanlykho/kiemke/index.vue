@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh mục sản phẩm hàng hóa</h4>
+    <h4>Danh sách hàng tồn kho</h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
@@ -20,15 +20,6 @@
             @click="searchData()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
       </el-row>
     </el-form>
     <el-table
@@ -40,121 +31,39 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column label="Hình ảnh" width="200" align="center">
+      <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
+      <el-table-column label="Mã phiếu nhập" align="center" prop="ma"></el-table-column>
+      <el-table-column label="Thời gian nhập" align="center" prop="created_at"></el-table-column>
+      <el-table-column label="Tổng tiền" prop="don_hang.tong_tien"></el-table-column>
+      <el-table-column align="center" fixed="right" label="Chi tiết đơn hàng">
         <template slot-scope="scope">
-          <el-image
-            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien : src"
-            style="max-height: 90px; max-width: 90px"
-          ></el-image>
-        </template>
-      </el-table-column>
-      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
-      <el-table-column label="Số mặt hàng" min-width="157"></el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip class="item" effect="dark" content="Xem đơn hàng" placement="top">
             <el-button
               size="small"
               style="background-color: #2E86C1; color: white"
-              icon="el-icon-edit"
+              icon="el-icon-view"
               circle
               @click="showUpdate(scope.row)"
-            ></el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
-            <el-button
-              size="small"
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              @click="deleteAppUserID(scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      :title="edit ? 'Cập nhật danh mục sản phẩm' :'Thêm danh mục sản phẩm'"
-      :visible.sync="showForm"
-      width="30%"
-      center
-    >
-      <el-form :model="form" :rules="rules" ref="form">
-        <el-row>
-          <el-col style="text-align: center">
-            <div class="block">
-              <img style="widht: 150px; height: 150px" :src="src" />
-              <input
-                ref="upload-image"
-                class="upload-image"
-                type="file"
-                @change="handleChange($event)"
-              />
-              <br />
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="Thay đổi ảnh đại diện"
-                placement="top"
-              >
-                <el-button
-                  class="primary-button block"
-                  style="margin-top:20px;"
-                  @click="handleUpload"
-                  icon="el-icon-edit"
-                  circle
-                ></el-button>
-              </el-tooltip>
-              <!-- <img :src="src" > -->
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="Tên danh mục" prop="ten_danh_muc">
-              <el-input v-model="form.ten_danh_muc"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="Mô tả">
-              <el-input type="textarea" v-model="form.mo_ta" :rows="2"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button>
-        <el-button
-          class="primary-button"
-          size="small"
-          v-if="!edit"
-          icon="el-icon-plus"
-          @click="addDanhMuc('form')"
-        >Thêm mới</el-button>
-        <el-button
-          class="primary-button"
-          size="small"
-          v-else
-          icon="el-icon-check"
-          @click="updateDanhMuc('form')"
-        >Cập nhật</el-button>
-      </span>
-    </el-dialog>
+    <div class="block" style="margin-top: 20px">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :page-sizes="[5, 10, 15, 20]"
+        background
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import {
-  addDanhMuc,
-  index,
-  updateDanhMuc,
-  upAnhDanhMuc,
-  xoaDanhMuc
-} from "@/api/danhmucsanpham";
-import { getTinhThanh } from "@/api/TinhThanh";
-import { getInfor } from "@/api/taikhoan";
+import { getPhieuNhap } from "@/api/quanlykho";
 
 export default {
   filters: {
@@ -169,7 +78,7 @@ export default {
   },
   data() {
     return {
-      src: process.env.VUE_APP_BASE + "images/avatar/product.png",
+      src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
       endPointImage: process.env.VUE_APP_BASE,
       list: [],
       showForm: false,
@@ -219,14 +128,19 @@ export default {
     },
     async getData() {
       this.listLoading = true;
-      let data = await index();
-      this.list = data.data;
+      let data = await getPhieuNhap({
+        page: this.page,
+        per_page: this.per_page
+      });
+      this.list = data.data.data;
+      this.page = data.data.current_page;
+      this.per_page = data.data.per_page;
       this.listLoading = false;
     },
     searchData() {
       this.listLoading = true;
-      index({ search: this.search }).then(response => {
-        this.list = response.data;
+      getPhieuNhap({ search: this.search }).then(response => {
+        this.list = response.data.data;
         this.listLoading = false;
       });
     },
@@ -317,6 +231,15 @@ export default {
     },
     handleUpload() {
       this.$refs["upload-image"].click();
+    },
+
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getData()
+    },
+    handleSizeChange(val) {
+      this.per_page = val;
+      this.getData();
     }
   }
 };

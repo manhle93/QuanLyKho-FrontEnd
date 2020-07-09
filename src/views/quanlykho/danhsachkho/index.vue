@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh mục sản phẩm hàng hóa</h4>
+    <h4>Danh sách kho hàng</h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
@@ -41,17 +41,16 @@
       style="font-size: 13px"
     >
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column label="Hình ảnh" width="200" align="center">
+      <el-table-column sortable prop="ten" min-width="160" label="Tên kho"></el-table-column>
+      <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
+      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
+       <el-table-column label="Người quản lý" prop="nguoi_quan_ly" min-width="157"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="157">
         <template slot-scope="scope">
-          <el-image
-            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien : src"
-            style="max-height: 90px; max-width: 90px"
-          ></el-image>
+          <el-tag type="danger" v-if="!scope.row.trang_thai">Không hoạt động</el-tag>
+          <el-tag type="success" v-else>Đang hoạt động</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
-      <el-table-column label="Số mặt hàng" min-width="157"></el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -76,45 +75,32 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="edit ? 'Cập nhật danh mục sản phẩm' :'Thêm danh mục sản phẩm'"
+      :title="edit ? 'CẬP NHẬT KHO HÀNG' :'THÊM MỚI KHO HÀNG'"
       :visible.sync="showForm"
       width="30%"
       center
     >
       <el-form :model="form" :rules="rules" ref="form">
-        <el-row>
-          <el-col style="text-align: center">
-            <div class="block">
-              <img style="widht: 150px; height: 150px" :src="src" />
-              <input
-                ref="upload-image"
-                class="upload-image"
-                type="file"
-                @change="handleChange($event)"
-              />
-              <br />
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="Thay đổi ảnh đại diện"
-                placement="top"
-              >
-                <el-button
-                  class="primary-button block"
-                  style="margin-top:20px;"
-                  @click="handleUpload"
-                  icon="el-icon-edit"
-                  circle
-                ></el-button>
-              </el-tooltip>
-              <!-- <img :src="src" > -->
-            </div>
-          </el-col>
-        </el-row>
+        <el-row></el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="Tên danh mục" prop="ten_danh_muc">
-              <el-input v-model="form.ten_danh_muc"></el-input>
+            <el-form-item label="Tên kho hàng" prop="ten">
+              <el-input v-model="form.ten"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Số điên thoại">
+              <el-input v-model="form.so_dien_thoai"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Người quản lý">
+              <el-input v-model="form.nguoi_quan_ly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Địa chỉ">
+              <el-input v-model="form.dia_chi"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -131,14 +117,14 @@
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
-          @click="addDanhMuc('form')"
+          @click="addKhoHang('form')"
         >Thêm mới</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
-          @click="updateDanhMuc('form')"
+          @click="updateKhoHang('form')"
         >Cập nhật</el-button>
       </span>
     </el-dialog>
@@ -146,14 +132,7 @@
 </template>
 
 <script>
-import {
-  addDanhMuc,
-  index,
-  updateDanhMuc,
-  upAnhDanhMuc,
-  xoaDanhMuc
-} from "@/api/danhmucsanpham";
-import { getTinhThanh } from "@/api/TinhThanh";
+import { getKho, editKho, addKho, xoaKho } from "@/api/kho";
 import { getInfor } from "@/api/taikhoan";
 
 export default {
@@ -183,15 +162,19 @@ export default {
       user: null,
       form: {
         id: null,
-        anh_dai_dien: "",
-        mo_ta: "",
-        ten_danh_muc: ""
+        ten: null,
+        ma: null,
+        so_dien_thoai: null,
+        dia_chi: null,
+        nguoi_quan_ly: null,
+        trang_thai: true,
+        mo_ta: null
       },
       rules: {
-        ten_danh_muc: [
+        ten: [
           {
             required: true,
-            message: "Tên danh mục không thể bỏ trống",
+            message: "Tên kho hàng không thể bỏ trống",
             trigger: "blur"
           },
           { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
@@ -207,20 +190,17 @@ export default {
       this.resetForm();
       this.edit = true;
       this.showForm = true;
-      this.form.ten_danh_muc = data.ten_danh_muc;
+      this.form.ten = data.ten;
       this.form.mo_ta = data.mo_ta;
+      this.form.so_dien_thoai = data.so_dien_thoai
+      this.form.dia_chi = data.dia_chi
+      this.form.nguoi_quan_ly = data.nguoi_quan_ly
       this.form.id = data.id;
-      if (data.anh_dai_dien) {
-        this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
-      } else {
-        this.src =
-          process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
-      }
     },
     async getData() {
       this.listLoading = true;
-      let data = await index();
-      this.list = data.data;
+      let data = await getKho();
+      this.list = data;
       this.listLoading = false;
     },
     searchData() {
@@ -232,12 +212,9 @@ export default {
     },
     deleteAppUserID(item) {
       this.$confirm(
-        "Bạn chắc chắn muốn xóa danh mục: " +
-          "<strong>" +
-          item.ten_danh_muc +
-          "</strong>" +
-          ", cùng toàn bộ sản phẩm bên trong",
-        "Xóa danh mục sản phẩm",
+        "Bạn chắc chắn muốn xóa kho: " + "<strong>" + item.ten + "</strong>",
+
+        "Xóa kho hàng",
         {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
@@ -246,7 +223,7 @@ export default {
         }
       )
         .then(_ => {
-          xoaDanhMuc(item.id).then(res => {
+          xoaKho(item.id).then(res => {
             this.$message({
               message: "Xóa thành công",
               type: "success"
@@ -260,10 +237,10 @@ export default {
       this.resetForm();
       this.showForm = true;
     },
-    addDanhMuc(formName) {
+    addKhoHang(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          addDanhMuc(this.form).then(res => {
+          addKho(this.form).then(res => {
             this.resetForm();
             this.getData();
             this.$message({
@@ -277,10 +254,10 @@ export default {
         }
       });
     },
-    updateDanhMuc(formName) {
+    updateKhoHang(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          updateDanhMuc(this.form).then(res => {
+          editKho(this.form.id, this.form).then(res => {
             this.resetForm();
             this.getData();
             this.$message({
@@ -296,27 +273,16 @@ export default {
     },
     resetForm() {
       this.showForm = false;
-      this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
       this.form = {
         id: null,
-        anh_dai_dien: "",
-        mo_ta: "",
-        ten_danh_muc: ""
+        ten: null,
+        ma: null,
+        so_dien_thoai: null,
+        dia_chi: null,
+        nguoi_quan_ly: null,
+        trang_thai: true,
+        mo_ta: null
       };
-    },
-    handleChange(e) {
-      let files = e.target.files;
-      let data = new FormData();
-      data.append("file", files[0]);
-      upAnhDanhMuc(data)
-        .then(res => {
-          this.form.anh_dai_dien = res;
-          this.src = process.env.VUE_APP_BASE + res;
-        })
-        .catch(error => {});
-    },
-    handleUpload() {
-      this.$refs["upload-image"].click();
     }
   }
 };

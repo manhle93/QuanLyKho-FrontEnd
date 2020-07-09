@@ -142,7 +142,7 @@
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
       <el-col :span="6">
-        <el-row>
+        <el-row v-if="form.trang_thai != 'nhap_kho' && form.trang_thai != 'huy_bo'">
           <el-col :span="8">
             <el-button
               v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh'"
@@ -165,7 +165,7 @@
               style="float: right"
               icon="el-icon-s-home"
               type="success"
-              @click="duyetDon()"
+              @click="nhapKho()"
             >Nhập kho</el-button>
           </el-col>
           <el-col :span="8">
@@ -178,24 +178,20 @@
             >Cập nhật</el-button>
           </el-col>
         </el-row>
-        <!-- <el-button
-          style="float: right"
-          icon="el-icon-edit"
-          class="primary-button"
-          @click="submit('form')"
-        >Cập nhật</el-button>
-        <el-button
-          style="float: right"
-          icon="el-icon-check"
-          type="success"
-          @click="submit('form')"
-        >Duyệt đơn</el-button>
-        <el-button
-          style="float: right"
-          icon="el-icon-close"
-          type="danger"
-          @click="submit('form')"
-        >Hủy đơn</el-button>-->
+        <el-row v-if="form.trang_thai == 'nhap_kho'">
+          <div
+            style="height: 80px; width: 250px; border: 3px solid red; display: flex; align-items:center; justify-content: center; border-radius: 10px"
+          >
+            <p style="color: red; font-weight: bold; font-size: 24px">ĐÃ NHẬP KHO</p>
+          </div>
+        </el-row>
+        <el-row v-if="form.trang_thai == 'huy_bo'">
+          <div
+            style="height: 80px; width: 250px; border: 3px solid #E74C3C; display: flex; align-items:center; justify-content: center; border-radius: 10px"
+          >
+            <p style="color: #E74C3C; font-weight: bold; font-size: 24px">ĐÃ HỦY ĐƠN</p>
+          </div>
+        </el-row>
       </el-col>
     </el-row>
   </div>
@@ -207,7 +203,8 @@ import {
   getDonHang,
   updateDonHang,
   duyetDon,
-  huyDon
+  huyDon,
+  nhapKho
 } from "@/api/donhangnhacungcap";
 
 export default {
@@ -263,6 +260,9 @@ export default {
       }
       if (data.data.trang_thai == "da_duyet") {
         this.active = 2;
+      }
+      if (data.data.trang_thai == "nhap_kho") {
+        this.active = 3;
       }
       for (let sp of data.data.san_phams) {
         let item = {};
@@ -387,6 +387,15 @@ export default {
         type: "success"
       });
       this.getData();
+    },
+    nhapKho() {
+      nhapKho(this.$route.params.id).then(res => {
+        this.$message({
+          message: "Nhập kho thành công",
+          type: "success"
+        });
+        this.getData();
+      });
     }
   }
 };

@@ -44,3 +44,10 @@ export function huyDon(id) {
     method: "put",
   });
 }
+
+export function nhapKho(id) {
+  return request({
+    url: "nhapkho/" + id,
+    method: "post",
+  });
+}

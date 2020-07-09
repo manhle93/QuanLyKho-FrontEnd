@@ -78,6 +78,11 @@
                 type="success"
                 v-if="scope.row.trang_thai == 'da_duyet'"
               >Đã duyệt đơn</el-tag>
+              <el-tag
+                effect="dark"
+                type="success"
+                v-if="scope.row.trang_thai == 'nhap_kho'"
+              >Đã nhập kho</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>

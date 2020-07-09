@@ -39,10 +39,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="Danh mục" prop="danh_muc_id">
+              <el-form-item label="Loại hàng hóa" prop="danh_muc_id">
                 <el-select
                   v-model="form.danh_muc_id"
-                  placeholder="Chọn danh mục hàng hóa"
+                  placeholder="Chọn loại hàng hóa"
                   style="width: 100%"
                 >
                   <el-option
@@ -55,7 +55,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="Giá bán" prop="gia_ban">
+              <el-form-item label="Đơn giá bán" prop="gia_ban">
                 <el-input v-model="form.gia_ban"></el-input>
               </el-form-item>
             </el-col>
@@ -65,31 +65,42 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="Sản phẩm khuyến mãi">
-                <el-checkbox v-model="form.dang_khuyen_mai" label="Sản phẩm khuyến mãi" border></el-checkbox>
+              <el-form-item label="Giá vốn">
+                <el-input v-model="form.gia_von"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6" v-if="form.dang_khuyen_mai">
-              <el-form-item label="Giá khuyến mãi" prop="gia_sale">
-                <el-input v-model="form.gia_sale"></el-input>
+            <el-col :span="6">
+              <el-form-item label="Thương hiệu">
+                <br />
+                <el-select v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
+                  <el-option
+                    v-for="item in thuongHieus"
+                    :key="item.id"
+                    :label="item.ten"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+                <el-button
+                  size="small"
+                  class="primary-button"
+                  icon="el-icon-plus"
+                  circle
+                  @click="showFormAddThuongHieu()"
+                ></el-button>
+                <el-button
+                  v-if="form.thuong_hieu_id"
+                  size="small"
+                  class="primary-button"
+                  icon="el-icon-edit"
+                  circle
+                  @click="showEditThuongHieu()"
+                ></el-button>
               </el-form-item>
             </el-col>
-            <el-col :span="6" v-if="form.dang_khuyen_mai">
-              <el-form-item label="Thời gian khuyến mãi" prop="gia_sale">
-                <el-date-picker
-                  v-model="thoiGianKhuyenMai"
-                  type="datetimerange"
-                  range-separator="-"
-                  start-placeholder="Bắt đầu"
-                  end-placeholder="Kết thúc"
-                  format="dd/MM/yyyy HH:mm:ss"
-                ></el-date-picker>
+            <el-col :span="6">
+              <el-form-item label="Vị trí">
+                <el-input v-model="form.vi_tri"></el-input>
               </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <label>Mô tả sản phẩm</label>
-              <br>
-              <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
             </el-col>
             <el-col :span="24">
               <el-form-item label="Album ảnh">
@@ -111,6 +122,12 @@
                 </el-dialog>
               </el-form-item>
             </el-col>
+            <el-col :span="24">
+              <label>Mô tả sản phẩm</label>
+              <br />
+              <br />
+              <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
+            </el-col>
             <el-col :span="12">
               <router-link to="/quanlykho/loaimathang">
                 <el-button type="warning" icon="el-icon-back">Quay lại</el-button>
@@ -128,17 +145,62 @@
         </el-form>
       </el-col>
     </el-row>
+    <el-dialog
+      :title="editThuongHieu ? 'CẬP NHẬT THƯƠNG HIỆU' : 'THÊM MỚI THƯƠNG HIỆU'"
+      :visible.sync="showThuongHieu"
+      width="25%"
+      center
+    >
+      <el-form :model="formAddThuongHieu" :rules="rules" ref="formAddThuongHieu">
+        <el-form-item label="Tên thương hiệu" prop="ten">
+          <el-input v-model="formAddThuongHieu.ten"></el-input>
+        </el-form-item>
+        <el-form-item label="Mô tả">
+          <el-input :rows="2" type="textarea" v-model="formAddThuongHieu.mo_ta"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="warning" icon="el-icon-close" @click="huyThuongHieu()">Hủy bỏ</el-button>
+        <el-button
+          v-if="!editThuongHieu"
+          size="small"
+          class="primary-button"
+          icon="el-icon-plus"
+          @click="themThuongHieu('formAddThuongHieu')"
+        >Thêm mới</el-button>
+        <el-button
+          v-if="editThuongHieu"
+          size="small"
+          class="primary-button"
+          icon="el-icon-edit"
+          @click="updateThuongHieu('formAddThuongHieu')"
+        >Cập nhật</el-button>
+        <el-button
+          v-if="editThuongHieu"
+          size="small"
+          type="danger"
+          icon="el-icon-delete"
+          @click="xoaThuongHieu()"
+        >Xóa</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { index } from "@/api/danhmucsanpham";
+import {
+  getThuongHieu,
+  xoaThuongHieu,
+  addThuongHieu,
+  editThuongHieu
+} from "@/api/thuonghieu";
 import { getToken } from "@/utils/auth";
 import { listSanPham, addSanPham } from "@/api/sanpham";
 
 export default {
   data() {
     return {
-      src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
+      src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       urlUploadSanPham: process.env.VUE_APP_BASE_API + "uploadanhsanpham",
       endPointImage: process.env.VUE_APP_BASE,
       dialogImageUrl: "",
@@ -146,6 +208,7 @@ export default {
       thoiGianKhuyenMai: "",
       danhMucS: [],
       token: "",
+      showThuongHieu: false,
       form: {
         id: null,
         anh_dai_dien: "",
@@ -158,8 +221,17 @@ export default {
         dang_khuyen_mai: false,
         bat_dau_khuyen_mai: null,
         ket_thuc_khuyen_mai: null,
-        fileList: []
+        thuong_hieu_id: null,
+        fileList: [],
+        gia_von: null,
+        vi_tri: null
       },
+      thuongHieus: [],
+      formAddThuongHieu: {
+        ten: null,
+        mo_ta: null
+      },
+      editThuongHieu: false,
       rules: {
         danh_muc_id: [
           {
@@ -181,17 +253,100 @@ export default {
             message: "Đơn vị tính không thể bỏ trống",
             trigger: "blur"
           }
+        ],
+        ten: [
+          {
+            required: true,
+            message: "Tên thương hiệu không thể bỏ trống",
+            trigger: "blur"
+          }
         ]
       }
     };
   },
   created() {
     this.getDanhMuc();
+    this.getThuongHieu();
     this.token = {
       Authorization: "Bearer " + getToken()
     };
   },
   methods: {
+    showFormAddThuongHieu() {
+      this.editThuongHieu = false;
+      this.showThuongHieu = true;
+      this.formAddThuongHieu = {
+        ten: null,
+        mo_ta: null
+      };
+    },
+    huyThuongHieu() {
+      this.editThuongHieu = false;
+      this.showThuongHieu = false;
+      this.formAddThuongHieu = {
+        ten: null,
+        mo_ta: null
+      };
+    },
+    async xoaThuongHieu() {
+      await xoaThuongHieu(this.form.thuong_hieu_id);
+      this.$message({
+        type: "success",
+        message: "Xóa thương hiệu thành công"
+      });
+      this.showThuongHieu = false;
+      this.form.thuong_hieu_id = null;
+      this.getThuongHieu();
+    },
+    async getThuongHieu() {
+      let data = await getThuongHieu();
+      this.thuongHieus = data.data;
+    },
+    themThuongHieu(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          addThuongHieu(this.formAddThuongHieu).then(res => {
+            this.$message({
+              type: "success",
+              message: "Thêm thương hiệu thành công"
+            });
+          });
+          this.getThuongHieu();
+          this.showThuongHieu = false;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    updateThuongHieu(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          editThuongHieu(this.form.thuong_hieu_id, this.formAddThuongHieu).then(
+            res => {
+              this.$message({
+                type: "success",
+                message: "Cập nhật thương hiệu thành công"
+              });
+            }
+          );
+          this.getThuongHieu();
+          this.showThuongHieu = false;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    showEditThuongHieu() {
+      let thuonghieu = this.thuongHieus.find(
+        el => el.id == this.form.thuong_hieu_id
+      );
+      this.editThuongHieu = true;
+      this.showThuongHieu = true;
+      this.formAddThuongHieu.ten = thuonghieu.ten;
+      this.formAddThuongHieu.mo_ta = thuonghieu.mo_ta;
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -233,7 +388,10 @@ export default {
         dang_khuyen_mai: false,
         bat_dau_khuyen_mai: null,
         ket_thuc_khuyen_mai: null,
-        fileList: []
+        fileList: [],
+        thuong_hieu_id: null,
+        gia_von: null,
+        vi_tri: null
       };
       this.src = process.env.VUE_APP_BASE + res;
       this.$refs.upload.clearFiles();
@@ -247,7 +405,7 @@ export default {
                 type: "success",
                 message: "Thêm mới thành công"
               });
-              this.resetForm()
+              this.resetForm();
             })
             .catch(res => {});
         } else {
