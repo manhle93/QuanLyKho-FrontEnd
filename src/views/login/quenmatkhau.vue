@@ -8,8 +8,8 @@
         <div style="text-align:center; margin-top: 140px" v-if="sendMail">
           <el-form :model="form" :rules="rules" ref="form">
             <el-row align="center">
-              <img src="/static/img/logo.246f7a81.png" style="height: 150px" />
-              <h2 style="color: white">QUÊN MẬT KHẨU</h2>
+              <!-- <img src="/static/img/logo.246f7a81.png" style="height: 150px" /> -->
+              <h2 style="color: #1F618D">QUÊN MẬT KHẨU</h2>
               <br />
               <el-col :span="16" :offset="4">
                 <el-form-item prop="email">
@@ -63,7 +63,7 @@
 
 <script>
 import { quenMatKhau } from "@/api/user";
-import background from "@/assets/logo/background2.png";
+import background from "@/assets/logo/background.jpg";
 
 export default {
   name: "QuenMatKhau",

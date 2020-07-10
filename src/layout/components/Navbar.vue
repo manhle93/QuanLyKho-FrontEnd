@@ -124,7 +124,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div style="text-align: center">
+    <!-- <div style="text-align: center">
       <div style="display: inline-block;">
         <div style="font-weight: bold; color: #2E86C1; display: inline; line-height: 50px">
           <img
@@ -145,7 +145,7 @@
           >TRUNG TÂM CHỈ HUY TỈNH {{ten_tinh_thanh}}</div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

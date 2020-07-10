@@ -257,7 +257,6 @@ export default {
           message: "Xóa thành công",
           type: "success"
         });
-        console.log(this.listLoading)
       } catch (error) {
         this.listLoading = false;
       }
@@ -266,6 +265,7 @@ export default {
       this.listLoading = true;
       let data = await listDonHang();
       this.tableData = data.data.data;
+      console.log(this.tableData)
       this.listLoading = false;
     },
     edit(id) {

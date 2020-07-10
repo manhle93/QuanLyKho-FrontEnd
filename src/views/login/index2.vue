@@ -87,7 +87,7 @@
                 @click.native.prevent="handleLogin"
               >ĐĂNG NHẬP</el-button>
               <br />
-              <p id="p-footer">Một sản phẩm của Phúc Đại An</p>
+              <!-- <p id="p-footer">Một sản phẩm của Phúc Đại An</p> -->
             </el-container>
           </el-form>
         </div>
@@ -100,8 +100,8 @@
 import { validUsername } from "@/utils/validate";
 import { getCaptcha, checkUserCaptcha } from "@/api/user";
 import logo from "@/assets/logo/logo.png";
-import background from "@/assets/logo/background.png";
-import sanpham from "@/assets/logo/sanpham.png";
+import background from "@/assets/logo/background.jpg";
+import sanpham from "@/assets/logo/sanpham.jpg";
 export default {
   name: "Login",
   data() {
@@ -265,7 +265,7 @@ export default {
 }
 .login-background {
   position: absolute;
-  background-color: #1d3160;
+  background-color: #AAB7B8;
   opacity: 0.7;
   width: 100%;
   height: 100%;
@@ -286,7 +286,8 @@ export default {
 }
 .img-responsive {
   width: 100%;
-  min-width: 320px;
-  max-width: 800px;
+  min-width: 200px;
+  max-width: 400px;
+  margin-bottom: 482px;
 }
 </style>
