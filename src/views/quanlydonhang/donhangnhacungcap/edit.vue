@@ -26,12 +26,12 @@
             <el-input v-model="form.ma" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="admin ? 4: 6">
           <el-form-item label="Tên đơn hàng" prop="ten">
             <el-input v-model="form.ten"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="admin ? 4: 6">
           <el-form-item label="Thời gian hẹn giao hàng" prop="thoi_gian">
             <br />
             <el-date-picker
@@ -42,7 +42,18 @@
             ></el-date-picker>
           </el-form-item>
         </el-col>
-
+        <el-col :span="4" v-if="admin">
+          <el-form-item label="Nhà cung cấp">
+            <el-select style="width: 100%" v-model="form.nha_cung_cap_id" filterable placeholder="Chọn nhà cung cấp">
+              <el-option
+                v-for="item in nhaCungCaps"
+                :key="item.id"
+                :label="item.ten"
+                :value="item.user_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="6">
           <el-form-item label="Ghi chú">
             <el-input type="textarea" v-model="form.ghi_chu"></el-input>
@@ -165,7 +176,7 @@
               style="float: right"
               icon="el-icon-s-home"
               type="success"
-              @click="nhapKho()"
+              @click="showNhapKho()"
             >Nhập kho</el-button>
           </el-col>
           <el-col :span="8">
@@ -194,6 +205,25 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-dialog title="Nhập kho" :visible.sync="showFormNhapKho" width="20%" center>
+      <el-form>
+        <el-form-item label="Kho hàng">
+          <br />
+          <el-select v-model="kho_id" filterable placeholder="Chọn kho hàng" style="width: 100%">
+            <el-option v-for="item in khos" :key="item.id" :label="item.ten" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="warning"
+          size="small"
+          icon="el-icon-close"
+          @click="showFormNhapKho = false"
+        >Hủy bỏ</el-button>
+        <el-button class="primary-button" icon="el-icon-s-home" @click="nhapKho()">Nhập kho</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -206,6 +236,9 @@ import {
   huyDon,
   nhapKho
 } from "@/api/donhangnhacungcap";
+import { getNhaCungCap } from "@/api/khachhang";
+import { getKho } from "@/api/kho";
+import { getInfor } from "@/api/taikhoan";
 
 export default {
   data() {
@@ -219,14 +252,20 @@ export default {
         ghi_chu: null,
         tong_tien: null,
         chiet_khau: null,
-        danhSachHang: []
+        danhSachHang: [],
+        nha_cung_cap_id: null
       },
+      admin: false,
+      khos: [],
+      kho_id: null,
+      showFormNhapKho: false,
       hangHoa: {},
       hang_hoa_id: null,
       hangHoas: [],
       so_luong: null,
       don_vi_tinh: null,
       don_gia: null,
+      nhaCungCaps: [],
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -245,6 +284,9 @@ export default {
   created() {
     this.getSanPham();
     this.getData();
+    this.getKho();
+    this.getNhaCungCap();
+    this.getInfo();
   },
   methods: {
     async getData() {
@@ -255,6 +297,7 @@ export default {
       this.form.tong_tien = data.data.tong_tien;
       this.form.ten = data.data.ten;
       this.form.trang_thai = data.data.trang_thai;
+      this.form.nha_cung_cap_id = data.data.user_id;
       if (data.data.trang_thai == "moi_tao") {
         this.active = 1;
       }
@@ -264,6 +307,7 @@ export default {
       if (data.data.trang_thai == "nhap_kho") {
         this.active = 3;
       }
+      this.form.danhSachHang = [];
       for (let sp of data.data.san_phams) {
         let item = {};
         item.don_gia = sp.don_gia;
@@ -371,9 +415,10 @@ export default {
       this.so_luong = null;
       this.don_vi_tinh = null;
       this.don_gia = null;
+      this.kho_id = null;
     },
     async duyetDon() {
-      let data = await duyetDon(this.$route.params.id);
+      await duyetDon(this.$route.params.id);
       this.$message({
         message: "Duyệt đơn thành công",
         type: "success"
@@ -388,14 +433,36 @@ export default {
       });
       this.getData();
     },
+    showNhapKho() {
+      this.showFormNhapKho = true;
+    },
     nhapKho() {
-      nhapKho(this.$route.params.id).then(res => {
+      nhapKho(this.$route.params.id, { kho_id: this.kho_id }).then(res => {
         this.$message({
           message: "Nhập kho thành công",
           type: "success"
         });
+        this.kho_id = null;
+        this.showFormNhapKho = false;
         this.getData();
       });
+    },
+    async getKho() {
+      let data = await getKho();
+      this.khos = data;
+    },
+    async getNhaCungCap() {
+      let data = await getNhaCungCap({
+        per_page: 999999
+      });
+      this.nhaCungCaps = data.data.data;
+    },
+    async getInfo() {
+      let data = await getInfor();
+      this.form.nha_cung_cap_id = null;
+      if (data.data.role_id == 1 || data.data.role_id == 2) {
+        this.admin = true;
+      }
     }
   }
 };

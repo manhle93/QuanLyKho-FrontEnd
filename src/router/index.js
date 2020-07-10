@@ -239,6 +239,15 @@ export const asyncRoutes = [
                     icon: "nhapkho"
                 }
             },
+                        {
+                path: "hangtonkho",
+                name: "Danh sách hàng trong kho",
+                component: () => import("@/views/quanlykho/hangtrongkho/index"),
+                meta: {
+                    title: "Danh sách hàng trong kho",
+                    icon: "nhapkho"
+                }
+            },
             {
                 path: "danhsachkho",
                 name: "Danh sách kho",

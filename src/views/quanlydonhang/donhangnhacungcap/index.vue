@@ -54,7 +54,7 @@
     <el-row>
       <el-col :span="24">
         <el-table
-          v-loading="listLoading == false"
+          v-loading="listLoading"
           element-loading-text="Đang tải dữ liệu"
           :data="tableData"
           style="width: 100%; font-size: 13px"
@@ -125,7 +125,7 @@
   </div>
 </template>
 <script>
-import { listDonHang } from "@/api/donhangnhacungcap";
+import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
 
 export default {
   data() {
@@ -251,20 +251,22 @@ export default {
           }
         );
         this.listLoading = true;
-        let status = await xoadonhang(data.id);
-        let getData = await this.getData();
-        this.listLoading = false;
+        let status = await xoaDonHang(data.id);
+        this.getDonHang();
         this.$message({
           message: "Xóa thành công",
           type: "success"
         });
+        console.log(this.listLoading)
       } catch (error) {
         this.listLoading = false;
       }
     },
     async getDonHang() {
+      this.listLoading = true;
       let data = await listDonHang();
       this.tableData = data.data.data;
+      this.listLoading = false;
     },
     edit(id) {
       this.$router.push("/quanlydonhang/capnhatdonhang/" + id);

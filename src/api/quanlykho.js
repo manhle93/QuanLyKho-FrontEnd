@@ -7,3 +7,11 @@ export function getPhieuNhap(params) {
     params
   });
 }
+
+export function hangTrongKho(params) {
+  return request({
+    url: "tonkho",
+    method: "get",
+    params
+  });
+}

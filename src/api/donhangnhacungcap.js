@@ -45,9 +45,17 @@ export function huyDon(id) {
   });
 }
 
-export function nhapKho(id) {
+export function nhapKho(id, data) {
   return request({
     url: "nhapkho/" + id,
     method: "post",
+    data
+  });
+}
+
+export function xoaDonHang(id) {
+  return request({
+    url: "donhang/" + id,
+    method: "delete",
   });
 }

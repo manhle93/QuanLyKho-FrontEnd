@@ -21,12 +21,12 @@
             <el-input v-model="form.ma" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="admin ? 4: 6">
           <el-form-item label="Tên đơn hàng" prop="ten">
             <el-input v-model="form.ten"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="admin ? 4: 6">
           <el-form-item label="Thời gian hẹn giao hàng" prop="thoi_gian">
             <br />
             <el-date-picker
@@ -37,7 +37,18 @@
             ></el-date-picker>
           </el-form-item>
         </el-col>
-
+        <el-col :span="4" v-if="admin">
+          <el-form-item label="Nhà cung cấp">
+            <el-select style="width: 100%" v-model="form.nha_cung_cap_id" filterable placeholder="Chọn nhà cung cấp">
+              <el-option
+                v-for="item in nhaCungCaps"
+                :key="item.id"
+                :label="item.ten"
+                :value="item.user_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="6">
           <el-form-item label="Ghi chú">
             <el-input type="textarea" v-model="form.ghi_chu"></el-input>
@@ -150,6 +161,8 @@
 <script>
 import { listSanPham } from "@/api/sanpham";
 import { addSanPham } from "@/api/donhangnhacungcap";
+import { getNhaCungCap } from "@/api/khachhang";
+import { getInfor } from "@/api/taikhoan";
 
 export default {
   data() {
@@ -163,8 +176,11 @@ export default {
         ghi_chu: null,
         tong_tien: null,
         chiet_khau: null,
-        danhSachHang: []
+        danhSachHang: [],
+        nha_cung_cap_id: null
       },
+      admin: false,
+      nhaCungCaps: [],
       hangHoa: {},
       hang_hoa_id: null,
       hangHoas: [],
@@ -188,6 +204,8 @@ export default {
   },
   created() {
     this.getSanPham();
+    this.getNhaCungCap()
+    this.getInfo()
   },
   methods: {
     async getSanPham() {
@@ -289,6 +307,19 @@ export default {
       this.so_luong = null;
       this.don_vi_tinh = null;
       this.don_gia = null;
+    },
+    async getNhaCungCap() {
+      let data = await getNhaCungCap({
+        per_page: 999999
+      });
+      this.nhaCungCaps = data.data.data
+    },
+    async getInfo(){
+      let data = await getInfor();
+      this.form.nha_cung_cap_id = null
+      if(data.data.role_id == 1 || data.data.role_id == 2){
+        this.admin = true
+      }
     }
   }
 };

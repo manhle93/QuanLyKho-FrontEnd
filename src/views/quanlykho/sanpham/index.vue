@@ -35,7 +35,7 @@
       fit
       highlight-current-row
       style="font-size: 13px"
-    >
+      >
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
