@@ -59,3 +59,11 @@ export function xoaDonHang(id) {
     method: "delete",
   });
 }
+
+export function getSanPhamNhaCungCap(params) {
+  return request({
+    url: "sanphamnhacungcap",
+    method: "get",
+    params
+  });
+}

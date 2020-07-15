@@ -38,7 +38,7 @@
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
-          <router-link to="/quanlydonhang/taodonnhacungcap">
+          <router-link to="/quanlydonhang/taobaogia">
             <el-button
               style="float: right"
               size="small"
@@ -50,7 +50,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách đơn hàng nhà cung cấp</h4>
+    <h4>Danh sách báo giá nhà cung cấp</h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -62,28 +62,10 @@
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
           <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
-          <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
-          <el-table-column prop="thoi_gian" label="Thời gian giao dự kiến">
-          </el-table-column>
+          <el-table-column property="ten" label="Tên báo giá" min-width="123"></el-table-column>
+          <el-table-column prop="created_at" label="Thời gian gửi"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau"></el-table-column>
-          <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
-          <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
-            <template slot-scope="scope">
-              <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
-              <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
-              <el-tag
-                effect="plain"
-                type="success"
-                v-if="scope.row.trang_thai == 'da_duyet'"
-              >Đã duyệt đơn</el-tag>
-              <el-tag
-                effect="dark"
-                type="success"
-                v-if="scope.row.trang_thai == 'nhap_kho'"
-              >Đã nhập kho</el-tag>
-            </template>
-          </el-table-column>
+          <el-table-column property="ghi_chu" label="Số sản phẩm chấp nhận" min-width="123"></el-table-column>
           <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="120">
             <template slot-scope="scope">
@@ -111,7 +93,7 @@
         </el-table>
       </el-col>
     </el-row>
-    <br>
+    <br />
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
@@ -126,6 +108,8 @@
 </template>
 <script>
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
+import { getBaoGia } from "@/api/baogia";
+import { listSanPham } from "@/api/sanpham";
 
 export default {
   data() {
@@ -263,13 +247,13 @@ export default {
     },
     async getDonHang() {
       this.listLoading = true;
-      let data = await listDonHang();
+      let data = await getBaoGia();
       this.tableData = data.data.data;
-      console.log(this.tableData)
+      console.log(this.tableData);
       this.listLoading = false;
     },
     edit(id) {
-      this.$router.push("/quanlydonhang/capnhatdonhang/" + id);
+      this.$router.push("/quanlydonhang/capnhatbaogia/" + id);
     }
   }
 };

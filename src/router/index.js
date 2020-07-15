@@ -279,6 +279,35 @@ export const asyncRoutes = [
                 }
             },
             {
+                path: "baogia",
+                name: "Báo giá",
+                component: () => import("@/views/quanlydonhang/baogia/index"),
+                meta: {
+                    title: "Báo giá",
+                    icon: "donhangnhacungcap"
+                }
+            },
+            {
+                path: "taobaogia",
+                name: "Tạo báo giá",
+                component: () => import("@/views/quanlydonhang/baogia/taodon"),
+                meta: {
+                    title: "Tạo báo giá",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
+                path: "capnhatbaogia/:id",
+                name: "Cập nhật báo giá",
+                component: () => import("@/views/quanlydonhang/baogia/edit"),
+                meta: {
+                    title: "Cập nhật báo giá",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
                 path: "taodonnhacungcap",
                 name: "Tạo đơn hàng nhà cung cấp",
                 component: () => import("@/views/quanlydonhang/donhangnhacungcap/taodon"),
@@ -301,16 +330,36 @@ export const asyncRoutes = [
             {
                 path: "dathang",
                 name: "Đơn đặt hàng",
-                component: () => import("@/views/quanlydonhang/dondathang"),
+                component: () => import("@/views/quanlydonhang/dondathang/index"),
                 meta: {
                     title: "Đơn đặt hàng",
                     icon: "dondathang"
                 }
             },
             {
+                path: "taodondathang",
+                name: "Tạo đơn đặt hàng",
+                component: () => import("@/views/quanlydonhang/dondathang/taodon"),
+                meta: {
+                    title: "Tạo đơn đặt hàng",
+                    icon: "dondathang"
+                },
+                hidden: true
+            },
+            {
+                path: "capnhatdondathang/:id",
+                name: "Cập nhật đơn đặt hàng",
+                component: () => import("@/views/quanlydonhang/dondathang/edit"),
+                meta: {
+                    title: "Cập nhật đơn đặt hàng",
+                    icon: "dondathang"
+                },
+                hidden: true
+            },
+            {
                 path: "banhang",
                 name: "Giao dịch bán hàng",
-                component: () => import("@/views/quanlydonhang/giaodichbanhang"),
+                component: () => import("@/views/quanlydonhang/dondathang/index"),
                 meta: {
                     title: "Giao dịch bán hàng",
                     icon: "giaodichbanhang"
