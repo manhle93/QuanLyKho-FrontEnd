@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Hệ thống cảnh báo cháy-SFUL',
+  title: 'Ruộng bậc thang',
 
   /**
    * @type {boolean} true | false
