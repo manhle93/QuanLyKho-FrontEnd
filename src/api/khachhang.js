@@ -61,3 +61,26 @@ export function addNhaCungCap(data) {
       data
   })
 }
+
+
+export function nopTien(data) {
+  return request({
+      url: 'noptien',
+      method: 'post',
+      data
+  })
+}
+
+export function hoanTac(id) {
+  return request({
+      url: 'hoantac/'+ id,
+      method: 'post',
+  })
+}
+
+export function lichSu(id) {
+  return request({
+      url: 'noptien',
+      method: 'get',
+  })
+}

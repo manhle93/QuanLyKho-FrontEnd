@@ -100,10 +100,10 @@
               >Đã chuyển hóa đơn</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
+          <el-table-column label="Khách hàng" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="200">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
+              <!-- <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
                 <el-button
                   v-if="scope.row.trang_thai != 'huy_bo'"
                   size="small"
@@ -122,7 +122,7 @@
                   circle
                   @click="hoaDon(scope.row)"
                 ></el-button>
-              </el-tooltip>
+              </el-tooltip> -->
 
               <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
                 <el-button

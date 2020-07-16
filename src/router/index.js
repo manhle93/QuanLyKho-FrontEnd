@@ -339,7 +339,7 @@ export const asyncRoutes = [
             {
                 path: "taodondathang",
                 name: "Tạo đơn đặt hàng",
-                component: () => import("@/views/quanlydonhang/dondathang/taodon"),
+                component: () => import("@/views/quanlydonhang/dondathang/taodon2"),
                 meta: {
                     title: "Tạo đơn đặt hàng",
                     icon: "dondathang"
@@ -392,15 +392,6 @@ export const asyncRoutes = [
                     icon: "nhaphang"
                 }
             },
-            // {
-            //     path: "trahangnhap",
-            //     name: "Trả hàng nhập",
-            //     component: () => import("@/views/quanlydonhang/lichsugiaohang"),
-            //     meta: {
-            //         title: "Trả hàng nhập",
-            //         icon: "eyes"
-            //     }
-            // },
             {
                 path: "trahangnhap",
                 name: "Trả hàng nhập",
@@ -448,6 +439,15 @@ export const asyncRoutes = [
                 meta: {
                     title: "Khách hàng",
                     icon: "khachhang"
+                }
+            },
+            {
+                path: "lichsunoptien",
+                name: "Lịch sử nộp tiền",
+                component: () => import("@/views/doitac/lichsunoptien/index"),
+                meta: {
+                    title: "Lịch sử nộp tiền",
+                    icon: "money"
                 }
             },
         ]

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="c-flex fh"
+    class="c-flex fh ttch"
     style="padding-left: 20px; height: calc(100vh - 50px);overflow: hidden;"
   >
     <div
@@ -113,11 +113,15 @@
     </div>
     <div
       class="fh c-flex c-column"
-      style="padding-left: 15px; padding-right: 10px; background-color: #F2F4F4; min-width: 320px;"
+      style="padding-left: 15px; padding-right: 10px; height: 100%; background-color: #F2F4F4; width: 320px;"
     >
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
         <br />
+        <!-- <el-radio-group v-model="loai" size="small">
+          <el-radio-button style="background-color: #0E6655" label="HÓA ĐƠN"></el-radio-button>
+          <el-radio-button label="ĐẶT HÀNG"></el-radio-button>
+        </el-radio-group>-->
         <el-button
           size="small"
           @click="form.trang_thai = 'hoa_don'"
@@ -125,7 +129,6 @@
         >HÓA ĐƠN</el-button>
         <el-button
           size="small"
-          :disabled="trang_thai == 'hoa_don'"
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
         >ĐẶT HÀNG</el-button>
@@ -187,52 +190,34 @@
       </div>
       <br />
       <el-row>
-        <el-col :span="23" v-if="trang_thai == 'moi_tao'">
-          <el-button size="small" icon="el-icon-close" type="warning" @click="huyDon()">HỦY ĐƠN</el-button>
+        <el-col :span="23">
           <el-button
-            size="small"
             v-if="form.trang_thai == 'moi_tao'"
+            style="float: right; width: 100%"
+            icon="el-icon-plus"
+            class="success-button"
+            @click="submit('form')"
+          >ĐẶT HÀNG</el-button>
+          <el-button
+            v-else
+            style="float: right; width: 100%"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
-          >CẬP NHẬT</el-button>
-          <el-button
-            size="small"
-            v-if="form.trang_thai == 'hoa_don'"
-            icon="el-icon-check"
-            class="success-button"
-            @click="hoaDon()"
           >THANH TOÁN</el-button>
         </el-col>
-        <div
-          style="height: 80px; width: 250px; border: 3px solid #E74C3C; display: flex; align-items:center; justify-content: center; border-radius: 10px"
-          v-if="trang_thai != 'moi_tao'"
-        >
-          <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
-            v-if="trang_thai == 'huy_bo'"
-          >ĐÃ HỦY ĐƠN</p>
-          <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
-            v-if="trang_thai == 'hoa_don'"
-          >ĐÃ THANH TOÁN</p>
-        </div>
       </el-row>
     </div>
   </div>
 </template>
 <script>
 import { listSanPham } from "@/api/sanpham";
+import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
-import { getBangGia } from "@/api/banggia";
+import { getInfor } from "@/api/taikhoan";
 
-import {
-  editDonDathang,
-  getChiTietDonDathang,
-  huyDon,
-  chuyenHoaDon,
-  getShipper
-} from "@/api/dondathang";
+import { addDonDatHang, getShipper } from "@/api/dondathang";
+import { getBangGia } from "@/api/banggia";
 export default {
   data() {
     return {
@@ -254,9 +239,8 @@ export default {
         trang_thai: "moi_tao",
         bang_gia_id: null
       },
-      trang_thai: "moi_tao",
-      admin: false,
       timKiem: null,
+      admin: false,
       nhaCungCaps: [],
       hangHoa: {},
       hang_hoa_id: null,
@@ -284,7 +268,6 @@ export default {
   created() {
     this.getSanPham();
     this.getKhachHang();
-    this.getData();
     this.getBangGia();
     this.nhanVienGiaoHang();
   },
@@ -304,31 +287,6 @@ export default {
     }
   },
   methods: {
-    async getData() {
-      let data = await getChiTietDonDathang(this.$route.params.id);
-      this.form.ma = data.data.ma;
-      this.form.ten = data.data.ten;
-      this.form.ghi_chu = data.data.ghi_chu;
-      this.form.tong_tien = data.data.tong_tien;
-      this.form.da_thanh_toan = data.data.da_thanh_toan;
-      this.form.trang_thai = data.data.trang_thai;
-      this.trang_thai = data.data.trang_thai;
-      this.form.khach_hang_id = data.data.user_id;
-      this.form.giam_gia = data.data.giam_gia;
-      this.form.con_phai_thanh_toan = data.data.con_phai_thanh_toan;
-      this.form.nhan_vien_giao_hang = data.data.nhan_vien_giao_hang;
-      this.form.bang_gia_id = data.data.bang_gia_id;
-
-      this.form.danhSachHang = [];
-      for (let sp of data.data.san_phams) {
-        let item = {};
-        item.don_gia = sp.gia_ban;
-        item.so_luong = sp.so_luong;
-        item.hang_hoa = sp.san_pham;
-        this.form.danhSachHang.push(item);
-      }
-    },
-
     async getSanPham() {
       let data = await listSanPham({
         per_page: 6,
@@ -353,11 +311,10 @@ export default {
 
       this.addSanPham();
     },
-    async getBangGia() {
-      let data = await getBangGia({
-        per_page: 9999999
-      });
-      this.bangGias = data.data.data;
+    kiemTraDaChon(SanPhamID) {
+      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
+      if (a) return true;
+      return false;
     },
     addSanPham() {
       if (this.hang_hoa_id && this.so_luong && this.don_gia) {
@@ -377,11 +334,6 @@ export default {
         this.don_vi_tinh = null;
         this.hangHoa = {};
       }
-    },
-    kiemTraDaChon(SanPhamID) {
-      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
-      if (a) return true;
-      return false;
     },
     xoaSanPham(index, data) {
       this.form.danhSachHang.splice(index, 1);
@@ -410,15 +362,17 @@ export default {
             });
             return;
           }
-          editDonDathang(this.$route.params.id, this.form).then(res => {
-            this.$message({
-              message: "Cập nhật đơn hàng thành công",
-              type: "success"
+          addDonDatHang(this.form)
+            .then(res => {
+              this.$message({
+                message: "Tạo đơn hàng thành công",
+                type: "success"
+              });
+              this.resetForm();
+            })
+            .catch(error => {
+              console.log(error);
             });
-          });
-          this.getData().catch(error => {
-            console.log(error);
-          });
         } else {
           console.log("error submit!!");
           return false;
@@ -439,7 +393,9 @@ export default {
         khach_hang_id: null,
         da_thanh_toan: 0,
         giam_gia: 0,
-        con_phai_thanh_toan: 0
+        con_phai_thanh_toan: 0,
+        bang_gia_id: null,
+        nhan_vien_giao_hang: null
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -452,6 +408,12 @@ export default {
         per_page: 999999
       });
       this.nhaCungCaps = data.data.data;
+    },
+    async getInfo() {
+      let data = await getInfor();
+      if (data.data.role_id == 1 || data.data.role_id == 2) {
+        this.admin = true;
+      }
     },
     async getBangGia() {
       let data = await getBangGia({
@@ -476,48 +438,10 @@ export default {
         });
       }
     },
-    async huyDon() {
-      try {
-        let comfirm = await this.$confirm(
-          "Bạn có chắc chắn muốn hủy đơn đặt hàng hàng này",
-          "Hủy đơn đặt hàng",
-          {
-            confirmButtonText: "Đồng y",
-            cancelButtonText: "Hủy",
-            type: "warning"
-          }
-        );
-        let status = await huyDon(this.$route.params.id);
-        this.getData();
-        this.$message({
-          message: "Hủy đơn thành công",
-          type: "success"
-        });
-      } catch (error) {}
-    },
     nhanVienGiaoHang() {
       getShipper().then(res => {
         this.shipper = res;
       });
-    },
-    async hoaDon() {
-      try {
-        let comfirm = await this.$confirm(
-          "Bạn có chắc chắn muốn chuyển hóa đơn cho đơn đặt hàng hàng này",
-          "Chuyển hóa đơn",
-          {
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Hủy",
-            type: "warning"
-          }
-        );
-        let status = await chuyenHoaDon(this.$route.params.id);
-        this.getData();
-        this.$message({
-          message: "Thanh toán thành công",
-          type: "success"
-        });
-      } catch (error) {}
     }
   }
 };
@@ -535,15 +459,6 @@ export default {
 .el-select-dropdown__item {
   height: auto;
 }
-.condau {
-  height: 80px;
-  width: 250px;
-  border: 3px solid #e74c3c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-}
 .time {
   font-size: 13px;
   color: #999;
@@ -556,7 +471,6 @@ export default {
 
 .button {
   padding: 0;
-  float: right;
 }
 
 .image {

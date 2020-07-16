@@ -159,24 +159,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="11" v-if="toanha">
-            <el-form-item prop="toa_nha_id">
-              <i class="fa fa-cog"></i>
-              <label>Tòa nhà</label>
-              <el-select
-                style="width:100%"
-                v-model="formLabelAlign.toa_nha_id"
-                placeholder="Chọn tòa nhà"
-              >
-                <el-option
-                  v-for="role in toanhas"
-                  :key="role.id"
-                  :label="role.ten"
-                  :value="role.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
           <el-button
             class="primary-button"
             style="width:98%; margin-left: 10px;"

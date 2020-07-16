@@ -75,11 +75,11 @@
         </el-form>
         <el-row :gutter="20" style="border-top: 1px solid #2E86C1; height: 270px; background-color: #CCD1D1 ">
           <br />
-          <el-col :span="3" v-for="item in hangHoas" :key="item.id">
+          <el-col :xl="3" :md="4" :sm="6"  v-for="item in hangHoas" :key="item.id">
             <el-card :body-style="{ padding: '0px' }">
               <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
               <div style="padding: 14px;">
-                <span>{{item.ten_san_pham}}</span>
+                <span style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;">{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
                   <time class="time">{{ item.gia_ban }} đ/{{item.don_vi_tinh}}</time>
                 </div>
@@ -185,28 +185,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <br />
-    <!-- <el-row :gutter="20" style="border-top: 2px solid #2E86C1">
-      <br />
-      <el-col :span="3" v-for="item in hangHoas" :key="item.id">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
-          <div style="padding: 14px;">
-            <span>{{item.ten_san_pham}}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ item.gia_ban }} đ/{{item.don_vi_tinh}}</time>
-              <el-button
-                :disabled="kiemTraDaChon(item.id)"
-                type="text"
-                class="button"
-                @click="doiSanPham(item.id)"
-              >Lựa chọn</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>-->
-    <br />
   </div>
 </template>
 <script>
@@ -288,7 +266,7 @@ export default {
   methods: {
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 7,
+        per_page: 6,
         search: this.timKiem
       });
       this.hangHoas = data.data.data;

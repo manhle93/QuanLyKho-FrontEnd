@@ -15,6 +15,20 @@
   background-color: #154360;
 }
 
+.success-button {
+  background-color: #196F3D;
+  color: white
+}
+.success-button:focus {
+  background-color: #196F3D;
+  color: white
+}
+.success-button:hover {
+  color: white;
+  background-color: #145A32;
+}
+
+
 .c-align-center {
   align-items: center;
 }
