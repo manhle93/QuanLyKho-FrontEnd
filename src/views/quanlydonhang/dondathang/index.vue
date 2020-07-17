@@ -93,6 +93,7 @@
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
               <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
+              <el-tag effect="plain" v-if="scope.row.trang_thai == 'huy_hoa_don'" type="warning">Hủy hóa đơn</el-tag>
               <el-tag
                 effect="plain"
                 type="success"
@@ -103,26 +104,15 @@
           <el-table-column label="Khách hàng" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="200">
             <template slot-scope="scope">
-              <!-- <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
+              <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
                 <el-button
-                  v-if="scope.row.trang_thai != 'huy_bo'"
                   size="small"
-                  @click="huyDon(scope.row)"
                   type="warning"
-                  icon="el-icon-close"
+                  icon="el-icon-refresh-left"
                   circle
+                  @click="hoanDon(scope.row)"
                 ></el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="Chuyển hóa đơn" placement="top">
-                <el-button
-                  v-if="scope.row.trang_thai != 'hoa_don' && scope.row.trang_thai != 'huy_bo'"
-                  size="small"
-                  type="success"
-                  icon="el-icon-check"
-                  circle
-                  @click="hoaDon(scope.row)"
-                ></el-button>
-              </el-tooltip> -->
 
               <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
                 <el-button
@@ -311,14 +301,13 @@ export default {
     edit(id) {
       this.$router.push("/quanlydonhang/capnhatdondathang/" + id);
     },
-    async huyDon(data) {
+    async hoanDon(data) {
       try {
         let comfirm = await this.$confirm(
-          "Bạn có chắc chắn muốn hủy đơn đặt hàng hàng: " +
             "<strong>" +
             data.ten +
-            "</strong>",
-          "Hủy đơn đặt hàng",
+            "</strong>" + ' sẽ bị hủy, và hoàn tiền vào tài khoản khách hàng nếu có',
+          "Hủy đơn hàng",
           {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
@@ -329,7 +318,7 @@ export default {
         let status = await huyDon(data.id);
         this.getDonHang();
         this.$message({
-          message: "Hủy đơn thành công",
+          message: "Thành công",
           type: "success"
         });
       } catch (error) {}

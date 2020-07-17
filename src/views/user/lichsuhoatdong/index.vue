@@ -335,7 +335,7 @@
       :visible.sync="showUserDetail"
       width="30%"
       center
-    >
+      >
       <div style="display: flex; justify-content: center">
         <div v-if="UserInfo.avatar_url">
           <img

@@ -78,9 +78,10 @@ export function hoanTac(id) {
   })
 }
 
-export function lichSu(id) {
+export function lichSu(params) {
   return request({
       url: 'noptien',
       method: 'get',
+      params
   })
 }

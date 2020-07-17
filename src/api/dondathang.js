@@ -50,10 +50,11 @@ export function huyDon(id) {
         method: 'put',
     })
 }
-export function chuyenHoaDon(id) {
+export function chuyenHoaDon(id,data) {
     return request({
         url: 'chuyenhoadon/' + id,
         method: 'put',
+        data
     })
 }
 

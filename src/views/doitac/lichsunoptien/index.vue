@@ -49,14 +49,21 @@
       <el-table-column label="Nội dung" min-width="157" prop="noi_dung"></el-table-column>
       <el-table-column label="Trạng thái" min-width="157">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.trang_thai">Chuyển tiền</el-tag>
-          <el-tag effect="dark" type="danger" v-else>Hoàn tiền</el-tag>
+          <el-tag type="success" v-if="scope.row.trang_thai == 'nop_tien'">Nộp tiền vào tài khoản</el-tag>
+           <el-tag type="warning" v-if="scope.row.trang_thai == 'hoan_tien'">Hoàn tiền</el-tag>
+          <el-tag v-if="scope.row.trang_thai == 'mua_hang'">Giao dịch mua hàng</el-tag>
+          <el-tag
+            effect="dark"
+            type="danger"
+            v-if="scope.row.trang_thai == 'hoan_tac_nop_tien'"
+          >Hoàn tác nộp tiền</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" min-width="80" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Hoàn tiền" placement="top">
             <el-button
+              v-if="scope.row.trang_thai == 'nop_tien' && !scope.row.da_hoan_tien"
               size="small"
               class="primary-button"
               icon="el-icon-refresh-left"
@@ -72,8 +79,13 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="Khách hàng" prop="id_user_khach_hang">
-              <br>
-              <el-select filterable style="width: 100%" v-model="form.id_user_khach_hang" placeholder="Chọn khách hàng">
+              <br />
+              <el-select
+                filterable
+                style="width: 100%"
+                v-model="form.id_user_khach_hang"
+                placeholder="Chọn khách hàng"
+              >
                 <el-option
                   v-for="item in khachHangs"
                   :key="item.id"
@@ -177,12 +189,15 @@ export default {
       this.total = data.data.total;
       this.list = data.data.data;
       this.listLoading = false;
-      console.log(this.list)
     },
     searchData() {
       this.listLoading = true;
-      getData({ search: this.search }).then(response => {
-        this.list = response.data;
+      lichSu({
+        search: this.search
+      }).then(response => {
+        this.list = response.data.data;
+        this.page = response.data.page;
+        this.per_page = response.data.per_page;
         this.listLoading = false;
       });
     },

@@ -65,7 +65,6 @@
           <el-table-column property="ten" label="Tên báo giá" min-width="123"></el-table-column>
           <el-table-column prop="created_at" label="Thời gian gửi"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column property="ghi_chu" label="Số sản phẩm chấp nhận" min-width="123"></el-table-column>
           <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="120">
             <template slot-scope="scope">
@@ -218,7 +217,9 @@ export default {
       last = last > this.tableData.length ? this.tableData.length : last;
       this.searchData(this.page, this.per_page);
     },
-
+    searchData(page, per_page){
+      this.getDonHang()
+    },
     async handleDelete(data) {
       try {
         let comfirm = await this.$confirm(

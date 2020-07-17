@@ -160,30 +160,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="11" v-if="toanha">
-            <el-form-item prop="toa_nha_id">
-              <i class="fa fa-cog"></i>
-              <label>Tòa nhà</label>
-              <el-select
-                style="width:100%"
-                v-model="formLabelAlign.toa_nha_id"
-                placeholder="Chọn tòa nhà"
-              >
-                <el-option
-                  v-for="role in options.toanhas"
-                  :key="role.id"
-                  :label="role.ten"
-                  :value="role.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
           <el-col :span="11" :offset="trangthai">
             <el-form-item>
               <i class="fa fa-cog"></i>
               <label>Trạng thái</label>
               <el-checkbox
-                v-model="formLabelAlign.active"
+                v-model="formLabelAlign.active" 
                 size="medium"
                 style="width:100%"
                 border
@@ -365,13 +347,7 @@ export default {
       ) {
         this.chonQuyen = false;
       }
-      if (this.formLabelAlign.tinh_thanh_id) {
-        getToaNhaTheoTinh(this.formLabelAlign.tinh_thanh_id).then(res => {
-          this.options.toanhas = res.data;
-        });
-      } else {
-        this.options.toanhas = [];
-      }
+
       if (this.formLabelAlign.role_id == 1) {
         this.tinhthanh = false;
         this.toanha = false;
@@ -390,8 +366,7 @@ export default {
         this.formLabelAlign.role_id == 4
       ) {
         this.tinhthanh = true;
-        this.trangthai = 2;
-        this.toanha = true;
+        this.trangthai = 0;
       }
       if (
         this.formLabelAlign.avatar_url === null ||

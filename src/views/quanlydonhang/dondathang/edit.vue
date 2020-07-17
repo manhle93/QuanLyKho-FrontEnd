@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="c-flex fh"
-    style="padding-left: 20px; height: calc(100vh - 50px);overflow: hidden;"
-  >
+  <div class="c-flex fh" style="padding-left: 20px; height: calc(100vh - 50px);overflow: hidden;">
     <div
       class="c-grow c-flex c-column"
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
@@ -63,7 +60,7 @@
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá"></el-table-column>
                 <el-table-column label="Thành tiền">
-                  <template slot-scope="scope">{{scope.row.so_luong * scope.row.don_gia}}</template>
+                  <template slot-scope="scope">{{Math.ceil(scope.row.so_luong * scope.row.don_gia)}}</template>
                 </el-table-column>
                 <el-table-column label="Xóa">
                   <template slot-scope="scope">
@@ -156,6 +153,13 @@
                 :value="item.user_id"
               ></el-option>
             </el-select>
+            <el-button
+              circle
+              size="mini"
+              icon="el-icon-info"
+              class="success-button"
+              @click="showInfo"
+            ></el-button>
           </el-form-item>
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
@@ -173,6 +177,14 @@
             v-if="form.trang_thai != 'hoa_don'"
             label="Phải thanh toán"
           >{{form.con_phai_thanh_toan}} đ</el-form-item>
+          <el-form-item label="Phương thúc" v-if="form.trang_thai == 'hoa_don'" prop="thanh_toan">
+            <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
+              <el-option value="tien_mat" label="Tiền mặt"></el-option>
+              <el-option value="chuyen_khoan" label="Chuyển khoản"></el-option>
+              <el-option value="cod" label="Ship COD"></el-option>
+              <el-option value="tai_khoan" label="Tài khoản"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="Shipper" v-if="form.trang_thai == 'hoa_don'">
             <el-select
               size="small"
@@ -201,7 +213,7 @@
             v-if="form.trang_thai == 'hoa_don'"
             icon="el-icon-check"
             class="success-button"
-            @click="hoaDon()"
+            @click="submit('form')"
           >THANH TOÁN</el-button>
         </el-col>
         <div
@@ -218,6 +230,53 @@
           >ĐÃ THANH TOÁN</p>
         </div>
       </el-row>
+
+      <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
+        <div style="display: flex; align-items: center; flex-direction: column">
+          <div v-if="UserInfo.avatar_url">
+            <img
+              :src="endPointImage + UserInfo.avatar_url"
+              style="height: 100px; width: auto; border-radius: 10px"
+            />
+          </div>
+          <div v-if="!UserInfo.avatar_url">
+            <img
+              :src="endPointImage + 'images/avatar/avatar_for_none.png'"
+              style="height: 100px; width: auto"
+            />
+          </div>
+
+          <div>
+            <el-rate disabled v-model="UserInfo.tin_nhiem" :colors="colors"></el-rate>
+          </div>
+        </div>
+        <el-row style="margin-top: 50px;">
+          <el-form label-position="left" label-width="110px" size="small">
+            <el-col :span="14" :offset="1">
+              <el-form-item label="Khách hàng: ">{{UserInfo.ten}}</el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item label="Số điện thoại: ">{{UserInfo.so_dien_thoai}}</el-form-item>
+            </el-col>
+            <el-col :span="14" :offset="1">
+              <el-form-item label="Địa chỉ Email: ">{{UserInfo.email}}</el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item label="Số dư TK: ">{{UserInfo.so_du}} đ</el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Địa chỉ: ">{{UserInfo.dia_chi}}</el-form-item>
+            </el-col>
+          </el-form>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+          <el-button
+            class="primary-button"
+            @click="showUserDetail = false"
+            icon="el-icon-close"
+          >Đóng</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -236,6 +295,7 @@ import {
 export default {
   data() {
     return {
+      showUserDetail: false,
       active: 0,
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
@@ -252,8 +312,10 @@ export default {
         con_phai_thanh_toan: 0,
         nhan_vien_giao_hang: null,
         trang_thai: "moi_tao",
-        bang_gia_id: null
+        bang_gia_id: null,
+        thanh_toan: null
       },
+      colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       trang_thai: "moi_tao",
       admin: false,
       timKiem: null,
@@ -266,15 +328,16 @@ export default {
       don_vi_tinh: null,
       don_gia: null,
       shipper: [],
+      UserInfo: {},
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
           { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
         ],
-        thoi_gian: [
+        thanh_toan: [
           {
             required: true,
-            message: "Thời gian không thể bỏ trống",
+            message: "Phương thức thanh toán không thể bỏ trống",
             trigger: "change"
           }
         ]
@@ -318,6 +381,7 @@ export default {
       this.form.con_phai_thanh_toan = data.data.con_phai_thanh_toan;
       this.form.nhan_vien_giao_hang = data.data.nhan_vien_giao_hang;
       this.form.bang_gia_id = data.data.bang_gia_id;
+      this.form.thanh_toan = data.data.thanh_toan
 
       this.form.danhSachHang = [];
       for (let sp of data.data.san_phams) {
@@ -328,7 +392,14 @@ export default {
         this.form.danhSachHang.push(item);
       }
     },
-
+    showInfo() {
+      this.UserInfo = this.nhaCungCaps.find(
+        el => el.user_id == this.form.khach_hang_id
+      );
+      if (this.UserInfo) {
+        this.showUserDetail = true;
+      } else this.UserInfo = {};
+    },
     async getSanPham() {
       let data = await listSanPham({
         per_page: 6,
@@ -439,7 +510,8 @@ export default {
         khach_hang_id: null,
         da_thanh_toan: 0,
         giam_gia: 0,
-        con_phai_thanh_toan: 0
+        con_phai_thanh_toan: 0,
+        thanh_toan: null
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -511,7 +583,11 @@ export default {
             type: "warning"
           }
         );
-        let status = await chuyenHoaDon(this.$route.params.id);
+        let status = await chuyenHoaDon(this.$route.params.id, {
+          thanh_toan: this.form.thanh_toan,
+          khach_hang_id: this.form.khach_hang_id,
+          nhan_vien_giao_hang: this.form.nhan_vien_giao_hang
+        });
         this.getData();
         this.$message({
           message: "Thanh toán thành công",
@@ -530,7 +606,7 @@ export default {
   display: flex;
 }
 .fill-height {
-  height: 100%
+  height: 100%;
 }
 .el-select-dropdown__item {
   height: auto;
