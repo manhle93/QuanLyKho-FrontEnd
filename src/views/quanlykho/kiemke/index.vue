@@ -72,16 +72,8 @@
                   min-width="123"
                 ></el-table-column>
                 <el-table-column prop="san_pham.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-                <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
-                <el-table-column prop="gia_ban" label="Giá bán"></el-table-column>
-                <el-table-column label="Thành tiền">
-                  <template slot-scope="cope">{{cope.row.so_luong * cope.row.gia_ban}}</template>
-                </el-table-column>
+                <el-table-column prop="so_luong" label="Tồn kho"></el-table-column>
               </el-table>
-              <p>Tổng tiền: {{scope.row.tong_tien}} đ</p>
-              <p>Giảm giá: {{scope.row.giam_gia}} đ</p>
-              <p>Đã thanh toán: {{scope.row.da_thanh_toan}} đ</p>
-              <p>Phải thanh toán: {{scope.row.con_phai_thanh_toan}} đ</p>
             </template>
           </el-table-column>
           <el-table-column sortable type="index" label="STT"></el-table-column>
@@ -89,25 +81,13 @@
           <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
           <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan"></el-table-column>
-          <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan"></el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
               <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
-              <el-tag
-                effect="plain"
-                v-if="scope.row.trang_thai == 'huy_hoa_don'"
-                type="warning"
-              >Hủy hóa đơn</el-tag>
-              <el-tag
-                effect="plain"
-                type="success"
-                v-if="scope.row.trang_thai == 'hoa_don'"
-              >Đã chuyển hóa đơn</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Khách hàng" min-width="95" prop="user.name"></el-table-column>
+          <el-table-column label="Nhân viên" min-width="95" prop="user.name"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="200">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
@@ -167,6 +147,7 @@ import {
   chuyenHoaDon
 } from "@/api/dondathang";
 import { getKhachHang } from "@/api/khachhang";
+import { getKiemKho } from "@/api/kho";
 
 export default {
   data() {
@@ -303,7 +284,7 @@ export default {
     },
     async getDonHang() {
       this.listLoading = true;
-      let data = await getDonDathang({
+      let data = await getKiemKho({
         per_page: this.per_page,
         page: this.page,
         khach_hang: this.form.khach_hang,
@@ -311,6 +292,7 @@ export default {
         don_hang: true
       });
       this.tableData = data.data.data;
+      console.log(this.tableData)
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;

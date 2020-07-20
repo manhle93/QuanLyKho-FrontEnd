@@ -22,16 +22,13 @@
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 80%">
               <el-table
-                show-summary
                 :data="form.danhSachHang"
                 style="width: 100%;"
-                :summary-method="tongTien"
               >
                 <el-table-column type="index" label="STT" width="100px"></el-table-column>
                 <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
                 <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-                <el-table-column label="Tồn kho" width="150px" prop="so_luong">
-                </el-table-column>
+                <el-table-column label="Tồn kho" width="150px" prop="ton_kho"></el-table-column>
                 <el-table-column label="Xóa">
                   <template slot-scope="scope">
                     <el-button
@@ -51,7 +48,7 @@
       <div
         class="c-column"
         style="padding-bottom: 20px; border-top: 1px solid #2E86C1; background-color: #58D68D; padding-left: 20px; padding-right: 20px"
-       >
+      >
         <el-row :gutter="20">
           <br />
           <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
@@ -83,7 +80,8 @@
       style="padding-left: 15px; padding-right: 10px; background-color: #F2F4F4; width: 320px;"
     >
       <div style="margin-top: 10px;">
-        <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div><br>
+        <div style="font-size: 16px; color: #196F3D; font-weight: bold">Phiếu kiểm kho</div>
+        <br />
         <br />
         <el-form
           label-position="left"
@@ -99,7 +97,7 @@
           <el-form-item label="Nhân viên">
             <el-select
               size="small"
-              v-model="form.khach_hang_id"
+              v-model="form.user_nhan_vien_id"
               filterable
               style="width:80%"
               placeholder="Chọn nhân viên"
@@ -122,7 +120,6 @@
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
-         
         </el-form>
       </div>
       <br />
@@ -182,13 +179,10 @@
   </div>
 </template>
 <script>
-import { listSanPham } from "@/api/sanpham";
+import { getSanPhamTonKho, addKiemKho } from "@/api/kho";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
-
-import { addDonDatHang, getShipper } from "@/api/dondathang";
-import { getBangGia } from "@/api/banggia";
 export default {
   data() {
     return {
@@ -197,20 +191,12 @@ export default {
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
       form: {
-        ma: "ĐĐH_" + new Date().getTime(),
+        ma: "KK_" + new Date().getTime(),
         ten: null,
         ghi_chu: null,
-        tong_tien: null,
-        da_thanh_toan: null,
         danhSachHang: [],
-        khach_hang_id: null,
-        da_thanh_toan: 0,
-        giam_gia: 0,
-        con_phai_thanh_toan: 0,
-        nhan_vien_giao_hang: null,
-        trang_thai: "moi_tao",
-        bang_gia_id: null,
-        thanh_toan: null
+        user_nhan_vien_id: null,
+        trang_thai: "moi_tao"
       },
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
@@ -227,7 +213,11 @@ export default {
       shipper: [],
       rules: {
         ten: [
-          { required: true, message: "Hãy nhập tên đợt kiểm kê", trigger: "blur" },
+          {
+            required: true,
+            message: "Hãy nhập tên đợt kiểm kê",
+            trigger: "blur"
+          },
           { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
         ],
         thoi_gian: [
@@ -247,14 +237,13 @@ export default {
 
   methods: {
     async getSanPham() {
-      let data = await listSanPham({
+      let data = await getSanPhamTonKho({
         per_page: 6,
         search: this.timKiem
       });
-      this.hangHoas = data.data.data;
+      this.hangHoas = data.data;
     },
     doiSanPham(id) {
-
       this.hang_hoa_id = id;
       this.hangHoa = this.hangHoas.find(el => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
@@ -267,11 +256,10 @@ export default {
       return false;
     },
     addSanPham() {
-      if (this.hang_hoa_id && this.so_luong ) {
+      if (this.hang_hoa_id && this.so_luong) {
         let data = {};
         data.hang_hoa = this.hangHoa;
-        data.so_luong = this.so_luong;
-        data.don_gia = this.don_gia;
+        data.ton_kho = this.hangHoa.ton_kho
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
@@ -279,7 +267,6 @@ export default {
           }
         }
         this.hang_hoa_id = null;
-        this.so_luong = 1;
         this.don_gia = null;
         this.don_vi_tinh = null;
         this.hangHoa = {};
@@ -293,15 +280,6 @@ export default {
         }
       }
     },
-    tongTien(param) {
-      const { columns, data } = param;
-      const sums = Array(7).fill("");
-      this.form.tong_tien = data.reduce(
-        (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
-        0
-      );
-      return sums;
-    },
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -312,10 +290,11 @@ export default {
             });
             return;
           }
-          addDonDatHang(this.form)
+          console.log(this.form);
+          addKiemKho(this.form)
             .then(res => {
               this.$message({
-                message: "Tạo đơn hàng thành công",
+                message: "Tạo kiểm kho thành công",
                 type: "success"
               });
               this.resetForm();
@@ -334,26 +313,16 @@ export default {
     },
     resetForm() {
       this.form = {
-        ma: "ĐĐH_" + new Date().getTime(),
+        ma: "KK_" + new Date().getTime(),
         ten: null,
         ghi_chu: null,
-        tong_tien: null,
-        da_thanh_toan: null,
         danhSachHang: [],
-        khach_hang_id: null,
-        da_thanh_toan: 0,
-        giam_gia: 0,
-        con_phai_thanh_toan: 0,
-        bang_gia_id: null,
-        nhan_vien_giao_hang: null,
-        trang_thai: null,
-        thanh_toan: null
+        user_nhan_vien_id: null,
+        trang_thai: "moi_tao"
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
-      this.so_luong = null;
       this.don_vi_tinh = null;
-      this.don_gia = null;
     },
     async getKhachHang() {
       let data = await getKhachHang({
@@ -371,9 +340,10 @@ export default {
       this.UserInfo = this.nhaCungCaps.find(
         el => el.user_id == this.form.khach_hang_id
       );
-      if (this.UserInfo) {this.showUserDetail = true;}else
-      this.UserInfo = {}
-    },
+      if (this.UserInfo) {
+        this.showUserDetail = true;
+      } else this.UserInfo = {};
+    }
   }
 };
 </script>
