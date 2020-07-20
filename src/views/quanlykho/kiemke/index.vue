@@ -1,278 +1,380 @@
 <template>
-  <div class="app-container">
-    <h4>Danh sách hàng tồn kho</h4>
-    <el-form class="search" :model="form">
+  <div class="app-container" v-on:keyup.enter="searchData">
+    <el-form :model="form">
       <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
+        <el-col :span="6">
+          <el-date-picker
+            style="width: 100%"
+            v-model="form.date"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="Từ ngày"
+            end-placeholder="Đến ngày"
             size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
+            format="dd/MM/yyyy"
+          ></el-date-picker>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="4">
+          <el-select
+            filterable
+            clearable
+            size="small"
+            v-model="form.khach_hang"
+            placeholder="Chọn khách hàng"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in nhaCungCaps"
+              :key="item.id"
+              :label="item.ten"
+              :value="item.user_id"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="3">
           <el-button
             size="small"
             class="primary-button"
             icon="el-icon-search"
-            @click="searchData()"
+            @click="getDonHang()"
           >Tìm kiếm</el-button>
+        </el-col>
+        <el-col :span="11">
+          <router-link to="/quanlykho/taokiemke">
+            <el-button
+              style="float: right"
+              size="small"
+              class="primary-button"
+              icon="el-icon-plus"
+            >KIỂM KÊ</el-button>
+          </router-link>
         </el-col>
       </el-row>
     </el-form>
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-      style="font-size: 13px"
-    >
-      <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
-      <el-table-column label="Mã phiếu nhập" align="center" prop="ma"></el-table-column>
-      <el-table-column label="Thời gian nhập" align="center" prop="created_at"></el-table-column>
-      <el-table-column label="Tổng tiền" prop="don_hang.tong_tien"></el-table-column>
-      <el-table-column align="center" fixed="right" label="Chi tiết đơn hàng">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Xem đơn hàng" placement="top">
-            <el-button
-              size="small"
-              style="background-color: #2E86C1; color: white"
-              icon="el-icon-view"
-              circle
-              @click="showUpdate(scope.row)"
-            ></el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="block" style="margin-top: 20px">
+    <br />
+    <h4>Danh sách đơn đặt hàng</h4>
+    <el-row>
+      <el-col :span="24">
+        <el-table
+          v-loading="listLoading"
+          element-loading-text="Đang tải dữ liệu"
+          :data="tableData"
+          style="width: 100%; font-size: 13px"
+          border
+        >
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-table :data="scope.row.san_phams">
+                <el-table-column sortable type="index" label="STT"></el-table-column>
+                <el-table-column
+                  property="san_pham.ten_san_pham"
+                  label="Tên sản phẩm"
+                  min-width="123"
+                ></el-table-column>
+                <el-table-column prop="san_pham.don_vi_tinh" label="Đơn vị tính"></el-table-column>
+                <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
+                <el-table-column prop="gia_ban" label="Giá bán"></el-table-column>
+                <el-table-column label="Thành tiền">
+                  <template slot-scope="cope">{{cope.row.so_luong * cope.row.gia_ban}}</template>
+                </el-table-column>
+              </el-table>
+              <p>Tổng tiền: {{scope.row.tong_tien}} đ</p>
+              <p>Giảm giá: {{scope.row.giam_gia}} đ</p>
+              <p>Đã thanh toán: {{scope.row.da_thanh_toan}} đ</p>
+              <p>Phải thanh toán: {{scope.row.con_phai_thanh_toan}} đ</p>
+            </template>
+          </el-table-column>
+          <el-table-column sortable type="index" label="STT"></el-table-column>
+          <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
+          <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
+          <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
+          <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
+          <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan"></el-table-column>
+          <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan"></el-table-column>
+          <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
+            <template slot-scope="scope">
+              <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
+              <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
+              <el-tag
+                effect="plain"
+                v-if="scope.row.trang_thai == 'huy_hoa_don'"
+                type="warning"
+              >Hủy hóa đơn</el-tag>
+              <el-tag
+                effect="plain"
+                type="success"
+                v-if="scope.row.trang_thai == 'hoa_don'"
+              >Đã chuyển hóa đơn</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="Khách hàng" min-width="95" prop="user.name"></el-table-column>
+          <el-table-column label="Hành động" align="center" fixed="right" width="200">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
+                <el-button
+                  v-if="scope.row.trang_thai != 'huy_bo' && scope.row.trang_thai != 'huy_hoa_don'"
+                  size="small"
+                  type="warning"
+                  icon="el-icon-refresh-left"
+                  circle
+                  @click="hoanDon(scope.row)"
+                ></el-button>
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+                <el-button
+                  size="small"
+                  @click="edit(scope.row.id)"
+                  class="primary-button"
+                  icon="el-icon-edit"
+                  circle
+                ></el-button>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+                <el-button
+                  size="small"
+                  type="danger"
+                  icon="el-icon-delete"
+                  circle
+                  @click="handleDelete(scope.row)"
+                ></el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+    <br />
+    <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 15, 20]"
         background
+        :page-sizes="[5, 10, 15, 20]"
         layout="prev, pager, next"
         :total="total"
       ></el-pagination>
     </div>
   </div>
 </template>
-
 <script>
-import { getPhieuNhap } from "@/api/quanlykho";
+import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
+import {
+  getBangGia,
+  getDonDathang,
+  xoaDonDathang,
+  huyDon,
+  chuyenHoaDon
+} from "@/api/dondathang";
+import { getKhachHang } from "@/api/khachhang";
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    }
-  },
   data() {
     return {
-      src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
       endPointImage: process.env.VUE_APP_BASE,
-      list: [],
-      showForm: false,
-      edit: false,
       page: 1,
       per_page: 10,
       total: 0,
-      search: "",
+      tableData: null,
       listLoading: true,
-      labelPosition: "top",
-      user: null,
+      loading: false,
+      search: "",
+      list: [],
       form: {
-        id: null,
-        anh_dai_dien: "",
-        mo_ta: "",
-        ten_danh_muc: ""
+        date: [],
+        khach_hang: null
       },
+      formAdd: {
+        id: null,
+        ten: "",
+        ma: "",
+        tinh_thanh_id: null,
+        toa_nha_id: null,
+        ma_don_hang: "",
+        ten_don_hang: "",
+        thiet_bi: [],
+        cam_bien: [],
+        trang_thai: "moi_tao",
+        nhan_vien_id: null,
+        ghi_chu: "",
+        thoi_gian: null,
+        nguoi_mua_hang: "",
+        tong_tien: 0,
+        hinh_anhs: []
+      },
+      nhaCungCaps: [],
+      showCreate: false,
       rules: {
-        ten_danh_muc: [
+        ten: [
           {
             required: true,
-            message: "Tên danh mục không thể bỏ trống",
+            message: "Hãy nhập tên đơn hàng",
             trigger: "blur"
-          },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+          }
+        ],
+        ma: [
+          {
+            required: true,
+            message: "Mã đơn hàng không thể bỏ trống",
+            trigger: "blur"
+          }
+        ],
+        tinh_thanh_id: [
+          {
+            required: true,
+            message: "Hãy chọn một tỉnh thành",
+            trigger: "blur"
+          }
+        ],
+        toa_nha_id: [
+          {
+            required: true,
+            message: "Hãy chọn một tòa nhà",
+            trigger: "blur"
+          }
+        ],
+        thoi_gian: [
+          {
+            required: true,
+            message: "Thời gian không thể bỏ trống",
+            trigger: "blur"
+          }
+        ],
+        trang_thai: [
+          {
+            required: true,
+            message: "Trạng thái không thể bỏ trống",
+            trigger: "blur"
+          }
         ]
       }
     };
   },
-  created() {
-    this.getData();
-  },
-  methods: {
-    showUpdate(data) {
-      this.resetForm();
-      this.edit = true;
-      this.showForm = true;
-      this.form.ten_danh_muc = data.ten_danh_muc;
-      this.form.mo_ta = data.mo_ta;
-      this.form.id = data.id;
-      if (data.anh_dai_dien) {
-        this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
-      } else {
-        this.src =
-          process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
-      }
-    },
-    async getData() {
-      this.listLoading = true;
-      let data = await getPhieuNhap({
-        page: this.page,
-        per_page: this.per_page
-      });
-      this.list = data.data.data;
-      this.page = data.data.current_page;
-      this.per_page = data.data.per_page;
-      this.listLoading = false;
-    },
-    searchData() {
-      this.listLoading = true;
-      getPhieuNhap({ search: this.search }).then(response => {
-        this.list = response.data.data;
-        this.listLoading = false;
-      });
-    },
-    deleteAppUserID(item) {
-      this.$confirm(
-        "Bạn chắc chắn muốn xóa danh mục: " +
-          "<strong>" +
-          item.ten_danh_muc +
-          "</strong>" +
-          ", cùng toàn bộ sản phẩm bên trong",
-        "Xóa danh mục sản phẩm",
-        {
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: "Xóa",
-          cancelButtonText: "Hủy",
-          type: "warning"
-        }
-      )
-        .then(_ => {
-          xoaDanhMuc(item.id).then(res => {
-            this.$message({
-              message: "Xóa thành công",
-              type: "success"
-            });
-            this.getData();
-          });
-        })
-        .catch(_ => {});
-    },
-    showFormAdd() {
-      this.resetForm();
-      this.showForm = true;
-    },
-    addDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          addDanhMuc(this.form).then(res => {
-            this.resetForm();
-            this.getData();
-            this.$message({
-              type: "success",
-              message: "Thêm mới thành công"
-            });
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    updateDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          updateDanhMuc(this.form).then(res => {
-            this.resetForm();
-            this.getData();
-            this.$message({
-              type: "success",
-              message: "Cập nhật thành công"
-            });
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm() {
-      this.showForm = false;
-      this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
-      this.form = {
-        id: null,
-        anh_dai_dien: "",
-        mo_ta: "",
-        ten_danh_muc: ""
-      };
-    },
-    handleChange(e) {
-      let files = e.target.files;
-      let data = new FormData();
-      data.append("file", files[0]);
-      upAnhDanhMuc(data)
-        .then(res => {
-          this.form.anh_dai_dien = res;
-          this.src = process.env.VUE_APP_BASE + res;
-        })
-        .catch(error => {});
-    },
-    handleUpload() {
-      this.$refs["upload-image"].click();
-    },
 
+  created() {
+    this.getDonHang();
+    this.getKhachHang();
+  },
+
+  mounted() {},
+
+  methods: {
     handleCurrentChange(val) {
       this.page = val;
-      this.getData()
+      this.updateDataTable();
     },
+
     handleSizeChange(val) {
       this.per_page = val;
-      this.getData();
+      this.updateDataTable();
+    },
+    updateDataTable() {
+      let first = (this.page - 1) * this.per_page;
+      let last = first + this.per_page;
+      last = last > this.tableData.length ? this.tableData.length : last;
+      this.getDonHang();
+    },
+
+    async handleDelete(data) {
+      try {
+        let comfirm = await this.$confirm(
+          "Bạn có chắc chắn muốn xóa đơn đặt hàng hàng: " +
+            "<strong>" +
+            data.ten +
+            "</strong>",
+          "Xóa đơn đặt hàng",
+          {
+            confirmButtonText: "Xóa",
+            dangerouslyUseHTMLString: true,
+            cancelButtonText: "Hủy",
+            type: "warning"
+          }
+        );
+        this.listLoading = true;
+        let status = await xoaDonDathang(data.id);
+        this.getDonHang();
+        this.$message({
+          message: "Xóa thành công",
+          type: "success"
+        });
+      } catch (error) {
+        this.listLoading = false;
+      }
+    },
+    async getDonHang() {
+      this.listLoading = true;
+      let data = await getDonDathang({
+        per_page: this.per_page,
+        page: this.page,
+        khach_hang: this.form.khach_hang,
+        date: this.form.date,
+        don_hang: true
+      });
+      this.tableData = data.data.data;
+      this.page = data.data.page;
+      this.per_page = data.data.per_page;
+      this.total = data.data.total;
+      this.listLoading = false;
+    },
+    edit(id) {
+      this.$router.push("/quanlykho/thongtinkiemke/" + id);
+    },
+    async hoanDon(data) {
+      try {
+        let comfirm = await this.$confirm(
+          "<strong>" +
+            data.ten +
+            "</strong>" +
+            " sẽ bị hủy, và hoàn tiền vào tài khoản khách hàng nếu có",
+          "Hủy đơn hàng",
+          {
+            confirmButtonText: "Đồng ý",
+            dangerouslyUseHTMLString: true,
+            cancelButtonText: "Hủy",
+            type: "warning"
+          }
+        );
+        let status = await huyDon(data.id);
+        this.getDonHang();
+        this.$message({
+          message: "Thành công",
+          type: "success"
+        });
+      } catch (error) {}
+    },
+    async hoaDon(data) {
+      try {
+        let comfirm = await this.$confirm(
+          "Bạn có chắc chắn muốn chuyển hóa đơn cho đơn đặt hàng hàng: " +
+            "<strong>" +
+            data.ten +
+            "</strong>",
+          "Xóa đơn đặt hàng",
+          {
+            confirmButtonText: "Đồng ý",
+            dangerouslyUseHTMLString: true,
+            cancelButtonText: "Hủy",
+            type: "warning"
+          }
+        );
+        let status = await chuyenHoaDon(data.id);
+        this.getDonHang();
+        this.$message({
+          message: "Hủy đơn thành công",
+          type: "success"
+        });
+      } catch (error) {}
+    },
+    async getKhachHang() {
+      let data = await getKhachHang({
+        per_page: 999999
+      });
+      this.nhaCungCaps = data.data.data;
     }
   }
 };
 </script>
-<style>
-.search {
-  margin-bottom: 20px;
-}
 
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: inherit;
-  color: #8c939d;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-}
-.avatar {
-  width: 40px;
-  height: 40px;
-  display: block;
-}
-.upload-image {
-  display: none;
-  z-index: -9999;
-}
+
+<style lang="scss" scoped>
 </style>

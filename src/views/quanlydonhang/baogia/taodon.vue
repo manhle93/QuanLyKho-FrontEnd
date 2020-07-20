@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <h3>Tạo báo giá</h3>
+    <h3>GỬI BÁO GIÁ</h3>
 
     <el-form ref="form" :model="form" :rules="rules">
       <el-row :gutter="20">
         <br />
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin đơn hàng</div>
+        <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin chung</div>
         <br />
         <el-col :span="4">
           <el-form-item label="Mã đơn hàng">
@@ -120,10 +120,10 @@
       <el-col :span="10">
         <el-button
           style="float: right"
-          icon="el-icon-plus"
+          icon="el-icon-right"
           class="primary-button"
           @click="submit('form')"
-        >Thêm mới</el-button>
+        >GỬI BÁO GIÁ</el-button>
       </el-col>
     </el-row>
   </div>
@@ -141,7 +141,7 @@ export default {
       active: 0,
       src: process.env.VUE_APP_BASE,
       form: {
-        ma: new Date().getTime(),
+        ma: 'BG'+new Date().getTime(),
         ten: null,
         ghi_chu: null,
         danhSachHang: [],

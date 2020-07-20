@@ -56,7 +56,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="Giá bán" prop="gia_ban">
-                <el-input v-model="form.gia_ban"></el-input>
+                <el-input type="number" style="width: 100%" :min="1" v-model="form.gia_ban"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -66,7 +66,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="Giá vốn">
-                <el-input v-model="form.gia_von"></el-input>
+                <el-input type="number" style="width: 100%" :min="1" v-model="form.gia_von"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -100,6 +100,28 @@
             <el-col :span="6">
               <el-form-item label="Vị trí">
                 <el-input v-model="form.vi_tri"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item :label="'Tồn kho tối thiểu (' + form.don_vi_tinh + ')'">
+                <el-input
+                  type="number"
+                  style="width: 100%"
+                  :min="0"
+                  placeholder="Nhập số lượng tồn kho tối thiểu"
+                  v-model="form.ton_kho_thap_nhat"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Thời gian bảo quản (Ngày)">
+                <el-input
+                  type="number"
+                  style="width: 100%"
+                  :min="1"
+                  placeholder="Nhập số ngày bảo quản"
+                  v-model="form.thoi_gian_bao_quan"
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -231,7 +253,9 @@ export default {
         fileList: [],
         thuong_hieu_id: null,
         gia_von: null,
-        vi_tri: null
+        vi_tri: null,
+        ton_kho_thap_nhat: 0,
+        thoi_gian_bao_quan: 1
       },
       thuongHieus: [],
       formAddThuongHieu: {
@@ -408,7 +432,9 @@ export default {
         fileList: [],
         thuong_hieu_id: null,
         gia_von: null,
-        vi_tri: null
+        vi_tri: null,
+        ton_kho_thap_nhat: 0,
+        thoi_gian_bao_quan: 1
       };
       this.src = process.env.VUE_APP_BASE + res;
       this.$refs.upload.clearFiles();
@@ -437,8 +463,7 @@ export default {
       if (this.form.anh_dai_dien) {
         this.src = process.env.VUE_APP_BASE + this.form.anh_dai_dien;
       } else {
-        this.src =
-          process.env.VUE_APP_BASE + "images/avatar/product.png";
+        this.src = process.env.VUE_APP_BASE + "images/avatar/product.png";
       }
       if (data.hinh_anhs.length > 0) {
         for (let item of data.hinh_anhs) {

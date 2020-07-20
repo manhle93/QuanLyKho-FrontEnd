@@ -52,7 +52,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách đơn đặt hàng</h4>
+    <h4>Danh sách hóa đơn xuất kho</h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -308,7 +308,7 @@ export default {
         page: this.page,
         khach_hang: this.form.khach_hang,
         date: this.form.date,
-        don_hang: true
+        hoa_don: true
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

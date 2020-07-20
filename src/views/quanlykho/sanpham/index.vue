@@ -140,15 +140,16 @@ export default {
       this.per_page = val;
       this.getData(this.page, this.per_page);
     },
-    async getData(page, per_page) {
+    async getData() {
       this.listLoading = true;
       let data = await listSanPham({
-        per_page: per_page,
-        page: page
+        per_page: this.per_page,
+        page: this.page
       });
       this.per_page = data.data.per_page
       this.page = data.data.page
       this.list = data.data.data;
+      this.total = data.data.total
       this.listLoading = false;
     },
     searchData(page = 1, per_page = 10) {

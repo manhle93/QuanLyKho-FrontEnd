@@ -101,7 +101,7 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã khách hàng" prop="ma">
-              <el-input size="small" v-model="form.ma"></el-input>
+              <el-input size="small" v-model="form.ma" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -212,7 +212,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số dư">
-              <el-input size="small" v-model="form.so_du"></el-input>
+              <el-input size="small" :disabled="true" v-model="form.so_du"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -372,7 +372,7 @@ export default {
       form: {
         id: null,
         ten: null,
-        ma: null,
+        ma: "KH" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,
@@ -570,7 +570,7 @@ export default {
       this.form = {
         id: null,
         ten: null,
-        ma: null,
+        ma: "KH" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,

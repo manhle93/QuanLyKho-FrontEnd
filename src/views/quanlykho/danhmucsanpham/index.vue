@@ -214,7 +214,7 @@ export default {
         this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
       } else {
         this.src =
-          process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
+          process.env.VUE_APP_BASE + "images/avatar/product.png";
       }
     },
     async getData() {
@@ -259,6 +259,7 @@ export default {
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
+      this.edit = false
     },
     addDanhMuc(formName) {
       this.$refs[formName].validate(valid => {
@@ -296,7 +297,7 @@ export default {
     },
     resetForm() {
       this.showForm = false;
-      this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
+      this.src = process.env.VUE_APP_BASE + "images/avatar/product.png";
       this.form = {
         id: null,
         anh_dai_dien: "",

@@ -8,11 +8,11 @@ export function addBaoGia(data) {
     })
 }
 
-export function getBaoGia(parmas) {
+export function getBaoGia(params) {
     return request({
         url: 'baogia',
         method: 'get',
-        parmas
+        params
     })
 }
 

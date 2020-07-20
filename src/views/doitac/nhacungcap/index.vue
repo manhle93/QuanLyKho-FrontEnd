@@ -96,7 +96,7 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã nhà cung cấp" prop="ma">
-              <el-input size="small" v-model="form.ma"></el-input>
+              <el-input size="small" :disabled="true" v-model="form.ma"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -302,7 +302,7 @@ export default {
       form: {
         id: null,
         ten: null,
-        ma: null,
+        ma: "NCC" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,
@@ -483,7 +483,7 @@ export default {
       this.form = {
         id: null,
         ten: null,
-        ma: null,
+        ma: "NCC" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,

@@ -231,6 +231,26 @@ export const asyncRoutes = [
                 }
             },
             {
+                path: "taokiemke",
+                name: "Tạo kiểm kê",
+                component: () => import("@/views/quanlykho/kiemke/taodon"),
+                meta: {
+                    title: "Tạo kiểm kê",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
+                path: "thongtinkiemke/:id",
+                name: "Thông tin kiểm kê",
+                component: () => import("@/views/quanlykho/kiemke/edit"),
+                meta: {
+                    title: "Thông tin kiểm kê",
+                    icon: "eyes"
+                },
+                hidden: true
+            },
+            {
                 path: "nhapkho",
                 name: "Nhập kho",
                 component: () => import("@/views/quanlykho/nhapkho/index"),
@@ -368,7 +388,7 @@ export const asyncRoutes = [
             {
                 path: "hoadon",
                 name: "Hóa đơn",
-                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                component: () => import("@/views/quanlydonhang/hoadon/index"),
                 meta: {
                     title: "Hóa đơn",
                     icon: "hoadon"
@@ -377,34 +397,34 @@ export const asyncRoutes = [
             {
                 path: "trahang",
                 name: "Trả hàng",
-                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                component: () => import("@/views/quanlydonhang/trahang/index"),
                 meta: {
                     title: "Trả hàng",
                     icon: "trahang"
                 }
             },
-            {
-                path: "nhaphang",
-                name: "Nhập hàng",
-                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
-                meta: {
-                    title: "Nhập hàng",
-                    icon: "nhaphang"
-                }
-            },
-            {
-                path: "trahangnhap",
-                name: "Trả hàng nhập",
-                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
-                meta: {
-                    title: "Trả hàng nhập",
-                    icon: "trahangnhap"
-                }
-            },
+            // {
+            //     path: "nhaphang",
+            //     name: "Nhập hàng",
+            //     component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+            //     meta: {
+            //         title: "Nhập hàng",
+            //         icon: "nhaphang"
+            //     }
+            // },
+            // {
+            //     path: "trahangnhap",
+            //     name: "Trả hàng nhập",
+            //     component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+            //     meta: {
+            //         title: "Trả hàng nhập",
+            //         icon: "trahangnhap"
+            //     }
+            // },
             {
                 path: "xuathuy",
                 name: "Xuất hủy",
-                component: () => import("@/views/quanlydonhang/lichsugiaohang"),
+                component: () => import("@/views/quanlykho/xuathuy/index"),
                 meta: {
                     title: "Xuất hủy",
                     icon: "xuathuy"

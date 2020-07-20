@@ -39,20 +39,10 @@
             @click="getDonHang()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="11">
-          <router-link to="/quanlydonhang/taodondathang">
-            <el-button
-              style="float: right"
-              size="small"
-              class="primary-button"
-              icon="el-icon-plus"
-            >ĐẶT HÀNG</el-button>
-          </router-link>
-        </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách đơn đặt hàng</h4>
+    <h4>Danh sách đơn trả hàng nhập kho</h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -308,7 +298,7 @@ export default {
         page: this.page,
         khach_hang: this.form.khach_hang,
         date: this.form.date,
-        don_hang: true
+        tra_hang: true
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

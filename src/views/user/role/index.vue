@@ -15,7 +15,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="Menu" :visible.sync="showMenuRoleDialog" width="40%" center>
+    <el-dialog title="Menu" :visible.sync="showMenuRoleDialog" width="30%" center>
       <el-table
         :data="tableData1"
         ref="multipleTable"
@@ -23,6 +23,7 @@
         @selection-change="handleSelectionChange"
         row-key="id"
         default-expand-all
+        height="500"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="Tên menu"></el-table-column>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" v-on:keyup.enter="searchData">
+  <div class="app-container" v-on:keyup.enter="getDonHang">
     <el-form :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="6">
@@ -16,6 +16,8 @@
         </el-col>
         <el-col :span="4">
           <el-select
+            filterable
+            clearable
             size="small"
             v-model="form.nha_cung_cap"
             placeholder="Chọn nhà cung cấp"
@@ -25,7 +27,7 @@
               v-for="item in nhaCungCaps"
               :key="item.id"
               :label="item.ten"
-              :value="item.id"
+              :value="item.user_id"
             ></el-option>
           </el-select>
         </el-col>
@@ -34,7 +36,7 @@
             size="small"
             class="primary-button"
             icon="el-icon-search"
-            @click="searchData()"
+            @click="getDonHang()"
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
@@ -63,8 +65,7 @@
           <el-table-column sortable type="index" label="STT"></el-table-column>
           <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
           <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
-          <el-table-column prop="thoi_gian" label="Thời gian giao dự kiến">
-          </el-table-column>
+          <el-table-column prop="thoi_gian" label="Thời gian nhận hàng"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
           <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau"></el-table-column>
           <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
@@ -111,7 +112,7 @@
         </el-table>
       </el-col>
     </el-row>
-    <br>
+    <br />
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
@@ -126,7 +127,7 @@
 </template>
 <script>
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
-
+import { getNhaCungCap } from "@/api/khachhang";
 export default {
   data() {
     return {
@@ -141,7 +142,7 @@ export default {
       list: [],
       form: {
         date: [],
-        nha_cung_cap: []
+        nha_cung_cap: null
       },
       formAdd: {
         id: null,
@@ -212,6 +213,7 @@ export default {
 
   created() {
     this.getDonHang();
+    this.getNhaCungCap();
   },
 
   mounted() {},
@@ -232,7 +234,7 @@ export default {
       let first = (this.page - 1) * this.per_page;
       let last = first + this.per_page;
       last = last > this.tableData.length ? this.tableData.length : last;
-      this.searchData(this.page, this.per_page);
+      this.getDonHang(this.page, this.per_page);
     },
 
     async handleDelete(data) {
@@ -263,13 +265,26 @@ export default {
     },
     async getDonHang() {
       this.listLoading = true;
-      let data = await listDonHang();
+      let data = await listDonHang({
+        per_page: this.per_page,
+        page: this.page,
+        nha_cung_cap: this.form.nha_cung_cap,
+        date: this.form.date
+      });
+      this.page = data.data.page;
+      this.per_page = data.data.per_page;
+      this.total = data.data.total;
       this.tableData = data.data.data;
-      console.log(this.tableData)
       this.listLoading = false;
     },
     edit(id) {
       this.$router.push("/quanlydonhang/capnhatdonhang/" + id);
+    },
+    async getNhaCungCap() {
+      let data = await getNhaCungCap({
+        per_page: 999999
+      });
+      this.nhaCungCaps = data.data.data;
     }
   }
 };

@@ -16,6 +16,8 @@
         </el-col>
         <el-col :span="4">
           <el-select
+            filterable
+            clearable
             size="small"
             v-model="form.nha_cung_cap"
             placeholder="Chọn nhà cung cấp"
@@ -25,7 +27,7 @@
               v-for="item in nhaCungCaps"
               :key="item.id"
               :label="item.ten"
-              :value="item.id"
+              :value="item.user_id"
             ></el-option>
           </el-select>
         </el-col>
@@ -44,7 +46,7 @@
               size="small"
               class="primary-button"
               icon="el-icon-plus"
-            >Tạo đơn</el-button>
+            >Tạo báo giá</el-button>
           </router-link>
         </el-col>
       </el-row>
@@ -109,6 +111,7 @@
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
 import { getBaoGia } from "@/api/baogia";
 import { listSanPham } from "@/api/sanpham";
+import { getNhaCungCap } from "@/api/khachhang";
 
 export default {
   data() {
@@ -195,6 +198,7 @@ export default {
 
   created() {
     this.getDonHang();
+    this.getNhaCungCap();
   },
 
   mounted() {},
@@ -217,8 +221,14 @@ export default {
       last = last > this.tableData.length ? this.tableData.length : last;
       this.searchData(this.page, this.per_page);
     },
-    searchData(page, per_page){
-      this.getDonHang()
+    searchData(page, per_page) {
+      this.getDonHang();
+    },
+    async getNhaCungCap() {
+      let data = await getNhaCungCap({
+        per_page: 999999
+      });
+      this.nhaCungCaps = data.data.data;
     },
     async handleDelete(data) {
       try {
@@ -248,10 +258,18 @@ export default {
     },
     async getDonHang() {
       this.listLoading = true;
-      let data = await getBaoGia();
+      let data = await getBaoGia({
+        per_page: this.per_page,
+        page: this.page,
+        nha_cung_cap: this.form.nha_cung_cap,
+        date: this.form.date
+      });
       this.tableData = data.data.data;
-      console.log(this.tableData);
+      this.page = data.data.page;
+      this.per_page = data.data.per_page;
+      this.total = data.data.total;
       this.listLoading = false;
+      console.log(this.tableData);
     },
     edit(id) {
       this.$router.push("/quanlydonhang/capnhatbaogia/" + id);
