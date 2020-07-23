@@ -223,11 +223,6 @@ export default {
           this.error.email = "";
           this.error.name = "";
           this.error.phone = "";
-          if (Number.isInteger(Number(this.formLabelAlign.phone))) {
-            this.formLabelAlign.phone = this.phoneFormat(
-              this.formLabelAlign.phone
-            );
-          }
           editInfor(this.formLabelAlign)
             .then(res => {
               this.$message({

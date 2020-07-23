@@ -178,7 +178,7 @@
               @click="duyetDon()"
             >Nhận đơn</el-button>
             <el-button
-              v-if="form.trang_thai == 'da_duyet'"
+              v-if="form.trang_thai == 'da_duyet' && admin"
               style="float: right"
               icon="el-icon-s-home"
               type="success"
@@ -187,7 +187,7 @@
           </el-col>
           <el-col :span="8">
             <el-button
-              v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh'"
+              v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh' && admin"
               style="float: right"
               icon="el-icon-edit"
               class="primary-button"
@@ -396,7 +396,7 @@ export default {
                 message: "Cập nhật đơn hàng thành công",
                 type: "success"
               });
-              // this.resetForm();
+              this.getData()
             })
             .catch(error => {
               console.log(error);

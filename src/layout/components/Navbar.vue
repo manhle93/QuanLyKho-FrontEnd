@@ -25,10 +25,10 @@
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
-    />
-    <!-- <breadcrumb class="breadcrumb-container" /> // Tên Router-->
+     />
+    <!-- <breadcrumb class="breadcrumb-container" /> // Tên Router -->
 
-    <div class="right-menu" style="margin-right: 10px">
+    <!-- <div class="right-menu" style="margin-right: 10px">
       <el-dropdown class="avatar-container" trigger="click" style="margin-top: 5px">
         <div class="avatar-wrapper">
           <el-badge :value="soThongBao">
@@ -123,7 +123,8 @@
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-    </div>
+    </div> -->
+
     <!-- <div style="text-align: center">
       <div style="display: inline-block;">
         <div style="font-weight: bold; color: #2E86C1; display: inline; line-height: 50px">
@@ -179,17 +180,7 @@ export default {
     ...mapGetters(["sidebar", "avatar"])
   },
   created() {
-    // this.fetchData();
-    // this.getSoThietBi();
-    // this.getThongBao(false);
-    // try {
-    //   realTimeThongBao = setInterval(() => {
-    //     this.getThongBao(true);
-    //     this.getSoThietBi();
-    //   }, 15000);
-    // } catch (error) {
-    //   return;
-    // }
+    this.fetchData()
   },
   methods: {
     toggleSideBar() {

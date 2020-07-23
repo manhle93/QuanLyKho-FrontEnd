@@ -61,3 +61,62 @@ export function getChiTiet(id) {
       method: 'get',
   })
 }
+
+export function kiemKho(id, data) {
+  return request({
+      url: 'kiemkho/' + id,
+      method: 'put',
+      data
+  })
+}
+
+export function pheDuyet(id,data) {
+  return request({
+      url: 'duyetkiemkho/' + id,
+      method: 'put',
+      data
+  })
+}
+export function huyBo(id) {
+  return request({
+      url: 'huykiemkho/' + id,
+      method: 'put',
+  })
+}
+
+export function xoaKiemKho(id) {
+  return request({
+      url: 'kiemkho/' + id,
+      method: 'delete',
+  })
+}
+
+export function getNhanVien() {
+  return request({
+      url: 'nhanvien',
+      method: 'get',
+  })
+}
+
+export function addXuatHuy(data) {
+  return request({
+      url: 'xuathuy',
+      method: 'post',
+      data
+  })
+}
+
+export function getXuatHuy(params) {
+  return request({
+      url: 'xuathuy',
+      method: 'get',
+      params
+  })
+}
+
+export function chiTietXuatHuy(id) {
+  return request({
+      url: 'xuathuy/' + id,
+      method: 'put',
+  })
+}

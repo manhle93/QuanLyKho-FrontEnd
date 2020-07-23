@@ -21,27 +21,28 @@
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 100%">
-              <el-table
-                :data="form.danhSachHang"
-                style="width: 100%;"
-              >
+              <el-table :data="form.danhSachHang" style="width: 100%;">
                 <el-table-column type="index" label="STT" width="100px"></el-table-column>
                 <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
                 <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
                 <el-table-column label="Tồn kho" prop="ton_kho"></el-table-column>
                 <el-table-column label="Số thực tế" prop="so_thuc_te">
                   <template slot-scope="scope">
-                    <el-input-number :min="0" v-model="scope.row.so_thuc_te"></el-input-number>
+                    <div v-if="form.trang_thai !='moi_tao'">{{scope.row.so_thuc_te}}</div>
+                    <div v-else>
+                      <el-input-number size="small" :min="0" v-model="scope.row.so_thuc_te"></el-input-number>
+                    </div>
                   </template>
                 </el-table-column>
                 <el-table-column label="Chênh lệch" prop="so_thuc_te">
-                  <template slot-scope="scope">
-                   {{scope.row.so_thuc_te - scope.row.ton_kho}}
-                  </template>
+                  <template
+                    slot-scope="scope"
+                  >{{scope.row.so_thuc_te - scope.row.ton_kho}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
                 </el-table-column>
                 <el-table-column label="Xóa">
                   <template slot-scope="scope">
                     <el-button
+                      v-if="scope.row.trang_thai =='moi_tao'"
                       type="danger"
                       icon="el-icon-delete"
                       circle
@@ -102,30 +103,24 @@
           size="small"
         >
           <el-form-item label="Tên kiểm kê" prop="ten">
-            <el-input size="small" v-model="form.ten"></el-input>
+            <el-input :disabled="true" size="small" v-model="form.ten"></el-input>
           </el-form-item>
           <el-form-item label="Nhân viên">
             <el-select
+              :disabled="true"
               size="small"
               v-model="form.user_nhan_vien_id"
               filterable
-              style="width:80%"
+              style="width:100%"
               placeholder="Chọn nhân viên"
             >
               <el-option
                 v-for="item in nhaCungCaps"
                 :key="item.id"
-                :label="item.ten"
-                :value="item.user_id"
+                :label="item.name"
+                :value="item.id"
               ></el-option>
             </el-select>
-            <el-button
-              circle
-              size="mini"
-              icon="el-icon-info"
-              class="success-button"
-              @click="showInfo"
-            ></el-button>
           </el-form-item>
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
@@ -133,63 +128,59 @@
         </el-form>
       </div>
       <br />
-      <el-row>
-        <el-col :span="23">
+      <el-row :gutter="24">
+        <el-col :span="24">
           <el-button
+            v-if="form.trang_thai == 'moi_tao'"
             style="float: right; width: 100%"
-            icon="el-icon-plus"
+            icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
           >KIỂM KHO</el-button>
         </el-col>
+        <el-col :span="12">
+          <el-button
+            v-if="form.trang_thai == 'da_kiem_kho'"
+            icon="el-icon-check"
+            class="success-button"
+            @click="pheDuyet('form')"
+          >PHÊ DUYỆT</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button
+            v-if="form.trang_thai == 'da_kiem_kho'"
+            icon="el-icon-close"
+            type="warning"
+            @click="huyBo('form')"
+          >HỦY BỎ</el-button>
+        </el-col>
+        <div
+          style="height: 80px; width: 250px; border: 3px solid #E74C3C; display: flex; align-items:center; justify-content: center; border-radius: 10px; margin-left: 30px"
+          v-if="form.trang_thai != 'moi_tao' && form.trang_thai != 'da_kiem_kho' && form.trang_thai"
+        >
+          <p
+            style="color: #E74C3C; font-weight: bold; font-size: 24px"
+            v-if="trang_thai == 'da_huy'"
+          >ĐÃ HỦY PHIẾU</p>
+          <p
+            style="color: #E74C3C; font-weight: bold; font-size: 24px"
+            v-if="trang_thai == 'da_duyet'"
+          >ĐÃ PHÊ DUYỆT</p>
+        </div>
       </el-row>
     </div>
-    <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
-      <div style="display: flex; align-items: center; flex-direction: column">
-        <div v-if="UserInfo.avatar_url">
-          <img
-            :src="endPointImage + UserInfo.avatar_url"
-            style="height: 100px; width: auto; border-radius: 10px"
-          />
-        </div>
-        <div v-if="!UserInfo.avatar_url">
-          <img
-            :src="endPointImage + 'images/avatar/avatar_for_none.png'"
-            style="height: 100px; width: auto"
-          />
-        </div>
-
-        <div>
-          <el-rate disabled v-model="UserInfo.tin_nhiem" :colors="colors"></el-rate>
-        </div>
-      </div>
-      <el-row style="margin-top: 50px;">
-        <el-form label-position="left" label-width="110px" size="small">
-          <el-col :span="14" :offset="1">
-            <el-form-item label="Khách hàng: ">{{UserInfo.ten}}</el-form-item>
-          </el-col>
-          <el-col :span="9">
-            <el-form-item label="Số điện thoại: ">{{UserInfo.so_dien_thoai}}</el-form-item>
-          </el-col>
-          <el-col :span="14" :offset="1">
-            <el-form-item label="Địa chỉ Email: ">{{UserInfo.email}}</el-form-item>
-          </el-col>
-          <el-col :span="9">
-            <el-form-item label="Số dư TK: ">{{UserInfo.so_du}} đ</el-form-item>
-          </el-col>
-          <el-col :span="23" :offset="1">
-            <el-form-item label="Địa chỉ: ">{{UserInfo.dia_chi}}</el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="primary-button" @click="showUserDetail = false" icon="el-icon-close">Đóng</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
-import { getSanPhamTonKho, addKiemKho, getChiTiet } from "@/api/kho";
+import {
+  getSanPhamTonKho,
+  addKiemKho,
+  getChiTiet,
+  kiemKho,
+  pheDuyet,
+  huyBo,
+  getNhanVien,
+} from "@/api/kho";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
@@ -206,7 +197,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao"
+        trang_thai: null,
       },
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
@@ -227,28 +218,32 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đợt kiểm kê",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
+          {
+            min: 5,
+            message: "Tên đơn hàng tối thiểu 5 ký tự",
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change"
-          }
-        ]
-      }
+            trigger: "change",
+          },
+        ],
+      },
     };
   },
   created() {
     this.getSanPham();
     this.getKhachHang();
-    this.getData()
+    this.getData();
   },
 
   methods: {
-        async getData() {
+    async getData() {
       let data = await getChiTiet(this.$route.params.id);
       this.form.ma = data.data.ma;
       this.form.ten = data.data.ten;
@@ -256,14 +251,13 @@ export default {
       this.form.trang_thai = data.data.trang_thai;
       this.trang_thai = data.data.trang_thai;
       this.form.user_nhan_vien_id = data.data.user_nhan_vien_id;
-      console.log(data.data)
-
       this.form.danhSachHang = [];
+      console.log(this.form.trang_thai)
       for (let sp of data.data.san_phams) {
         let item = {};
-        item.ton_kho = sp.ton_kho;
+        item.ton_kho = sp.so_luong_truoc_kiem_kho;
         item.hang_hoa = sp.san_pham;
-        item.so_thuc_te = sp.so_thuc_te
+        item.so_thuc_te = sp.so_thuc_te;
         this.form.danhSachHang.push(item);
       }
     },
@@ -271,19 +265,19 @@ export default {
     async getSanPham() {
       let data = await getSanPhamTonKho({
         per_page: 6,
-        search: this.timKiem
+        search: this.timKiem,
       });
       this.hangHoas = data.data;
     },
     doiSanPham(id) {
       this.hang_hoa_id = id;
-      this.hangHoa = this.hangHoas.find(el => el.id == id);
+      this.hangHoa = this.hangHoas.find((el) => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
       this.so_luong_thuc_te = 0;
       this.addSanPham();
     },
     kiemTraDaChon(SanPhamID) {
-      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
+      let a = this.form.danhSachHang.find((el) => el.hang_hoa.id == SanPhamID);
       if (a) return true;
       return false;
     },
@@ -291,8 +285,8 @@ export default {
       if (this.hang_hoa_id && this.so_luong) {
         let data = {};
         data.hang_hoa = this.hangHoa;
-        data.ton_kho = this.hangHoa.ton_kho
-        data.so_thuc_te = 0
+        data.ton_kho = this.hangHoa.ton_kho;
+        data.so_thuc_te = 0;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
@@ -314,25 +308,27 @@ export default {
       }
     },
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
-          console.log(this.form);
-          addKiemKho(this.form)
-            .then(res => {
+          kiemKho(this.$route.params.id, {
+            danhSachHang: this.form.danhSachHang,
+            ghi_chu: this.form.danhSachHang.ghi_chu,
+          })
+            .then((res) => {
+              this.getData();
               this.$message({
-                message: "Tạo kiểm kho thành công",
-                type: "success"
+                message: "Kiểm kho thành công",
+                type: "success",
               });
-              this.resetForm();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -351,17 +347,15 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao"
+        trang_thai: "moi_tao",
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
       this.don_vi_tinh = null;
     },
     async getKhachHang() {
-      let data = await getKhachHang({
-        per_page: 999999
-      });
-      this.nhaCungCaps = data.data.data;
+      let data = await getNhanVien();
+      this.nhaCungCaps = data;
     },
     async getInfo() {
       let data = await getInfor();
@@ -371,13 +365,55 @@ export default {
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
-        el => el.user_id == this.form.khach_hang_id
+        (el) => el.user_id == this.form.khach_hang_id
       );
       if (this.UserInfo) {
         this.showUserDetail = true;
       } else this.UserInfo = {};
-    }
-  }
+    },
+    pheDuyet(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          pheDuyet(this.$route.params.id, {
+            danhSachHang: this.form.danhSachHang,
+          })
+            .then((res) => {
+              this.getData();
+              this.$message({
+                message: "Phê duyệt thành công",
+                type: "success",
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    huyBo(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          huyBo(this.$route.params.id)
+            .then((res) => {
+              this.getData();
+              this.$message({
+                message: "Hủy bỏ thành công",
+                type: "success",
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>

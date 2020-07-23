@@ -468,19 +468,6 @@ export default {
               type: "warning"
             });
           }
-          if (
-            (this.formLabelAlign.role_id == 3 ||
-              this.formLabelAlign.role_id == 4) &&
-            (this.formLabelAlign.toa_nha_id == "" ||
-              this.formLabelAlign.toa_nha_id == null)
-          ) {
-            this.loading = false;
-            return this.$message({
-              showClose: true,
-              message: "Bạn chưa chọn tòa nhà",
-              type: "warning"
-            });
-          }
           if (Number.isInteger(Number(this.formLabelAlign.phone))) {
             this.formLabelAlign.phone = this.phoneFormat(
               this.formLabelAlign.phone
@@ -507,10 +494,6 @@ export default {
       this.options.tinhthanhs = data.data;
     },
     changetinhThanh(id) {
-      this.formLabelAlign.toa_nha_id = null;
-      getToaNhaTheoTinh(this.formLabelAlign.tinh_thanh_id).then(res => {
-        this.options.toanhas = res.data;
-      });
     },
     changeQuyen(id) {
       if (id == 1) {

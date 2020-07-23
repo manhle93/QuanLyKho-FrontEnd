@@ -376,15 +376,15 @@ export const asyncRoutes = [
                 },
                 hidden: true
             },
-            {
-                path: "banhang",
-                name: "Giao dịch bán hàng",
-                component: () => import("@/views/quanlydonhang/dondathang/index"),
-                meta: {
-                    title: "Giao dịch bán hàng",
-                    icon: "giaodichbanhang"
-                }
-            },
+            // {
+            //     path: "banhang",
+            //     name: "Giao dịch bán hàng",
+            //     component: () => import("@/views/quanlydonhang/dondathang/index"),
+            //     meta: {
+            //         title: "Giao dịch bán hàng",
+            //         icon: "giaodichbanhang"
+            //     }
+            // },
             {
                 path: "hoadon",
                 name: "Hóa đơn",
@@ -429,6 +429,26 @@ export const asyncRoutes = [
                     title: "Xuất hủy",
                     icon: "xuathuy"
                 }
+            },
+            {
+                path: "taoxuathuy",
+                name: "Tạo xuất hủy",
+                component: () => import("@/views/quanlykho/xuathuy/taodon"),
+                meta: {
+                    title: "Tạo Xuất hủy",
+                    icon: "xuathuy"
+                },
+                hidden: true
+            },
+            {
+                path: "chitietxuathuy/:id",
+                name: "Chi tiết xuất hủy",
+                component: () => import("@/views/quanlykho/xuathuy/edit"),
+                meta: {
+                    title: "Chi tiết Xuất hủy",
+                    icon: "xuathuy"
+                },
+                hidden: true
             },
 
         ]

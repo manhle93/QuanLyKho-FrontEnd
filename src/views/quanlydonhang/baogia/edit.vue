@@ -81,7 +81,7 @@
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
       <el-col :span="7">
-        <el-button style="float: right" class="primary-button" @click="submit('form')">DUYỆT BÁO GIÁ</el-button>
+        <el-button v-if="admin" style="float: right" class="primary-button" @click="submit('form')">DUYỆT BÁO GIÁ</el-button>
       </el-col>
     </el-row>
 
@@ -225,7 +225,7 @@ export default {
           duyetBaoGia(this.$route.params.id, { san_phams: sanphamID })
             .then(res => {
               this.$message({
-                message: "Cập nhật đơn hàng thành công",
+                message: "Cập nhật báo giá thành công",
                 type: "success"
               });
               // this.resetForm();
