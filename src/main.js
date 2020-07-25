@@ -19,7 +19,7 @@ import './app.css'
 
 import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
-
+import formate from './utils/transform'
 Vue.component('vue-simplemde', VueSimplemde)
 
 /**
@@ -39,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
+window.formate = formate;
 
 new Vue({
   el: '#app',

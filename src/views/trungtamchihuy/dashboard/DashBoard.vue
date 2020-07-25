@@ -120,7 +120,7 @@
             class="c-grow"
             @click="$router.push('/quanlythietbi/thietbi')"
             style="cursor: pointer"
-          >
+           >
             <div
               class="c-flex"
               style="background: white; border-radius: 10px; margin-top: 20px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px; padding-right: 5px"

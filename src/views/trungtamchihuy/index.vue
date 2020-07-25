@@ -1,19 +1,19 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="display:flex; justify-content: space-around; flex-direction: column ">
     <div style="display: flex;">
       <div class="danhmuc" style="margin-left: 0px">
         <div class="item-danhmuc" style="background-color: #2471A3">
           <div>
-            <div class="so-item">150</div>
+            <div class="so-item">{{data.khach_hang}}</div>
             <div class="ten-item">Khách hàng</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3126/3126589.svg" style="height: 100px;" />
         </div>
       </div>
-      <div class="danhmuc" style="background-color: red">
+      <div class="danhmuc" style="background-color: #A93226">
         <div class="item-danhmuc">
           <div>
-            <div class="so-item">10000</div>
+            <div class="so-item">{{data.san_pham}}</div>
             <div class="ten-item">Sản phẩm</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/743/743007.svg" style="height: 100px;" />
@@ -22,8 +22,8 @@
       <div class="danhmuc">
         <div class="item-danhmuc">
           <div>
-            <div class="so-item">130</div>
-            <div class="ten-item">Đơn đặt hàng</div>
+            <div class="so-item">{{data.don_hang}}</div>
+            <div class="ten-item">Đơn đặt hàng: {{month}}/{{year}}</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3225/3225094.svg" style="height: 100px;" />
         </div>
@@ -31,8 +31,8 @@
       <div class="danhmuc">
         <div class="item-danhmuc" style="background-color: #D68910">
           <div>
-            <div class="so-item">130</div>
-            <div class="ten-item">Hóa đơn</div>
+            <div class="so-item">{{data.hoa_don}}</div>
+            <div class="ten-item">Hóa đơn: {{month}}/{{year}}</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3081/3081305.svg" style="height: 100px;" />
         </div>
@@ -40,50 +40,89 @@
       <div class="danhmuc">
         <div class="item-danhmuc" style="background-color: #27AE60">
           <div>
-            <div class="so-item">100 tr</div>
-            <div class="ten-item">Doanh thu</div>
+            <div class="so-item">{{data.doanh_thu/1000000}} <span style="font-size: 14px">triệu đồng</span></div>
+            <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3208/3208954.svg" style="height: 100px;" />
         </div>
       </div>
     </div>
-    <div style="display: flex; margin-top: 40px">
-      <div style="flex: 1; height: 500px;">
-        <img src="https://f7.photo.talk.zdn.vn/6682167246699137293/1eacc0f1fce700b959f6.jpg" style="height: 100%">
+    <div style="display: flex; margin-top: 50px">
+      <div style="flex: 1;">
+        <div
+          style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
+        >SẢN PHẨM BÁN CHẠY</div>
+        <div style="display:flex; justify-content: space-between;">
+          <div style="color: #515A5A; font-weight: bold;">DOANH THU</div>
+          <div style="padding-right: 30px">
+            <el-date-picker
+              style="z-index: 2;"
+              @change="thoiGianSanPham(date)"
+              v-model="date"
+              size="small"
+              type="month"
+              format="MM/yyyy"
+              placeholder="Chọn thời gian"
+            ></el-date-picker>
+          </div>
+        </div>
+        <chart ref="banchay" height="100%" width="100%" />
       </div>
-      <div style="flex: 1; height: 500px; margin-left: 20px">
-        <img src="https://f9.photo.talk.zdn.vn/4452099574540903946/6aafbbb084a678f821b7.jpg" style="height: 100%">
+      <div style="flex: 1; margin-left: 20px">
+        <div
+          style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
+        >TỔNG DOANH THU</div>
+        <div style="display:flex; justify-content: space-between;">
+          <div style="color: #515A5A; font-weight: bold;">NĂM {{year}}</div>
+        </div>
+        <chart2 ref="doanhthu" height="100%" width="100%" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import { getTinhThanh, getDonViPccc } from "@/api/TinhThanh";
-import { getToaNha } from "@/api/thietbi";
-import { getToaNhaTheoTinh } from "@/api/toanha";
-import { getListData } from "@/api/toanha";
-import axios from "axios";
-import { getToken } from "@/utils/auth";
-import Dashboard from "./dashboard/DashBoard";
-import Chitiet from "./chitiet/index";
+import { dashboard } from "@/api/bieudo";
 
+import Chart from "../trungtamchihuy/dashboard/Chart";
+import Chart2 from "../trungtamchihuy/dashboard/ChartDoanhThu";
 export default {
-  components: { Dashboard, Chitiet },
+  components: { Chart, Chart2 },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
     });
   },
   data() {
-    return {};
+    return {
+      date: new Date(),
+      year: new Date().getFullYear(),
+      month:  new Date().getMonth() + 1,
+      data: {
+        khach_hang: 0,
+        don_hang: 0,
+        san_pham: 0,
+        hoa_don: 0,
+        doanh_thu: 0
+      }
+    };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.getData()
+  },
+  methods: {
+    thoiGianSanPham(e) {
+      this.$refs["banchay"].getData(e);
+    },
+    async getData(){
+      let data = await dashboard();
+      this.data = data
+    }
+  },
 };
 </script>
 <style scoped>
 .danhmuc {
-  height: 140px;
+  height: 150px;
   background-color: #16a085;
   flex: 1;
   margin-left: 20px;

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <h3>Báo cáo thiết bị lắp đặt theo tỉnh thành</h3>
-    <el-row :gutter="20">
+    <h3>Báo cáo tài chính</h3>
+    <!-- <el-row :gutter="20">
       <el-col :span="3">
         <el-select
           v-model="filler.tinh_thanh"
@@ -90,7 +90,7 @@
         layout="prev, pager, next"
         :total="total"
       ></el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -136,12 +136,12 @@ export default {
     };
   },
   created() {
-    this.getTinhThanh();
-    this.filler.tinh_thanh = 23;
-    let date = new Date();
-    let start = "01/01/" + (date.getUTCFullYear()-1);
-    let end = "12/31/" + (date.getUTCFullYear()-1);
-    this.filler.date = [start, end];
+    // this.getTinhThanh();
+    // this.filler.tinh_thanh = 23;
+    // let date = new Date();
+    // let start = "01/01/" + (date.getUTCFullYear()-1);
+    // let end = "12/31/" + (date.getUTCFullYear()-1);
+    // this.filler.date = [start, end];
     // this.getToaNhaTheoTinh(23);
     this.getData();
   },

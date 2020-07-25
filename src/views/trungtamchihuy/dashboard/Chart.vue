@@ -9,32 +9,35 @@ import echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 var debounce = require("debounce");
 const animationDuration = 4000;
-import { getDataBieuDoThietBi } from "@/api/baocao";
+import { topSanPham } from "@/api/bieudo";
 
 export default {
   props: {
     className: {
       type: String,
-      default: "chart"
+      default: "chart",
     },
     width: {
       type: String,
-      default: "100%"
+      default: "100%",
     },
     height: {
       type: String,
-      default: "100px"
-    }
+      default: "100px",
+    },
   },
   watch: {},
   data() {
     return {
       chart: null,
-      dataVuChay: []
+      sanPhams: [],
+      doanhThus: [],
+      date: null,
     };
   },
   mounted() {
-    this.initChart();
+    this.getData(null);
+    // this.initChart();
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
         this.chart.resize();
@@ -54,66 +57,60 @@ export default {
     render() {
       this.chart.resize();
     },
-    async initChart() {
+    async getData(date) {
+      let res = await topSanPham({ date: date });
+      this.sanPhams = res.map((el) => el.san_pham.ten_san_pham);
+      this.doanhThus = res.map((el) => el.tong_doanh_thu);
+      this.initChart()
+    },
+    initChart() {
       this.chart = echarts.init(this.$el, "macarons");
-      let res = await getDataBieuDoThietBi();
-      this.dataVuChay = res[0];
-      this.dataVuChay = [...this.dataVuChay, ["", null]];
       if (this.chart) {
         this.chart.setOption({
+          // title: {
+          //   text: "SẢN PHẨM BÁN CHẠY",
+          //   subtext: "DOANH THU",
+          // },
           tooltip: {
-            trigger: "axis"
-            // axisPointer: {
-            //   type: "cross"
-            // }
+            trigger: "axis",
+            formatter: "Doanh thu <br>{b} : {c} ( đồng )",
+            axisPointer: {
+              type: "shadow",
+            },
           },
+
           grid: {
-            top: 10,
-            left: "2%",
-            right: "2%",
+            left: "3%",
+            right: "4%",
             bottom: "3%",
-            containLabel: true
+            containLabel: true,
           },
           xAxis: {
-            type: "category",
-            boundaryGap: false,
-            axisTick: {
-              show: false
-            }
+            type: "value",
+            boundaryGap: [0, 0.01],
           },
           yAxis: {
-            axisTick: {
-              show: false
-            }
+            type: "category",
+            data: this.sanPhams,
           },
           series: [
             {
-              name: "Thiết bị",
-              type: "line",
-              symbol: "circle",
-              symbolSize: 10,
-              lineStyle: {
-                color: "red",
-                width: 2
-              },
-
-              stack: "vistors",
-              barWidth: "60%",
-              data: this.dataVuChay,
-              animationDuration
-            }
-          ]
+              type: "bar",
+              data: this.doanhThus,
+            },
+          ],
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
 .chart-container {
   position: relative;
   width: 100%;
-  min-height: 130px;
-  padding-top: 10px;
+  min-height: 500px;
+  top: -40px;
+  z-index: 0;
 }
 </style>

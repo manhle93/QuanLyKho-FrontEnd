@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <h3>Báo cáo số điểm cháy</h3>
-    <el-row>
+    <h3>Báo cáo số kinh doanh</h3>
+    <!-- <el-row>
       <el-col :span="4">
         <el-select
           v-model="filler.tinh_thanh"
@@ -83,7 +83,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -124,9 +124,9 @@ export default {
     };
   },
   created() {
-    this.getTinhThanh();
-    this.getYear();
-    this.getAllDiemChay();
+    // this.getTinhThanh();
+    // this.getYear();
+    // this.getAllDiemChay();
   },
   methods: {
     async getTinhThanh() {

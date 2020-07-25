@@ -9,28 +9,28 @@ import echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 var debounce = require("debounce");
 const animationDuration = 6000;
-import { getDataBieuDoThietHai } from "@/api/baocao";
+import { getDoanhThu } from "@/api/bieudo";
 
 export default {
   props: {
     className: {
       type: String,
-      default: "chart"
+      default: "chart",
     },
     width: {
       type: String,
-      default: "100%"
+      default: "100%",
     },
     height: {
       type: String,
-      default: "100px"
+      default: "100px",
     },
     dataX: {
-      type: Array
+      type: Array,
     },
     dataY: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   watch: {
     dataX(val) {
@@ -40,12 +40,12 @@ export default {
     dataY(val) {
       this.Y = val;
       this.initChart();
-    }
+    },
   },
   data() {
     return {
       chart: null,
-      data: []
+      data: [],
     };
   },
   mounted() {
@@ -71,64 +71,59 @@ export default {
     },
     async initChart() {
       this.chart = echarts.init(this.$el, "macarons");
-      let res = await getDataBieuDoThietHai();
-      this.data = res[0];
-      this.data = [...this.data, ["", null]];
+      let res = await getDoanhThu();
+      this.data = res;
       if (this.chart) {
         this.chart.setOption({
+          color: ["#3398DB"],
           tooltip: {
-            trigger: "axis"
-            // axisPointer: {
-            //   type: "cross"
-            // }
+            trigger: "axis",
+            formatter: "{a} <br/>{b} : {c} ( đồng )",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+            },
           },
           grid: {
-            top: 10,
-            left: "2%",
-            right: "2%",
+            left: "3%",
+            right: "4%",
             bottom: "3%",
-            containLabel: true
+            containLabel: true,
           },
-          xAxis: {
-            type: "category",
-            boundaryGap: false,
-            axisTick: {
-              show: false
-            }
-          },
-          yAxis: {
-            axisTick: {
-              show: false
-            }
-          },
+          xAxis: [
+            {
+              type: "category",
+              data: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+              axisTick: {
+                alignWithLabel: true,
+              },
+            },
+          ],
+          yAxis: [
+            {
+              type: "value",
+            },
+          ],
           series: [
             {
-              name: "Thiệt hại",
-              type: "line",
-              symbol: "circle",
-              symbolSize: 10,
-              lineStyle: {
-                color: "red",
-                width: 2
-              },
-
-              stack: "vistors",
+              name: "Doanh thu",
+              type: "bar",
               barWidth: "60%",
               data: this.data,
-              animationDuration
-            }
-          ]
+            },
+          ],
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
 .chart-container {
   position: relative;
   width: 100%;
-  min-height: 130px;
-  padding-top: 10px;
+  min-height: 500px;
+  /* padding-top: 10px; */
+  top: -20px
 }
 </style>
