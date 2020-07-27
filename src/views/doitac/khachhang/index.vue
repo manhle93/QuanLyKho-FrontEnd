@@ -46,7 +46,11 @@
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
       <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column>
       <el-table-column label="Số dư" prop="so_du" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157" prop="trang_thai"></el-table-column>
+      <!-- <el-table-column label="Trạng thái" min-width="157" prop="trang_thai">
+        <template slot-scope="scope">
+
+        </template>
+      </el-table-column> -->
       <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi"></el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
