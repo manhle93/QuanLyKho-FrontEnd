@@ -9,7 +9,7 @@
             placeholder="Thông tin tìm kiếm"
             v-model="search"
             suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
+            @keyup.enter.native="getData"
           ></el-input>
         </el-col>
         <el-col :span="5">
@@ -17,7 +17,7 @@
             size="small"
             class="primary-button"
             icon="el-icon-search"
-            @click="searchData()"
+            @click="getData()"
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="14">
@@ -144,7 +144,8 @@ export default {
       this.listLoading = true;
       let data = await listSanPham({
         per_page: this.per_page,
-        page: this.page
+        page: this.page,
+        search: this.search
       });
       this.per_page = data.data.per_page
       this.page = data.data.page
@@ -152,16 +153,16 @@ export default {
       this.total = data.data.total
       this.listLoading = false;
     },
-    searchData(page = 1, per_page = 10) {
-      this.listLoading = true;
-      getData(this.form).then(response => {
-        this.list = response.data.data;
-        this.page = response.data.current_page;
-        this.per_page = response.data.per_page;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
-    },
+    // searchData(page = 1, per_page = 10) {
+    //   this.listLoading = true;
+    //   this.getData(this.form).then(response => {
+    //     this.list = response.data.data;
+    //     this.page = response.data.current_page;
+    //     this.per_page = response.data.per_page;
+    //     this.total = response.data.total;
+    //     this.listLoading = false;
+    //   });
+    // },
     deleteAppUserID(item) {
       this.$confirm(
         "Bạn chắc chắn muốn xóa sản phẩm: " +

@@ -221,7 +221,7 @@ export default {
         role_id: "",
         tinh_thanh_id: "",
         quyen_huyen_id: "",
-        toa_nha_id: ""
+        toa_nha_id: "",
       },
       user_login: {
         name: "",
@@ -317,9 +317,10 @@ export default {
       let files = e.target.files;
       let data = new FormData();
       data.append("file", files[0]);
-      userAvatar(this.userId, data)
+      userAvatar(false, data)
         .then(res => {
-          this.formLabelAlign.avatar_url = process.env.VUE_APP_BASE + res;
+          this.formLabelAlign.avatar_url = res;
+          this.src = process.env.VUE_APP_BASE + res
         })
         .catch(error => {});
     },
@@ -387,6 +388,7 @@ export default {
           addUser(this.formLabelAlign)
             .then(res => {
               this.loading = false;
+              this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
               this.showCreateUsers = false;
               this.formLabelAlign.name = "";
               this.formLabelAlign.username = "";

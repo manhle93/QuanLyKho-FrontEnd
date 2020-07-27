@@ -222,17 +222,10 @@ export default {
     };
   },
   created() {
-    // this.getSanPham();
     this.getNhaCungCap();
     this.getInfo();
   },
   methods: {
-    // async getSanPham() {
-    //   let data = await listSanPham({
-    //     per_page: 9999999
-    //   });
-    //   this.hangHoas = data.data.data;
-    // },
     doiSanPham(id) {
       console.log(this.hangHoas);
       this.hangHoa = this.hangHoas.find((el) => el.san_pham_id == id);
@@ -247,7 +240,7 @@ export default {
         data.don_gia = this.don_gia;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
-          if (this.hang_hoa_id == el.id) {
+          if (this.hang_hoa_id == el.san_pham.id) {
             el.disabled = true;
           }
         }

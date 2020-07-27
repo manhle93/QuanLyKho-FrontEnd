@@ -443,31 +443,6 @@ export default {
       this.$refs[editUsers].validate(valid => {
         if (valid) {
           this.loading = true;
-          if (
-            this.formLabelAlign.role_id == 2 &&
-            (this.formLabelAlign.tinh_thanh_id == "" ||
-              this.formLabelAlign.tinh_thanh_id == null)
-          ) {
-            this.loading = false;
-            return this.$message({
-              showClose: true,
-              message: "Hãy chọn một tỉnh thành",
-              type: "warning"
-            });
-          }
-          if (
-            (this.formLabelAlign.role_id == 3 ||
-              this.formLabelAlign.role_id == 4) &&
-            (this.formLabelAlign.tinh_thanh_id == "" ||
-              this.formLabelAlign.tinh_thanh_id == null)
-          ) {
-            this.loading = false;
-            return this.$message({
-              showClose: true,
-              message: "Hãy chọn một tỉnh thành",
-              type: "warning"
-            });
-          }
           if (Number.isInteger(Number(this.formLabelAlign.phone))) {
             this.formLabelAlign.phone = this.phoneFormat(
               this.formLabelAlign.phone

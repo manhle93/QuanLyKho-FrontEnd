@@ -17,7 +17,7 @@
             <el-input v-model="form.ten"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="4" v-if="admin">
           <el-form-item label="Nhà cung cấp">
             <el-select
               style="width: 100%"
@@ -59,7 +59,7 @@
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
             <el-table-column prop="don_gia" label="Giá giao"></el-table-column>
             <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo"></el-table-column>
-            <el-table-column label="Giá bán">
+            <el-table-column label="Giá bán" v-if="admin">
               <template slot-scope="scope">
                 <el-button
                   size="small"

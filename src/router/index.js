@@ -49,10 +49,10 @@ export const constantRoutes = [
     {
         path: "/",
         component: Layout,
-        redirect: "/trungtamchihuy",
+        redirect: "/tongquan",
         children: [
             {
-                path: "trungtamchihuy",
+                path: "tongquan",
                 name: "Tổng quan",
                 component: () => import("@/views/trungtamchihuy/index"),
                 meta: {
