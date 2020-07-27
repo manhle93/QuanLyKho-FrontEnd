@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container" style="display:flex; justify-content: space-around; flex-direction: column ">
+  <div
+    class="app-container"
+    style="display:flex; justify-content: space-around; flex-direction: column "
+  >
     <div style="display: flex;">
       <div class="danhmuc" style="margin-left: 0px">
         <div class="item-danhmuc" style="background-color: #2471A3">
@@ -40,7 +43,10 @@
       <div class="danhmuc">
         <div class="item-danhmuc" style="background-color: #27AE60">
           <div>
-            <div class="so-item">{{data.doanh_thu/1000000}} <span style="font-size: 14px">triệu đồng</span></div>
+            <div class="so-item">
+              {{data.doanh_thu/1000000}}
+              <span style="font-size: 14px">triệu đồng</span>
+            </div>
             <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3208/3208954.svg" style="height: 100px;" />
@@ -82,7 +88,7 @@
 </template>
 <script>
 import { dashboard } from "@/api/bieudo";
-
+import { getInfor } from "@/api/taikhoan";
 import Chart from "../trungtamchihuy/dashboard/Chart";
 import Chart2 from "../trungtamchihuy/dashboard/ChartDoanhThu";
 export default {
@@ -96,27 +102,34 @@ export default {
     return {
       date: new Date(),
       year: new Date().getFullYear(),
-      month:  new Date().getMonth() + 1,
+      month: new Date().getMonth() + 1,
       data: {
         khach_hang: 0,
         don_hang: 0,
         san_pham: 0,
         hoa_don: 0,
-        doanh_thu: 0
-      }
+        doanh_thu: 0,
+      },
     };
   },
   created() {
-    this.getData()
+    this.getInfo()
+    this.getData();
   },
   methods: {
     thoiGianSanPham(e) {
       this.$refs["banchay"].getData(e);
     },
-    async getData(){
+    async getData() {
       let data = await dashboard();
-      this.data = data
-    }
+      this.data = data;
+    },
+    async getInfo() {
+      let data = await getInfor();
+      if (data.data.role_id == 3) {
+        this.$router.push("/quanlydonhang/baogia");
+      }
+    },
   },
 };
 </script>

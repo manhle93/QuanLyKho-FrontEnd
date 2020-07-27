@@ -28,13 +28,14 @@
         </el-col>
         <el-col :span="admin ? 4: 6">
           <el-form-item label="Tên đơn hàng" prop="ten">
-            <el-input v-model="form.ten"></el-input>
+            <el-input :disabled="!admin" v-model="form.ten"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="admin ? 4: 6">
           <el-form-item label="Thời gian nhận hàng" prop="thoi_gian">
             <br />
             <el-date-picker
+              :disabled="!admin"
               style="width: 100%"
               v-model="form.thoi_gian"
               type="datetime"
@@ -62,7 +63,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="Ghi chú">
-            <el-input type="textarea" v-model="form.ghi_chu"></el-input>
+            <el-input :disabled="!admin" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
         </el-col>
         <br />
@@ -72,6 +73,7 @@
           <el-form-item label="Hàng hóa, sản phẩm">
             <br />
             <el-select
+              :disabled="!admin"
               style="width: 100%"
               v-model="hang_hoa_id"
               placeholder="Chọn hàng hóa, sản phẩm"
@@ -89,7 +91,7 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="Số lượng">
-            <el-input type="number" :min="0" v-model="so_luong"></el-input>
+            <el-input :disabled="!admin" type="number" :min="0" v-model="so_luong"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -127,7 +129,7 @@
             <el-table-column label="Thành tiền">
               <template slot-scope="scope">{{scope.row.so_luong * scope.row.don_gia}}</template>
             </el-table-column>
-            <el-table-column label="Xóa">
+            <el-table-column v-if="admin" label="Xóa">
               <template slot-scope="scope">
                 <el-button
                   type="danger"
@@ -241,7 +243,7 @@ import {
   duyetDon,
   huyDon,
   nhapKho,
-  getSanPhamNhaCungCap
+  getSanPhamNhaCungCap,
 } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import { getKho } from "@/api/kho";
@@ -260,7 +262,7 @@ export default {
         tong_tien: null,
         chiet_khau: null,
         danhSachHang: [],
-        nha_cung_cap_id: null
+        nha_cung_cap_id: null,
       },
       admin: false,
       khos: [],
@@ -276,16 +278,20 @@ export default {
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
-          { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
+          {
+            min: 5,
+            message: "Tên đơn hàng tối thiểu 5 ký tự",
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change"
-          }
-        ]
-      }
+            trigger: "change",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -322,18 +328,20 @@ export default {
         item.hang_hoa = sp.san_pham;
         this.form.danhSachHang.push(item);
       }
-      console.log(data.data)
-      let sanp = await getSanPhamNhaCungCap({ nha_cung_cap_id: this.form.nha_cung_cap_id });
+      console.log(data.data);
+      let sanp = await getSanPhamNhaCungCap({
+        nha_cung_cap_id: this.form.nha_cung_cap_id,
+      });
       this.hangHoas = sanp;
     },
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 9999999
+        per_page: 9999999,
       });
       this.hangHoas = data.data.data;
     },
     doiSanPham(id) {
-      this.hangHoa = this.hangHoas.find(el => el.san_pham_id == id);
+      this.hangHoa = this.hangHoas.find((el) => el.san_pham_id == id);
       this.don_vi_tinh = this.hangHoa.san_pham.don_vi_tinh;
       this.don_gia = this.hangHoa.don_gia;
     },
@@ -381,24 +389,24 @@ export default {
       return sums;
     },
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
           updateDonHang(this.$route.params.id, this.form)
-            .then(res => {
+            .then((res) => {
               this.$message({
                 message: "Cập nhật đơn hàng thành công",
-                type: "success"
+                type: "success",
               });
-              this.getData()
+              this.getData();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -418,7 +426,7 @@ export default {
         ghi_chu: null,
         tong_tien: null,
         chiet_khau: null,
-        danhSachHang: []
+        danhSachHang: [],
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -432,7 +440,7 @@ export default {
       await duyetDon(this.$route.params.id);
       this.$message({
         message: "Duyệt đơn thành công",
-        type: "success"
+        type: "success",
       });
       this.getData();
     },
@@ -440,7 +448,7 @@ export default {
       let data = await huyDon(this.$route.params.id);
       this.$message({
         message: "Hủy đơn thành công",
-        type: "success"
+        type: "success",
       });
       this.getData();
     },
@@ -448,10 +456,10 @@ export default {
       this.showFormNhapKho = true;
     },
     nhapKho() {
-      nhapKho(this.$route.params.id, { kho_id: this.kho_id }).then(res => {
+      nhapKho(this.$route.params.id, { kho_id: this.kho_id }).then((res) => {
         this.$message({
           message: "Nhập kho thành công",
-          type: "success"
+          type: "success",
         });
         this.kho_id = null;
         this.showFormNhapKho = false;
@@ -464,7 +472,7 @@ export default {
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({
-        per_page: 999999
+        per_page: 999999,
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -473,8 +481,8 @@ export default {
       if (data.data.role_id == 1 || data.data.role_id == 2) {
         this.admin = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
