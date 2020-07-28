@@ -129,6 +129,7 @@
               <el-select
                 size="small"
                 style="width:100%"
+                :disabled="user_login.role_id == 2 ? true : false"
                 v-model="formLabelAlign.role_id"
                 placeholder="Chọn quyền người dùng"
               >
@@ -224,7 +225,7 @@ export default {
         email: "",
         password_confirmation: "",
         avatar_url: "",
-        role_id: "",
+        role_id: 2,
         tinh_thanh_id: "",
         quyen_huyen_id: "",
         toa_nha_id: "",
@@ -326,23 +327,6 @@ export default {
     handleUpload() {
       this.$refs["upload-image"].click();
     },
-    changeQuyen(id) {
-      if (id == 1 || id == "") {
-        this.tinhthanh = false;
-        this.toanha = false;
-        this.formLabelAlign.tinh_thanh_id = null;
-        this.formLabelAlign.toa_nha_id = null;
-      }
-      if (id == 2) {
-        this.tinhthanh = true;
-        this.toanha = false;
-        this.formLabelAlign.toa_nha_id = null;
-      }
-      if (id == 3 || id == 4) {
-        this.tinhthanh = true;
-        this.toanha = true;
-      }
-    },
     close() {
       this.tinhthanh = false;
       this.toanha = false;
@@ -354,7 +338,7 @@ export default {
       this.formLabelAlign.phone = "";
       this.formLabelAlign.password = "";
       this.formLabelAlign.password_confirmation = "";
-      this.formLabelAlign.role_id = "";
+      this.formLabelAlign.role_id = 2;
       this.$emit("close", this.formLabelAlign);
     },
     phoneFormat(number) {
@@ -396,7 +380,7 @@ export default {
               this.formLabelAlign.phone = "";
               this.formLabelAlign.password = "";
               this.formLabelAlign.password_confirmation = "";
-              this.formLabelAlign.role_id = "";
+              this.formLabelAlign.role_id = 2;
               this.formLabelAlign.tinh_thanh_id = "";
               this.formLabelAlign.toa_nha_id = "";
               this.$emit("onCreateUser", true);
@@ -415,7 +399,6 @@ export default {
         let data = await func();
         this.options[option] = data.data;
       } catch (error) {
-        //console.log(error);
       }
     },
     async tinhThanh() {
@@ -423,11 +406,6 @@ export default {
       this.options.tinhthanhs = tinhthanh.data;
       let info = await getInfor();
       this.user_login = info.data;
-      if (this.user_login.role.code == "quan_ly_tinh_thanh") {
-        this.formLabelAlign.tinh_thanh_id = this.user_login.tinh_thanh_id;
-        this.chonTinhThanh = true;
-        this.getToaNha(this.formLabelAlign.tinh_thanh_id);
-      }
     },
     async getToaNha(id) {
       let data = await getToaNhaTheoTinh(id);
@@ -437,7 +415,6 @@ export default {
   created() {
     this.taiKhoanDangLogin();
     this.tinhThanh();
-    // this.getData(getToaNha, "toanhas");
   },
 };
 </script>
@@ -474,6 +451,6 @@ export default {
 }
 .el-form-item__content {
   line-height: 30px;
-  font-size: 14px;
+  font-size: 13px;
 }
 </style>

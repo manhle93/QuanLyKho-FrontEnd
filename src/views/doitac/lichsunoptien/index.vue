@@ -3,6 +3,18 @@
     <h4>Lịch sử nạp tiền</h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
+        <el-col :span="6">
+          <el-date-picker
+            style="width: 100%"
+            v-model="date"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="Từ ngày"
+            end-placeholder="Đến ngày"
+            size="small"
+            format="dd/MM/yyyy"
+          ></el-date-picker>
+        </el-col>
         <el-col :span="5">
           <el-input
             size="small"
@@ -20,7 +32,7 @@
             @click="searchData()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="6">
           <el-button
             style="float: right"
             @click="showFormAdd"
@@ -150,6 +162,7 @@ export default {
       per_page: 10,
       total: 0,
       search: "",
+      date: null,
       listLoading: true,
       labelPosition: "top",
       user: null,
@@ -199,6 +212,7 @@ export default {
       this.listLoading = true;
       lichSu({
         search: this.search,
+        date: this.date
       }).then((response) => {
         this.list = response.data.data;
         this.page = response.data.page;
@@ -208,7 +222,7 @@ export default {
     },
     hoanTien(item) {
       this.$confirm(
-        "Bạn chắc chắn muốn : " +
+        "Hoàn tác giao dịch nộp tiền cho khách hàng: " +
           "<strong>" +
           item.khach_hang.ten +
           "</strong>" +

@@ -1,36 +1,36 @@
 <template>
   <div class="app-container">
     <h4>Danh sách kho hàng</h4>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="searchData()"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+        >Thêm mới</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -44,7 +44,7 @@
       <el-table-column sortable prop="ten" min-width="160" label="Tên kho"></el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
-       <el-table-column label="Người quản lý" prop="nguoi_quan_ly" min-width="157"></el-table-column>
+      <el-table-column label="Người quản lý" prop="nguoi_quan_ly" min-width="157"></el-table-column>
       <el-table-column label="Trạng thái" min-width="157">
         <template slot-scope="scope">
           <el-tag type="danger" v-if="!scope.row.trang_thai">Không hoạt động</el-tag>
@@ -141,10 +141,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -168,18 +168,18 @@ export default {
         dia_chi: null,
         nguoi_quan_ly: null,
         trang_thai: true,
-        mo_ta: null
+        mo_ta: null,
       },
       rules: {
         ten: [
           {
             required: true,
             message: "Tên kho hàng không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -192,9 +192,9 @@ export default {
       this.showForm = true;
       this.form.ten = data.ten;
       this.form.mo_ta = data.mo_ta;
-      this.form.so_dien_thoai = data.so_dien_thoai
-      this.form.dia_chi = data.dia_chi
-      this.form.nguoi_quan_ly = data.nguoi_quan_ly
+      this.form.so_dien_thoai = data.so_dien_thoai;
+      this.form.dia_chi = data.dia_chi;
+      this.form.nguoi_quan_ly = data.nguoi_quan_ly;
       this.form.id = data.id;
     },
     async getData() {
@@ -205,8 +205,8 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      index({ search: this.search }).then(response => {
-        this.list = response.data;
+      getKho({ search: this.search }).then((response) => {
+        this.list = response;
         this.listLoading = false;
       });
     },
@@ -219,33 +219,33 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaKho(item.id).then(res => {
+        .then((_) => {
+          xoaKho(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
     },
     addKhoHang(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addKho(this.form).then(res => {
+          addKho(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -255,14 +255,14 @@ export default {
       });
     },
     updateKhoHang(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          editKho(this.form.id, this.form).then(res => {
+          editKho(this.form.id, this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -281,10 +281,10 @@ export default {
         dia_chi: null,
         nguoi_quan_ly: null,
         trang_thai: true,
-        mo_ta: null
+        mo_ta: null,
       };
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

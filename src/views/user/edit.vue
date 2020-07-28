@@ -5,7 +5,7 @@
       @close="close()"
       title="CẬP NHẬT THÔNG TIN"
       center
-      width="40%"
+      width="650px"
     >
       <el-form
         :label-position="labelPosition"
@@ -17,7 +17,7 @@
         <el-row>
           <el-col style="text-align: center">
             <div class="block">
-              <img style="widht: 150px; height: 150px" :src="src" />
+              <img style="widht: 130px; height: 130px" :src="src" />
               <input
                 ref="upload-image"
                 class="upload-image"
@@ -48,18 +48,16 @@
             <el-form-item prop="name">
               <i class="fa fa-user"></i>
               <label>Họ và tên</label>
-              <el-input
-                size="large"
-                v-model="formLabelAlign.name"
-                placeholder="Nhập vào họ và tên"
-              ></el-input>
+              <el-input size="small" v-model="formLabelAlign.name" placeholder="Nhập vào họ và tên"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="2">
             <el-form-item prop="username">
-              <label> <i class="fa fa-user"></i> Tên đăng nhập </label>
+              <label>
+                <i class="fa fa-user"></i> Tên đăng nhập
+              </label>
               <el-input
-                size="large"
+                size="small"
                 v-model="formLabelAlign.username"
                 placeholder="Nhập vào tên đăng nhập"
                 :disabled="true"
@@ -71,7 +69,7 @@
               <i class="fa fa-mobile"></i>
               <label>Số điện thoại</label>
               <el-input
-                size="large"
+                size="small"
                 v-model="formLabelAlign.phone"
                 placeholder="Nhập vào số điện thoại"
               ></el-input>
@@ -79,12 +77,10 @@
           </el-col>
           <el-col :span="11" :offset="2">
             <el-form-item prop="email">
-              <label> <i class="fa fa-envelope-o"></i> Email </label>
-              <el-input
-                size="large"
-                v-model="formLabelAlign.email"
-                placeholder="Nhập vào email"
-              ></el-input>
+              <label>
+                <i class="fa fa-envelope-o"></i> Email
+              </label>
+              <el-input size="small" v-model="formLabelAlign.email" placeholder="Nhập vào email"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11">
@@ -92,7 +88,7 @@
               <i class="fa fa-lock"></i>
               <label>Mật khẩu</label>
               <el-input
-                size="large"
+                size="small"
                 v-model="formLabelAlign.password"
                 type="password"
                 placeholder="***********"
@@ -101,9 +97,11 @@
           </el-col>
           <el-col :span="11" :offset="2">
             <el-form-item prop="password_confirmation">
-              <label> <i class="fa fa-lock"></i> Xác nhận mật khẩu </label>
+              <label>
+                <i class="fa fa-lock"></i> Xác nhận mật khẩu
+              </label>
               <el-input
-                size="large"
+                size="small"
                 v-model="formLabelAlign.password_confirmation"
                 type="password"
                 placeholder="***********"
@@ -123,11 +121,11 @@
               <i class="fa fa-cog"></i>
               <label>Quyền</label>
               <el-select
+                size="small"
                 :disabled="chonQuyen"
                 style="width:100%"
                 v-model="formLabelAlign.role_id"
                 placeholder="Chọn quyền người dùng"
-                @change="changeQuyen(formLabelAlign.role_id)"
               >
                 <el-option
                   v-for="role in options.roles"
@@ -138,40 +136,17 @@
               </el-select>
             </el-form-item>
           </el-col>
-
-          <el-col :span="11" :offset="2" v-if="tinhthanh">
-            <el-form-item prop="tinh_thanh_id">
-              <i class="fa fa-cog"></i>
-              <label>Tỉnh thành</label>
-              <el-select
-                :disabled="chonTinh"
-                style="width:100%"
-                filterable
-                v-model="formLabelAlign.tinh_thanh_id"
-                placeholder="Chọn tỉnh thành"
-                @change="changetinhThanh(formLabelAlign.tinh_thanh_id)"
-              >
-                <el-option
-                  v-for="role in options.tinhthanhs"
-                  :key="role.id"
-                  :label="role.name"
-                  :value="role.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="11" :offset="trangthai">
+          <el-col :span="11" :offset="2">
             <el-form-item>
               <i class="fa fa-cog"></i>
               <label>Trạng thái</label>
               <el-checkbox
-                v-model="formLabelAlign.active" 
-                size="medium"
+                v-model="formLabelAlign.active"
+                size="small"
                 style="width:100%"
                 border
                 :disabled="disableHoatDong"
-                >Hoạt động</el-checkbox
-              >
+              >Hoạt động</el-checkbox>
             </el-form-item>
           </el-col>
 
@@ -181,8 +156,7 @@
             style="width:100%;"
             :loading="loading"
             @click="submit('formLabelAlign')"
-            >CẬP NHẬT</el-button
-          >
+          >CẬP NHẬT</el-button>
         </el-row>
       </el-form>
     </el-dialog>
@@ -238,7 +212,7 @@ export default {
         toa_nha_id: "",
         tinh_thanh_id: "",
         quan_huyen_id: "",
-        active: true
+        active: true,
       },
       checked: true,
       f: false,
@@ -248,23 +222,23 @@ export default {
         roles: [],
         quanhuyens: [],
         tinhthanhs: [],
-        toanhas: []
+        toanhas: [],
       },
       rules: {
         name: [
           {
             required: true,
             message: "Tên không được bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         username: [
           {
             required: true,
             message: "Tên đăng nhập không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { unique: true, message: "Tên đăng nhập bị trùng", trigger: "blur" }
+          { unique: true, message: "Tên đăng nhập bị trùng", trigger: "blur" },
         ],
         password: [{ validator: validatePass, trigger: "blur" }],
         password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
@@ -272,38 +246,38 @@ export default {
           {
             required: true,
             message: "Email không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email hợp lệ",
-            trigger: ["blur", "change"]
-          }
+            trigger: ["blur", "change"],
+          },
         ],
         role_id: [
           {
             required: true,
             message: "Quyền không được bỏ trống",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   props: {
     active: {
       type: Boolean,
-      default: false
+      default: false,
     },
     userEdit: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   watch: {
     active(val) {
       this.showCreateUsers = val;
     },
-    "formLabelAlign.password": function() {
+    "formLabelAlign.password": function () {
       if (this.formLabelAlign.password) {
         this.passwordInfo = true;
       }
@@ -314,7 +288,7 @@ export default {
         this.passwordInfo = false;
       }
     },
-    "formLabelAlign.password_confirmation": function() {
+    "formLabelAlign.password_confirmation": function () {
       if (this.formLabelAlign.password_confirmation) {
         this.passwordInfo = true;
       }
@@ -376,12 +350,12 @@ export default {
           process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
       } else
         this.src = process.env.VUE_APP_BASE + this.formLabelAlign.avatar_url;
-    }
+    },
   },
 
   methods: {
     async taiKhoanDangLogin() {
-      await getInfor().then(res => {
+      await getInfor().then((res) => {
         this.user_login = res.data;
         if (this.user_login.role_id == 1) {
           this.chonQuyen = false;
@@ -391,7 +365,7 @@ export default {
           this.chonTinh = true;
         }
       });
-      getRole().then(res => {
+      getRole().then((res) => {
         this.options.roles = res.data.data;
         if (this.user_login.role.code == "quan_ly_tinh_thanh") {
           for (var role of this.options.roles) {
@@ -407,11 +381,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       userAvatar(this.userId, data)
-        .then(res => {
+        .then((res) => {
           this.formLabelAlign.avatar_url = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     close() {
       this.$emit("onClose");
@@ -440,7 +414,7 @@ export default {
       return formatted;
     },
     submit(editUsers) {
-      this.$refs[editUsers].validate(valid => {
+      this.$refs[editUsers].validate((valid) => {
         if (valid) {
           this.loading = true;
           if (Number.isInteger(Number(this.formLabelAlign.phone))) {
@@ -451,11 +425,11 @@ export default {
           this.formLabelAlign.username = this.formLabelAlign.username.toLowerCase();
           this.formLabelAlign.email = this.formLabelAlign.email.toLowerCase();
           editUser(this.userId, this.formLabelAlign)
-            .then(res => {
+            .then((res) => {
               this.loading = false;
               this.$emit("onEditUser", true);
             })
-            .catch(error => {
+            .catch((error) => {
               this.loading = false;
               this.$emit("onEditUser", error);
             });
@@ -468,33 +442,12 @@ export default {
       let data = await getTinhThanh();
       this.options.tinhthanhs = data.data;
     },
-    changetinhThanh(id) {
-    },
-    changeQuyen(id) {
-      if (id == 1) {
-        this.tinhthanh = false;
-        this.toanha = false;
-        this.formLabelAlign.tinh_thanh_id = null;
-        this.formLabelAlign.toa_nha_id = null;
-        this.trangthai = 2;
-      }
-      if (id == 2) {
-        this.tinhthanh = true;
-        this.toanha = false;
-        this.formLabelAlign.toa_nha_id = null;
-        this.trangthai = 0;
-      }
-      if (id == 3 || id == 4) {
-        this.tinhthanh = true;
-        this.toanha = true;
-        this.trangthai = 2;
-      }
-    }
+    changetinhThanh(id) {},
   },
   created() {
     this.taiKhoanDangLogin();
     this.tinhThanh();
-  }
+  },
 };
 </script>
 <style>
@@ -531,5 +484,9 @@ export default {
 .upload-image {
   display: none;
   z-index: -9999;
+}
+.el-form-item__content {
+  line-height: 30px;
+  font-size: 13px;
 }
 </style>

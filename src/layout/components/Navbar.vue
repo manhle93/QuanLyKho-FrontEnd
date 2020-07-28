@@ -25,7 +25,7 @@
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
-     />
+    />
     <!-- <breadcrumb class="breadcrumb-container" /> // Tên Router -->
 
     <!-- <div class="right-menu" style="margin-right: 10px">
@@ -123,30 +123,21 @@
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-    </div> -->
+    </div>-->
 
-    <!-- <div style="text-align: center">
+    <div style="text-align: center">
       <div style="display: inline-block;">
         <div style="font-weight: bold; color: #2E86C1; display: inline; line-height: 50px">
           <img
             style=" height: 50px; width: auto; float: left"
-            src="http://pcccapi.howizbiz.com//storage/images/avatar/1576278738.png"
+            :src="logo"
           />
           <div
-            v-if="!ten_tinh_thanh"
-            style="float: left; color: #CB4335; font-size: 23px; padding-top: 5px"
-          >TRUNG TÂM THÔNG TIN CHỈ HUY QUỐC GIA PCCC VÀ CỨU NẠN CỨU HỘ</div>
-          <div
-            v-else-if="ten_tinh_thanh == 'HÀ NỘI' || ten_tinh_thanh == 'ĐÀ NẴNG' || ten_tinh_thanh == 'HỒ CHÍ MINH' || ten_tinh_thanh == 'HẢI PHÒNG'"
-            style="float: left; color: #CB4335; font-size: 20px"
-          >TRUNG TÂM CHỈ HUY THÀNH PHỐ {{ten_tinh_thanh}}</div>
-          <div
-            v-else
-            style="float: left; color: #CB4335; font-size: 20px"
-          >TRUNG TÂM CHỈ HUY TỈNH {{ten_tinh_thanh}}</div>
+            style="float: left; color: #229954; font-size: 23px; padding-top: 5px"
+          >HỆ THỐNG QUẢN LÝ TMĐT RUỘNG BẬC THANG</div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -156,11 +147,13 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import { getInfor } from "@/api/taikhoan";
 import { getSoThietBi, getThongBao, docThongBao } from "@/api/baocao";
+import logo from "@/assets/logo/logorbt.jpg";
+
 var realTimeThongBao;
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
   },
   data() {
     return {
@@ -173,14 +166,15 @@ export default {
       perPageThongBao: 5,
       loadingThongBao: false,
       thongBao: 0,
-      ten_tinh_thanh: null
+      ten_tinh_thanh: null,
+      logo: logo
     };
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"])
+    ...mapGetters(["sidebar", "avatar"]),
   },
   created() {
-    this.fetchData()
+    this.fetchData();
   },
   methods: {
     toggleSideBar() {
@@ -226,7 +220,7 @@ export default {
         this.online = data.online;
         this.offline = data["offline"];
       } catch (error) {
-        return
+        return;
       }
     },
     async docThongBao() {
@@ -235,7 +229,7 @@ export default {
       await docThongBao();
     },
     fetchData() {
-      getInfor().then(res => {
+      getInfor().then((res) => {
         if (res.data.role_id == 2 && res.data.tinhthanh.name) {
           this.ten_tinh_thanh = res.data.tinhthanh.name.toUpperCase();
         }
@@ -253,8 +247,8 @@ export default {
       let data = await getThongBao({ perPage: this.perPageThongBao });
       this.dsOffline = data;
       this.loadingThongBao = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

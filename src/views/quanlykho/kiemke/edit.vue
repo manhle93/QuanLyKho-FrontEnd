@@ -8,15 +8,13 @@
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
     >
       <div class="d-flex flex-collumn" style="flex: 1; min-height: 0">
-        <el-form class="d-flex fill-height flex-collumn">
+        <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
             <el-col :span="12">
-              <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem" @change="getSanPham()">
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-              </el-form-item>
+              <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
             </el-col>
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
@@ -54,7 +52,7 @@
               </el-table>
             </div>
           </div>
-        </el-form>
+        </div>
       </div>
       <div
         class="c-column"
@@ -70,7 +68,9 @@
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
+                  <time
+                    class="time"
+                  >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
                 <div class="bottom clearfix">
                   <el-button
@@ -242,7 +242,11 @@ export default {
     this.getKhachHang();
     this.getData();
   },
-
+  watch: {
+    timKiem(val) {
+      this.getSanPham();
+    },
+  },
   methods: {
     async getData() {
       let data = await getChiTiet(this.$route.params.id);
@@ -253,7 +257,7 @@ export default {
       this.trang_thai = data.data.trang_thai;
       this.form.user_nhan_vien_id = data.data.user_nhan_vien_id;
       this.form.danhSachHang = [];
-      console.log(this.form.trang_thai)
+      console.log(this.form.trang_thai);
       for (let sp of data.data.san_phams) {
         let item = {};
         item.ton_kho = sp.so_luong_truoc_kiem_kho;

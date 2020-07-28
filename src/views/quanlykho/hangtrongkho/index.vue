@@ -1,27 +1,27 @@
 <template>
   <div class="app-container">
     <h3>Danh sách hàng trong kho</h3>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="getData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="getData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="getData"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -41,9 +41,23 @@
         </template>
       </el-table-column>
       <el-table-column label="Tên hàng hóa, sản phẩm" align="center" prop="san_pham.ten_san_pham"></el-table-column>
-      <el-table-column label="Đơn vị tính" align="center" prop="san_pham.don_vi_tinh"></el-table-column>
-      <el-table-column label="Số lượng" align="center" prop="so_luong"></el-table-column>
-      <el-table-column label="Kho hàng" prop="kho.ten"></el-table-column>
+      <!-- <el-table-column label="Đơn vị tính" align="center" prop="san_pham.don_vi_tinh"></el-table-column> -->
+      <el-table-column label="Số lượng" align="center" prop="so_luong">
+        <template slot-scope="scope">{{scope.row.so_luong}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh: null}}</template>
+      </el-table-column>
+      <!-- <el-table-column label="Kho hàng" prop="kho.ten"></el-table-column> -->
+      <el-table-column label="Tồn kho tối thiểu" prop="san_pham.ton_kho_thap_nhat">
+        <template
+        v-if="scope.row.san_pham && scope.row.san_pham.ton_kho_thap_nhat"
+          slot-scope="scope"
+        >{{scope.row.san_pham.ton_kho_thap_nhat}} {{scope.row.san_pham.don_vi_tinh}}</template>
+      </el-table-column>
+      <el-table-column label="Giá bán mặc định" prop="san_pham.gia_ban">
+        <template v-if="scope.row.san_pham" slot-scope="scope">{{formate.formatCurrency(scope.row.san_pham.gia_ban)}} đ</template>
+      </el-table-column>
+      <el-table-column label="Đã bán" prop="da_ban">
+          <template slot-scope="scope">{{scope.row.da_ban}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : null}}</template>
+      </el-table-column>
     </el-table>
     <div class="block" style="margin-top: 20px">
       <el-pagination
@@ -67,10 +81,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -86,22 +100,23 @@ export default {
       listLoading: true,
       labelPosition: "top",
       user: null,
+      formate: formate,
       form: {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
       },
       rules: {
         ten_danh_muc: [
           {
             required: true,
             message: "Tên danh mục không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -127,7 +142,7 @@ export default {
       let data = await hangTrongKho({
         page: this.page,
         per_page: this.per_page,
-        search: this.search
+        search: this.search,
       });
       this.list = data.data.data;
       this.page = data.data.current_page;
@@ -141,8 +156,8 @@ export default {
     handleSizeChange(val) {
       this.per_page = val;
       this.getData();
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

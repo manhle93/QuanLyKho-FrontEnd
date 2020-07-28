@@ -53,3 +53,9 @@ export function getSanPham(params) {
       params
   })
 }
+export function saoChepBangGia(id) {
+  return request({
+      url: 'banggia/' + id,
+      method: 'post',
+  })
+}

@@ -1,27 +1,39 @@
 <template>
   <div class="app-container">
     <h4>Danh sách mua hàng nhập kho</h4>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="6">
+        <el-date-picker
+          style="width: 100%"
+          v-model="date"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="Từ ngày"
+          end-placeholder="Đến ngày"
+          size="small"
+          format="dd/MM/yyyy"
+        ></el-date-picker>
+      </el-col>
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="searchData()"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -41,7 +53,9 @@
               <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
             </el-table-column>
             <el-table-column label="Thành tiền">
-              <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)}} đ</template>
+              <template
+                slot-scope="scope"
+              >{{formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)}} đ</template>
             </el-table-column>
           </el-table>
           <br />
@@ -57,12 +71,16 @@
       <el-table-column label="Mã phiếu nhập" align="center" prop="ma"></el-table-column>
       <el-table-column label="Thời gian nhập" align="center" prop="created_at"></el-table-column>
       <el-table-column label="Tổng tiền" prop="don_hang.tong_tien">
-        <template v-if="scope.row.don_hang" slot-scope="scope">{{formate.formatCurrency(scope.row.don_hang.tong_tien)}} đ</template>
+        <template
+          v-if="scope.row.don_hang"
+          slot-scope="scope"
+        >{{formate.formatCurrency(scope.row.don_hang.tong_tien)}} đ</template>
       </el-table-column>
       <el-table-column align="center" fixed="right" label="Chi tiết đơn hàng">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Xem đơn hàng" placement="top">
             <el-button
+              v-if="scope.row.don_hang_id"
               size="small"
               style="background-color: #2E86C1; color: white"
               icon="el-icon-view"
@@ -95,10 +113,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -111,6 +129,7 @@ export default {
       per_page: 10,
       total: 0,
       search: "",
+      date: null,
       listLoading: true,
       labelPosition: "top",
       user: null,
@@ -119,18 +138,18 @@ export default {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
       },
       rules: {
         ten_danh_muc: [
           {
             required: true,
             message: "Tên danh mục không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -138,13 +157,13 @@ export default {
   },
   methods: {
     showUpdate(data) {
-      this.$router.push('/quanlydonhang/capnhatdonhang/' + data.don_hang_id)
+      this.$router.push("/quanlydonhang/capnhatdonhang/" + data.don_hang_id);
     },
     async getData() {
       this.listLoading = true;
       let data = await getPhieuNhap({
         page: this.page,
-        per_page: this.per_page
+        per_page: this.per_page,
       });
       this.list = data.data.data;
       this.page = data.data.current_page;
@@ -153,7 +172,7 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      getPhieuNhap({ search: this.search }).then(response => {
+      getPhieuNhap({ search: this.search, date: this.date }).then((response) => {
         this.list = response.data.data;
         this.listLoading = false;
       });
@@ -170,33 +189,33 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaDanhMuc(item.id).then(res => {
+        .then((_) => {
+          xoaDanhMuc(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
     },
     addDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addDanhMuc(this.form).then(res => {
+          addDanhMuc(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -206,14 +225,14 @@ export default {
       });
     },
     updateDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          updateDanhMuc(this.form).then(res => {
+          updateDanhMuc(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -229,7 +248,7 @@ export default {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
       };
     },
     handleChange(e) {
@@ -237,11 +256,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -249,13 +268,13 @@ export default {
 
     handleCurrentChange(val) {
       this.page = val;
-      this.getData()
+      this.getData();
     },
     handleSizeChange(val) {
       this.per_page = val;
       this.getData();
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

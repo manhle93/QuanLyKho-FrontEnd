@@ -14,24 +14,7 @@
             format="dd/MM/yyyy"
           ></el-date-picker>
         </el-col>
-        <el-col :span="4">
-          <el-select
-            filterable
-            clearable
-            size="small"
-            v-model="form.khach_hang"
-            placeholder="Chọn khách hàng"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in nhaCungCaps"
-              :key="item.id"
-              :label="item.ten"
-              :value="item.user_id"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="3">
+        <el-col :span="7">
           <el-button
             size="small"
             class="primary-button"

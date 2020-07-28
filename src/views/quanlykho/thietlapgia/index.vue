@@ -1,35 +1,48 @@
 <template>
   <div class="app-container">
     <h3>Danh sách bảng giá</h3>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="searchBangGia"
-            suffix-icon="el-icon-search"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="getData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="6">
+        <el-date-picker
+          style="width: 100%"
+          v-model="date"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="Từ ngày"
+          end-placeholder="Đến ngày"
+          size="small"
+          format="dd/MM/yyyy"
+        ></el-date-picker>
+      </el-col>
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="searchBangGia"
+          @keyup.enter.native="getData()"
+          suffix-icon="el-icon-search"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="6">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+        >Thêm mới</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -43,7 +56,13 @@
       <el-table-column sortable prop="ten" min-width="160" label="Tên bảng giá"></el-table-column>
       <el-table-column label="Thời gian bắt đầu" prop="ngay_bat_dau" min-width="157"></el-table-column>
       <el-table-column label="Thời gian bắt đầu" prop="ngay_ket_thuc" min-width="157"></el-table-column>
-      <el-table-column label="Số sản phẩm" prop="so_san_pham" min-width="157"></el-table-column>
+      <el-table-column label="Số sản phẩm" prop="so_san_pham" min-width="80"></el-table-column>
+      <el-table-column label="Trạng thái">
+        <template slot-scope="scope">
+          <el-tag effect="plain" v-if="scope.row.ap_dung" type="success">Đang áp dụng</el-tag>
+          <el-tag effect="plain" v-else type="warning">Chưa áp dụng</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" min-width="140" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -62,6 +81,15 @@
               icon="el-icon-plus"
               circle
               @click="getBangGiaSanPham(scope.row.id, scope.row.ten)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="Sao chép" placement="top">
+            <el-button
+              size="small"
+              type="info"
+              icon="el-icon-document-copy"
+              circle
+              @click="saoChep(scope.row)"
             ></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
@@ -231,26 +259,27 @@
     </el-dialog>
     <br />
     <h4>Danh sách sản phẩm</h4>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="searchSanPham"
-            suffix-icon="el-icon-search"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="getDanhSachSanPham()"
-          >Tìm kiếm</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="searchSanPham"
+          @keyup.enter.native="getDanhSachSanPham()"
+          suffix-icon="el-icon-search"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getDanhSachSanPham()"
+        >Tìm kiếm</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="loadListSanPham"
       :data="listSanPham"
@@ -272,9 +301,7 @@
       <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
       <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định">
-        <template slot-scope="scope">
-          {{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}
-        </template>
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
       </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Bảng giá" min-width="157">
@@ -305,7 +332,8 @@ import {
   getBangGia,
   addSanPhamBangGia,
   getSanPhamBangGia,
-  getSanPham
+  getSanPham,
+  saoChepBangGia,
 } from "@/api/banggia";
 import { getTinhThanh } from "@/api/TinhThanh";
 import { getInfor } from "@/api/taikhoan";
@@ -317,10 +345,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -345,7 +373,7 @@ export default {
         id: null,
         thoi_gian: null,
         ten: null,
-        ap_dung: true
+        ap_dung: true,
       },
       bang_gia_san_pham: [],
       allBangGia: [],
@@ -359,6 +387,7 @@ export default {
       bang_gia_id: null,
       listSanPham: [],
       searchBangGia: null,
+      date: null,
       searchSanPham: null,
       ten_bang_gia: null,
       formate: formate,
@@ -367,11 +396,11 @@ export default {
           {
             required: true,
             message: "Tên bảng giá không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -395,7 +424,7 @@ export default {
     },
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 9999999
+        per_page: 9999999,
       });
       this.sanPhams = data.data.data;
     },
@@ -413,7 +442,8 @@ export default {
       let data = await getBangGia({
         per_page: per_page,
         page: page,
-        search: this.searchBangGia
+        search: this.searchBangGia,
+        date: this.date
       });
       this.list = data.data.data;
       this.listLoading = false;
@@ -423,7 +453,7 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      getBangGia({ search: this.search }).then(response => {
+      getBangGia({ search: this.search }).then((response) => {
         this.list = response.data;
         this.listLoading = false;
       });
@@ -439,33 +469,58 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaBangGia(item.id).then(res => {
+        .then((_) => {
+          xoaBangGia(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
+    },
+    saoChep(item) {
+      this.$confirm(
+        "Bạn chắc chắn muốn sao chép bảng giá: " +
+          "<strong>" +
+          item.ten +
+          "</strong>",
+        "Sao chép bảng giá",
+        {
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          type: "warning",
+        }
+      )
+        .then((_) => {
+          saoChepBangGia(item.id).then((res) => {
+            this.$message({
+              message: "Sao chép thành công",
+              type: "success",
+            });
+            this.getData();
+          });
+        })
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
     },
     addBangGia(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addBangGia(this.form).then(res => {
+          addBangGia(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -475,14 +530,14 @@ export default {
       });
     },
     updateBangGia(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          editBangGia(this.form.id, this.form).then(res => {
+          editBangGia(this.form.id, this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -492,13 +547,13 @@ export default {
       });
     },
     chonSanPham(id) {
-      this.sanpham = this.sanPhams.find(el => el.id == id);
+      this.sanpham = this.sanPhams.find((el) => el.id == id);
     },
     addSanPham() {
       if (this.sanpham.id && this.gia_ban) {
         this.bangGiaSanPham.push({
           san_pham: this.sanpham,
-          gia_ban: this.gia_ban
+          gia_ban: this.gia_ban,
         });
         for (let el of this.sanPhams) {
           if (this.sanpham.id == el.id) {
@@ -518,7 +573,7 @@ export default {
         id: null,
         thoi_gian: null,
         ten: null,
-        ap_dung: true
+        ap_dung: true,
       };
       this.gia_ban = null;
     },
@@ -535,14 +590,14 @@ export default {
       this.loadSanPham = true;
       this.bang_gia_id = id;
       this.bangGiaSanPham = [];
-      this.ten_bang_gia = ten
+      this.ten_bang_gia = ten;
       this.getSanPham();
       try {
         let data = await getSanPhamBangGia(id);
         for (let item of data.data) {
           this.bangGiaSanPham.push({
             san_pham: item.san_pham,
-            gia_ban: item.gia_ban
+            gia_ban: item.gia_ban,
           });
           for (let el of this.sanPhams) {
             if (item.san_pham_id == el.id) {
@@ -560,11 +615,11 @@ export default {
       this.resetForm();
       this.showFormAddGia = false;
       this.bangGiaSanPham = [];
-      this.getDanhSachSanPham()
+      this.getDanhSachSanPham();
       this.getData();
       this.$message({
         type: "success",
-        message: "Thêm mới thành công"
+        message: "Thêm mới thành công",
       });
     },
     async getDanhSachSanPham() {
@@ -572,10 +627,10 @@ export default {
       let data = await getSanPham({
         per_page: this.per_pageSp,
         pageSp: this.pageSp,
-        search: this.searchSanPham
+        search: this.searchSanPham,
       });
       this.listSanPham = data.data.data;
-      this.loadListSanPham = false
+      this.loadListSanPham = false;
     },
     handleCurrentChangeSp(val) {
       this.pageSp = val;
@@ -586,7 +641,7 @@ export default {
       this.per_pageSp = val;
       this.getDanhSachSanPham(this.pageSp, this.per_pageSp);
     },
-  }
+  },
 };
 </script>
 <style>

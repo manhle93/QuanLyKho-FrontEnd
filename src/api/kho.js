@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getKho() {
+export function getKho(params) {
   return request({
     url: "kho",
     methods: 'get',
+    params
   })
 }
 

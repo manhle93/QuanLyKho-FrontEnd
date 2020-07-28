@@ -209,7 +209,7 @@
   </div>
 </template>
 <script>
-import { index } from "@/api/danhmucsanpham";
+import { index, upAnhDanhMuc } from "@/api/danhmucsanpham";
 import {
   getThuongHieu,
   xoaThuongHieu,

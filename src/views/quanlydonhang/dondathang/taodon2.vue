@@ -13,12 +13,12 @@
             <br />
             <el-col :span="12">
               <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem" @change="getSanPham()">
+                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="5">
+            <el-col :span="3">
               <el-form-item>
                 <el-select
                   clearable
@@ -337,6 +337,7 @@ export default {
       },
     };
   },
+
   created() {
     this.getSanPham();
     this.getKhachHang();
@@ -344,6 +345,13 @@ export default {
     this.nhanVienGiaoHang();
   },
   watch: {
+    async timKiem(val) {
+      let data = await listSanPham({
+        per_page: 6,
+        search: val,
+      });
+      this.hangHoas = data.data.data;
+    },
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien - this.form.da_thanh_toan - val;

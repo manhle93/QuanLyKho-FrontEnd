@@ -1,32 +1,37 @@
 <template>
   <div class="app-container">
     <h4>Danh sách sản phẩm hàng hóa</h4>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="getData"
-          ></el-input>
-        </el-col>
-        <el-col :span="5">
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="getData()"
+        ></el-input>
+      </el-col>
+      <el-col :span="5">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="14">
+        <router-link to="themsanpham">
           <el-button
+            style="float:right"
             size="small"
+            icon="el-icon-plus"
             class="primary-button"
-            icon="el-icon-search"
-            @click="getData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="14">
-          <router-link to="themsanpham">
-            <el-button style="float:right" size="small" icon="el-icon-plus" class="primary-button">Thêm mới</el-button>
-          </router-link>
-        </el-col>
-      </el-row>
-    </el-form>
+          >Thêm mới</el-button>
+        </router-link>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -35,7 +40,7 @@
       fit
       highlight-current-row
       style="font-size: 13px"
-      >
+    >
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
@@ -48,9 +53,7 @@
       <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
       <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
-        <template slot-scope="scope">
-          {{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}
-        </template>
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
       </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157"></el-table-column>
@@ -58,12 +61,12 @@
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <router-link :to="'capnhatsanpham/' + scope.row.id">
-            <el-button
-              size="small"
-              style="background-color: #2E86C1; color: white"
-              icon="el-icon-edit"
-              circle
-            ></el-button>
+              <el-button
+                size="small"
+                style="background-color: #2E86C1; color: white"
+                icon="el-icon-edit"
+                circle
+              ></el-button>
             </router-link>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
@@ -98,7 +101,7 @@ import {
   index,
   updateDanhMuc,
   upAnhDanhMuc,
-  xoaDanhMuc
+  xoaDanhMuc,
 } from "@/api/danhmucsanpham";
 import { listSanPham, addSanPham, xoaSanPham } from "@/api/sanpham";
 
@@ -108,10 +111,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -128,8 +131,8 @@ export default {
       formate: formate,
       form: {
         search: "",
-        danh_muc_id: null
-      }
+        danh_muc_id: null,
+      },
     };
   },
   created() {
@@ -150,12 +153,12 @@ export default {
       let data = await listSanPham({
         per_page: this.per_page,
         page: this.page,
-        search: this.search
+        search: this.search,
       });
-      this.per_page = data.data.per_page
-      this.page = data.data.page
+      this.per_page = data.data.per_page;
+      this.page = data.data.page;
       this.list = data.data.data;
-      this.total = data.data.total
+      this.total = data.data.total;
       this.listLoading = false;
     },
     // searchData(page = 1, per_page = 10) {
@@ -179,21 +182,21 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaSanPham(item.id).then(res => {
+        .then((_) => {
+          xoaSanPham(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
-    }
-  }
+        .catch((_) => {});
+    },
+  },
 };
 </script>
 <style>

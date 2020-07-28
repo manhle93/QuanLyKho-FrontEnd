@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <h4>Danh mục sản phẩm hàng hóa</h4>
-    <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
           <el-input
@@ -30,7 +29,7 @@
           >Thêm mới</el-button>
         </el-col>
       </el-row>
-    </el-form>
+      <br><br>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -51,7 +50,9 @@
       </el-table-column>
       <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
-      <el-table-column label="Số mặt hàng" min-width="157"></el-table-column>
+      <el-table-column label="Số mặt hàng" min-width="157">
+        <template slot-scope="scope">{{scope.row.so_mat_hang}} sản phẩm</template>
+      </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">

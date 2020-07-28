@@ -8,15 +8,13 @@
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
     >
       <div class="d-flex flex-collumn" style="flex: 1; min-height: 0">
-        <el-form class="d-flex fill-height flex-collumn">
+        <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
             <el-col :span="12">
-              <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem" @change="getSanPham()">
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-              </el-form-item>
+              <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
             </el-col>
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
@@ -28,7 +26,12 @@
                 <el-table-column label="SL Tồn kho" prop="ton_kho_truoc_xuat_huy"></el-table-column>
                 <el-table-column label="SL Xuất hủy">
                   <template slot-scope="scope">
-                    <el-input-number size="small" v-model="scope.row.so_xuat_huy" :min="0" :max="Number(scope.row.ton_kho_truoc_xuat_huy)"></el-input-number>
+                    <el-input-number
+                      size="small"
+                      v-model="scope.row.so_xuat_huy"
+                      :min="0"
+                      :max="Number(scope.row.ton_kho_truoc_xuat_huy)"
+                    ></el-input-number>
                   </template>
                 </el-table-column>
                 <el-table-column label="SL tồn sau xuất hủy">
@@ -50,7 +53,7 @@
               </el-table>
             </div>
           </div>
-        </el-form>
+        </div>
       </div>
       <div
         class="c-column"
@@ -66,7 +69,9 @@
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
+                  <time
+                    class="time"
+                  >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
                 <div class="bottom clearfix">
                   <el-button
@@ -121,7 +126,12 @@
   </div>
 </template>
 <script>
-import { getSanPhamTonKho, addKiemKho, getNhanVien, addXuatHuy } from "@/api/kho";
+import {
+  getSanPhamTonKho,
+  addKiemKho,
+  getNhanVien,
+  addXuatHuy,
+} from "@/api/kho";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
@@ -178,7 +188,11 @@ export default {
   created() {
     this.getSanPham();
   },
-
+  watch: {
+    timKiem(val) {
+      this.getSanPham();
+    },
+  },
   methods: {
     async getSanPham() {
       let data = await getSanPhamTonKho({

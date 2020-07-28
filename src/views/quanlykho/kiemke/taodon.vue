@@ -8,23 +8,18 @@
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
     >
       <div class="d-flex flex-collumn" style="flex: 1; min-height: 0">
-        <el-form class="d-flex fill-height flex-collumn">
+        <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
             <el-col :span="12">
-              <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem" @change="getSanPham()">
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-              </el-form-item>
+              <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
             </el-col>
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 80%">
-              <el-table
-                :data="form.danhSachHang"
-                style="width: 100%;"
-              >
+              <el-table :data="form.danhSachHang" style="width: 100%;">
                 <el-table-column type="index" label="STT" width="100px"></el-table-column>
                 <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
                 <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
@@ -43,7 +38,7 @@
               </el-table>
             </div>
           </div>
-        </el-form>
+        </div>
       </div>
       <div
         class="c-column"
@@ -59,7 +54,9 @@
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ formate.formatCurrency(item.gia_ban)}} đ/{{item.don_vi_tinh}}</time>
+                  <time
+                    class="time"
+                  >{{ formate.formatCurrency(item.gia_ban)}} đ/{{item.don_vi_tinh}}</time>
                 </div>
                 <div class="bottom clearfix">
                   <el-button
@@ -147,7 +144,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao"
+        trang_thai: "moi_tao",
       },
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
@@ -168,19 +165,28 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đợt kiểm kê",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
+          {
+            min: 5,
+            message: "Tên đơn hàng tối thiểu 5 ký tự",
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change"
-          }
-        ]
-      }
+            trigger: "change",
+          },
+        ],
+      },
     };
+  },
+  watch: {
+    timKiem(val) {
+      this.getSanPham();
+    },
   },
   created() {
     this.getSanPham();
@@ -191,19 +197,19 @@ export default {
     async getSanPham() {
       let data = await getSanPhamTonKho({
         per_page: 6,
-        search: this.timKiem
+        search: this.timKiem,
       });
       this.hangHoas = data.data;
     },
     doiSanPham(id) {
       this.hang_hoa_id = id;
-      this.hangHoa = this.hangHoas.find(el => el.id == id);
+      this.hangHoa = this.hangHoas.find((el) => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
       this.so_luong = 1;
       this.addSanPham();
     },
     kiemTraDaChon(SanPhamID) {
-      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
+      let a = this.form.danhSachHang.find((el) => el.hang_hoa.id == SanPhamID);
       if (a) return true;
       return false;
     },
@@ -211,7 +217,7 @@ export default {
       if (this.hang_hoa_id && this.so_luong) {
         let data = {};
         data.hang_hoa = this.hangHoa;
-        data.so_luong_truoc_kiem_kho = this.hangHoa.ton_kho
+        data.so_luong_truoc_kiem_kho = this.hangHoa.ton_kho;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
@@ -233,24 +239,24 @@ export default {
       }
     },
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
           addKiemKho(this.form)
-            .then(res => {
+            .then((res) => {
               this.$message({
                 message: "Tạo kiểm kho thành công",
-                type: "success"
+                type: "success",
               });
               this.resetForm();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -269,7 +275,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao"
+        trang_thai: "moi_tao",
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -287,13 +293,13 @@ export default {
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
-        el => el.user_id == this.form.khach_hang_id
+        (el) => el.user_id == this.form.khach_hang_id
       );
       if (this.UserInfo) {
         this.showUserDetail = true;
       } else this.UserInfo = {};
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

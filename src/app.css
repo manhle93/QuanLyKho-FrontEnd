@@ -99,3 +99,7 @@
 .el-message-box__title {
   color: #2E86C1;
 }
+
+.el-table thead {
+  color: black;
+}
