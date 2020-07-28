@@ -47,7 +47,11 @@
       </el-table-column>
       <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
       <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Giá bán"></el-table-column>
+      <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
+        <template slot-scope="scope">
+          {{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}
+        </template>
+      </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157"></el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
@@ -121,6 +125,7 @@ export default {
       listLoading: true,
       labelPosition: "top",
       user: null,
+      formate: formate,
       form: {
         search: "",
         danh_muc_id: null

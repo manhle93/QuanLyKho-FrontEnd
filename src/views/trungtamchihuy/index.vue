@@ -44,7 +44,7 @@
         <div class="item-danhmuc" style="background-color: #27AE60">
           <div>
             <div class="so-item">
-              {{data.doanh_thu/1000000}}
+              {{(data.doanh_thu/1000000).toFixed(2)}}
               <span style="font-size: 14px">triệu đồng</span>
             </div>
             <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>

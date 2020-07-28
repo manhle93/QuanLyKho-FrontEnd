@@ -197,7 +197,9 @@
       </el-form>
       <el-table height="300" :data="bangGiaSanPham" v-loading="loadSanPham">
         <el-table-column prop="san_pham.ten_san_pham" label="Tên sản phẩm"></el-table-column>
-        <el-table-column prop="gia_ban" label="Giá bán mới"></el-table-column>
+        <el-table-column prop="gia_ban" label="Giá bán mới">
+          <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
+        </el-table-column>
         <el-table-column label="Xóa">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -269,7 +271,11 @@
       </el-table-column>
       <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
       <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định"></el-table-column>
+      <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định">
+        <template slot-scope="scope">
+          {{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}
+        </template>
+      </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Bảng giá" min-width="157">
         <template slot-scope="scope">
@@ -355,6 +361,7 @@ export default {
       searchBangGia: null,
       searchSanPham: null,
       ten_bang_gia: null,
+      formate: formate,
       rules: {
         ten: [
           {

@@ -67,8 +67,12 @@
           <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
           <el-table-column prop="thoi_gian" label="Thời gian nhận hàng"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau"></el-table-column>
-          <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien"></el-table-column>
+          <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau">
+            <template slot-scope="scope">{{formate.formatCurrency(scope.row.chiet_khau)}} đ</template>
+          </el-table-column>
+          <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien">
+            <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+          </el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
@@ -140,6 +144,7 @@ export default {
       loading: false,
       search: "",
       list: [],
+      formate: formate,
       form: {
         date: [],
         nha_cung_cap: null

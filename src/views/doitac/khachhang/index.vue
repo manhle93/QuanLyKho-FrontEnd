@@ -45,7 +45,9 @@
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
       <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column>
-      <el-table-column label="Số dư" prop="so_du" min-width="157"></el-table-column>
+      <el-table-column label="Số dư" prop="so_du" min-width="157">
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_du)}} đ</template>
+      </el-table-column>
       <!-- <el-table-column label="Trạng thái" min-width="157" prop="trang_thai">
         <template slot-scope="scope">
 
@@ -216,7 +218,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số dư">
-              <el-input size="small" :disabled="true" v-model="form.so_du"></el-input>
+              <!-- <el-input size="small" :disabled="true" v-model="form.so_du"></el-input> -->
+              <br>
+              {{formate.formatCurrency(form.so_du)}} VNĐ
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -373,6 +377,7 @@ export default {
       labelPosition: "top",
       user: null,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
+      formate: formate,
       form: {
         id: null,
         ten: null,

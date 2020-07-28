@@ -44,13 +44,17 @@
       <el-table-column label="Mã giao dịch" prop="ma" align="center"></el-table-column>
       <el-table-column sortable prop="khach_hang.ten" min-width="160" label="Khách hàng"></el-table-column>
       <el-table-column label="Thời gian" prop="created_at" min-width="157"></el-table-column>
-      <el-table-column label="Số tiền nộp" min-width="157" prop="so_tien"></el-table-column>
-      <el-table-column label="Số dư" min-width="157" prop="so_du"></el-table-column>
+      <el-table-column label="Số tiền nộp" min-width="157" prop="so_tien">
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
+      </el-table-column>
+      <el-table-column label="Số dư" min-width="157" prop="so_du">
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_du)}} đ</template>
+      </el-table-column>
       <el-table-column label="Nội dung" min-width="157" prop="noi_dung"></el-table-column>
       <el-table-column label="Trạng thái" min-width="157">
         <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.trang_thai == 'nop_tien'">Nộp tiền vào tài khoản</el-tag>
-           <el-tag type="warning" v-if="scope.row.trang_thai == 'hoan_tien'">Hoàn tiền</el-tag>
+          <el-tag type="warning" v-if="scope.row.trang_thai == 'hoan_tien'">Hoàn tiền</el-tag>
           <el-tag v-if="scope.row.trang_thai == 'mua_hang'">Giao dịch mua hàng</el-tag>
           <el-tag
             effect="dark"
@@ -130,10 +134,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -149,10 +153,11 @@ export default {
       listLoading: true,
       labelPosition: "top",
       user: null,
+      formate: formate,
       form: {
         id_user_khach_hang: null,
         noi_dung: "",
-        so_tien: 0
+        so_tien: 0,
       },
       khachHangs: [],
       rules: {
@@ -160,17 +165,17 @@ export default {
           {
             required: true,
             message: "Khách hàng không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         so_tien: [
           {
             required: true,
             message: "Số tiền không thể bỏ trống",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -182,7 +187,7 @@ export default {
       this.listLoading = true;
       let data = await lichSu({
         per_page: per_page,
-        page: page
+        page: page,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
@@ -193,8 +198,8 @@ export default {
     searchData() {
       this.listLoading = true;
       lichSu({
-        search: this.search
-      }).then(response => {
+        search: this.search,
+      }).then((response) => {
         this.list = response.data.data;
         this.page = response.data.page;
         this.per_page = response.data.per_page;
@@ -213,33 +218,33 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Đồng ý",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          hoanTac(item.id).then(res => {
+        .then((_) => {
+          hoanTac(item.id).then((res) => {
             this.$message({
               message: "Thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
     },
     addDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          nopTien(this.form).then(res => {
+          nopTien(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -254,7 +259,7 @@ export default {
       this.form = {
         id_user_khach_hang: null,
         noi_dung: "",
-        so_tien: 0
+        so_tien: 0,
       };
     },
     handleChange(e) {
@@ -262,22 +267,22 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 9999999
+        per_page: 9999999,
       });
       this.khachHangs = data.data.data;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

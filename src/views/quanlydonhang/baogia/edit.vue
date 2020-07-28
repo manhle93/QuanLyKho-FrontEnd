@@ -57,8 +57,12 @@
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-            <el-table-column prop="don_gia" label="Giá giao"></el-table-column>
-            <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo"></el-table-column>
+            <el-table-column prop="don_gia" label="Giá giao">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+            </el-table-column>
+            <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_khuyen_cao)}} đ</template>
+            </el-table-column>
             <el-table-column label="Giá bán" v-if="admin">
               <template slot-scope="scope">
                 <el-button
@@ -136,6 +140,7 @@ export default {
         danhSachHang: [],
         nha_cung_cap_id: null
       },
+      formate: formate,
       sanPham: {
         id: null,
         ten_san_pham: null,

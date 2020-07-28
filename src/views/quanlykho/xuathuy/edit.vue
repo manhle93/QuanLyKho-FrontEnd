@@ -46,7 +46,7 @@
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ item.gia_ban }} đ/{{item.don_vi_tinh}}</time>
+                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
                 <div class="bottom clearfix">
                   <el-button
@@ -118,6 +118,7 @@ export default {
         user_nhan_vien_id: null,
         trang_thai: null,
       },
+      formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
       timKiem: null,

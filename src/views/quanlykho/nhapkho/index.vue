@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách phiếu nhập kho</h4>
+    <h4>Danh sách mua hàng nhập kho</h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
@@ -37,24 +37,28 @@
             <el-table-column label="STT" type="index"></el-table-column>
             <el-table-column label="Sản phẩm" prop="san_pham.ten_san_pham"></el-table-column>
             <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
-            <el-table-column label="Đơn giá" prop="don_gia"></el-table-column>
+            <el-table-column label="Đơn giá" prop="don_gia">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+            </el-table-column>
             <el-table-column label="Thành tiền">
-              <template slot-scope="scope">{{scope.row.so_luong * scope.row.don_gia}}</template>
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)}} đ</template>
             </el-table-column>
           </el-table>
           <br />
           <div
             style="margin-top: 15px; font-size: 16px; font-family: time new roman"
-          >Chiết khấu: {{props.row.don_hang.chiet_khau}}</div>
+          >Chiết khấu: {{formate.formatCurrency(props.row.don_hang.chiet_khau)}} đ</div>
           <div
             style="margin-top: 15px; font-size: 17px; font-family: time new roman; font-weight: bold"
-          >Tổng tiền: {{props.row.don_hang.tong_tien}}</div>
+          >Tổng tiền: {{formate.formatCurrency(props.row.don_hang.tong_tien)}} đ</div>
         </template>
       </el-table-column>
       <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
       <el-table-column label="Mã phiếu nhập" align="center" prop="ma"></el-table-column>
       <el-table-column label="Thời gian nhập" align="center" prop="created_at"></el-table-column>
-      <el-table-column label="Tổng tiền" prop="don_hang.tong_tien"></el-table-column>
+      <el-table-column label="Tổng tiền" prop="don_hang.tong_tien">
+        <template v-if="scope.row.don_hang" slot-scope="scope">{{formate.formatCurrency(scope.row.don_hang.tong_tien)}} đ</template>
+      </el-table-column>
       <el-table-column align="center" fixed="right" label="Chi tiết đơn hàng">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Xem đơn hàng" placement="top">
@@ -110,6 +114,7 @@ export default {
       listLoading: true,
       labelPosition: "top",
       user: null,
+      formate: formate,
       form: {
         id: null,
         anh_dai_dien: "",
@@ -133,18 +138,7 @@ export default {
   },
   methods: {
     showUpdate(data) {
-      this.resetForm();
-      this.edit = true;
-      this.showForm = true;
-      this.form.ten_danh_muc = data.ten_danh_muc;
-      this.form.mo_ta = data.mo_ta;
-      this.form.id = data.id;
-      if (data.anh_dai_dien) {
-        this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
-      } else {
-        this.src =
-          process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
-      }
+      this.$router.push('/quanlydonhang/capnhatdonhang/' + data.don_hang_id)
     },
     async getData() {
       this.listLoading = true;

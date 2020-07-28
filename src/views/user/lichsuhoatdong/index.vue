@@ -54,7 +54,7 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-select
             size="small"
             v-model="form.doi_tuong"
@@ -165,7 +165,7 @@
               >Cứu nạn cứu hộ
             </el-option>
           </el-select>
-        </el-col>
+        </el-col> -->
         <el-col :span="4">
           <el-date-picker
             v-model="form.date"

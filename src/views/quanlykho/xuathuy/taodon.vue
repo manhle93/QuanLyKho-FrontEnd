@@ -66,7 +66,7 @@
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ item.gia_ban }} đ/{{item.don_vi_tinh}}</time>
+                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
                 <div class="bottom clearfix">
                   <el-button
@@ -151,6 +151,7 @@ export default {
       don_vi_tinh: null,
       don_gia: null,
       shipper: [],
+      formate: formate,
       rules: {
         ten: [
           {

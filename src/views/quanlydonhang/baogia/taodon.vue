@@ -95,7 +95,12 @@
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-            <el-table-column prop="don_gia" label="Đơn giá"></el-table-column>
+            <el-table-column prop="don_gia" label="Đơn giá">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+            </el-table-column>
+            <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_khuyen_cao)}} đ</template>
+            </el-table-column>
             <el-table-column label="Xóa">
               <template slot-scope="scope">
                 <el-button
@@ -141,12 +146,13 @@ export default {
       active: 0,
       src: process.env.VUE_APP_BASE,
       form: {
-        ma: 'BG'+new Date().getTime(),
+        ma: "BG" + new Date().getTime(),
         ten: null,
         ghi_chu: null,
         danhSachHang: [],
-        nha_cung_cap_id: null
+        nha_cung_cap_id: null,
       },
+      formate: formate,
       gia_khuyen_cao: null,
       admin: false,
       nhaCungCaps: [],
@@ -158,9 +164,9 @@ export default {
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên báo giá", trigger: "blur" },
-          { min: 5, message: "Tên báo giá tối thiểu 5 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 5, message: "Tên báo giá tối thiểu 5 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -171,12 +177,12 @@ export default {
   methods: {
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 9999999
+        per_page: 9999999,
       });
       this.hangHoas = data.data.data;
     },
     doiSanPham(id) {
-      this.hangHoa = this.hangHoas.find(el => el.id == id);
+      this.hangHoa = this.hangHoas.find((el) => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
     },
     addSanPham() {
@@ -184,14 +190,14 @@ export default {
         let data = {};
         data.hang_hoa = this.hangHoa;
         data.don_gia = this.don_gia;
-        data.gia_khuyen_cao = this.gia_khuyen_cao
+        data.gia_khuyen_cao = this.gia_khuyen_cao;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
             el.disabled = true;
           }
         }
-        this.gia_khuyen_cao = null
+        this.gia_khuyen_cao = null;
         this.hang_hoa_id = null;
         this.don_gia = null;
         this.don_vi_tinh = null;
@@ -207,25 +213,25 @@ export default {
       }
     },
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
           console.log(this.form);
           addBaoGia(this.form)
-            .then(res => {
+            .then((res) => {
               this.$message({
                 message: "Tạo báo giá thành công",
-                type: "success"
+                type: "success",
               });
               this.resetForm();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -243,18 +249,18 @@ export default {
         ten: null,
         ghi_chu: null,
         tong_tien: null,
-        danhSachHang: []
+        danhSachHang: [],
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
       this.hangHoas = [];
       this.don_vi_tinh = null;
       this.don_gia = null;
-      this.gia_khuyen_cao = null
+      this.gia_khuyen_cao = null;
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({
-        per_page: 999999
+        per_page: 999999,
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -264,8 +270,8 @@ export default {
       if (data.data.role_id == 1 || data.data.role_id == 2) {
         this.admin = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

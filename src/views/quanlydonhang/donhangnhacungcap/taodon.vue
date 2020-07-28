@@ -227,7 +227,6 @@ export default {
   },
   methods: {
     doiSanPham(id) {
-      console.log(this.hangHoas);
       this.hangHoa = this.hangHoas.find((el) => el.san_pham_id == id);
       this.don_vi_tinh = this.hangHoa.san_pham.don_vi_tinh;
       this.don_gia = this.hangHoa.don_gia;

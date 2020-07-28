@@ -73,15 +73,19 @@
                 ></el-table-column>
                 <el-table-column prop="san_pham.don_vi_tinh" label="Đơn vị tính"></el-table-column>
                 <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
-                <el-table-column prop="gia_ban" label="Giá bán"></el-table-column>
+                <el-table-column prop="gia_ban" label="Giá bán">
+                  <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban)}} đ</template>
+                </el-table-column>
                 <el-table-column label="Thành tiền">
-                  <template slot-scope="cope">{{cope.row.so_luong * cope.row.gia_ban}}</template>
+                  <template
+                    slot-scope="cope"
+                  >{{formate.formatCurrency(cope.row.so_luong * cope.row.gia_ban)}}</template>
                 </el-table-column>
               </el-table>
-              <p>Tổng tiền: {{scope.row.tong_tien}} đ</p>
-              <p>Giảm giá: {{scope.row.giam_gia}} đ</p>
-              <p>Đã thanh toán: {{scope.row.da_thanh_toan}} đ</p>
-              <p>Phải thanh toán: {{scope.row.con_phai_thanh_toan}} đ</p>
+              <p>Tổng tiền: {{formate.formatCurrency(scope.row.tong_tien)}} đ</p>
+              <p>Giảm giá: {{formate.formatCurrency(scope.row.giam_gia)}} đ</p>
+              <p>Đã thanh toán: {{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</p>
+              <p>Phải thanh toán: {{formate.formatCurrency(scope.row.con_phai_thanh_toan)}} đ</p>
             </template>
           </el-table-column>
           <el-table-column sortable type="index" label="STT"></el-table-column>
@@ -89,8 +93,12 @@
           <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
           <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
           <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan"></el-table-column>
-          <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan"></el-table-column>
+          <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan">
+            <template slot-scope="scope">{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
+          </el-table-column>
+          <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan">
+            <template slot-scope="scope">{{formate.formatCurrency(scope.row.con_phai_thanh_toan)}} đ</template>
+          </el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
@@ -164,7 +172,7 @@ import {
   getDonDathang,
   xoaDonDathang,
   huyDon,
-  chuyenHoaDon
+  chuyenHoaDon,
 } from "@/api/dondathang";
 import { getKhachHang } from "@/api/khachhang";
 
@@ -182,7 +190,7 @@ export default {
       list: [],
       form: {
         date: [],
-        khach_hang: null
+        khach_hang: null,
       },
       formAdd: {
         id: null,
@@ -200,8 +208,9 @@ export default {
         thoi_gian: null,
         nguoi_mua_hang: "",
         tong_tien: 0,
-        hinh_anhs: []
+        hinh_anhs: [],
       },
+      formate: formate,
       nhaCungCaps: [],
       showCreate: false,
       rules: {
@@ -209,45 +218,45 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đơn hàng",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         ma: [
           {
             required: true,
             message: "Mã đơn hàng không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         tinh_thanh_id: [
           {
             required: true,
             message: "Hãy chọn một tỉnh thành",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         toa_nha_id: [
           {
             required: true,
             message: "Hãy chọn một tòa nhà",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         trang_thai: [
           {
             required: true,
             message: "Trạng thái không thể bỏ trống",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
 
@@ -287,7 +296,7 @@ export default {
             confirmButtonText: "Xóa",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning"
+            type: "warning",
           }
         );
         this.listLoading = true;
@@ -295,7 +304,7 @@ export default {
         this.getDonHang();
         this.$message({
           message: "Xóa thành công",
-          type: "success"
+          type: "success",
         });
       } catch (error) {
         this.listLoading = false;
@@ -308,7 +317,7 @@ export default {
         page: this.page,
         khach_hang: this.form.khach_hang,
         date: this.form.date,
-        hoa_don: true
+        hoa_don: true,
       });
       this.tableData = data.data.data;
       this.page = data.data.page;
@@ -331,14 +340,14 @@ export default {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning"
+            type: "warning",
           }
         );
         let status = await huyDon(data.id);
         this.getDonHang();
         this.$message({
           message: "Thành công",
-          type: "success"
+          type: "success",
         });
       } catch (error) {}
     },
@@ -354,24 +363,24 @@ export default {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning"
+            type: "warning",
           }
         );
         let status = await chuyenHoaDon(data.id);
         this.getDonHang();
         this.$message({
           message: "Hủy đơn thành công",
-          type: "success"
+          type: "success",
         });
       } catch (error) {}
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999
+        per_page: 999999,
       });
       this.nhaCungCaps = data.data.data;
-    }
-  }
+    },
+  },
 };
 </script>
 

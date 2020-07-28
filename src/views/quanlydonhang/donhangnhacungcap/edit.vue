@@ -125,9 +125,13 @@
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
             <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
-            <el-table-column prop="don_gia" label="Đơn giá"></el-table-column>
+            <el-table-column prop="don_gia" label="Đơn giá">
+              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+            </el-table-column>
             <el-table-column label="Thành tiền">
-              <template slot-scope="scope">{{scope.row.so_luong * scope.row.don_gia}}</template>
+              <template
+                slot-scope="scope"
+              >{{formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)}} đ</template>
             </el-table-column>
             <el-table-column v-if="admin" label="Xóa">
               <template slot-scope="scope">
@@ -151,7 +155,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6" :offset="1" style="padding-top: 60px">
-          <label>Tổng thanh toán: {{form.tong_tien}} vnđ</label>
+          <label>Tổng thanh toán: {{formate.formatCurrency(form.tong_tien)}} vnđ</label>
         </el-col>
       </el-row>
     </el-form>
@@ -264,6 +268,7 @@ export default {
         danhSachHang: [],
         nha_cung_cap_id: null,
       },
+      formate: formate,
       admin: false,
       khos: [],
       kho_id: null,
@@ -328,7 +333,6 @@ export default {
         item.hang_hoa = sp.san_pham;
         this.form.danhSachHang.push(item);
       }
-      console.log(data.data);
       let sanp = await getSanPhamNhaCungCap({
         nha_cung_cap_id: this.form.nha_cung_cap_id,
       });
@@ -376,9 +380,11 @@ export default {
       const { columns, data } = param;
       const sums = Array(7).fill("");
       sums[5] =
-        data.reduce(
-          (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
-          0
+        formate.formatCurrency(
+          data.reduce(
+            (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
+            0
+          )
         ) + " VND";
       sums[0] = "Tổng tiền";
       this.form.tong_tien =
