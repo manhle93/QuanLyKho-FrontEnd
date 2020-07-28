@@ -1,36 +1,36 @@
 <template>
   <div class="app-container">
     <h4>Danh sách nhà cung cấp</h4>
-    <el-form class="search" :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="searchData()"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+        >Thêm mới</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -248,7 +248,7 @@ import {
   getNhaCungCap,
   editNhaCungCap,
   addNhaCungCap,
-  xoaNhaCungCap
+  xoaNhaCungCap,
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
@@ -259,10 +259,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -315,61 +315,61 @@ export default {
         anh_dai_dien: null,
         trang_thai: "moi_tao",
         tin_nhiem: null,
-        cong_ty: null
+        cong_ty: null,
       },
       rules: {
         ten: [
           {
             required: true,
             message: "Tên khách hàng không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
         ],
         ma: [
           {
             required: true,
             message: "Mã khách hàng không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
         ],
         so_dien_thoai: [
           {
             required: true,
             message: "Số điện thoại không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         email: [
           {
             required: true,
             message: "Email không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email hợp lệ",
-            trigger: ["blur", "change"]
-          }
+            trigger: ["blur", "change"],
+          },
         ],
         username: [
           {
             required: true,
             message: "Tên đăng nhập không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         password: [
           { validator: validatePass, trigger: "blur" },
           {
             min: 6,
             message: "Độ dài tối thiểu 6 kí tự",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-        password_confirmation: [{ validator: validatePass2, trigger: "blur" }]
-      }
+        password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -399,7 +399,8 @@ export default {
       this.listLoading = true;
       let data = await getNhaCungCap({
         per_page: per_page,
-        page: page
+        page: page,
+        search: this.search,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
@@ -408,11 +409,7 @@ export default {
       this.listLoading = false;
     },
     searchData() {
-      this.listLoading = true;
-      getNhaCungCap({ search: this.search }).then(response => {
-        this.list = response.data;
-        this.listLoading = false;
-      });
+      this.getData();
     },
     deleteAppUserID(item) {
       this.$confirm(
@@ -426,33 +423,33 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaNhaCungCap(item.id).then(res => {
+        .then((_) => {
+          xoaNhaCungCap(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
     },
     addNhaCungCap(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addNhaCungCap(this.form).then(res => {
+          addNhaCungCap(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -462,14 +459,14 @@ export default {
       });
     },
     updateNhaCungCap(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          editNhaCungCap(this.form.id, this.form).then(res => {
+          editNhaCungCap(this.form.id, this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -496,7 +493,7 @@ export default {
         anh_dai_dien: null,
         trang_thai: "moi_tao",
         tin_nhiem: null,
-        cong_ty: null
+        cong_ty: null,
       };
     },
     handleChange(e) {
@@ -504,11 +501,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -521,8 +518,8 @@ export default {
     handleSizeChange(val) {
       this.per_page = val;
       this.getData(this.page, this.per_page);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

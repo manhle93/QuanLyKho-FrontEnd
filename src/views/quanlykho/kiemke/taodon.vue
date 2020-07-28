@@ -11,12 +11,28 @@
         <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
-            <el-col :span="12">
+            <el-col :span="8">
               <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
             </el-col>
+            <el-col :span="4">
+              <el-select
+                v-model="danh_muc_id"
+                placeholder="Danh mục sản phẩm"
+                filterable
+                @change="getSanPham()"
+              >
+                <el-option
+                  v-for="item in danhMucs"
+                  :key="item.id"
+                  :label="item.ten_danh_muc"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-col>
           </el-row>
+          <br>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 80%">
               <el-table :data="form.danhSachHang" style="width: 100%;">
@@ -131,6 +147,8 @@ import { getSanPhamTonKho, addKiemKho, getNhanVien } from "@/api/kho";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
+import { index } from "@/api/danhmucsanpham";
+
 export default {
   data() {
     return {
@@ -157,6 +175,8 @@ export default {
       bangGias: [],
       so_luong: 1,
       formate: formate,
+      danhMucs: [],
+      danh_muc_id: null,
       don_vi_tinh: null,
       don_gia: null,
       shipper: [],
@@ -191,13 +211,19 @@ export default {
   created() {
     this.getSanPham();
     this.getKhachHang();
+    this.getDanhMuc()
   },
 
   methods: {
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
+    },
     async getSanPham() {
       let data = await getSanPhamTonKho({
         per_page: 6,
         search: this.timKiem,
+        danh_muc: this.danh_muc_id,
       });
       this.hangHoas = data.data;
     },

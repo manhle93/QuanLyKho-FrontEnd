@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getKhachHang() {
+export function getKhachHang(params) {
   return request({
     url: "khachhang",
     methods: 'get',
+    params
   })
 }
 
@@ -31,10 +32,11 @@ export function addKhachHang(data) {
   })
 }
 
-export function getNhaCungCap() {
+export function getNhaCungCap(params) {
   return request({
     url: "nhaccungcap",
     methods: 'get',
+    params
   })
 }
 

@@ -11,10 +11,20 @@
         <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
-            <el-col :span="12">
+            <el-col :span="8">
               <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="danh_muc_id" placeholder="Danh mục sản phẩm" filterable @change="getSanPham()">
+                <el-option
+                  v-for="item in danhMucs"
+                  :key="item.id"
+                  :label="item.ten_danh_muc"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </el-col>
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
@@ -132,6 +142,7 @@ import {
   getNhanVien,
   addXuatHuy,
 } from "@/api/kho";
+import { index } from "@/api/danhmucsanpham";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
@@ -148,6 +159,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
       },
+      danhMucs: [],
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
       timKiem: null,
@@ -161,6 +173,7 @@ export default {
       don_vi_tinh: null,
       don_gia: null,
       shipper: [],
+      danh_muc_id: null,
       formate: formate,
       rules: {
         ten: [
@@ -187,6 +200,7 @@ export default {
   },
   created() {
     this.getSanPham();
+    this.getDanhMuc()
   },
   watch: {
     timKiem(val) {
@@ -194,10 +208,16 @@ export default {
     },
   },
   methods: {
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
+    },
+
     async getSanPham() {
       let data = await getSanPhamTonKho({
         per_page: 6,
         search: this.timKiem,
+        danh_muc: this.danh_muc_id
       });
       this.hangHoas = data.data;
     },

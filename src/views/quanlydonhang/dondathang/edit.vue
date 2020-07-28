@@ -8,12 +8,27 @@
         <el-form class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem" @change="getSanPham()">
+                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-select
+                v-model="danh_muc_id"
+                placeholder="Danh mục sản phẩm"
+                filterable
+                @change="getSanPham()"
+              >
+                <el-option
+                  v-for="item in danhMucs"
+                  :key="item.id"
+                  :label="item.ten_danh_muc"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </el-col>
             <el-col :span="5">
               <el-form-item>
@@ -297,7 +312,7 @@
 import { listSanPham } from "@/api/sanpham";
 import { getKhachHang } from "@/api/khachhang";
 import { getBangGia } from "@/api/banggia";
-
+import { index } from "@/api/danhmucsanpham";
 import {
   editDonDathang,
   getChiTietDonDathang,
@@ -368,8 +383,12 @@ export default {
     this.getData();
     this.getBangGia();
     this.nhanVienGiaoHang();
+    this.getDanhMuc();
   },
   watch: {
+    timKiem(){
+      this.getSanPham()
+    },
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien - this.form.da_thanh_toan - val;
@@ -385,6 +404,10 @@ export default {
     },
   },
   methods: {
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
+    },
     async getData() {
       let data = await getChiTietDonDathang(this.$route.params.id);
       this.form.ma = data.data.ma;
@@ -422,6 +445,7 @@ export default {
       let data = await listSanPham({
         per_page: 6,
         search: this.timKiem,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     },

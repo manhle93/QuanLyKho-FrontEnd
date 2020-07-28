@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <h4>Danh sách khách hàng</h4>
-    <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
           <el-input
@@ -9,7 +8,7 @@
             placeholder="Thông tin tìm kiếm"
             v-model="search"
             suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
+            @keyup.enter.native="getData()"
           ></el-input>
         </el-col>
         <el-col :span="7">
@@ -17,7 +16,7 @@
             size="small"
             class="primary-button"
             icon="el-icon-search"
-            @click="searchData()"
+            @click="getData()"
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="12">
@@ -30,7 +29,8 @@
           >Thêm mới</el-button>
         </el-col>
       </el-row>
-    </el-form>
+      <br>
+      <br>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -498,7 +498,8 @@ export default {
       this.listLoading = true;
       let data = await getKhachHang({
         per_page: per_page,
-        page: page
+        page: page,
+        search: this.search
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;

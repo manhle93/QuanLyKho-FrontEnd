@@ -11,12 +11,27 @@
         <el-form class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item>
                 <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-select
+                v-model="danh_muc_id"
+                placeholder="Danh mục sản phẩm"
+                filterable
+                @change="getSanPham()"
+              >
+                <el-option
+                  v-for="item in danhMucs"
+                  :key="item.id"
+                  :label="item.ten_danh_muc"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </el-col>
             <el-col :span="3">
               <el-form-item>
@@ -278,7 +293,7 @@ import { listSanPham } from "@/api/sanpham";
 import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
-
+import { index } from "@/api/danhmucsanpham";
 import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
 export default {
@@ -316,6 +331,8 @@ export default {
       bangGias: [],
       so_luong: 1,
       don_vi_tinh: null,
+      danhMucs: [],
+      danh_muc_id: null,
       don_gia: null,
       shipper: [],
       rules: {
@@ -343,12 +360,14 @@ export default {
     this.getKhachHang();
     this.getBangGia();
     this.nhanVienGiaoHang();
+    this.getDanhMuc()
   },
   watch: {
     async timKiem(val) {
       let data = await listSanPham({
         per_page: 6,
         search: val,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     },
@@ -367,10 +386,15 @@ export default {
     },
   },
   methods: {
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
+    },
     async getSanPham() {
       let data = await listSanPham({
         per_page: 6,
         search: this.timKiem,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     },
