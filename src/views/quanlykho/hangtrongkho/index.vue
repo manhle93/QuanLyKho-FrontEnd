@@ -34,10 +34,10 @@
       <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
-          <el-image
+          <img
             :src="scope.row.san_pham.anh_dai_dien ? endPointImage + scope.row.san_pham.anh_dai_dien: src"
             style="max-height: 90px; max-width: 90px"
-          ></el-image>
+          />
         </template>
       </el-table-column>
       <el-table-column label="Tên hàng hóa, sản phẩm" align="center" prop="san_pham.ten_san_pham"></el-table-column>

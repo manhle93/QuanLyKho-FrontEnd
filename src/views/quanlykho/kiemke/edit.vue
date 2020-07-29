@@ -18,6 +18,7 @@
             </el-col>
             <el-col :span="4">
               <el-select
+                clearable
                 v-model="danh_muc_id"
                 placeholder="Danh mục sản phẩm"
                 filterable
@@ -32,7 +33,7 @@
               </el-select>
             </el-col>
           </el-row>
-          <br>
+          <br />
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 100%">
               <el-table :data="form.danhSachHang" style="width: 100%;">
@@ -295,7 +296,7 @@ export default {
       let data = await getSanPhamTonKho({
         per_page: 6,
         search: this.timKiem,
-        danh_muc: this.danh_muc_id
+        danh_muc: this.danh_muc_id,
       });
       this.hangHoas = data.data;
     },

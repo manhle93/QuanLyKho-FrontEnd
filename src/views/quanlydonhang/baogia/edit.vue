@@ -48,6 +48,7 @@
       <el-row style="margin-left: 20px">
         <el-col :span="20">
           <el-table
+            height="350px"
             :data="form.danhSachHang"
             style="width: 80%"
             ref="multipleTable"
@@ -85,7 +86,12 @@
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
       <el-col :span="7">
-        <el-button v-if="admin" style="float: right" class="primary-button" @click="submit('form')">DUYỆT BÁO GIÁ</el-button>
+        <el-button
+          v-if="admin"
+          style="float: right"
+          class="primary-button"
+          @click="submit('form')"
+        >DUYỆT BÁO GIÁ</el-button>
       </el-col>
     </el-row>
 
@@ -116,7 +122,7 @@ import {
   updateDonHang,
   duyetDon,
   huyDon,
-  nhapKho
+  nhapKho,
 } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import { getKho } from "@/api/kho";
@@ -138,14 +144,14 @@ export default {
         tong_tien: null,
         chiet_khau: null,
         danhSachHang: [],
-        nha_cung_cap_id: null
+        nha_cung_cap_id: null,
       },
       formate: formate,
       sanPham: {
         id: null,
         ten_san_pham: null,
         gia_khuyen_cao: null,
-        gia_ban: null
+        gia_ban: null,
       },
       multipleSelection: [],
       admin: false,
@@ -163,16 +169,20 @@ export default {
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
-          { min: 5, message: "Tên đơn hàng tối thiểu 5 ký tự", trigger: "blur" }
+          {
+            min: 5,
+            message: "Tên đơn hàng tối thiểu 5 ký tự",
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change"
-          }
-        ]
-      }
+            trigger: "change",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -193,18 +203,17 @@ export default {
         item.don_gia = sp.don_gia;
         item.gia_khuyen_cao = sp.gia_khuyen_cao;
         item.hang_hoa = sp.san_pham;
-        item.lua_chon = sp.lua_chon
+        item.lua_chon = sp.lua_chon;
         this.form.danhSachHang.push(item);
-        
       }
-      let toggleList = this.form.danhSachHang.filter(el => el.lua_chon);
+      let toggleList = this.form.danhSachHang.filter((el) => el.lua_chon);
       setTimeout(() => {
         this.toggleSelection(toggleList);
       }, 0);
     },
     toggleSelection(rows) {
       if (rows) {
-        rows.forEach(row => {
+        rows.forEach((row) => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
@@ -212,12 +221,12 @@ export default {
       }
     },
     submit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
@@ -228,14 +237,14 @@ export default {
             }
           }
           duyetBaoGia(this.$route.params.id, { san_phams: sanphamID })
-            .then(res => {
+            .then((res) => {
               this.$message({
                 message: "Cập nhật báo giá thành công",
-                type: "success"
+                type: "success",
               });
               // this.resetForm();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -255,7 +264,7 @@ export default {
         ghi_chu: null,
         tong_tien: null,
         chiet_khau: null,
-        danhSachHang: []
+        danhSachHang: [],
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -267,7 +276,7 @@ export default {
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({
-        per_page: 999999
+        per_page: 999999,
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -289,10 +298,10 @@ export default {
       this.sanPham.gia_ban = data.hang_hoa.gia_ban;
     },
     capNhatGiaban() {
-      updateGiaBan(this.sanPham).then(res => {
+      updateGiaBan(this.sanPham).then((res) => {
         this.$message({
           message: "Cập nhật giá bán thành công",
-          type: "success"
+          type: "success",
         });
         this.getData();
         this.showAddGia = false;
@@ -300,8 +309,8 @@ export default {
         this.sanPham.gia_ban = null;
         this.sanPham.gia_khuyen_cao = null;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

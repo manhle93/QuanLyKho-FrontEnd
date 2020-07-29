@@ -20,6 +20,7 @@
             </el-col>
             <el-col :span="4">
               <el-select
+               clearable
                 v-model="danh_muc_id"
                 placeholder="Danh mục sản phẩm"
                 filterable
@@ -472,6 +473,9 @@ export default {
                 message: "Tạo đơn hàng thành công",
                 type: "success",
               });
+              if(this.form.trang_thai == 'hoa_don'){
+                window.open(process.env.VUE_APP_BASE_API + 'inhoadon/' + res.don_hang_id, '_blank');
+              }
               this.resetForm();
             })
             .catch((error) => {
@@ -502,10 +506,11 @@ export default {
         nhan_vien_giao_hang: null,
         trang_thai: null,
         thanh_toan: null,
+        trang_thai: "moi_tao",
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
-      this.so_luong = null;
+      this.so_luong = 1;
       this.don_vi_tinh = null;
       this.don_gia = null;
     },

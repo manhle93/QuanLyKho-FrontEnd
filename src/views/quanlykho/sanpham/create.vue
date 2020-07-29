@@ -41,6 +41,8 @@
             <el-col :span="6">
               <el-form-item label="Loại hàng hóa" prop="danh_muc_id">
                 <el-select
+                  filterable
+                  clearable
                   v-model="form.danh_muc_id"
                   placeholder="Chọn loại hàng hóa"
                   style="width: 100%"
@@ -74,7 +76,12 @@
                 <div>
                   <el-form-item label="Thương hiệu">
                     <br />
-                    <el-select v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
+                    <el-select
+                      filterable
+                      clearable
+                      v-model="form.thuong_hieu_id"
+                      placeholder="Chọn thương hiệu"
+                    >
                       <el-option
                         v-for="item in thuongHieus"
                         :key="item.id"
@@ -116,6 +123,7 @@
                 <el-input v-model="form.vi_tri"></el-input>
               </el-form-item>
             </el-col>
+
             <el-col :span="6">
               <el-form-item :label="'Tồn kho tối thiểu (' + form.don_vi_tinh + ')'">
                 <el-input
@@ -187,7 +195,7 @@
               <br />
               <br />
               <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
-            </el-col> -->
+            </el-col>-->
             <el-col :span="12">
               <router-link to="/quanlykho/loaimathang">
                 <el-button type="warning" icon="el-icon-back">Quay lại</el-button>

@@ -17,6 +17,7 @@
             </el-col>
             <el-col :span="4">
               <el-select
+                clearable
                 v-model="danh_muc_id"
                 placeholder="Danh mục sản phẩm"
                 filterable
@@ -147,6 +148,15 @@
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
         >ĐẶT HÀNG</el-button>
+        <el-tooltip class="item" effect="dark" content="In hóa đơn" placement="top">
+          <el-button
+            @click="inHoaDon()"
+            v-if="trang_thai == 'hoa_don'"
+            size="small"
+            class="primary-button"
+            icon="el-icon-printer"
+          ></el-button>
+        </el-tooltip>
         <br />
         <br />
         <el-form
@@ -386,8 +396,8 @@ export default {
     this.getDanhMuc();
   },
   watch: {
-    timKiem(){
-      this.getSanPham()
+    timKiem() {
+      this.getSanPham();
     },
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
@@ -445,7 +455,7 @@ export default {
       let data = await listSanPham({
         per_page: 6,
         search: this.timKiem,
-        danh_muc_id: this.danh_muc_id
+        danh_muc_id: this.danh_muc_id,
       });
       this.hangHoas = data.data.data;
     },
@@ -589,6 +599,9 @@ export default {
           el.don_gia = el.hang_hoa.gia_ban;
         });
       }
+    },
+    inHoaDon(){
+      window.open(process.env.VUE_APP_BASE_API + 'inhoadon/' + this.$route.params.id, '_blank');
     },
     async huyDon() {
       try {

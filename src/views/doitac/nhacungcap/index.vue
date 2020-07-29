@@ -45,7 +45,12 @@
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
       <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157" prop="trang_thai"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="157">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain">HOẠT ĐỘNG</el-tag>
+          <el-tag v-else effect="plain" type="danger">KHÔNG HOẠT ĐỘNG</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="Công ty" min-width="157" prop="cong_ty"></el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
@@ -127,18 +132,7 @@
           <el-col :span="12">
             <el-form-item label="Trạng thái">
               <br />
-              <el-select
-                size="small"
-                style="width: 100%"
-                v-model="form.trang_thai"
-                placeholder="Select"
-              >
-                <el-option label="Mới tạo" :value="'moi_tao'"></el-option>
-                <el-option label="Xác nhận" :value="'xac_nhan'"></el-option>
-                <el-option label="Hoạt động" :value="'hoat_dong'"></el-option>
-                <el-option label="Khách hàng" :value="'khach_hang'"></el-option>
-                <el-option label="Dừng hoạt động" :value="'dung_hoat_dong'"></el-option>
-              </el-select>
+              <el-checkbox size="small" v-model="form.trang_thai" label="Hoạt động" border></el-checkbox>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -163,6 +157,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row :gutter="40" v-show="!next" v-if="!edit">
           <el-col style="text-align: center">
             <div class="block">
@@ -313,7 +308,7 @@ export default {
         password: null,
         password_confirmation: null,
         anh_dai_dien: null,
-        trang_thai: "moi_tao",
+        trang_thai: false,
         tin_nhiem: null,
         cong_ty: null,
       },
@@ -392,7 +387,7 @@ export default {
       this.form.username = data.username;
       this.form.anh_dai_dien = data.anh_dai_dien;
       this.form.tin_nhiem = data.tin_nhiem;
-      this.form.trang_thai = data.trang_thai;
+      this.form.trang_thai = data.user.active;
       this.form.cong_ty = data.cong_ty;
     },
     async getData(page, per_page) {
@@ -439,6 +434,7 @@ export default {
     },
     showFormAdd() {
       this.resetForm();
+      this.edit = false;
       this.showForm = true;
     },
     addNhaCungCap(formName) {
@@ -491,7 +487,7 @@ export default {
         password: null,
         password_confirmation: null,
         anh_dai_dien: null,
-        trang_thai: "moi_tao",
+        trang_thai: false,
         tin_nhiem: null,
         cong_ty: null,
       };
@@ -552,5 +548,8 @@ export default {
 .upload-image {
   display: none;
   z-index: -9999;
+}
+.el-form-item__label {
+  line-height: 30px
 }
 </style>

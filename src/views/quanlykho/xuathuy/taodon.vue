@@ -17,7 +17,7 @@
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-select v-model="danh_muc_id" placeholder="Danh mục sản phẩm" filterable @change="getSanPham()">
+              <el-select  clearable v-model="danh_muc_id" placeholder="Danh mục sản phẩm" filterable @change="getSanPham()">
                 <el-option
                   v-for="item in danhMucs"
                   :key="item.id"

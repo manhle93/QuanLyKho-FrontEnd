@@ -13,6 +13,8 @@
             <el-col :span="6">
               <el-form-item label="Danh mục" prop="danh_muc_id">
                 <el-select
+                  filterable
+                  clearable
                   v-model="form.danh_muc_id"
                   placeholder="Chọn danh mục hàng hóa"
                   style="width: 100%"
@@ -46,7 +48,7 @@
                 <div>
                   <el-form-item label="Thương hiệu">
                     <br />
-                    <el-select v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
+                    <el-select filterable clearable v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
                       <el-option
                         v-for="item in thuongHieus"
                         :key="item.id"

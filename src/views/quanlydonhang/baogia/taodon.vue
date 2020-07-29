@@ -90,8 +90,8 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="16">
-          <el-table :data="form.danhSachHang" style="width: 100%">
+        <el-col :span="18">
+          <el-table :data="form.danhSachHang" style="width: 100%" height="350px">
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>

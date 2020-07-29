@@ -539,6 +539,7 @@ export default {
     },
     showFormAdd() {
       this.resetForm();
+      this.edit = false;
       this.showForm = true;
     },
     addKhachHang(formName) {
@@ -662,5 +663,8 @@ export default {
 .upload-image {
   display: none;
   z-index: -9999;
+}
+.el-form-item__label {
+  line-height: 30px
 }
 </style>
