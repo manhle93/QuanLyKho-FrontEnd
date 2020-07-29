@@ -122,7 +122,7 @@
               <label>Quyền</label>
               <el-select
                 size="small"
-                :disabled="chonQuyen"
+                :disabled="chonQuyen || (role.id != 1 && role.id != 2 && role.id != 5) ? true :false"
                 style="width:100%"
                 v-model="formLabelAlign.role_id"
                 placeholder="Chọn quyền người dùng"

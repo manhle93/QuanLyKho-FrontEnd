@@ -138,7 +138,7 @@
                   :key="role.id"
                   :label="role.name"
                   :value="role.id"
-                  :disabled="(role.id != 1 && role.id != 2) ? true :false"
+                  :disabled="(role.id != 1 && role.id != 2 && role.id != 5) ? true :false"
                 ></el-option>
               </el-select>
             </el-form-item>

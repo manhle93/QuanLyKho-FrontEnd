@@ -56,7 +56,7 @@
       <el-table-column label="Mã giao dịch" prop="ma" align="center"></el-table-column>
       <el-table-column sortable prop="khach_hang.ten" min-width="160" label="Khách hàng"></el-table-column>
       <el-table-column label="Thời gian" prop="created_at" min-width="157"></el-table-column>
-      <el-table-column label="Số tiền nộp" min-width="157" prop="so_tien">
+      <el-table-column label="Số tiền giao dịch" min-width="157" prop="so_tien">
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
       </el-table-column>
       <el-table-column label="Số dư" min-width="157" prop="so_du">
