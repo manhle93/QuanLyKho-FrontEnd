@@ -4,7 +4,7 @@
       <el-col :span="20" :offset="2">
         <h3>Thêm mới sản phẩm hàng hóa</h3>
         <el-form :model="form" :rules="rules" ref="form">
-          <el-row>
+          <!-- <el-row>
             <el-col style="text-align: center">
               <div class="block">
                 <img style="widht: 150px; height: 150px" :src="src" />
@@ -31,7 +31,7 @@
                 </el-tooltip>
               </div>
             </el-col>
-          </el-row>
+          </el-row>-->
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="Tên sản phẩm" prop="ten_san_pham">
@@ -70,32 +70,46 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="Thương hiệu">
-                <br />
-                <el-select v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
-                  <el-option
-                    v-for="item in thuongHieus"
-                    :key="item.id"
-                    :label="item.ten"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-                <el-button
-                  size="small"
-                  class="primary-button"
-                  icon="el-icon-plus"
-                  circle
-                  @click="showFormAddThuongHieu()"
-                ></el-button>
-                <el-button
-                  v-if="form.thuong_hieu_id"
-                  size="small"
-                  class="primary-button"
-                  icon="el-icon-edit"
-                  circle
-                  @click="showEditThuongHieu()"
-                ></el-button>
-              </el-form-item>
+              <div style="display:flex; flex-direction: row">
+                <div>
+                  <el-form-item label="Thương hiệu">
+                    <br />
+                    <el-select v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
+                      <el-option
+                        v-for="item in thuongHieus"
+                        :key="item.id"
+                        :label="item.ten"
+                        :value="item.id"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div style="margin-left: 10px">
+                  <el-form-item>
+                    <br />
+                    <el-button
+                      size="small"
+                      class="primary-button"
+                      icon="el-icon-plus"
+                      circle
+                      @click="showFormAddThuongHieu()"
+                    ></el-button>
+                  </el-form-item>
+                </div>
+                <div style="margin-left: 10px">
+                  <el-form-item>
+                    <br />
+                    <el-button
+                      v-if="form.thuong_hieu_id"
+                      size="small"
+                      class="primary-button"
+                      icon="el-icon-edit"
+                      circle
+                      @click="showEditThuongHieu()"
+                    ></el-button>
+                  </el-form-item>
+                </div>
+              </div>
             </el-col>
             <el-col :span="6">
               <el-form-item label="Vị trí">
@@ -125,31 +139,55 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="Album ảnh">
-                <br />
-                <el-upload
-                  ref="upload"
-                  :action="urlUploadSanPham"
-                  :file-list="form.fileList"
-                  :headers="this.token"
-                  list-type="picture-card"
-                  :on-change="handleChangeAlbum"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemove"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogAlbum">
-                  <img width="100%" :src="dialogImageUrl" alt />
-                </el-dialog>
-              </el-form-item>
+              <div style="display:flex; flex-direction: row">
+                <div style="flex-grow: 4;">
+                  <label>Mô tả sản phẩm</label>
+                  <br />
+                  <br />
+                  <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
+                </div>
+                <div style="margin-left: 50px;">
+                  <el-form-item label="Ảnh đại diện">
+                    <br />
+                    <a>
+                      <img @click="handleUpload" style="widht: 150px; height: 150px" :src="src" />
+                    </a>
+                    <input
+                      ref="upload-image"
+                      class="upload-image"
+                      type="file"
+                      @change="handleChange($event)"
+                    />
+                  </el-form-item>
+                </div>
+                <div style="margin-left: 50px;">
+                  <el-form-item label="Album ảnh">
+                    <br />
+                    <el-upload
+                      ref="upload"
+                      :action="urlUploadSanPham"
+                      :file-list="form.fileList"
+                      :headers="this.token"
+                      list-type="picture-card"
+                      :on-change="handleChangeAlbum"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove"
+                    >
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogAlbum">
+                      <img width="100%" :src="dialogImageUrl" alt />
+                    </el-dialog>
+                  </el-form-item>
+                </div>
+              </div>
             </el-col>
-            <el-col :span="24">
+            <!-- <el-col :span="24">
               <label>Mô tả sản phẩm</label>
               <br />
               <br />
               <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
-            </el-col>
+            </el-col> -->
             <el-col :span="12">
               <router-link to="/quanlykho/loaimathang">
                 <el-button type="warning" icon="el-icon-back">Quay lại</el-button>
@@ -214,7 +252,7 @@ import {
   getThuongHieu,
   xoaThuongHieu,
   addThuongHieu,
-  editThuongHieu
+  editThuongHieu,
 } from "@/api/thuonghieu";
 import { getToken } from "@/utils/auth";
 import { listSanPham, addSanPham } from "@/api/sanpham";
@@ -248,12 +286,12 @@ export default {
         gia_von: null,
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1
+        thoi_gian_bao_quan: 1,
       },
       thuongHieus: [],
       formAddThuongHieu: {
         ten: null,
-        mo_ta: null
+        mo_ta: null,
       },
       editThuongHieu: false,
       rules: {
@@ -261,38 +299,38 @@ export default {
           {
             required: true,
             message: "Danh mục không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         ten_san_pham: [
           {
             required: true,
             message: "Tên sản phẩm không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         don_vi_tinh: [
           {
             required: true,
             message: "Đơn vị tính không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         ten: [
           {
             required: true,
             message: "Tên thương hiệu không thể bỏ trống",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
     this.getDanhMuc();
     this.getThuongHieu();
     this.token = {
-      Authorization: "Bearer " + getToken()
+      Authorization: "Bearer " + getToken(),
     };
   },
   methods: {
@@ -301,7 +339,7 @@ export default {
       this.showThuongHieu = true;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null
+        mo_ta: null,
       };
     },
     huyThuongHieu() {
@@ -309,14 +347,14 @@ export default {
       this.showThuongHieu = false;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null
+        mo_ta: null,
       };
     },
     async xoaThuongHieu() {
       await xoaThuongHieu(this.form.thuong_hieu_id);
       this.$message({
         type: "success",
-        message: "Xóa thương hiệu thành công"
+        message: "Xóa thương hiệu thành công",
       });
       this.showThuongHieu = false;
       this.form.thuong_hieu_id = null;
@@ -327,15 +365,15 @@ export default {
       this.thuongHieus = data.data;
     },
     themThuongHieu(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addThuongHieu(this.formAddThuongHieu).then(res => {
+          addThuongHieu(this.formAddThuongHieu).then((res) => {
             this.$message({
               type: "success",
-              message: "Thêm thương hiệu thành công"
+              message: "Thêm thương hiệu thành công",
             });
+            this.getThuongHieu();
           });
-          this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
           console.log("error submit!!");
@@ -344,13 +382,13 @@ export default {
       });
     },
     updateThuongHieu(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           editThuongHieu(this.form.thuong_hieu_id, this.formAddThuongHieu).then(
-            res => {
+            (res) => {
               this.$message({
                 type: "success",
-                message: "Cập nhật thương hiệu thành công"
+                message: "Cập nhật thương hiệu thành công",
               });
             }
           );
@@ -364,7 +402,7 @@ export default {
     },
     showEditThuongHieu() {
       let thuonghieu = this.thuongHieus.find(
-        el => el.id == this.form.thuong_hieu_id
+        (el) => el.id == this.form.thuong_hieu_id
       );
       this.editThuongHieu = true;
       this.showThuongHieu = true;
@@ -383,11 +421,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -417,30 +455,30 @@ export default {
         gia_von: null,
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1
+        thoi_gian_bao_quan: 1,
       };
       this.src = process.env.VUE_APP_BASE + res;
       this.$refs.upload.clearFiles();
     },
     addSanPham(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           addSanPham(this.form)
-            .then(res => {
+            .then((res) => {
               this.$message({
                 type: "success",
-                message: "Thêm mới thành công"
+                message: "Thêm mới thành công",
               });
               this.resetForm();
             })
-            .catch(res => {});
+            .catch((res) => {});
         } else {
           console.log("error submit!!");
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -469,5 +507,8 @@ export default {
 .upload-image {
   display: none;
   z-index: -9999;
+}
+.el-form-item__content {
+  line-height: 40px;
 }
 </style>
