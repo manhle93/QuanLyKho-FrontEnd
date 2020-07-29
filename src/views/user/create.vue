@@ -398,23 +398,11 @@ export default {
       try {
         let data = await func();
         this.options[option] = data.data;
-      } catch (error) {
-      }
-    },
-    async tinhThanh() {
-      let tinhthanh = await getTinhThanh();
-      this.options.tinhthanhs = tinhthanh.data;
-      let info = await getInfor();
-      this.user_login = info.data;
-    },
-    async getToaNha(id) {
-      let data = await getToaNhaTheoTinh(id);
-      this.toanhas = data.data;
+      } catch (error) {}
     },
   },
   created() {
     this.taiKhoanDangLogin();
-    this.tinhThanh();
   },
 };
 </script>

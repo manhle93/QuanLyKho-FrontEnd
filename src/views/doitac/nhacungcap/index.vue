@@ -390,11 +390,11 @@ export default {
       this.form.trang_thai = data.user.active;
       this.form.cong_ty = data.cong_ty;
     },
-    async getData(page, per_page) {
+    async getData() {
       this.listLoading = true;
       let data = await getNhaCungCap({
-        per_page: per_page,
-        page: page,
+        per_page: this.per_page,
+        page: this.page,
         search: this.search,
       });
       this.page = data.data.page;
@@ -508,12 +508,12 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
     },
 
     handleSizeChange(val) {
       this.per_page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
     },
   },
 };

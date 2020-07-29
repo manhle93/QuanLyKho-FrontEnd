@@ -261,7 +261,6 @@ export default {
   },
   created() {
     this.fetchData();
-    this.tinhThanh();
   },
   methods: {
     showUpdate(user) {
@@ -313,14 +312,7 @@ export default {
         this.listLoading = false;
       });
     },
-    async tinhThanh() {
-      getTinhThanh().then((res) => {
-        this.tinhthanhs = res.data;
-        this.tinhthanhs.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        );
-      });
-    },
+
     searchData(page = 1, per_page = 10) {
       this.listLoading = true;
       this.form.page = this.page;

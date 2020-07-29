@@ -414,15 +414,9 @@ export default {
         }
       });
     },
-    async tinhThanh() {
-      let data = await getTinhThanh();
-      this.options.tinhthanhs = data.data;
-    },
-    changetinhThanh(id) {},
   },
   created() {
     this.taiKhoanDangLogin();
-    this.tinhThanh();
   },
 };
 </script>

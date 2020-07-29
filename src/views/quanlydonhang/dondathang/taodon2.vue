@@ -20,7 +20,7 @@
             </el-col>
             <el-col :span="4">
               <el-select
-               clearable
+                clearable
                 v-model="danh_muc_id"
                 placeholder="Danh mục sản phẩm"
                 filterable
@@ -107,7 +107,7 @@
       >
         <el-row :gutter="20">
           <br />
-          <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
+          <el-col :xl="3" :md="3" :sm="8" v-for="item in hangHoas" :key="item.id">
             <el-card :body-style="{ padding: '0px' }">
               <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
               <div style="padding: 14px;">
@@ -168,15 +168,25 @@
               size="small"
               v-model="form.khach_hang_id"
               filterable
+              remote
+              :remote-method="remoteMethod"
+              reserve-keyword
               style="width:80%"
               placeholder="Chọn khách hàng"
+              :loading="loading"
             >
               <el-option
+                class="khachhang"
                 v-for="item in nhaCungCaps"
                 :key="item.id"
                 :label="item.ten"
                 :value="item.user_id"
-              ></el-option>
+              >
+                <div>
+                  <div style="font-size: 16px">{{item.ten}}</div>
+                  <div style="font-size: 12px; color: gray">SĐT: {{item.so_dien_thoai}}</div>
+                </div>
+              </el-option>
             </el-select>
             <el-button
               circle
@@ -189,22 +199,27 @@
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
-          <el-form-item label="Tổng tiền">{{formate.formatCurrency(form.tong_tien)}} đ</el-form-item>
+          <el-form-item label="Tổng tiền">
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.tong_tien)}} đ</span>
+          </el-form-item>
           <el-form-item label="Giảm giá">
             <el-input size="small" v-model="form.giam_gia"></el-input>
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="form.trang_thai != 'hoa_don'">
             <el-input size="small" v-model="form.da_thanh_toan"></el-input>
           </el-form-item>
-          <el-form-item
-            label="Tổng thanh toán"
-            v-else
-          >{{formate.formatCurrency(form.tong_tien - form.giam_gia)}} đ</el-form-item>
-          <el-form-item
-            size="mini"
-            v-if="form.trang_thai != 'hoa_don'"
-            label="Phải thanh toán"
-          >{{formate.formatCurrency(form.con_phai_thanh_toan)}} đ</el-form-item>
+          <el-form-item label="Tổng thanh toán" v-else>
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.tong_tien - form.giam_gia)}} đ</span>
+          </el-form-item>
+          <el-form-item size="mini" v-if="form.trang_thai != 'hoa_don'" label="Phải thanh toán">
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.con_phai_thanh_toan)}} đ</span>
+          </el-form-item>
           <el-form-item label="Phương thúc" v-if="form.trang_thai == 'hoa_don'" prop="thanh_toan">
             <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
@@ -247,13 +262,13 @@
     </div>
     <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
       <div style="display: flex; align-items: center; flex-direction: column">
-        <div v-if="UserInfo.avatar_url">
+        <div v-if="UserInfo.user && UserInfo.user.avatar_url">
           <img
-            :src="endPointImage + UserInfo.avatar_url"
+            :src="endPointImage + UserInfo.user.avatar_url"
             style="height: 100px; width: auto; border-radius: 10px"
           />
         </div>
-        <div v-if="!UserInfo.avatar_url">
+        <div v-else>
           <img
             :src="endPointImage + 'images/avatar/avatar_for_none.png'"
             style="height: 100px; width: auto"
@@ -304,6 +319,7 @@ export default {
       active: 0,
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
+      loading: false,
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
         ten: null,
@@ -361,14 +377,14 @@ export default {
     this.getKhachHang();
     this.getBangGia();
     this.nhanVienGiaoHang();
-    this.getDanhMuc()
+    this.getDanhMuc();
   },
   watch: {
     async timKiem(val) {
       let data = await listSanPham({
         per_page: 6,
         search: val,
-        danh_muc_id: this.danh_muc_id
+        danh_muc_id: this.danh_muc_id,
       });
       this.hangHoas = data.data.data;
     },
@@ -387,15 +403,31 @@ export default {
     },
   },
   methods: {
+    async remoteMethod(query) {
+        this.loading = true;
+        // setTimeout(() => {
+        //   this.loading = false;
+        //   this.nhaCungCaps = this.list.filter((item) => {
+        //     return item.ten.toLowerCase().indexOf(query.toLowerCase()) > -1;
+        //   });
+        // }, 200);
+        let data = await getKhachHang({
+          per_page: 999999,
+          search: query
+        });
+        this.nhaCungCaps = data.data.data;
+        this.loading = false;
+     
+    },
     async getDanhMuc() {
       let data = await index();
       this.danhMucs = data.data;
     },
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 6,
+        per_page: 8,
         search: this.timKiem,
-        danh_muc_id: this.danh_muc_id
+        danh_muc_id: this.danh_muc_id,
       });
       this.hangHoas = data.data.data;
     },
@@ -473,8 +505,11 @@ export default {
                 message: "Tạo đơn hàng thành công",
                 type: "success",
               });
-              if(this.form.trang_thai == 'hoa_don'){
-                window.open(process.env.VUE_APP_BASE_API + 'inhoadon/' + res.don_hang_id, '_blank');
+              if (this.form.trang_thai == "hoa_don") {
+                window.open(
+                  process.env.VUE_APP_BASE_API + "inhoadon/" + res.don_hang_id,
+                  "_blank"
+                );
               }
               this.resetForm();
             })

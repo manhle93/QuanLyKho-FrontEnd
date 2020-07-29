@@ -90,6 +90,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="block">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :page-sizes="[5, 10, 15, 20]"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
     <el-dialog title="Nạp tiền vào tài khoản" :visible.sync="showForm" width="30%" center>
       <el-form :model="form" :rules="rules" ref="form">
         <el-row :gutter="20">
@@ -196,11 +206,11 @@ export default {
     this.getKhachHang();
   },
   methods: {
-    async getData(page, per_page) {
+    async getData() {
       this.listLoading = true;
       let data = await lichSu({
-        per_page: per_page,
-        page: page,
+        per_page: this.per_page,
+        page: this.page,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
@@ -212,13 +222,22 @@ export default {
       this.listLoading = true;
       lichSu({
         search: this.search,
-        date: this.date
+        date: this.date,
       }).then((response) => {
         this.list = response.data.data;
         this.page = response.data.page;
         this.per_page = response.data.per_page;
         this.listLoading = false;
       });
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getData();
+    },
+
+    handleSizeChange(val) {
+      this.per_page = val;
+      this.getData();
     },
     hoanTien(item) {
       this.$confirm(

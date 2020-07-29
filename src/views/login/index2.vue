@@ -82,6 +82,7 @@
                 <p id="p-forgot">Quên mật khẩu</p>
               </router-link>
               <el-button
+              style="background-color: #00a651"
                 :loading="loading"
                 type="primary"
                 @click.native.prevent="handleLogin"
@@ -265,7 +266,7 @@ export default {
 }
 .login-background {
   position: absolute;
-  background-color: #AAB7B8;
+  background-color: #00a65245;
   opacity: 0.7;
   width: 100%;
   height: 100%;
