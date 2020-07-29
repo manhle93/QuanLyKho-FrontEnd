@@ -122,7 +122,7 @@
               <label>Quyền</label>
               <el-select
                 size="small"
-                :disabled="chonQuyen || (role.id != 1 && role.id != 2 && role.id != 5) ? true :false"
+                :disabled="chonQuyen"
                 style="width:100%"
                 v-model="formLabelAlign.role_id"
                 placeholder="Chọn quyền người dùng"
@@ -132,6 +132,7 @@
                   :key="role.id"
                   :label="role.name"
                   :value="role.id"
+                  :disabled="(role.id != 1 && role.id != 2 && role.id != 5) ? true :false"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -276,6 +277,7 @@ export default {
   watch: {
     active(val) {
       this.showCreateUsers = val;
+      this.chonQuyen = false
     },
     "formLabelAlign.password": function () {
       if (this.formLabelAlign.password) {
@@ -315,33 +317,7 @@ export default {
       ) {
         this.chonQuyen = true;
       }
-      if (
-        this.formLabelAlign.id != this.user_login.id &&
-        this.user_login.role_id == 1
-      ) {
-        this.chonQuyen = false;
-      }
-
-      if (this.formLabelAlign.role_id == 1) {
-        this.tinhthanh = false;
-        this.toanha = false;
-        this.formLabelAlign.tinh_thanh_id = null;
-        this.formLabelAlign.toa_nha_id = null;
-        this.trangthai = 2;
-      }
-      if (this.formLabelAlign.role_id == 2) {
-        this.tinhthanh = true;
-        this.toanha = false;
-        this.trangthai = 0;
-        this.formLabelAlign.toa_nha_id = null;
-      }
-      if (
-        this.formLabelAlign.role_id == 3 ||
-        this.formLabelAlign.role_id == 4
-      ) {
-        this.tinhthanh = true;
-        this.trangthai = 0;
-      }
+      if(val.role_id == 3 || this.role_id == 4){this.chonQuyen = true}
       if (
         this.formLabelAlign.avatar_url === null ||
         this.formLabelAlign.avatar_url === ""
