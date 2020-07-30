@@ -46,7 +46,7 @@
               size="small"
               class="primary-button"
               icon="el-icon-plus"
-            >ĐẶT HÀNG</el-button>
+            >HÓA ĐƠN</el-button>
           </router-link>
         </el-col>
       </el-row>

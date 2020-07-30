@@ -39,7 +39,7 @@
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-          >Thêm mới</el-button>
+          >Nạp tiền</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -100,7 +100,7 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog title="Nạp tiền vào tài khoản" :visible.sync="showForm" width="30%" center>
+    <el-dialog title="Nạp tiền vào tài khoản" :visible.sync="showForm" width="400px" center>
       <el-form :model="form" :rules="rules" ref="form">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -117,7 +117,10 @@
                   :key="item.id"
                   :label="item.ten"
                   :value="item.user_id"
-                ></el-option>
+                >
+                  <span style="float: left">{{ item.ten }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.so_dien_thoai }}</span>
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -135,13 +138,13 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button>
+        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
         <el-button
           class="primary-button"
           size="small"
           icon="el-icon-plus"
           @click="addDanhMuc('form')"
-        >Nộp tiền</el-button>
+        >Nạp tiền</el-button>
       </span>
     </el-dialog>
   </div>

@@ -2,7 +2,7 @@
   <div class="app-container">
     <h3>Cập nhật đơn hàng</h3>
     <el-row>
-      <el-col :span="10" :offset="0">
+      <el-col :span="12" :offset="6">
         <el-steps :active="active" finish-status="success" v-if="form.trang_thai != 'huy_bo'">
           <el-step title="Tạo đơn"></el-step>
           <el-step title="Nhận đơn"></el-step>
@@ -14,6 +14,9 @@
           <el-step title="Hủy đơn"></el-step>
         </el-steps>
       </el-col>
+      <!-- <el-col :span="4" :offset="10">
+        <el-button>In</el-button>
+      </el-col>-->
     </el-row>
     <br />
     <el-form ref="form" :model="form" :rules="rules">
@@ -110,16 +113,20 @@
           <el-form-item>
             <br />
             <el-button icon="el-icon-plus" class="primary-button" @click="addSanPham()"></el-button>
+            <el-tooltip  effect="dark" content="In hóa đơn" placement="top-start">
+            <el-button icon="el-icon-printer" class="primary-button" @click="inDonHang()"></el-button>
+            </el-tooltip>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="20">
+        <el-col :span="24">
           <el-table
             show-summary
             :data="form.danhSachHang"
             style="width: 100%"
             :summary-method="tongTien"
+            height="500px"
           >
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
@@ -375,6 +382,9 @@ export default {
           el.disabled = false;
         }
       }
+    },
+    inDonHang(){
+      window.open(process.env.VUE_APP_BASE_API + 'inhoadonnhacungcap/' + this.$route.params.id, '_blank');
     },
     tongTien(param) {
       const { columns, data } = param;

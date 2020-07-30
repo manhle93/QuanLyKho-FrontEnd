@@ -119,7 +119,7 @@
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
               size="small"
-              style="background-color: #2E86C1; color: white"
+              class="primary-button"
               icon="el-icon-edit"
               circle
               @click="showUpdate(scope.row)"

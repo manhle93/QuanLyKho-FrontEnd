@@ -112,7 +112,7 @@
               <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
               <div style="padding: 14px;">
                 <span
-                  style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
+                  style="font-size: 0.8vw; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
                   <time
@@ -614,7 +614,7 @@ export default {
   height: auto;
 }
 .time {
-  font-size: 13px;
+  font-size: 0.8vw;
   color: #999;
 }
 

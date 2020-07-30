@@ -97,7 +97,7 @@
 
     <el-dialog title="CẬP NHẬT GIÁ BÁN" :visible.sync="showAddGia" width="25%" center>
       <el-form>
-        <el-form-item label="Sản phẩm">
+        <el-form-item label="Sản phẩm, hàng hóa">
           <el-input :disabled="true" v-model="sanPham.ten_san_pham" size="small"></el-input>
         </el-form-item>
         <el-form-item label="Giá khuyến cáo">

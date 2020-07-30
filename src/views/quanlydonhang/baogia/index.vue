@@ -52,7 +52,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách báo giá nhà cung cấp</h4>
+    <h4>Danh sách báo giá của nhà cung cấp</h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -233,11 +233,11 @@ export default {
     async handleDelete(data) {
       try {
         let comfirm = await this.$confirm(
-          "Bạn có chắc chắn muốn xóa đơn hàng: " +
+          "Bạn có chắc chắn muốn xóa báo giá: " +
             "<strong>" +
             data.ten +
             "</strong>",
-          "Xóa đơn hàng",
+          "Xóa báo giá",
           {
             confirmButtonText: "Xóa",
             dangerouslyUseHTMLString: true,
@@ -269,7 +269,6 @@ export default {
       this.per_page = data.data.per_page;
       this.total = data.data.total;
       this.listLoading = false;
-      console.log(this.tableData);
     },
     edit(id) {
       this.$router.push("/quanlydonhang/capnhatbaogia/" + id);

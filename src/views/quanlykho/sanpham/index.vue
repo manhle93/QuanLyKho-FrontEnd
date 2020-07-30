@@ -63,7 +63,7 @@
             <router-link :to="'capnhatsanpham/' + scope.row.id">
               <el-button
                 size="small"
-                style="background-color: #2E86C1; color: white"
+                class="primary-button"
                 icon="el-icon-edit"
                 circle
               ></el-button>

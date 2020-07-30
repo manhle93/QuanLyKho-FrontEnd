@@ -271,13 +271,13 @@
 
       <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
         <div style="display: flex; align-items: center; flex-direction: column">
-          <div v-if="UserInfo.avatar_url">
+          <div v-if="UserInfo.user && UserInfo.user.avatar_url">
             <img
-              :src="endPointImage + UserInfo.avatar_url"
+              :src="endPointImage + UserInfo.user.avatar_url"
               style="height: 100px; width: auto; border-radius: 10px"
             />
           </div>
-          <div v-if="!UserInfo.avatar_url">
+          <div v-else>
             <img
               :src="endPointImage + 'images/avatar/avatar_for_none.png'"
               style="height: 100px; width: auto"
@@ -353,6 +353,7 @@ export default {
         bang_gia_id: null,
         thanh_toan: null,
       },
+      danh_muc_id: null,
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       trang_thai: "moi_tao",
@@ -368,6 +369,7 @@ export default {
       don_gia: null,
       shipper: [],
       UserInfo: {},
+      danhMucs: [],
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },

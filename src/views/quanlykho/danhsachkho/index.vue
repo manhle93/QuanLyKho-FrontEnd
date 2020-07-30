@@ -56,7 +56,7 @@
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
               size="small"
-              style="background-color: #2E86C1; color: white"
+              class="primary-button"
               icon="el-icon-edit"
               circle
               @click="showUpdate(scope.row)"
@@ -111,7 +111,7 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button>
+        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
         <el-button
           class="primary-button"
           size="small"

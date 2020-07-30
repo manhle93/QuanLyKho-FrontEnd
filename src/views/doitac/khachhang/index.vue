@@ -91,7 +91,7 @@
     <el-dialog
       :title="edit ? 'CẬP NHẬT KHÁCH HÀNG' :'THÊM MỚI KHÁCH HÀNG'"
       :visible.sync="showForm"
-      width="40%"
+      width="700px"
       center
     >
       <el-form :model="form" :rules="rules" ref="form">
@@ -152,7 +152,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Địa chỉ emal" prop="email">
+            <el-form-item label="Địa chỉ email">
               <el-input size="small" v-model="form.email"></el-input>
             </el-form-item>
           </el-col>
@@ -289,7 +289,7 @@
         <!-- <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button> -->
         <el-button
           class="primary-button"
-          :disabled="!form.ma || !form.ten || !form.so_dien_thoai || !form.email"
+          :disabled="!form.ma || !form.ten || !form.so_dien_thoai"
           size="small"
           v-if="next"
           icon="el-icon-right"

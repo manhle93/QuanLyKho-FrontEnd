@@ -3,16 +3,16 @@
 }
 
 .primary-button {
-  background-color: #2E86C1;
+  background-color: #196F3D;
   color: white
 }
 .primary-button:focus {
-  background-color: #2E86C1;
+  background-color: #196F3D;
   color: white
 }
 .primary-button:hover {
   color: white;
-  background-color: #154360;
+  background-color: #145A32;
 }
 
 .success-button {
@@ -97,7 +97,7 @@
 }
 
 .el-message-box__title {
-  color: #2E86C1;
+  color: #196F3D;
 }
 
 .el-table thead {

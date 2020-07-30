@@ -45,7 +45,7 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table :data="props.row.don_hang.san_phams" style="width: 60%">
+          <el-table :data="props.row.don_hang ? props.row.don_hang.san_phams: []" style="width: 60%;">
             <el-table-column label="STT" type="index"></el-table-column>
             <el-table-column label="Sản phẩm" prop="san_pham.ten_san_pham"></el-table-column>
             <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
@@ -60,15 +60,18 @@
           </el-table>
           <br />
           <div
+          v-if="props.row.don_hang"
             style="margin-top: 15px; font-size: 16px; font-family: time new roman"
           >Chiết khấu: {{formate.formatCurrency(props.row.don_hang.chiet_khau)}} đ</div>
           <div
+          v-if="props.row.don_hang"
             style="margin-top: 15px; font-size: 17px; font-family: time new roman; font-weight: bold"
           >Tổng tiền: {{formate.formatCurrency(props.row.don_hang.tong_tien)}} đ</div>
         </template>
       </el-table-column>
       <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
       <el-table-column label="Mã phiếu nhập" align="center" prop="ma"></el-table-column>
+      <el-table-column label="Mã đơn hàng" align="center" prop="don_hang.ma"></el-table-column>
       <el-table-column label="Thời gian nhập" align="center" prop="created_at"></el-table-column>
       <el-table-column label="Tổng tiền" prop="don_hang.tong_tien">
         <template
@@ -76,13 +79,19 @@
           slot-scope="scope"
         >{{formate.formatCurrency(scope.row.don_hang.tong_tien)}} đ</template>
       </el-table-column>
+      <el-table-column label="Ghi chú" align="center">
+        <template slot-scope="scope">
+          <el-tag type="success" effect="plain"  v-if="scope.row.don_hang_id">Nhập từ nhà cung cấp</el-tag>
+          <el-tag type="warning" effect="plain" v-else>Hoàn hàng</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" fixed="right" label="Chi tiết đơn hàng">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Xem đơn hàng" placement="top">
             <el-button
               v-if="scope.row.don_hang_id"
               size="small"
-              style="background-color: #2E86C1; color: white"
+              class="primary-button"
               icon="el-icon-view"
               circle
               @click="showUpdate(scope.row)"
@@ -169,6 +178,7 @@ export default {
       this.page = data.data.current_page;
       this.per_page = data.data.per_page;
       this.listLoading = false;
+      console.log(this.list)
     },
     searchData() {
       this.listLoading = true;

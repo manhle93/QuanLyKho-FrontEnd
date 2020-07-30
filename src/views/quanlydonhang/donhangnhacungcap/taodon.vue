@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <h3>Tạo đơn hàng</h3>
+    <h3>Tạo đơn hàng cho nhà cung cấp</h3>
     <el-row>
-      <el-col :span="10" :offset="0">
+      <el-col :span="12" :offset="6">
         <el-steps :active="active" finish-status="success">
           <el-step title="Tạo đơn"></el-step>
           <el-step title="Nhận đơn"></el-step>
@@ -113,6 +113,7 @@
             :data="form.danhSachHang"
             style="width: 100%"
             :summary-method="tongTien"
+            height="600px"
           >
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>

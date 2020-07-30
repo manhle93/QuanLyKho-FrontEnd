@@ -68,7 +68,7 @@
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
               size="small"
-              style="background-color: #2E86C1; color: white"
+              class="primary-button"
               icon="el-icon-edit"
               circle
               @click="showUpdate(scope.row)"
@@ -116,7 +116,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'Cập nhật danh mục sản phẩm' :'Thêm danh mục sản phẩm'"
+      :title="edit ? 'Cập nhật bảng giá' :'Thêm bảng giá'"
       :visible.sync="showForm"
       width="30%"
       center
@@ -150,7 +150,7 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button>
+        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
         <el-button
           class="primary-button"
           size="small"
@@ -214,7 +214,7 @@
               <br />
               <el-button
                 size="small"
-                type="warning"
+                class="primary-button"
                 icon="el-icon-plus"
                 circle
                 @click="addSanPham()"
@@ -248,7 +248,7 @@
           type="warning"
           icon="el-icon-close"
           @click="showFormAddGia = false"
-        >Cancel</el-button>
+        >Hủy</el-button>
         <el-button
           class="primary-button"
           size="small"
@@ -510,6 +510,7 @@ export default {
     },
     showFormAdd() {
       this.resetForm();
+      this.edit = false
       this.showForm = true;
     },
     addBangGia(formName) {

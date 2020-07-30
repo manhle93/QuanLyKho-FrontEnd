@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>GỬI BÁO GIÁ</h3>
+    <h3>Tạo báo giá</h3>
 
     <el-form ref="form" :model="form" :rules="rules">
       <el-row :gutter="20">
