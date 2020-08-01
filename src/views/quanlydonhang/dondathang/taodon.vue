@@ -33,11 +33,11 @@ export default {
       editableTabsValue: "2",
       editableTabs: [
         {
-          title: "Tab 1",
+          title: "HĐ 1",
           name: "1",
         },
         {
-          title: "Tab 2",
+          title: "HĐ 2",
           name: "2",
         },
       ],
@@ -57,7 +57,7 @@ export default {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
       }
       this.editableTabs.push({
-        title: "Tab " + (this.editableTabs.length + 1),
+        title: "HĐ " + (this.editableTabs.length + 1),
         name: newTabName,
       });
       this.editableTabsValue = newTabName;
