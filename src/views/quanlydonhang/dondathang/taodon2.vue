@@ -73,12 +73,12 @@
             </el-col>-->
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto;">
-            <div style="position: absolute; bottom: 260px; right: 330px">
+            <!-- <div style="position: absolute; bottom: 260px; right: 330px">
               <img
                 src="https://phoneky.co.uk/thumbs/screensavers/down/cartoon-anime/chef240x32_ohr7zbcs.gif"
                 style="height: 200px"
               />
-            </div>
+            </div> -->
             <div style="width: 100%">
               <el-table
                 show-summary
