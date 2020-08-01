@@ -359,7 +359,7 @@ export const asyncRoutes = [
             {
                 path: "taodondathang",
                 name: "Tạo đơn đặt hàng",
-                component: () => import("@/views/quanlydonhang/dondathang/taodon2"),
+                component: () => import("@/views/quanlydonhang/dondathang/taodon"),
                 meta: {
                     title: "Tạo đơn đặt hàng",
                     icon: "dondathang"

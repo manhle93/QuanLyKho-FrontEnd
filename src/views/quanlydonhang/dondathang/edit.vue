@@ -105,8 +105,13 @@
         <el-row :gutter="20">
           <br />
           <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }">
-              <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
+            <el-card :body-style="{ padding: '0px' }" v-show="!kiemTraDaChon(item.id)">
+              <a @click="doiSanPham(item.id)">
+                <img
+                  :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src"
+                  class="image"
+                />
+              </a>
               <div style="padding: 14px;">
                 <span
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
@@ -116,14 +121,14 @@
                     class="time"
                   >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
-                <div class="bottom clearfix">
+                <!-- <div class="bottom clearfix">
                   <el-button
                     :disabled="kiemTraDaChon(item.id)"
                     type="text"
                     class="button"
                     @click="doiSanPham(item.id)"
                   >Lựa chọn</el-button>
-                </div>
+                </div>-->
               </div>
             </el-card>
           </el-col>
@@ -602,8 +607,11 @@ export default {
         });
       }
     },
-    inHoaDon(){
-      window.open(process.env.VUE_APP_BASE_API + 'inhoadon/' + this.$route.params.id, '_blank');
+    inHoaDon() {
+      window.open(
+        process.env.VUE_APP_BASE_API + "inhoadon/" + this.$route.params.id,
+        "_blank"
+      );
     },
     async huyDon() {
       try {

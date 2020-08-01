@@ -1,16 +1,27 @@
 <template>
   <div
     class="c-flex fh ttch"
-    style="padding-left: 20px; height: calc(100vh - 50px);overflow: hidden;"
+    style="padding-left: 10px; height: calc(100vh - 80px);overflow: hidden;"
   >
     <div
       class="c-grow c-flex c-column"
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
     >
-      <div class="d-flex flex-collumn" style="flex: 1; min-height: 0">
+      <div class="d-flex flex-collumn" style="flex: 1; min-height: 0;">
         <el-form class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
-            <br />
+            <el-col :span="1">
+              <el-form-item>
+                <el-tooltip class="item" effect="dark" content="Danh sách đơn hàng">
+                  <router-link to="/quanlydonhang/dathang">
+                    <img
+                      src="https://image.flaticon.com/icons/svg/3078/3078994.svg"
+                      style="height: 40px; width: auto;"
+                    />
+                    </router-link>
+                </el-tooltip>
+              </el-form-item>
+            </el-col>
             <el-col :span="8">
               <el-form-item>
                 <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
@@ -53,15 +64,21 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="1">
+            <!-- <el-col :span="1">
               <el-form-item>
                 <a href="/quanlydonhang/taodondathang" target="_blank">
                   <el-button circle icon="el-icon-plus" class="success-button"></el-button>
                 </a>
               </el-form-item>
-            </el-col>
+            </el-col>-->
           </el-row>
-          <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
+          <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto;">
+            <div style="position: absolute; bottom: 260px; right: 330px">
+              <img
+                src="https://phoneky.co.uk/thumbs/screensavers/down/cartoon-anime/chef240x32_ohr7zbcs.gif"
+                style="height: 200px"
+              />
+            </div>
             <div style="width: 100%">
               <el-table
                 show-summary
@@ -108,8 +125,13 @@
         <el-row :gutter="20">
           <br />
           <el-col :xl="3" :md="3" :sm="8" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }">
-              <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
+            <el-card :body-style="{ padding: '0px' }" v-show="!kiemTraDaChon(item.id)">
+              <a @click="doiSanPham(item.id)">
+                <img
+                  :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src"
+                  class="image"
+                />
+              </a>
               <div style="padding: 14px;">
                 <span
                   style="font-size: 0.8vw; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
@@ -119,14 +141,14 @@
                     class="time"
                   >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
                 </div>
-                <div class="bottom clearfix">
+                <!-- <div class="bottom clearfix">
                   <el-button
                     :disabled="kiemTraDaChon(item.id)"
                     type="text"
                     class="button"
                     @click="doiSanPham(item.id)"
                   >Lựa chọn</el-button>
-                </div>
+                </div>-->
               </div>
             </el-card>
           </el-col>
@@ -313,6 +335,11 @@ import { index } from "@/api/danhmucsanpham";
 import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
 export default {
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+    });
+  },
   data() {
     return {
       showUserDetail: false,
@@ -404,20 +431,19 @@ export default {
   },
   methods: {
     async remoteMethod(query) {
-        this.loading = true;
-        // setTimeout(() => {
-        //   this.loading = false;
-        //   this.nhaCungCaps = this.list.filter((item) => {
-        //     return item.ten.toLowerCase().indexOf(query.toLowerCase()) > -1;
-        //   });
-        // }, 200);
-        let data = await getKhachHang({
-          per_page: 999999,
-          search: query
-        });
-        this.nhaCungCaps = data.data.data;
-        this.loading = false;
-     
+      this.loading = true;
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   this.nhaCungCaps = this.list.filter((item) => {
+      //     return item.ten.toLowerCase().indexOf(query.toLowerCase()) > -1;
+      //   });
+      // }, 200);
+      let data = await getKhachHang({
+        per_page: 999999,
+        search: query,
+      });
+      this.nhaCungCaps = data.data.data;
+      this.loading = false;
     },
     async getDanhMuc() {
       let data = await index();

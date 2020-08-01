@@ -1,31 +1,25 @@
 <template>
-  <div class="navbar">
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="src" class="user-avatar" />
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/users/taikhoan">
-            <el-dropdown-item>
-              <label>Thông tin tài khoản</label>
-            </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout()">
-              <label>Đăng xuất</label>
-            </span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+  <div
+    class="navbar"
+    style="display:flex; flex-direction: row; justify-content: space-between; align-items: center"
+  >
+    <div v-if="homeIcon" style="margin-left: 20px">
+      <el-tooltip class="item" effect="dark" content="Danh sách đơn hàng">
+        <a @click="danhSachDon()">
+          <img
+            src="https://image.flaticon.com/icons/svg/3078/3078994.svg"
+            style="height: 35px; width: auto;"
+          />
+        </a>
+      </el-tooltip>
     </div>
-
     <hamburger
+      v-else
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
+
     <!-- <breadcrumb class="breadcrumb-container" /> // Tên Router -->
 
     <!-- <div class="right-menu" style="margin-right: 10px">
@@ -125,18 +119,34 @@
       </el-dropdown>
     </div>-->
 
-    <div style="text-align: center">
-      <div style="display: inline-block;">
-        <div style="font-weight: bold; color: #2E86C1; display: inline; line-height: 50px">
-          <img
-            style=" height: 50px; width: auto; float: left"
-            :src="logo"
-          />
-          <div
-            style="float: left; color: #229954; font-size: 23px; padding-top: 5px"
-          >HỆ THỐNG QUẢN LÝ TMĐT RUỘNG BẬC THANG</div>
-        </div>
+    <div style="display:flex; flex-direction: row; align-items: center">
+      <div>
+        <img style=" height: 50px; width: auto" :src="logo" />
       </div>
+      <div
+        style="color: #229954; font-size: 23px; padding-top: 5px; font-weight: bold; margin-left: 10px"
+      >HỆ THỐNG QUẢN LÝ TMĐT RUỘNG BẬC THANG</div>
+    </div>
+
+    <div class="right-menu">
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img :src="src" class="user-avatar" />
+          <i class="el-icon-caret-bottom" />
+        </div>
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <router-link to="/users/taikhoan">
+            <el-dropdown-item>
+              <label>Thông tin tài khoản</label>
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="logout()">
+              <label>Đăng xuất</label>
+            </span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -158,6 +168,7 @@ export default {
   data() {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
+      homeIcon: false,
       online: 0,
       offline: 0,
       soThongBao: 0,
@@ -167,7 +178,7 @@ export default {
       loadingThongBao: false,
       thongBao: 0,
       ten_tinh_thanh: null,
-      logo: logo
+      logo: logo,
     };
   },
   computed: {
@@ -179,6 +190,10 @@ export default {
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
+    },
+    danhSachDon() {
+      this.homeIcon = false;
+      this.$router.push("/quanlydonhang/dathang");
     },
     loadThongBao() {
       if (!this.loadingThongBao) {
@@ -230,8 +245,11 @@ export default {
     },
     fetchData() {
       getInfor().then((res) => {
-        if (res.data.role_id == 2 && res.data.tinhthanh.name) {
-          this.ten_tinh_thanh = res.data.tinhthanh.name.toUpperCase();
+        if (
+          res.data.role_id == 2 &&
+          this.$route.path == "/quanlydonhang/taodondathang"
+        ) {
+          this.homeIcon = true;
         }
         if (res.data.avatar_url == null || res.data.avatar_url == "") {
           this.src =
@@ -330,7 +348,7 @@ export default {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
         }
 
         .el-icon-caret-bottom {

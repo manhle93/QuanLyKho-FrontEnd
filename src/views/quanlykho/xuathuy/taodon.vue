@@ -17,7 +17,13 @@
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-select  clearable v-model="danh_muc_id" placeholder="Danh mục sản phẩm" filterable @change="getSanPham()">
+              <el-select
+                clearable
+                v-model="danh_muc_id"
+                placeholder="Danh mục sản phẩm"
+                filterable
+                @change="getSanPham()"
+              >
                 <el-option
                   v-for="item in danhMucs"
                   :key="item.id"
@@ -72,8 +78,13 @@
         <el-row :gutter="20">
           <br />
           <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }">
-              <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
+            <el-card :body-style="{ padding: '0px' }" v-show="!kiemTraDaChon(item.id)">
+              <a @click="doiSanPham(item.id)">
+                <img
+                  :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src"
+                  class="image"
+                />
+              </a>
               <div style="padding: 14px;">
                 <span
                   style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
@@ -200,7 +211,7 @@ export default {
   },
   created() {
     this.getSanPham();
-    this.getDanhMuc()
+    this.getDanhMuc();
   },
   watch: {
     timKiem(val) {
@@ -217,7 +228,7 @@ export default {
       let data = await getSanPhamTonKho({
         per_page: 6,
         search: this.timKiem,
-        danh_muc: this.danh_muc_id
+        danh_muc: this.danh_muc_id,
       });
       this.hangHoas = data.data;
     },
