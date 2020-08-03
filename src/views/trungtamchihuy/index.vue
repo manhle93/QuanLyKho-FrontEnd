@@ -1,7 +1,7 @@
 <template>
   <div
     class="app-container"
-    style="display:flex; justify-content: space-around; flex-direction: column "
+    style="display:flex; flex-direction: column; justify-content: space-between; height: calc(100vh - 50px)"
   >
     <div style="display: flex;">
       <div class="danhmuc" style="margin-left: 0px">
@@ -19,14 +19,14 @@
             <div class="so-item">{{data.san_pham}}</div>
             <div class="ten-item">Sản phẩm</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/743/743007.svg" style="height: 100px;" />
+          <img src="https://image.flaticon.com/icons/svg/743/743007.svg" style="height: 80px;" />
         </div>
       </div>
       <div class="danhmuc">
         <div class="item-danhmuc">
           <div>
             <div class="so-item">{{data.don_hang}}</div>
-            <div class="ten-item">Đơn đặt hàng: {{month}}/{{year}}</div>
+            <div class="ten-item">Đơn hàng: {{month}}/{{year}}</div>
           </div>
           <img src="https://image.flaticon.com/icons/svg/3225/3225094.svg" style="height: 100px;" />
         </div>
@@ -45,15 +45,15 @@
           <div>
             <div class="so-item">
               {{(data.doanh_thu/1000000).toFixed(2)}}
-              <span style="font-size: 14px">triệu đồng</span>
+              <span style="font-size: 14px">triệu đ</span>
             </div>
             <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/3208/3208954.svg" style="height: 100px;" />
+          <img src="https://image.flaticon.com/icons/svg/3208/3208954.svg" style="height: 80px;" />
         </div>
       </div>
     </div>
-    <div style="display: flex; margin-top: 50px">
+    <div style="display: flex; height: calc(100vh - 250px); padding-bottom: 40px; margin-top: 30px">
       <div style="flex: 1;">
         <div
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
@@ -113,7 +113,7 @@ export default {
     };
   },
   created() {
-    this.getInfo()
+    this.getInfo();
     this.getData();
   },
   methods: {

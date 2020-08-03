@@ -48,7 +48,7 @@
       <el-row style="margin-left: 20px">
         <el-col :span="20">
           <el-table
-            height="350px"
+            max-height="350px"
             :data="form.danhSachHang"
             style="width: 80%"
             ref="multipleTable"

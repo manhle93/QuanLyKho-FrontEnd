@@ -98,14 +98,10 @@
           </div>
         </el-form>
       </div>
-      <div
-        class="c-column"
-        style="padding-bottom: 20px; border-top: 1px solid #2E86C1; background-color: #58D68D; padding-left: 20px; padding-right: 20px"
-      >
-        <el-row :gutter="20">
-          <br />
-          <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }" v-show="!kiemTraDaChon(item.id)">
+      <div class="sanpham">
+        <transition name="bounce" v-for="item in hangHoas" :key="item.id">
+          <div v-show="!kiemTraDaChon(item.id)">
+            <el-card :body-style="{ padding: '0px' }" style="width: 150px; margin-right: 20px">
               <a @click="doiSanPham(item.id)">
                 <img
                   :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src"
@@ -114,12 +110,10 @@
               </a>
               <div style="padding: 14px;">
                 <span
-                  style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
+                  style="font-size: 14px; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time
-                    class="time"
-                  >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
+                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ</time>
                 </div>
                 <!-- <div class="bottom clearfix">
                   <el-button
@@ -131,8 +125,8 @@
                 </div>-->
               </div>
             </el-card>
-          </el-col>
-        </el-row>
+          </div>
+        </transition>
       </div>
     </div>
     <div
@@ -146,7 +140,7 @@
           size="small"
           @click="form.trang_thai = 'hoa_don'"
           :class="form.trang_thai == 'hoa_don' ? 'success-button' : ''"
-        >HÓA ĐƠN</el-button>
+        >BÁN HÀNG</el-button>
         <el-button
           size="small"
           :disabled="trang_thai == 'hoa_don'"
@@ -233,6 +227,25 @@
             >
               <el-option v-for="item in shipper" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="Địa chỉ nhận hàng">
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="form.dia_chi"
+              placeholder="Nhập địa chỉ"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="Thời gian nhận hàng">
+            <el-date-picker
+              format="dd/MM/yyyy HH:mm"
+              v-model="form.thoi_gian_nhan_hang"
+              type="datetime"
+              placeholder="Select date and time"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
+            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -357,6 +370,9 @@ export default {
         trang_thai: "moi_tao",
         bang_gia_id: null,
         thanh_toan: null,
+        dia_chi: "Tại quầy",
+        thoi_gian_nhan_hang: new Date(),
+        phu_thu: null,
       },
       danh_muc_id: null,
       formate: formate,
@@ -440,7 +456,9 @@ export default {
       this.form.nhan_vien_giao_hang = data.data.nhan_vien_giao_hang;
       this.form.bang_gia_id = data.data.bang_gia_id;
       this.form.thanh_toan = data.data.thanh_toan;
-
+      this.form.dia_chi = data.data.dia_chi;
+      this.form.thoi_gian_nhan_hang = data.data.thoi_gian_nhan_hang;
+      this.form.phu_thu = data.data.phu_thu;
       this.form.danhSachHang = [];
       for (let sp of data.data.san_phams) {
         let item = {};
@@ -571,6 +589,9 @@ export default {
         giam_gia: 0,
         con_phai_thanh_toan: 0,
         thanh_toan: null,
+        dia_chi: "Tại quầy",
+        thoi_gian_nhan_hang: new Date(),
+        phu_thu: null,
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -714,5 +735,37 @@ export default {
 
 .clearfix:after {
   clear: both;
+}
+
+.sanpham {
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+  border-top: 1px solid #2e86c1;
+  background-color: #58d68d;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  scroll-behavior: smooth;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.8s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.8s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

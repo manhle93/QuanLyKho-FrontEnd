@@ -108,7 +108,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value) || value.length === 0) {
-        callback(new Error("Tên đăng không hợp lệ"));
+        callback(new Error("Tên đăng nhập không hợp lệ"));
       } else {
         callback();
       }
@@ -232,7 +232,7 @@ export default {
   font-weight: bold;
 }
 .logo-container {
-  max-width: 250px;
+  max-width: 200px;
   margin-top: 50px;
   padding-bottom: 50px;
 }

@@ -122,7 +122,7 @@ export default {
 .chart-container {
   position: relative;
   width: 100%;
-  min-height: 500px;
+  height: 100%;
   /* padding-top: 10px; */
   top: -20px
 }

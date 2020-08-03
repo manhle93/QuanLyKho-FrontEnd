@@ -61,7 +61,7 @@ export default {
       let res = await topSanPham({ date: date });
       this.sanPhams = res.map((el) => el.san_pham.ten_san_pham);
       this.doanhThus = res.map((el) => el.tong_doanh_thu);
-      this.initChart()
+      this.initChart();
     },
     initChart() {
       this.chart = echarts.init(this.$el, "macarons");
@@ -109,7 +109,7 @@ export default {
 .chart-container {
   position: relative;
   width: 100%;
-  min-height: 500px;
+  height: 100%;
   top: -40px;
   z-index: 0;
 }

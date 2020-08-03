@@ -128,7 +128,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/user/lichsuhoatdong/index"),
                 meta: {
                     title: "Lịch sử hoạt động",
-                    icon: "clock"
+                    icon: "logs"
                 }
             }
         ]
@@ -265,7 +265,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlykho/hangtrongkho/index"),
                 meta: {
                     title: "Danh sách hàng trong kho",
-                    icon: "nhapkho"
+                    icon: "danhsachhangtrongkho"
                 }
             },
             {
@@ -274,7 +274,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlykho/danhsachkho/index"),
                 meta: {
                     title: "Danh sách kho",
-                    icon: "nhapkho"
+                    icon: "danhsachkho"
                 }
             },
         ]
@@ -304,7 +304,7 @@ export const asyncRoutes = [
                 component: () => import("@/views/quanlydonhang/baogia/index"),
                 meta: {
                     title: "Báo giá",
-                    icon: "donhangnhacungcap"
+                    icon: "baogia"
                 }
             },
             {
@@ -492,7 +492,45 @@ export const asyncRoutes = [
             },
         ]
     },
-
+    {
+        path: "/tienich",
+        component: Layout,
+        redirect: "/tienich",
+        name: "Tiện ích",
+        meta: {
+            title: "Tiện ích",
+            icon: "tienich"
+        },
+        children: [
+            {
+                path: "khuyenmai",
+                name: "Khuyến mãi",
+                component: () => import("@/views/doitac/nhacungcap/index"),
+                meta: {
+                    title: "Khuyến mãi",
+                    icon: "sale"
+                }
+            },
+            {
+                path: "voucher",
+                name: "Voucher",
+                component: () => import("@/views/doitac/khachhang/index"),
+                meta: {
+                    title: "Voucher",
+                    icon: "voucher"
+                }
+            },
+            {
+                path: "tichdiemthuong",
+                name: "Tích điểm thưởng",
+                component: () => import("@/views/doitac/lichsunoptien/index"),
+                meta: {
+                    title: "Tích điểm thưởng",
+                    icon: "tichdiemthuong"
+                }
+            },
+        ]
+    },
     {
         path: "/baocao",
         component: Layout,

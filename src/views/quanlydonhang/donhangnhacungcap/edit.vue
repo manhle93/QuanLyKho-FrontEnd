@@ -126,7 +126,7 @@
             :data="form.danhSachHang"
             style="width: 100%"
             :summary-method="tongTien"
-            height="500px"
+            max-height="500px"
           >
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>

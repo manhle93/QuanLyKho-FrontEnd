@@ -18,36 +18,41 @@
                       src="https://image.flaticon.com/icons/svg/3078/3078994.svg"
                       style="height: 40px; width: auto;"
                     />
-                    </router-link>
+                  </router-link>
                 </el-tooltip>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
+                <el-input size="small" placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-select
-                clearable
-                v-model="danh_muc_id"
-                placeholder="Danh mục sản phẩm"
-                filterable
-                @change="getSanPham()"
-              >
-                <el-option
-                  v-for="item in danhMucs"
-                  :key="item.id"
-                  :label="item.ten_danh_muc"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="3">
               <el-form-item>
                 <el-select
+                  size="small"
+                  style="width: 100%"
+                  clearable
+                  v-model="danh_muc_id"
+                  placeholder="Danh mục sản phẩm"
+                  filterable
+                  @change="getSanPham()"
+                >
+                  <el-option
+                    v-for="item in danhMucs"
+                    :key="item.id"
+                    :label="item.ten_danh_muc"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-form-item>
+                <el-select
+                  size="small"
                   clearable
                   filterable
                   style="width: 100%"
@@ -73,9 +78,9 @@
             </el-col>-->
           </el-row>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto;">
-            <!-- <div style="position: absolute; bottom: 260px; right: 330px">
+            <!-- <div style="position: absolute; bottom: 260px; right: 360px;">
               <img
-                src="https://phoneky.co.uk/thumbs/screensavers/down/cartoon-anime/chef240x32_ohr7zbcs.gif"
+                src="https://media3.giphy.com/media/11lxCeKo6cHkJy/giphy.gif"
                 style="height: 200px"
               />
             </div> -->
@@ -118,14 +123,10 @@
           </div>
         </el-form>
       </div>
-      <div
-        class="c-column"
-        style="padding-bottom: 20px; border-top: 1px solid #2E86C1; background-color: #58D68D; padding-left: 20px; padding-right: 20px"
-      >
-        <el-row :gutter="20">
-          <br />
-          <el-col :xl="3" :md="3" :sm="8" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }" v-show="!kiemTraDaChon(item.id)">
+      <div class="sanpham">
+        <transition name="bounce" v-for="item in hangHoas" :key="item.id">
+          <div v-show="!kiemTraDaChon(item.id)">
+            <el-card :body-style="{ padding: '0px' }" style="width: 140px; margin-right: 20px">
               <a @click="doiSanPham(item.id)">
                 <img
                   :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src"
@@ -134,12 +135,10 @@
               </a>
               <div style="padding: 14px;">
                 <span
-                  style="font-size: 0.8vw; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
+                  style="font-size: 14px; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
                 >{{item.ten_san_pham}}</span>
                 <div class="bottom clearfix">
-                  <time
-                    class="time"
-                  >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
+                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ</time>
                 </div>
                 <!-- <div class="bottom clearfix">
                   <el-button
@@ -151,14 +150,14 @@
                 </div>-->
               </div>
             </el-card>
-          </el-col>
-        </el-row>
+          </div>
+        </transition>
       </div>
     </div>
     <div
       class="fh c-flex c-column"
-      style="padding-left: 15px; padding-right: 10px; background-color: #F2F4F4; width: 320px;"
-    >
+      style="padding-left: 15px; padding-right: 10px; background-color: #F2F3F4; width: 340px; overflow-x:hidden; overflow-y:auto;"
+      >
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
         <br />
@@ -166,7 +165,7 @@
           size="small"
           @click="form.trang_thai = 'hoa_don'"
           :class="form.trang_thai == 'hoa_don' ? 'success-button' : ''"
-        >HÓA ĐƠN</el-button>
+        >BÁN HÀNG</el-button>
         <el-button
           size="small"
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
@@ -205,7 +204,7 @@
                 :value="item.user_id"
               >
                 <div>
-                  <div style="font-size: 16px">{{item.ten}}</div>
+                  <div style="font-size: 16px; font-weight: bold">{{item.ten}}</div>
                   <div style="font-size: 12px; color: gray">SĐT: {{item.so_dien_thoai}}</div>
                 </div>
               </el-option>
@@ -260,6 +259,26 @@
               <el-option v-for="item in shipper" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="ĐC nhận hàng">
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="form.dia_chi"
+              placeholder="Nhập địa chỉ"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="TG nhận hàng">
+            <el-date-picker
+              style="width: 100%"
+              format="dd/MM/yyyy HH:mm"
+              v-model="form.thoi_gian_nhan_hang"
+              type="datetime"
+              placeholder="Select date and time"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
+            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
+          </el-form-item>
         </el-form>
       </div>
       <br />
@@ -267,14 +286,14 @@
         <el-col :span="23">
           <el-button
             v-if="form.trang_thai == 'moi_tao'"
-            style="float: right; width: 100%"
+            style="float: right; width: 100%;height: 80px;font-size: 20px"
             icon="el-icon-plus"
             class="success-button"
             @click="submit('form')"
           >ĐẶT HÀNG</el-button>
           <el-button
             v-else
-            style="float: right; width: 100%"
+            style="float: right; width: 100%; height: 80px;font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
@@ -349,7 +368,7 @@ export default {
       loading: false,
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
-        ten: null,
+        ten: "Đơn hàng tại quầy ",
         ghi_chu: null,
         tong_tien: null,
         da_thanh_toan: null,
@@ -362,6 +381,9 @@ export default {
         trang_thai: "moi_tao",
         bang_gia_id: null,
         thanh_toan: null,
+        dia_chi: "Tại quầy",
+        thoi_gian_nhan_hang: new Date(),
+        phu_thu: null,
       },
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -451,7 +473,7 @@ export default {
     },
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 8,
+        per_page: 10,
         search: this.timKiem,
         danh_muc_id: this.danh_muc_id,
       });
@@ -568,6 +590,9 @@ export default {
         trang_thai: null,
         thanh_toan: null,
         trang_thai: "moi_tao",
+        dia_chi: "Tại quầy",
+        thoi_gian_nhan_hang: new Date(),
+        phu_thu: null,
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -640,7 +665,7 @@ export default {
   height: auto;
 }
 .time {
-  font-size: 0.8vw;
+  font-size: 13px;
   color: #999;
 }
 
@@ -668,4 +693,44 @@ export default {
 .clearfix:after {
   clear: both;
 }
+
+.sanpham {
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+  border-top: 1px solid #2e86c1;
+  background-color: #58d68d;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  scroll-behavior: smooth;
+}
+.el-select-dropdown__item {
+  background-color: #FAD7A0;
+}
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover { 
+    background-color: #FCF3CF !important;
+
+}
+.bounce-enter-active {
+  animation: bounce-in 0.8s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.8s reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 </style>
