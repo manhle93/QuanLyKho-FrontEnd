@@ -1,6 +1,5 @@
 <template>
-  <div style="height: 100vh; overflow: hidden; padding-top: 15px; padding-left: 10px; ">
-    <!-- <el-button style="float: right;" circle icon="el-icon-s-home" @click="addTab(editableTabsValue)"></el-button> -->
+  <div class="main" :style="{height: hideSidebar ? '100vh' : 'calc(100vh - 50px)'}">
     <el-button
       :style="{left: khoangCach + 'px'}"
       circle
@@ -23,6 +22,7 @@
 </template>
 <script>
 import TaoDon from "./taodon2";
+import { getInfor } from "@/api/taikhoan";
 
 export default {
   components: {
@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       editableTabsValue: "2",
+      hideSidebar: false,
       editableTabs: [
         {
           title: "HĐ 1",
@@ -45,14 +46,26 @@ export default {
       khoangCach: 204,
     };
   },
-  created() {},
+  created() {
+    getInfor().then((res) => {
+      this.role_id = res.data.role_id;
+      if (
+        this.$route.path == "/quanlydonhang/taodondathang" &&
+        this.role_id == 2
+      ) {
+        this.hideSidebar = true;
+      } else {
+        this.hideSidebar = false;
+      }
+    });
+  },
   watch: {},
   methods: {
     addTab(targetName) {
       let newTabName = ++this.tabIndex + "";
-      let soTab = this.editableTabs.length + 1
+      let soTab = this.editableTabs.length + 1;
       if (soTab < 10) {
-        this.khoangCach = (soTab) * 82 + 40;
+        this.khoangCach = soTab * 82 + 40;
       } else {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
       }
@@ -77,9 +90,9 @@ export default {
       }
       this.editableTabsValue = activeName;
       this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
-      let soTab = this.editableTabs.length
+      let soTab = this.editableTabs.length;
       if (soTab < 10) {
-        this.khoangCach = (soTab) * 82 + 40;
+        this.khoangCach = soTab * 82 + 40;
       } else {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
       }
@@ -92,5 +105,10 @@ export default {
   position: absolute;
   top: 17px;
   z-index: 1;
+}
+.main {
+  overflow: hidden;
+  padding-top: 15px;
+  padding-left: 10px;
 }
 </style>

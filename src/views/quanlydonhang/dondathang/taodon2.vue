@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="c-flex fh ttch"
-    style="padding-left: 10px; height: calc(100vh - 80px);overflow: hidden;"
-  >
+  <div class="c-flex fh ttch maint" :style="{height: hideSidebar ? 'calc(100vh - 80px)': 'calc(100vh - 120px)'}">
     <div
       class="c-grow c-flex c-column"
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
@@ -157,7 +154,7 @@
     <div
       class="fh c-flex c-column"
       style="padding-left: 15px; padding-right: 10px; background-color: #F2F3F4; width: 340px; overflow-x:hidden; overflow-y:auto;"
-     >
+    >
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
         <br />
@@ -353,7 +350,7 @@ import { getInfor } from "@/api/taikhoan";
 import { index } from "@/api/danhmucsanpham";
 import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
-import { debounce } from 'lodash'
+import { debounce } from "lodash";
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -402,6 +399,8 @@ export default {
       danh_muc_id: null,
       don_gia: null,
       shipper: [],
+      hideSidebar: false,
+      role_id: null,
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -428,15 +427,26 @@ export default {
     this.getBangGia();
     this.nhanVienGiaoHang();
     this.getDanhMuc();
+    getInfor().then((res) => {
+      this.role_id = res.data.role_id;
+      if (
+        this.$route.path == "/quanlydonhang/taodondathang" &&
+        this.role_id == 2
+      ) {
+        this.hideSidebar = true;
+      } else {
+        this.hideSidebar = false;
+      }
+    });
   },
   watch: {
-    timKiem: debounce(async function(val) {
-        let data = await listSanPham({
-          per_page: 6,
-          search: val,
-          danh_muc_id: this.danh_muc_id,
-        });
-        this.hangHoas = data.data.data;
+    timKiem: debounce(async function (val) {
+      let data = await listSanPham({
+        per_page: 6,
+        search: val,
+        danh_muc_id: this.danh_muc_id,
+      });
+      this.hangHoas = data.data.data;
     }, 300),
 
     "form.giam_gia": function (val) {
@@ -738,7 +748,10 @@ export default {
 .bounce-leave-active {
   animation: bounce-in 0.8s reverse;
 }
-
+.maint {
+  padding-left: 10px;
+  overflow: hidden;
+}
 @keyframes bounce-in {
   0% {
     transform: scale(0);
