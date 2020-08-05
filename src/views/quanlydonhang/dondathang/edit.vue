@@ -131,7 +131,7 @@
     </div>
     <div
       class="fh c-flex c-column"
-      style="padding-left: 15px; padding-right: 10px; background-color: #F2F4F4; min-width: 320px;"
+      style="padding-left: 15px; padding-right: 10px; background-color: #F2F3F4; width: 340px; overflow-x:hidden; overflow-y:auto;"
     >
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
@@ -143,19 +143,9 @@
         >BÁN HÀNG</el-button>
         <el-button
           size="small"
-          :disabled="trang_thai == 'hoa_don'"
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
         >ĐẶT HÀNG</el-button>
-        <el-tooltip class="item" effect="dark" content="In hóa đơn" placement="top">
-          <el-button
-            @click="inHoaDon()"
-            v-if="trang_thai == 'hoa_don'"
-            size="small"
-            class="primary-button"
-            icon="el-icon-printer"
-          ></el-button>
-        </el-tooltip>
         <br />
         <br />
         <el-form
@@ -174,14 +164,25 @@
               size="small"
               v-model="form.khach_hang_id"
               filterable
+              remote
+              :remote-method="remoteMethod"
+              reserve-keyword
+              style="width:80%"
               placeholder="Chọn khách hàng"
+              :loading="loading"
             >
               <el-option
+                class="khachhang"
                 v-for="item in nhaCungCaps"
                 :key="item.id"
                 :label="item.ten"
                 :value="item.user_id"
-              ></el-option>
+              >
+                <div>
+                  <div style="font-size: 16px; font-weight: bold">{{item.ten}}</div>
+                  <div style="font-size: 12px; color: gray">SĐT: {{item.so_dien_thoai}}</div>
+                </div>
+              </el-option>
             </el-select>
             <el-button
               circle
@@ -194,22 +195,30 @@
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
-          <el-form-item label="Tổng tiền">{{formate.formatCurrency(form.tong_tien)}} đ</el-form-item>
           <el-form-item label="Giảm giá">
             <el-input size="small" v-model="form.giam_gia"></el-input>
+          </el-form-item>
+          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
+            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
+          </el-form-item>
+          <el-form-item label="Tổng tiền">
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.tong_tien)}} đ</span>
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="form.trang_thai != 'hoa_don'">
             <el-input size="small" v-model="form.da_thanh_toan"></el-input>
           </el-form-item>
-          <el-form-item
-            label="Tổng thanh toán"
-            v-else
-          >{{formate.formatCurrency(form.tong_tien - form.giam_gia)}} đ</el-form-item>
-          <el-form-item
-            size="mini"
-            v-if="form.trang_thai != 'hoa_don'"
-            label="Phải thanh toán"
-          >{{formate.formatCurrency(form.con_phai_thanh_toan)}} đ</el-form-item>
+          <el-form-item label="Tổng thanh toán" v-else>
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.tong_tien - form.giam_gia + Number(form.phu_thu))}} đ</span>
+          </el-form-item>
+          <el-form-item size="mini" v-if="form.trang_thai != 'hoa_don'" label="Phải thanh toán">
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{formate.formatCurrency(form.con_phai_thanh_toan)}} đ</span>
+          </el-form-item>
           <el-form-item label="Phương thúc" v-if="form.trang_thai == 'hoa_don'" prop="thanh_toan">
             <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
@@ -228,7 +237,7 @@
               <el-option v-for="item in shipper" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Địa chỉ nhận hàng">
+          <el-form-item label="ĐC nhận hàng">
             <el-input
               size="small"
               type="textarea"
@@ -236,107 +245,41 @@
               placeholder="Nhập địa chỉ"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Thời gian nhận hàng">
+          <el-form-item label="TG nhận hàng">
             <el-date-picker
+              style="width: 100%"
               format="dd/MM/yyyy HH:mm"
               v-model="form.thoi_gian_nhan_hang"
               type="datetime"
               placeholder="Select date and time"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
-            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
-          </el-form-item>
         </el-form>
       </div>
       <br />
       <el-row>
-        <el-col :span="23" v-if="trang_thai == 'moi_tao'">
-          <el-button size="small" icon="el-icon-close" type="warning" @click="huyDon()">HỦY ĐƠN</el-button>
+        <el-col :span="23">
           <el-button
-            size="small"
             v-if="form.trang_thai == 'moi_tao'"
-            icon="el-icon-check"
+            style="float: right; width: 100%;height: 80px;font-size: 20px"
+            icon="el-icon-plus"
             class="success-button"
             @click="submit('form')"
-          >CẬP NHẬT</el-button>
+          >ĐẶT HÀNG</el-button>
           <el-button
-            size="small"
-            v-if="form.trang_thai == 'hoa_don'"
+            v-else
+            style="float: right; width: 100%; height: 80px;font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
           >THANH TOÁN</el-button>
         </el-col>
-        <div
-          style="height: 80px; width: 250px; border: 3px solid #E74C3C; display: flex; align-items:center; justify-content: center; border-radius: 10px"
-          v-if="trang_thai != 'moi_tao'"
-        >
-          <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
-            v-if="trang_thai == 'huy_bo'"
-          >ĐÃ HỦY ĐƠN</p>
-          <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
-            v-if="trang_thai == 'huy_hoa_don'"
-          >HỦY HÓA ĐƠN</p>
-          <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
-            v-if="trang_thai == 'hoa_don'"
-          >ĐÃ THANH TOÁN</p>
-        </div>
       </el-row>
-
-      <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
-        <div style="display: flex; align-items: center; flex-direction: column">
-          <div v-if="UserInfo.user && UserInfo.user.avatar_url">
-            <img
-              :src="endPointImage + UserInfo.user.avatar_url"
-              style="height: 100px; width: auto; border-radius: 10px"
-            />
-          </div>
-          <div v-else>
-            <img
-              :src="endPointImage + 'images/avatar/avatar_for_none.png'"
-              style="height: 100px; width: auto"
-            />
-          </div>
-
-          <div>
-            <el-rate disabled v-model="UserInfo.tin_nhiem" :colors="colors"></el-rate>
-          </div>
-        </div>
-        <el-row style="margin-top: 50px;">
-          <el-form label-position="left" label-width="110px" size="small">
-            <el-col :span="14" :offset="1">
-              <el-form-item label="Khách hàng: ">{{UserInfo.ten}}</el-form-item>
-            </el-col>
-            <el-col :span="9">
-              <el-form-item label="Số điện thoại: ">{{UserInfo.so_dien_thoai}}</el-form-item>
-            </el-col>
-            <el-col :span="14" :offset="1">
-              <el-form-item label="Địa chỉ Email: ">{{UserInfo.email}}</el-form-item>
-            </el-col>
-            <el-col :span="9">
-              <el-form-item label="Số dư TK: ">{{formate.formatCurrency(UserInfo.so_du)}} đ</el-form-item>
-            </el-col>
-            <el-col :span="23" :offset="1">
-              <el-form-item label="Địa chỉ: ">{{UserInfo.dia_chi}}</el-form-item>
-            </el-col>
-          </el-form>
-        </el-row>
-        <span slot="footer" class="dialog-footer">
-          <el-button
-            class="primary-button"
-            @click="showUserDetail = false"
-            icon="el-icon-close"
-          >Đóng</el-button>
-        </span>
-      </el-dialog>
     </div>
   </div>
 </template>
 <script>
+import { debounce } from "lodash";
 import { listSanPham } from "@/api/sanpham";
 import { getKhachHang } from "@/api/khachhang";
 import { getBangGia } from "@/api/banggia";
@@ -419,9 +362,10 @@ export default {
     this.getDanhMuc();
   },
   watch: {
-    timKiem() {
+    timKiem: debounce(function () {
       this.getSanPham();
-    },
+    }, 300),
+
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien - this.form.da_thanh_toan - val;

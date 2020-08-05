@@ -505,7 +505,7 @@ export const asyncRoutes = [
             {
                 path: "khuyenmai",
                 name: "Khuyến mãi",
-                component: () => import("@/views/doitac/nhacungcap/index"),
+                component: () => import("@/views/tienich/khuyenmai/index"),
                 meta: {
                     title: "Khuyến mãi",
                     icon: "sale"
@@ -514,7 +514,7 @@ export const asyncRoutes = [
             {
                 path: "voucher",
                 name: "Voucher",
-                component: () => import("@/views/doitac/khachhang/index"),
+                component: () => import("@/views/tienich/voucher/index"),
                 meta: {
                     title: "Voucher",
                     icon: "voucher"
@@ -523,7 +523,7 @@ export const asyncRoutes = [
             {
                 path: "tichdiemthuong",
                 name: "Tích điểm thưởng",
-                component: () => import("@/views/doitac/lichsunoptien/index"),
+                component: () => import("@/views/tienich/tichdiem/index"),
                 meta: {
                     title: "Tích điểm thưởng",
                     icon: "tichdiemthuong"

@@ -83,7 +83,7 @@
                 src="https://media3.giphy.com/media/11lxCeKo6cHkJy/giphy.gif"
                 style="height: 200px"
               />
-            </div> -->
+            </div>-->
             <div style="width: 100%">
               <el-table
                 show-summary
@@ -157,7 +157,7 @@
     <div
       class="fh c-flex c-column"
       style="padding-left: 15px; padding-right: 10px; background-color: #F2F3F4; width: 340px; overflow-x:hidden; overflow-y:auto;"
-      >
+     >
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
         <br />
@@ -220,13 +220,16 @@
           <el-form-item label="Ghi chú">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
+          <el-form-item label="Giảm giá">
+            <el-input size="small" v-model="form.giam_gia"></el-input>
+          </el-form-item>
+          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
+            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
+          </el-form-item>
           <el-form-item label="Tổng tiền">
             <span
               style="color: green; font-size: 20px; font-weight: bold"
             >{{formate.formatCurrency(form.tong_tien)}} đ</span>
-          </el-form-item>
-          <el-form-item label="Giảm giá">
-            <el-input size="small" v-model="form.giam_gia"></el-input>
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="form.trang_thai != 'hoa_don'">
             <el-input size="small" v-model="form.da_thanh_toan"></el-input>
@@ -234,7 +237,7 @@
           <el-form-item label="Tổng thanh toán" v-else>
             <span
               style="color: green; font-size: 20px; font-weight: bold"
-            >{{formate.formatCurrency(form.tong_tien - form.giam_gia)}} đ</span>
+            >{{formate.formatCurrency(form.tong_tien - form.giam_gia + Number(form.phu_thu))}} đ</span>
           </el-form-item>
           <el-form-item size="mini" v-if="form.trang_thai != 'hoa_don'" label="Phải thanh toán">
             <span
@@ -275,9 +278,6 @@
               type="datetime"
               placeholder="Select date and time"
             ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
-            <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -353,6 +353,7 @@ import { getInfor } from "@/api/taikhoan";
 import { index } from "@/api/danhmucsanpham";
 import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
+import { debounce } from 'lodash'
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -429,26 +430,43 @@ export default {
     this.getDanhMuc();
   },
   watch: {
-    async timKiem(val) {
-      let data = await listSanPham({
-        per_page: 6,
-        search: val,
-        danh_muc_id: this.danh_muc_id,
-      });
-      this.hangHoas = data.data.data;
-    },
+    timKiem: debounce(async function(val) {
+        let data = await listSanPham({
+          per_page: 6,
+          search: val,
+          danh_muc_id: this.danh_muc_id,
+        });
+        this.hangHoas = data.data.data;
+    }, 300),
+
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
-        this.form.tong_tien - this.form.da_thanh_toan - val;
+        this.form.tong_tien -
+        this.form.da_thanh_toan -
+        val +
+        +Number(this.form.phu_thu);
     },
 
     "form.da_thanh_toan": function (val) {
       this.form.con_phai_thanh_toan =
-        this.form.tong_tien - this.form.giam_gia - val;
+        this.form.tong_tien -
+        this.form.giam_gia -
+        val +
+        Number(this.form.phu_thu);
     },
     "form.tong_tien": function (val) {
       this.form.con_phai_thanh_toan =
-        this.form.tong_tien - this.form.giam_gia - this.form.da_thanh_toan;
+        this.form.tong_tien -
+        this.form.giam_gia -
+        this.form.da_thanh_toan +
+        Number(this.form.phu_thu);
+    },
+    "form.phu_thu": function (val) {
+      this.form.con_phai_thanh_toan =
+        this.form.tong_tien -
+        this.form.giam_gia -
+        this.form.da_thanh_toan +
+        Number(this.form.phu_thu);
     },
   },
   methods: {
@@ -708,11 +726,11 @@ export default {
   scroll-behavior: smooth;
 }
 .el-select-dropdown__item {
-  background-color: #FAD7A0;
+  background-color: #fad7a0;
 }
-.el-select-dropdown__item.hover, .el-select-dropdown__item:hover { 
-    background-color: #FCF3CF !important;
-
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: #fcf3cf !important;
 }
 .bounce-enter-active {
   animation: bounce-in 0.8s;
@@ -732,5 +750,4 @@ export default {
     transform: scale(1);
   }
 }
-
 </style>

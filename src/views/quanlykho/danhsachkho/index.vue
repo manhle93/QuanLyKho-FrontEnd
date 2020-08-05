@@ -236,6 +236,7 @@ export default {
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
+      this.edit = false
     },
     addKhoHang(formName) {
       this.$refs[formName].validate((valid) => {
