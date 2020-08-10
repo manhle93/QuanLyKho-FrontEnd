@@ -56,7 +56,9 @@
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
       </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157"></el-table-column>
+      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
+        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">{{scope.row.mo_ta_san_pham.length > 70 ? scope.row.mo_ta_san_pham.substr(0, 70)+'...' :  scope.row.mo_ta_san_pham}}</template>
+      </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
