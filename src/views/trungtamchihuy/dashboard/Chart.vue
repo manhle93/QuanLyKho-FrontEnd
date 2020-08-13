@@ -36,7 +36,7 @@ export default {
     };
   },
   mounted() {
-    this.getData(null);
+    this.getData(null, 'doanh_thu');
     // this.initChart();
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
@@ -57,8 +57,8 @@ export default {
     render() {
       this.chart.resize();
     },
-    async getData(date) {
-      let res = await topSanPham({ date: date });
+    async getData(date, type) {
+      let res = await topSanPham({ date: date, type: type});
       this.sanPhams = res.map((el) => el.san_pham.ten_san_pham);
       this.doanhThus = res.map((el) => el.tong_doanh_thu);
       this.initChart();
@@ -73,7 +73,7 @@ export default {
           // },
           tooltip: {
             trigger: "axis",
-            formatter: "Doanh thu <br>{b} : {c} ( đồng )",
+            // formatter: "Doanh thu <br>{b} : {c} ( đồng )",
             axisPointer: {
               type: "shadow",
             },

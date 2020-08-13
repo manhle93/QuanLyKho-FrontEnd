@@ -11,6 +11,16 @@
           @keyup.enter.native="getData()"
         ></el-input>
       </el-col>
+      <el-col :span="4">
+        <el-select v-model="danh_muc_id" placeholder="Chọn danh mục" size="small" style="width: 100%">
+          <el-option
+            v-for="item in danhMucs"
+            :key="item.id"
+            :label="item.ten_danh_muc"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-col>
       <el-col :span="5">
         <el-button
           size="small"
@@ -19,7 +29,7 @@
           @click="getData()"
         >Tìm kiếm</el-button>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="10">
         <router-link to="themsanpham">
           <el-button
             style="float:right"
@@ -57,18 +67,16 @@
       </el-table-column>
       <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
-        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">{{scope.row.mo_ta_san_pham.length > 70 ? scope.row.mo_ta_san_pham.substr(0, 70)+'...' :  scope.row.mo_ta_san_pham}}</template>
+        <template
+          slot-scope="scope"
+          v-if="scope.row.mo_ta_san_pham"
+        >{{scope.row.mo_ta_san_pham.length > 70 ? scope.row.mo_ta_san_pham.substr(0, 70)+'...' : scope.row.mo_ta_san_pham}}</template>
       </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <router-link :to="'capnhatsanpham/' + scope.row.id">
-              <el-button
-                size="small"
-                class="primary-button"
-                icon="el-icon-edit"
-                circle
-              ></el-button>
+              <el-button size="small" class="primary-button" icon="el-icon-edit" circle></el-button>
             </router-link>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
@@ -130,22 +138,24 @@ export default {
       listLoading: true,
       labelPosition: "top",
       user: null,
+      danhMucs: [],
       formate: formate,
-      form: {
-        search: "",
-        danh_muc_id: null,
-      },
+      danh_muc_id: null,
     };
   },
   created() {
     this.getData();
+    this.getDanhMuc();
   },
   methods: {
     handleCurrentChange(val) {
       this.page = val;
       this.getData(this.page, this.per_page);
     },
-
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
+    },
     handleSizeChange(val) {
       this.per_page = val;
       this.getData(this.page, this.per_page);
@@ -156,6 +166,7 @@ export default {
         per_page: this.per_page,
         page: this.page,
         search: this.search,
+        danh_muc_id: this.danh_muc_id
       });
       this.per_page = data.data.per_page;
       this.page = data.data.page;

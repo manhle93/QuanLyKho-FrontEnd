@@ -1,36 +1,36 @@
 <template>
   <div class="app-container">
     <h4>Danh sách khách hàng</h4>
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="getData()"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="getData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
-      </el-row>
-      <br>
-      <br>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="getData()"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+        >Thêm mới</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -52,8 +52,11 @@
         <template slot-scope="scope">
 
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
       <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi"></el-table-column>
+      <el-table-column label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_hoa_don)}} đ</template>
+      </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -219,7 +222,7 @@
           <el-col :span="12">
             <el-form-item label="Số dư">
               <!-- <el-input size="small" :disabled="true" v-model="form.so_du"></el-input> -->
-              <br>
+              <br />
               {{formate.formatCurrency(form.so_du)}} VNĐ
             </el-form-item>
           </el-col>
@@ -263,7 +266,12 @@
           <el-col :span="12">
             <el-form-item label="Trạng thái">
               <br />
-              <el-select size="small" style="width: 100%" v-model="form.trang_thai" placeholder="Select">
+              <el-select
+                size="small"
+                style="width: 100%"
+                v-model="form.trang_thai"
+                placeholder="Select"
+              >
                 <el-option label="Mới tạo" :value="'moi_tao'"></el-option>
                 <el-option label="Xác nhận" :value="'xac_nhan'"></el-option>
                 <el-option label="Hoạt động" :value="'hoat_dong'"></el-option>
@@ -326,7 +334,7 @@ import {
   getKhachHang,
   editKhachHang,
   addKhachHang,
-  xoaKhachHang
+  xoaKhachHang,
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
@@ -337,10 +345,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -404,61 +412,61 @@ export default {
         loai_thanh_vien_id: null,
         tin_nhiem: null,
         diem_quy_doi: null,
-        tien_vay: null
+        tien_vay: null,
       },
       rules: {
         ten: [
           {
             required: true,
             message: "Tên khách hàng không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
         ],
         ma: [
           {
             required: true,
             message: "Mã khách hàng không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
         ],
         so_dien_thoai: [
           {
             required: true,
             message: "Số điện thoại không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         email: [
           {
             required: true,
             message: "Email không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email hợp lệ",
-            trigger: ["blur", "change"]
-          }
+            trigger: ["blur", "change"],
+          },
         ],
         username: [
           {
             required: true,
             message: "Tên đăng nhập không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         password: [
           { validator: validatePass, trigger: "blur" },
           {
             min: 6,
             message: "Độ dài tối thiểu 6 kí tự",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-        password_confirmation: [{ validator: validatePass2, trigger: "blur" }]
-      }
+        password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -499,7 +507,7 @@ export default {
       let data = await getKhachHang({
         per_page: per_page,
         page: page,
-        search: this.search
+        search: this.search,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
@@ -509,33 +517,36 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      getKhachHang({ search: this.search }).then(response => {
+      getKhachHang({ search: this.search }).then((response) => {
         this.list = response.data;
         this.listLoading = false;
       });
     },
     deleteAppUserID(item) {
       this.$confirm(
-        "Bạn chắc chắn muốn xóa khách hàng: " + "<strong>" + item.ten + "</strong>",
+        "Bạn chắc chắn muốn xóa khách hàng: " +
+          "<strong>" +
+          item.ten +
+          "</strong>",
 
         "Xóa khách hàng",
         {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaKhachHang(item.id).then(res => {
+        .then((_) => {
+          xoaKhachHang(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
@@ -543,14 +554,14 @@ export default {
       this.showForm = true;
     },
     addKhachHang(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addKhachHang(this.form).then(res => {
+          addKhachHang(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -560,14 +571,14 @@ export default {
       });
     },
     updateKhachHang(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          editKhachHang(this.form.id, this.form).then(res => {
+          editKhachHang(this.form.id, this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -604,7 +615,7 @@ export default {
         tin_nhiem: null,
         diem_quy_doi: null,
         tien_vay: null,
-        trang_thai: null
+        trang_thai: null,
       };
     },
     handleChange(e) {
@@ -612,11 +623,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -629,8 +640,8 @@ export default {
     handleSizeChange(val) {
       this.per_page = val;
       this.getData(this.page, this.per_page);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
@@ -665,6 +676,6 @@ export default {
   z-index: -9999;
 }
 .el-form-item__label {
-  line-height: 30px
+  line-height: 30px;
 }
 </style>

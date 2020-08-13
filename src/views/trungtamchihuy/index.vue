@@ -59,7 +59,11 @@
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
         >SẢN PHẨM BÁN CHẠY</div>
         <div style="display:flex; justify-content: space-between;">
-          <div style="color: #515A5A; font-weight: bold;">DOANH THU</div>
+          <!-- <div style="color: #515A5A; font-weight: bold;">DOANH THU</div> -->
+          <el-select v-model="typeChart"  style="z-index: 2;" @change="changeTypeChart(typeChart)">
+            <el-option label="DOANH THU" :value="'doanh_thu'"></el-option>
+            <el-option label="SỐ LƯỢNG" :value="'so_luong'"></el-option>
+          </el-select>
           <div style="padding-right: 30px">
             <el-date-picker
               style="z-index: 2;"
@@ -103,6 +107,7 @@ export default {
       date: new Date(),
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
+      typeChart: 'doanh_thu',
       data: {
         khach_hang: 0,
         don_hang: 0,
@@ -118,7 +123,10 @@ export default {
   },
   methods: {
     thoiGianSanPham(e) {
-      this.$refs["banchay"].getData(e);
+      this.$refs["banchay"].getData(e, this.typeChart);
+    },
+    changeTypeChart(e){
+      this.$refs["banchay"].getData(this.date, e);
     },
     async getData() {
       let data = await dashboard();

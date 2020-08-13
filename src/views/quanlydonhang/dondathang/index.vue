@@ -110,6 +110,11 @@
               >Hủy hóa đơn</el-tag>
               <el-tag
                 effect="plain"
+                v-if="scope.row.trang_thai == 'khach_huy'"
+                type="warning"
+              >Khách huỷ đơn</el-tag>
+              <el-tag
+                effect="plain"
                 type="success"
                 v-if="scope.row.trang_thai == 'hoa_don'"
               >Đã chuyển hóa đơn</el-tag>
@@ -120,7 +125,7 @@
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
                 <el-button
-                  v-if="scope.row.trang_thai != 'huy_bo' && scope.row.trang_thai != 'huy_hoa_don'"
+                  v-if="scope.row.trang_thai != 'huy_bo' && scope.row.trang_thai != 'huy_hoa_don' && scope.row.trang_thai != 'khach_huy'"
                   size="small"
                   type="warning"
                   icon="el-icon-refresh-left"

@@ -1,5 +1,8 @@
 <template>
-  <div class="c-flex fh ttch maint" :style="{height: hideSidebar ? 'calc(100vh - 80px)': 'calc(100vh - 120px)'}">
+  <div
+    class="c-flex fh ttch maint"
+    :style="{height: hideSidebar ? 'calc(100vh - 80px)': 'calc(100vh - 120px)'}"
+  >
     <div
       class="c-grow c-flex c-column"
       style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
@@ -186,6 +189,7 @@
               size="small"
               v-model="form.khach_hang_id"
               filterable
+              clearable
               remote
               :remote-method="remoteMethod"
               reserve-keyword
@@ -207,11 +211,20 @@
               </el-option>
             </el-select>
             <el-button
+              v-if="form.khach_hang_id"
               circle
               size="mini"
               icon="el-icon-info"
               class="success-button"
               @click="showInfo"
+            ></el-button>
+            <el-button
+              v-else
+              circle
+              size="mini"
+              icon="el-icon-plus"
+              class="success-button"
+              @click="showAddKhachHang"
             ></el-button>
           </el-form-item>
           <el-form-item label="Ghi chú">
@@ -314,7 +327,7 @@
         </div>
 
         <div>
-          <el-rate disabled v-model="UserInfo.tin_nhiem" :colors="colors"></el-rate>
+          <el-rate disabled :value="+UserInfo.tin_nhiem" :colors="colors"></el-rate>
         </div>
       </div>
       <el-row style="margin-top: 50px;">
@@ -340,6 +353,125 @@
         <el-button class="primary-button" @click="showUserDetail = false" icon="el-icon-close">Đóng</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="THÊM MỚI KHÁCH HÀNG"
+      :visible.sync="showFormAddKhachHang"
+      width="700px"
+      center
+    >
+      <el-form :model="formKhaHang" :rules="rulesKhachHang" ref="formKhaHang">
+        <el-steps :space="200" :active="next ? 1 : 2" simple>
+          <el-step title="Thông tin khách hàng" icon="el-icon-info"></el-step>
+          <el-step title="Tài khoản đăng nhập" icon="el-icon-user"></el-step>
+        </el-steps>
+        <br />
+        <el-row :gutter="40" v-show="next">
+          <el-col :span="12">
+            <el-form-item label="Mã khách hàng" prop="ma">
+              <el-input size="small" v-model="formKhaHang.ma" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Loại khách hàng">
+              <br />
+              <el-radio v-model="formKhaHang.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
+              <el-radio v-model="formKhaHang.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Tên khách hàng" prop="ten">
+              <el-input size="small" v-model="formKhaHang.ten"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Mã số thuế">
+              <el-input size="small" v-model="formKhaHang.ma_so_thue"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Số điện thoại" prop="so_dien_thoai">
+              <el-input size="small" v-model="formKhaHang.so_dien_thoai"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Giới tính">
+              <br />
+              <el-radio v-model="formKhaHang.gioi_tinh" :label="true" border size="small">Nam</el-radio>
+              <el-radio v-model="formKhaHang.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Ngày sinh">
+              <br />
+              <el-date-picker
+                size="small"
+                style="width: 100%"
+                v-model="formKhaHang.ngay_sinh"
+                type="date"
+                placeholder="Chọn ngày sinh"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Địa chỉ email">
+              <el-input size="small" v-model="formKhaHang.email"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Địa chỉ">
+              <el-input size="small" v-model="formKhaHang.dia_chi"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Ghi chú">
+              <el-input size="small" type="textarea" v-model="formKhaHang.mo_ta" :rows="2"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40" v-show="!next">
+          <el-col :span="14" :offset="5">
+            <el-form-item label="Tên đăng nhập" prop="username">
+              <el-input v-model="formKhaHang.username"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="14" :offset="5">
+            <el-form-item label="Mật khẩu" prop="password">
+              <el-input type="password" v-model="formKhaHang.password"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="14" :offset="5">
+            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
+              <el-input type="password" v-model="formKhaHang.password_confirmation"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          class="primary-button"
+          :disabled="!formKhaHang.ma || !formKhaHang.ten || !formKhaHang.so_dien_thoai"
+          size="small"
+          v-if="next"
+          icon="el-icon-right"
+          @click="next = !next"
+        >Tiếp theo</el-button>
+        <el-button
+          type="warning"
+          size="small"
+          v-if="!next"
+          icon="el-icon-back"
+          @click="next = !next"
+        >Quay lại</el-button>
+        <el-button
+          class="primary-button"
+          size="small"
+          v-if="!next"
+          icon="el-icon-plus"
+          @click="addKhachHang('formKhaHang')"
+        >Thêm mới</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -351,6 +483,7 @@ import { index } from "@/api/danhmucsanpham";
 import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
 import { debounce } from "lodash";
+import { addKhachHang } from "@/api/khachhang";
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -358,12 +491,61 @@ export default {
     });
   },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("Hãy nhập mật khẩu mới"));
+      } else {
+        if (this.formKhaHang.password_confirmation !== "") {
+          this.$refs.formKhaHang.validateField("password_confirmation");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("Hãy nhập lại mật khẩu mới"));
+      } else if (value !== this.formKhaHang.password) {
+        callback(new Error("Mật khẩu hai lần nhập không trùng khớp"));
+      } else {
+        callback();
+      }
+    };
     return {
       showUserDetail: false,
       active: 0,
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
       loading: false,
+      next: true,
+      showFormAddKhachHang: false,
+      formKhaHang: {
+        id: null,
+        ten: null,
+        ma: "KH" + new Date().getTime(),
+        so_dien_thoai: null,
+        dia_chi: null,
+        ngay_sinh: null,
+        ghi_chu: null,
+        ca_nhan: false,
+        ma_so_thue: null,
+        gioi_tinh: true,
+        email: null,
+        username: null,
+        password: null,
+        password_confirmation: null,
+        anh_dai_dien: null,
+        facebook: null,
+        trang_thai: null,
+        so_tai_khoan: null,
+        so_du: null,
+        chuyen_khoan_cuoi: null,
+        giao_dich_cuoi: null,
+        nhom_id: null,
+        loai_thanh_vien_id: null,
+        tin_nhiem: null,
+        diem_quy_doi: null,
+        tien_vay: null,
+      },
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
         ten: "Đơn hàng tại quầy ",
@@ -401,6 +583,60 @@ export default {
       shipper: [],
       hideSidebar: false,
       role_id: null,
+      rulesKhachHang: {
+        ten: [
+          {
+            required: true,
+            message: "Tên khách hàng không thể bỏ trống",
+            trigger: "blur",
+          },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+        ma: [
+          {
+            required: true,
+            message: "Mã khách hàng không thể bỏ trống",
+            trigger: "blur",
+          },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+        so_dien_thoai: [
+          {
+            required: true,
+            message: "Số điện thoại không thể bỏ trống",
+            trigger: "blur",
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: "Email không được bỏ trống",
+            trigger: "blur",
+          },
+          {
+            type: "email",
+            message: "Hãy nhập một địa chỉ email hợp lệ",
+            trigger: ["blur", "change"],
+          },
+        ],
+        username: [
+          {
+            required: true,
+            message: "Tên đăng nhập không thể bỏ trống",
+            trigger: "blur",
+          },
+        ],
+        password: [
+          { validator: validatePass, trigger: "blur" },
+          {
+            min: 6,
+            message: "Độ dài tối thiểu 6 kí tự",
+            trigger: "blur",
+          },
+        ],
+        password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
+      },
+
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -420,7 +656,6 @@ export default {
       },
     };
   },
-
   created() {
     this.getSanPham();
     this.getKhachHang();
@@ -480,14 +715,26 @@ export default {
     },
   },
   methods: {
+    addKhachHang(formKhaHang) {
+      this.$refs[formKhaHang].validate((valid) => {
+        if (valid) {
+          addKhachHang(this.formKhaHang).then((res) => {
+            this.resetFormKhaHang();
+            this.getKhachHang();
+            this.$message({
+              type: "success",
+              message: "Thêm mới thành công",
+            });
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+
     async remoteMethod(query) {
       this.loading = true;
-      // setTimeout(() => {
-      //   this.loading = false;
-      //   this.nhaCungCaps = this.list.filter((item) => {
-      //     return item.ten.toLowerCase().indexOf(query.toLowerCase()) > -1;
-      //   });
-      // }, 200);
       let data = await getKhachHang({
         per_page: 999999,
         search: query,
@@ -498,6 +745,10 @@ export default {
     async getDanhMuc() {
       let data = await index();
       this.danhMucs = data.data;
+    },
+    async showAddKhachHang() {
+      this.resetFormKhaHang();
+      this.showFormAddKhachHang = true;
     },
     async getSanPham() {
       let data = await listSanPham({
@@ -675,6 +926,39 @@ export default {
       getShipper().then((res) => {
         this.shipper = res;
       });
+    },
+
+    resetFormKhaHang() {
+      this.showFormAddKhachHang = false;
+      (this.next = true),
+        (this.formKhaHang = {
+          id: null,
+          ten: null,
+          ma: "KH" + new Date().getTime(),
+          so_dien_thoai: null,
+          dia_chi: null,
+          ngay_sinh: null,
+          ghi_chu: null,
+          ca_nhan: false,
+          ma_so_thue: null,
+          gioi_tinh: true,
+          email: null,
+          username: null,
+          password: null,
+          password_confirmation: null,
+          anh_dai_dien: null,
+          facebook: null,
+          so_tai_khoan: null,
+          so_du: null,
+          chuyen_khoan_cuoi: null,
+          giao_dich_cuoi: null,
+          nhom_id: null,
+          loai_thanh_vien_id: null,
+          tin_nhiem: null,
+          diem_quy_doi: null,
+          tien_vay: null,
+          trang_thai: null,
+        });
     },
   },
 };

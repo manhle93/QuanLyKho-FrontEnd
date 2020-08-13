@@ -86,20 +86,16 @@
       <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="150">
         <template slot-scope="scope">{{ scope.row.username }}</template>
       </el-table-column>
-      <el-table-column label="Email" min-width="150">
+      <el-table-column label="Vai trò" min-width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.role.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Số điện thoại" min-width="157">
         <template slot-scope="scope">{{ scope.row.phone }}</template>
       </el-table-column>
-      <el-table-column label="Tỉnh thành" min-width="157">
-        <template slot-scope="scope" v-if="scope.row.tinh_thanh !== null">
-          {{
-          scope.row.tinh_thanh.name
-          }}
-        </template>
+      <el-table-column min-width="157" label="Địa chỉ">
+        <template slot-scope="scope">{{scope.row.khach_hang ? scope.row.khach_hang.dia_chi : ""}}</template>
       </el-table-column>
       <el-table-column
         sortable
@@ -300,12 +296,9 @@ export default {
       await getInfor().then((res) => {
         this.user_login = res.data;
       });
-      if (this.user_login.role.code == "quan_ly_tinh_thanh") {
-        this.form.tinh_thanh_id[0] = this.user_login.tinh_thanh_id;
-        this.timKiemTinhThanh = true;
-      }
       getUser({ page: this.page, per_page: this.per_page }).then((response) => {
         this.list = response.data.data;
+        console.log(this.list);
         this.page = response.data.current_page;
         this.per_page = response.data.per_page;
         this.total = response.data.total;
