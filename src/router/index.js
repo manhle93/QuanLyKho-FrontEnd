@@ -532,6 +532,35 @@ export const asyncRoutes = [
         ]
     },
     {
+        path: "/caidat",
+        component: Layout,
+        meta: {
+            title: "Cài đặt",
+            icon: "caidat"
+        },
+        name: "Cài đặt",
+        children: [
+            {
+                path: "slider",
+                name: "Slider",
+                component: () => import("@/views/caidat/slider/index"),
+                meta: {
+                    title: "Slider",
+                    icon: "slider"
+                }
+            },
+            {
+                path: "monngonmoingay",
+                name: "Món ngon mỗi ngày",
+                component: () => import("@/views/caidat/monngon/index"),
+                meta: {
+                    title: "Món ngon mỗi ngày",
+                    icon: "monngonmoingay"
+                }
+            },
+        ]
+    },
+    {
         path: "/baocao",
         component: Layout,
         meta: {

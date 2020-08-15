@@ -60,12 +60,22 @@
         >SẢN PHẨM BÁN CHẠY</div>
         <div style="display:flex; justify-content: space-between;">
           <!-- <div style="color: #515A5A; font-weight: bold;">DOANH THU</div> -->
-          <el-select v-model="typeChart"  style="z-index: 2;" @change="changeTypeChart(typeChart)">
+          <el-select v-model="typeChart" style="z-index: 2;" @change="changeTypeChart(typeChart)">
             <el-option label="DOANH THU" :value="'doanh_thu'"></el-option>
             <el-option label="SỐ LƯỢNG" :value="'so_luong'"></el-option>
           </el-select>
           <div style="padding-right: 30px">
             <el-date-picker
+             style="z-index: 2; width: 100%"
+              @change="thoiGianSanPham(date)"
+              v-model="date"
+              type="daterange"
+              format="dd/MM/yyyy"
+              range-separator="-"
+              start-placeholder="Start date"
+              end-placeholder="End date"
+            ></el-date-picker>
+            <!-- <el-date-picker
               style="z-index: 2;"
               @change="thoiGianSanPham(date)"
               v-model="date"
@@ -73,7 +83,7 @@
               type="month"
               format="MM/yyyy"
               placeholder="Chọn thời gian"
-            ></el-date-picker>
+            ></el-date-picker>-->
           </div>
         </div>
         <chart ref="banchay" height="100%" width="100%" />
@@ -104,10 +114,10 @@ export default {
   },
   data() {
     return {
-      date: new Date(),
+      date: [],
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
-      typeChart: 'doanh_thu',
+      typeChart: "doanh_thu",
       data: {
         khach_hang: 0,
         don_hang: 0,
@@ -120,12 +130,19 @@ export default {
   created() {
     this.getInfo();
     this.getData();
+    var date = new Date(),
+      y = date.getFullYear(),
+      m = date.getMonth();
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m + 1, 0);
+    this.date = [firstDay, lastDay];
+    console.log(this.date)
   },
   methods: {
     thoiGianSanPham(e) {
       this.$refs["banchay"].getData(e, this.typeChart);
     },
-    changeTypeChart(e){
+    changeTypeChart(e) {
       this.$refs["banchay"].getData(this.date, e);
     },
     async getData() {

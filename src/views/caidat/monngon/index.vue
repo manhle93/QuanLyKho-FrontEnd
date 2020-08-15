@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách sản phẩm hàng hóa</h4>
+    <h4>Món ngon mỗi ngày</h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
+      <!-- <el-col :span="5">
         <el-input
           size="small"
           placeholder="Thông tin tìm kiếm"
@@ -12,7 +12,12 @@
         ></el-input>
       </el-col>
       <el-col :span="4">
-        <el-select v-model="danh_muc_id" placeholder="Chọn danh mục" size="small" style="width: 100%">
+        <el-select
+          v-model="danh_muc_id"
+          placeholder="Chọn danh mục"
+          size="small"
+          style="width: 100%"
+        >
           <el-option
             v-for="item in danhMucs"
             :key="item.id"
@@ -28,29 +33,49 @@
           icon="el-icon-search"
           @click="getData()"
         >Tìm kiếm</el-button>
+      </el-col>-->
+      <el-col :span="5">
+        <el-select
+          remote
+          filterable
+          v-model="sanPhamID"
+          placeholder="Chọn sản phẩm"
+          size="small"
+          style="width: 80%"
+          :remote-method="remoteMethod"
+          :loading="loading"
+        >
+          <el-option
+            v-for="item in sanPhams"
+            :key="item.id"
+            :label="item.ten_san_pham"
+            :value="item.id"
+            :disabled="checkDaChon(item.id)"
+          ></el-option>
+        </el-select>
+        <el-button circle icon="el-icon-plus" class="primary-button" @click="addData()"></el-button>
       </el-col>
-      <el-col :span="10">
-        <router-link to="themsanpham">
-          <el-button
-            style="float:right"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </router-link>
+      <el-col :span="19">
+        <el-button
+          style="float: right"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+          @click="addSanPham"
+        >CẬP NHẬT</el-button>
       </el-col>
     </el-row>
     <br />
     <br />
     <el-table
-      v-loading="listLoading"
       :data="list"
+      v-loading="listLoading"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row
       style="font-size: 13px"
-     >
+    >
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
@@ -74,34 +99,18 @@
       </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
-            <router-link :to="'capnhatsanpham/' + scope.row.id">
-              <el-button size="small" class="primary-button" icon="el-icon-edit" circle></el-button>
-            </router-link>
-          </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
             <el-button
               size="small"
               type="danger"
               icon="el-icon-delete"
               circle
-              @click="deleteAppUserID(scope.row)"
+              @click="xoaSanPham(scope.$index, scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
-    <br />
-    <div class="block">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 15, 20]"
-        layout="total, sizes, prev, pager, next"
-        :total="total"
-      ></el-pagination>
-    </div>
   </div>
 </template>
 
@@ -115,6 +124,7 @@ import {
 } from "@/api/danhmucsanpham";
 import { listSanPham, addSanPham, xoaSanPham } from "@/api/sanpham";
 
+import { addMonNgon, getMonNgon } from "@/api/caidat";
 export default {
   filters: {
     statusFilter(status) {
@@ -130,84 +140,90 @@ export default {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
+      sanPhams: [],
+      sanPhamID: null,
       list: [],
       page: 1,
       per_page: 10,
       total: 0,
       search: "",
       listLoading: true,
+      loading: false,
       labelPosition: "top",
       user: null,
       danhMucs: [],
       formate: formate,
       danh_muc_id: null,
+      monNgon: [],
     };
   },
   created() {
+    this.getMonNgonMoiNgay();
     this.getData();
     this.getDanhMuc();
   },
   methods: {
-    handleCurrentChange(val) {
-      this.page = val;
-      this.getData(this.page, this.per_page);
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    xoaSanPham(index, data) {
+      this.list.splice(index, 1);
+    },
+    async getMonNgonMoiNgay() {
+      this.listLoading = true
+      let data = await getMonNgon();
+      this.list = data;
+      this.listLoading = false
     },
     async getDanhMuc() {
       let data = await index();
       this.danhMucs = data.data;
     },
-    handleSizeChange(val) {
-      this.per_page = val;
-      this.getData(this.page, this.per_page);
+    async addSanPham() {
+      this.monNgon = [];
+      this.monNgon = this.list.map(el => el.id)
+      try {
+        let data = await addMonNgon({ data: this.monNgon });
+        this.$message({
+          message: "Cập nhật thành công",
+          type: "success",
+        });
+      } catch (error) {}
+    },
+    addData() {
+      if (this.sanPhamID) {
+        let sanPham = this.sanPhams.find((el) => el.id == this.sanPhamID);
+        this.list.push(sanPham);
+      }
+      this.sanPhamID = null
+    },
+    checkDaChon(id) {
+      let a = this.list.find((el) => el.id == id);
+      if (a) return true;
+      return false;
+    },
+    async remoteMethod(query) {
+      this.loading = true;
+      let data = await listSanPham({
+        per_page: 30,
+        search: query,
+      });
+      this.sanPhams = data.data.data;
+      this.loading = false;
     },
     async getData() {
-      this.listLoading = true;
+      this.loading = true;
       let data = await listSanPham({
-        per_page: this.per_page,
-        page: this.page,
-        search: this.search,
-        danh_muc_id: this.danh_muc_id
+        per_page: 30,
       });
-      this.per_page = data.data.per_page;
-      this.page = data.data.page;
-      this.list = data.data.data;
-      this.total = data.data.total;
-      this.listLoading = false;
-    },
-    // searchData(page = 1, per_page = 10) {
-    //   this.listLoading = true;
-    //   this.getData(this.form).then(response => {
-    //     this.list = response.data.data;
-    //     this.page = response.data.current_page;
-    //     this.per_page = response.data.per_page;
-    //     this.total = response.data.total;
-    //     this.listLoading = false;
-    //   });
-    // },
-    deleteAppUserID(item) {
-      this.$confirm(
-        "Bạn chắc chắn muốn xóa sản phẩm: " +
-          "<strong>" +
-          item.ten_san_pham +
-          "</strong>",
-        "Xóa sản phẩm",
-        {
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: "Xóa",
-          cancelButtonText: "Hủy",
-          type: "warning",
-        }
-      )
-        .then((_) => {
-          xoaSanPham(item.id).then((res) => {
-            this.$message({
-              message: "Xóa thành công",
-              type: "success",
-            });
-            this.getData();
-          });
-        })
-        .catch((_) => {});
+      this.sanPhams = data.data.data;
+      this.loading = false;
     },
   },
 };
