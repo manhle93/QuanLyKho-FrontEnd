@@ -558,6 +558,35 @@ export const asyncRoutes = [
                     icon: "monngonmoingay"
                 }
             },
+            {
+                path: "baiviet",
+                name: "Bài viết",
+                component: () => import("@/views/caidat/baiviet/index"),
+                meta: {
+                    title: "Bài viết",
+                    icon: "monngonmoingay"
+                }
+            },
+            {
+                path: "vietbai",
+                name: "Viết bài",
+                component: () => import("@/views/caidat/baiviet/create"),
+                meta: {
+                    title: "Viết bài",
+                    icon: "monngonmoingay"
+                },
+                hidden: true
+            },
+            {
+                path: "capnhatbaiviet/:id",
+                name: "Cập nhật bài viết",
+                component: () => import("@/views/caidat/baiviet/edit"),
+                meta: {
+                    title: "Cập nhật bài viết",
+                    icon: "capnhatbaiviet"
+                },
+                hidden: true
+            },
         ]
     },
     {

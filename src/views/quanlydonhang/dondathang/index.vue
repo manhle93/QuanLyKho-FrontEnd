@@ -101,6 +101,8 @@
           </el-table-column>
           <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
             <template slot-scope="scope">
+              <el-tag type="success" effect="plain" v-if="scope.row.trang_thai == 'mua_hang_online'">Mua hàng online</el-tag>
+              <el-tag type="primary" effect="plain" v-if="scope.row.trang_thai == 'dat_hang_online'">Đặt hàng online</el-tag>
               <el-tag type="success" effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
               <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
               <el-tag

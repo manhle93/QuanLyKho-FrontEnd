@@ -42,3 +42,39 @@ export function getMonNgon() {
       method: 'get',
   })
 }
+
+export function addBaiViet(data) {
+  return request({
+      url: 'baiviet',
+      method: 'post',
+      data
+  })
+}
+
+export function getBaiViet(params) {
+  return request({
+      url: 'baiviet',
+      method: 'get',
+      params
+  })
+}
+
+export function xoaBaiViet(id) {
+  return request({
+      url: 'baiviet/' + id,
+      method: 'delete',
+  })
+}
+export function chiTietBaiViet(id) {
+  return request({
+      url: 'baiviet/' + id,
+      method: 'get',
+  })
+}
+export function editBaiViet(id, data) {
+  return request({
+      url: 'baiviet/' + id,
+      method: 'put',
+      data
+  })
+}
