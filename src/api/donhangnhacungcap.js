@@ -67,3 +67,41 @@ export function getSanPhamNhaCungCap(params) {
     params
   });
 }
+
+export function traHangNhaCungCap(data) {
+  return request({
+    url: "trahangnhacungcap",
+    method: "post",
+    data
+  });
+}
+
+export function getDonTraHang(params) {
+  return request({
+    url: "trahangnhacungcap",
+    method: "get",
+    params
+  });
+}
+
+export function xoaDonTraHang(id) {
+  return request({
+    url: "trahangnhacungcap/" + id,
+    method: "delete",
+  });
+}
+
+export function updateDonTraHang(id, data) {
+  return request({
+    url: "trahangnhacungcap/" + id,
+    method: "put",
+    data
+  });
+}
+
+export function donHangNhapKho(id) {
+  return request({
+    url: "donhangnhacungcapnhapkho/" + id,
+    method: "get",
+  });
+}

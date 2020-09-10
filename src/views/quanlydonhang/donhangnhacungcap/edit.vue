@@ -113,8 +113,8 @@
           <el-form-item>
             <br />
             <el-button icon="el-icon-plus" class="primary-button" @click="addSanPham()"></el-button>
-            <el-tooltip  effect="dark" content="In hóa đơn" placement="top-start">
-            <el-button icon="el-icon-printer" class="primary-button" @click="inDonHang()"></el-button>
+            <el-tooltip effect="dark" content="In hóa đơn" placement="top-start">
+              <el-button icon="el-icon-printer" class="primary-button" @click="inDonHang()"></el-button>
             </el-tooltip>
           </el-form-item>
         </el-col>
@@ -168,10 +168,10 @@
     </el-form>
     <br />
     <el-row>
-      <el-col :span="14">
+      <el-col :span="12">
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" :offset="2">
         <el-row v-if="form.trang_thai != 'nhap_kho' && form.trang_thai != 'huy_bo'">
           <el-col :span="8">
             <el-button
@@ -232,6 +232,15 @@
             <el-option v-for="item in khos" :key="item.id" :label="item.ten" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Số tiền thanh toán cho NCC (VNĐ)">
+          <el-input-number
+            :step="100"
+            :min="0"
+            :max="form.tong_tien"
+            v-model="so_tien_thanh_toan"
+            style="width: 100%"
+          ></el-input-number>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button
@@ -265,6 +274,7 @@ export default {
     return {
       active: 1,
       src: process.env.VUE_APP_BASE,
+      so_tien_thanh_toan: 0,
       form: {
         ma: null,
         ten: null,
@@ -383,8 +393,13 @@ export default {
         }
       }
     },
-    inDonHang(){
-      window.open(process.env.VUE_APP_BASE_API + 'inhoadonnhacungcap/' + this.$route.params.id, '_blank');
+    inDonHang() {
+      window.open(
+        process.env.VUE_APP_BASE_API +
+          "inhoadonnhacungcap/" +
+          this.$route.params.id,
+        "_blank"
+      );
     },
     tongTien(param) {
       const { columns, data } = param;
@@ -472,7 +487,7 @@ export default {
       this.showFormNhapKho = true;
     },
     nhapKho() {
-      nhapKho(this.$route.params.id, { kho_id: this.kho_id }).then((res) => {
+      nhapKho(this.$route.params.id, { kho_id: this.kho_id, so_tien_thanh_toan: this.so_tien_thanh_toan }).then((res) => {
         this.$message({
           message: "Nhập kho thành công",
           type: "success",

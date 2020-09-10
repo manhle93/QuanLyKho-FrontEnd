@@ -254,7 +254,7 @@ export default {
       });
     },
     back() {
-      this.$router.push("/quanlydonhang/baogia");
+      this.$router.push("/quanlykho/baogia");
     },
     resetForm() {
       this.form = {

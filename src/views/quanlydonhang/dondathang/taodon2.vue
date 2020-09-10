@@ -163,13 +163,13 @@
         <br />
         <el-button
           size="small"
-          @click="form.trang_thai = 'hoa_don'"
-          :class="form.trang_thai == 'hoa_don' ? 'success-button' : ''"
+          @click="setMuaHang"
+          :class="mua_hang ? 'success-button' : ''"
         >BÁN HÀNG</el-button>
         <el-button
           size="small"
-          :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
-          @click="form.trang_thai = 'moi_tao'"
+          :class="!mua_hang ? 'success-button' : ''"
+          @click="setDatHang"
         >ĐẶT HÀNG</el-button>
         <br />
         <br />
@@ -565,6 +565,7 @@ export default {
         thoi_gian_nhan_hang: new Date(),
         phu_thu: null,
       },
+      mua_hang: false,
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
@@ -636,7 +637,6 @@ export default {
         ],
         password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
       },
-
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -657,6 +657,8 @@ export default {
     };
   },
   created() {
+    this.mua_hang = this.$store.state.datmuahang.banHang
+    console.log('m_h',this.mua_hang)
     this.getSanPham();
     this.getKhachHang();
     this.getBangGia();
@@ -927,7 +929,14 @@ export default {
         this.shipper = res;
       });
     },
-
+    setMuaHang(){
+      this.mua_hang = true
+      this.form.trang_thai = 'hoa_don'
+    },
+    setDatHang(){
+      this.mua_hang = false
+      this.form.trang_thai = 'moi_tao'
+    },
     resetFormKhaHang() {
       this.showFormAddKhachHang = false;
       (this.next = true),

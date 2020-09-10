@@ -127,26 +127,32 @@
         style="color: #229954; font-size: 23px; padding-top: 5px; font-weight: bold; margin-left: 10px"
       >HỆ THỐNG QUẢN LÝ TMĐT RUỘNG BẬC THANG</div>
     </div>
+    <div style="display:flex; flex-direction: row; align-items: center">
+      <div style="margin-right: 50px">
+        <el-button size="small" class="primary-button" @click="banHang()">Bán hàng</el-button>
+        <el-button size="small" type="warning" @click="datHang()">Đặt hàng</el-button>
+      </div>
 
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="src" class="user-avatar" />
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/users/taikhoan">
-            <el-dropdown-item>
-              <label>Thông tin tài khoản</label>
+      <div class="right-menu">
+        <el-dropdown class="avatar-container" trigger="click">
+          <div class="avatar-wrapper">
+            <img :src="src" class="user-avatar" />
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dropdown">
+            <router-link to="/users/taikhoan">
+              <el-dropdown-item>
+                <label>Thông tin tài khoản</label>
+              </el-dropdown-item>
+            </router-link>
+            <el-dropdown-item divided>
+              <span style="display:block;" @click="logout()">
+                <label>Đăng xuất</label>
+              </span>
             </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout()">
-              <label>Đăng xuất</label>
-            </span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
   </div>
 </template>
@@ -243,6 +249,14 @@ export default {
       clearInterval(realTimeThongBao);
       await docThongBao();
     },
+    banHang() {
+      this.$store.state.datmuahang.banHang = true;
+      this.$router.push("/quanlydonhang/taodondathang");
+    },
+    datHang() {
+      this.$store.state.datmuahang.banHang = false;
+      this.$router.push("/quanlydonhang/taodondathang");
+    },
     fetchData() {
       getInfor().then((res) => {
         if (
@@ -312,10 +326,7 @@ export default {
   }
 
   .right-menu {
-    float: right;
     height: 100%;
-    line-height: 50px;
-
     &:focus {
       outline: none;
     }

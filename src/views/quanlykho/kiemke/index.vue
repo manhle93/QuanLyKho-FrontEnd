@@ -23,7 +23,7 @@
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
-          <router-link to="/quanlykho/taokiemke">
+          <router-link to="/quanlydonhang/taokiemke">
             <el-button
               style="float: right"
               size="small"
@@ -261,7 +261,7 @@ export default {
       this.listLoading = false;
     },
     edit(id) {
-      this.$router.push("/quanlykho/thongtinkiemke/" + id);
+      this.$router.push("/quanlydonhang/thongtinkiemke/" + id);
     },
     async getKhachHang() {
       let data = await getKhachHang({

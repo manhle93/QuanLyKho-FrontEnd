@@ -40,7 +40,7 @@
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
-          <router-link to="/quanlydonhang/taobaogia">
+          <router-link to="/quanlykho/taobaogia">
             <el-button
               style="float: right"
               size="small"

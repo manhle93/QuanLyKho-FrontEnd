@@ -88,6 +88,7 @@ const actions = {
     getPermissions({ commit, state }) {
         return new Promise((resolve, reject) => {
             getMenuRole().then((result) => {
+                console.log('rt',result.data)
                 commit('SET_PERMISSIONS', result.data)
                 setPermissions(JSON.stringify(result.data));
                 resolve()
