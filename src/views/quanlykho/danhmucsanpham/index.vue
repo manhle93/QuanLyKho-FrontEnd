@@ -86,7 +86,7 @@
         <el-row>
           <el-col style="text-align: center">
             <div class="block">
-              <img style="widht: 150px; height: 150px" :src="src" />
+              <img style="widht: 150px; height: 150px" :src="srcForm" />
               <input
                 ref="upload-image"
                 class="upload-image"
@@ -171,6 +171,7 @@ export default {
   data() {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/product.png",
+      srcForm: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
       list: [],
       showForm: false,
@@ -212,9 +213,9 @@ export default {
       this.form.mo_ta = data.mo_ta;
       this.form.id = data.id;
       if (data.anh_dai_dien) {
-        this.src = process.env.VUE_APP_BASE + data.anh_dai_dien;
+        this.srcForm = process.env.VUE_APP_BASE + data.anh_dai_dien;
       } else {
-        this.src =
+        this.srcForm =
           process.env.VUE_APP_BASE + "images/avatar/product.png";
       }
     },
@@ -313,7 +314,7 @@ export default {
       upAnhDanhMuc(data)
         .then(res => {
           this.form.anh_dai_dien = res;
-          this.src = process.env.VUE_APP_BASE + res;
+          this.srcForm = process.env.VUE_APP_BASE + res;
         })
         .catch(error => {});
     },

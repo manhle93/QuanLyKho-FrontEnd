@@ -314,6 +314,8 @@ export default {
       this.dataHangTra = [];
       this.showCreate = true;
       this.edit = false;
+      this.formAdd.nha_cung_cap_id = null
+      this.tongTien = 0
     },
     async update() {
       if (!this.formAdd.nha_cung_cap_id) {
