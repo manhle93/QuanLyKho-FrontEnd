@@ -135,7 +135,7 @@
           </el-select>
         </el-col>
         <el-col :span="10">
-          <el-select
+          <!-- <el-select
             size="small"
             style="width: 100%"
             placeholder="Chọn đơn hàng"
@@ -151,6 +151,41 @@
               <span style="float: left">{{ item.ten }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.ma }}</span>
             </el-option>
+          </el-select>-->
+
+          <el-select
+            size="small"
+            style="width: 100%"
+            placeholder="Chọn đơn hàng"
+            v-model="don_hang_id"
+          >
+            <el-option-group label="Đơn mua hàng NCC">
+              <el-option
+                v-for="item in donhangnhacungcaps"
+                :key="item.id"
+                :value="item.id"
+                :label="item.ten"
+                :disabled="checkDaChon(item)"
+                @click.native="chonDon('mua_hang')"
+              >
+                <span style="float: left">{{ item.ten }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.ma }}</span>
+              </el-option>
+            </el-option-group>
+
+            <el-option-group label="Đơn trả hàng NCC">
+              <el-option
+                v-for="item in traHangNhaCungCaps"
+                :key="item.id"
+                :value="item.id"
+                :label="item.ma_don"
+                :disabled="checkDaChonTraHang(item)"
+                @click.native="chonDon('tra_hang')"
+              >
+                <span style="float: left">{{ item.ma_don }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">-{{ item.tong_tien }} đ</span>
+              </el-option>
+            </el-option-group>
           </el-select>
         </el-col>
         <el-col :span="2">
@@ -175,10 +210,16 @@
           </template>
         </el-table-column>
         <el-table-column label="Tổng thanh toán" prop="da_thanh_toan">
-          <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+          <template
+            slot-scope="scope"
+            v-if="scope.row.loai == 'mua_hang'"
+          >{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
         </el-table-column>
         <el-table-column label="Đã thanh toán" prop="da_thanh_toan">
-          <template slot-scope="scope">{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
+          <template
+            slot-scope="scope"
+            v-if="scope.row.loai == 'mua_hang'"
+          >{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
         </el-table-column>
         <el-table-column label="Phải thanh toán" prop="so_luong">
           <template
@@ -276,8 +317,11 @@
       </el-row>
       <br />
       <br />
-      <span>Công nợ đầu kỳ: <label>{{formate.formatCurrency(this.no_dau_ky)}} đ</label></span>
-      <br>
+      <span>
+        Công nợ đầu kỳ:
+        <label>{{formate.formatCurrency(this.no_dau_ky)}} đ</label>
+      </span>
+      <br />
       <el-table :data="tableCongNo" height="350px">
         <el-table-column type="index" label="STT"></el-table-column>
         <el-table-column label="Thời gian" prop="thoi_gian"></el-table-column>
@@ -290,23 +334,36 @@
         </el-table-column>
         <el-table-column label="Hành động" prop="hanh_dong">
           <template slot-scope="scope">
-            <el-tag  effect="plain"  v-if="scope.row.hanh_dong == 'nhap_hang'">Nhập hàng</el-tag>
-            <el-tag  effect="plain" type="success"  v-if="scope.row.hanh_dong == 'thanh_toan'">Thanh toán</el-tag>
-            <el-tag  effect="plain" type="warning"  v-if="scope.row.hanh_dong == 'tra_hang'">Trả hàng</el-tag>
+            <el-tag effect="plain" v-if="scope.row.hanh_dong == 'nhap_hang'">Nhập hàng</el-tag>
+            <el-tag
+              effect="plain"
+              type="success"
+              v-if="scope.row.hanh_dong == 'thanh_toan'"
+            >Thanh toán</el-tag>
+            <el-tag effect="plain" type="warning" v-if="scope.row.hanh_dong == 'tra_hang'">Trả hàng</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Nợ phát sinh" prop="so_tien">
-          <template slot-scope="scope">{{scope.row.hanh_dong == 'nhap_hang' ? '+ ' : '- ' }} {{formate.formatCurrency(scope.row.so_tien)}} đ</template>
+          <template
+            slot-scope="scope"
+          >{{scope.row.hanh_dong == 'nhap_hang' ? '+ ' : '- ' }} {{formate.formatCurrency(scope.row.so_tien)}} đ</template>
         </el-table-column>
         <el-table-column label="Nợ cuối" prop="no_cuoi">
           <template slot-scope="scope">{{formate.formatCurrency(scope.row.no_cuoi)}} đ</template>
         </el-table-column>
       </el-table>
-      <br /><br>
-      <span>Phát sinh trong kỳ: <label>{{formate.formatCurrency(tong_phat_sinh)}} đ</label></span>
       <br />
       <br />
-      <span>Công nợ cuối kỳ: <label>{{formate.formatCurrency(no_cuoi_ky)}} đ</label></span>
+      <span>
+        Phát sinh trong kỳ:
+        <label>{{formate.formatCurrency(tong_phat_sinh)}} đ</label>
+      </span>
+      <br />
+      <br />
+      <span>
+        Công nợ cuối kỳ:
+        <label>{{formate.formatCurrency(no_cuoi_ky)}} đ</label>
+      </span>
 
       <span slot="footer" class="dialog-footer">
         <el-button size="small" type="warning" icon="el-icon-close" @click="showCongNo = false">Đóng</el-button>
@@ -339,6 +396,7 @@ export default {
       listLoading: true,
       loading: false,
       search: "",
+      loai_don: null,
       showCreate: false,
       list: [],
       formate: formate,
@@ -347,6 +405,7 @@ export default {
       don_hang_id: null,
       dataDonHang: [],
       donhangnhacungcaps: [],
+      traHangNhaCungCaps: [],
       nha_cung_cap_id: null,
       isInputActive: false,
       tongTienPhaiThanhToan: 0,
@@ -403,6 +462,9 @@ export default {
       this.showCreate = true;
       this.resetForm();
     },
+    chonDon(e) {
+      this.loai_don = e;
+    },
     async getLichSuThanhToan() {
       this.listLoading = true;
       let data = await getLichSuThanhToan({
@@ -422,6 +484,8 @@ export default {
       this.dataDonHang = [];
       this.thanh_toan = 0;
       this.tongTienPhaiThanhToan = 0;
+      this.donhangnhacungcaps = []
+      this.traHangNhaCungCaps = []
       this.don_hang_id = null;
       this.formAdd = {
         nha_cung_cap_id: null,
@@ -443,7 +507,8 @@ export default {
       let user_nha_cung_cap = this.nhaCungCaps.find((el) => el.id == id)
         .user_id;
       let data = await donHangNhapKho(user_nha_cung_cap);
-      this.donhangnhacungcaps = data;
+      this.donhangnhacungcaps = data.don_hang;
+      this.traHangNhaCungCaps = data.tra_hang;
     },
     themSanPham() {
       if (!this.don_hang_id) {
@@ -453,14 +518,27 @@ export default {
         });
         return;
       }
-
-      let donHang = this.donhangnhacungcaps.find(
-        (el) => el.id == this.don_hang_id
-      );
-      this.don_hang_id = null;
+      let donHang = new Object();
+      if (this.loai_don == "mua_hang") {
+        donHang = this.donhangnhacungcaps.find(
+          (el) => el.id == this.don_hang_id
+        );
+        donHang.loai = "mua_hang";
+      }
+      if (this.loai_don == "tra_hang") {
+        donHang = this.traHangNhaCungCaps.find(
+          (el) => el.id == this.don_hang_id
+        );
+        donHang.loai = "tra_hang";
+        donHang.ten = "Trả hàng NCC";
+        let tt = donHang.tong_tien;
+        donHang.tong_tien = 0;
+        donHang.da_thanh_toan = tt;
+      }
       this.tongTienPhaiThanhToan =
         +this.tongTienPhaiThanhToan +
         (donHang.tong_tien - donHang.da_thanh_toan);
+      this.don_hang_id = null;
       this.dataDonHang.push(donHang);
     },
     async showUpdate(data) {
@@ -470,12 +548,29 @@ export default {
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;
       await this.getDonHang(this.formAdd.nha_cung_cap_id);
       this.dataDonHang = [];
-      this.dataDonHang = data.don_hangs.map((el) => {
-        let sanPham = this.donhangnhacungcaps.find(
-          (it) => it.id === el.don_hang_id
-        );
+      let donHang = data.don_hangs.map((el) => {
+        let sanPham = new Object();
+        if (el.loai == "mua_hang") {
+          sanPham = this.donhangnhacungcaps.find(
+            (it) => it.id === el.don_hang_id
+          );
+          sanPham.loai = "mua_hang"
+        }
+        if (el.loai == "tra_hang") {
+          sanPham = this.traHangNhaCungCaps.find(
+            (it) => it.id === el.don_tra_hang_id
+          );
+          let tt = sanPham.tong_tien;
+          sanPham.tong_tien = 0;
+          sanPham.da_thanh_toan = tt;
+          sanPham.ten = "Trả hàng NCC";
+          sanPham.loai = "tra_hang"
+        }
+
         return sanPham;
       });
+      this.dataDonHang = donHang
+      this.formAdd.donHangCus = JSON.parse(JSON.stringify(donHang));
       this.don_thanh_toan_id = data.id;
       this.formAdd.phai_thanh_toan = +data.phai_thanh_toan;
       this.tongTienPhaiThanhToan = +data.phai_thanh_toan;
@@ -512,7 +607,7 @@ export default {
         date: this.dateCongNo,
         nha_cung_cap: id,
       });
-      this.no_dau_ky = data.no_dau_ky
+      this.no_dau_ky = data.no_dau_ky;
       let newData = [];
       data.nhap_hang.map((nh) => {
         newData.push({
@@ -563,7 +658,7 @@ export default {
         };
       });
       this.no_cuoi_ky = tempNoDauKy;
-      this.tong_phat_sinh = tempPhatSinh
+      this.tong_phat_sinh = tempPhatSinh;
       this.tableCongNo = newData;
     },
     changeTimeCongNo() {
@@ -577,10 +672,22 @@ export default {
         this.tongTienPhaiThanhToan -
         (this.dataDonHang[index].tong_tien -
           this.dataDonHang[index].da_thanh_toan);
+
       this.dataDonHang.splice(index, 1);
     },
     checkDaChon(item) {
-      if (item.thanh_toan || this.dataDonHang.find((el) => el.id == item.id))
+      if (
+        item.thanh_toan ||
+        this.dataDonHang.find((el) => el.id == item.id && el.loai == "mua_hang")
+      )
+        return true;
+      return false;
+    },
+    checkDaChonTraHang(item) {
+      if (
+        item.thanh_toan ||
+        this.dataDonHang.find((el) => el.id == item.id && el.loai == "tra_hang")
+      )
         return true;
       return false;
     },

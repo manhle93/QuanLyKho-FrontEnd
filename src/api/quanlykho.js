@@ -15,3 +15,11 @@ export function hangTrongKho(params) {
     params
   });
 }
+
+export function nhapKhoNgoai(data) {
+  return request({
+    url: "nhapkhongoai",
+    method: "post",
+    data
+  });
+}

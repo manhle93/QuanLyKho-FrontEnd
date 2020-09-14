@@ -54,7 +54,31 @@
           </el-row>
         </el-form>
         <br />
-        <h4>Danh sách đơn hàng nhà cung cấp</h4>
+        <div class="d-flex" style="align-items: center; justify-content: space-between">
+          <h4>Danh sách đơn hàng nhà cung cấp</h4>
+          <el-dropdown trigger="click">
+            <el-button
+              class="el-dropdown-link primary-button"
+              icon="el-icon-setting"
+              circle
+              size="mini"
+            ></el-button>
+            <el-dropdown-menu slot="dropdown" style="padding-right: 5px">
+              <el-checkbox v-model="showColumn.stt" style="padding-left: 10px">STT</el-checkbox>
+              <el-checkbox v-model="showColumn.ma">Mã đơn hàng</el-checkbox>
+              <el-checkbox v-model="showColumn.ten">Tên đơn hàng</el-checkbox>
+              <el-checkbox v-model="showColumn.tong_tien">Tổng tiền</el-checkbox>
+              <el-checkbox v-model="showColumn.ghi_chu">Ghi chú</el-checkbox>
+              <el-checkbox v-model="showColumn.chiet_khau">Chiết khấu</el-checkbox>
+              <el-checkbox v-model="showColumn.da_tt">Đã thanh toán</el-checkbox>
+              <el-checkbox v-model="showColumn.thoi_gian_nhan_hang">Còn phải thanh toán</el-checkbox>
+              <el-checkbox v-model="showColumn.trang_thai">Trạng thái</el-checkbox>
+              <el-checkbox v-model="showColumn.tao_boi" style="padding-right: 10px">Đơn tạo bởi</el-checkbox>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <br />
+        <br />
         <el-row>
           <el-col :span="24">
             <el-table
@@ -64,21 +88,21 @@
               style="width: 100%; font-size: 13px"
               border
             >
-              <el-table-column sortable type="index" label="STT"></el-table-column>
-              <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
-              <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
-              <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien">
+              <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
+              <el-table-column property="ma" label="Mã đơn hàng" min-width="125" v-if="showColumn.ma"></el-table-column>
+              <el-table-column property="ten" label="Tên đơn hàng" min-width="123" v-if="showColumn.ten"></el-table-column>
+              <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien" v-if="showColumn.tong_tien">
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
               </el-table-column>
-              <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-              <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau">
+              <el-table-column property="ghi_chu" label="Ghi chú" min-width="123" v-if="showColumn.ghi_chu"></el-table-column>
+              <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau" v-if="showColumn.chiet_khau">
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.chiet_khau)}} đ</template>
               </el-table-column>
-              <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan">
+              <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan" v-if="showColumn.da_tt">
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
               </el-table-column>
-              <el-table-column prop="thoi_gian" label="Thời gian nhận hàng"></el-table-column>
-              <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
+              <el-table-column prop="thoi_gian" label="Thời gian nhận hàng" v-if="showColumn.thoi_gian_nhan_hang"></el-table-column>
+              <el-table-column property="trang_thai" label="Trạng thái" min-width="125" v-if="showColumn.trang_thai">
                 <template slot-scope="scope">
                   <el-tag
                     type="success"
@@ -98,11 +122,11 @@
                   <el-tag
                     effect="dark"
                     type="success"
-                    v-if="scope.row.trang_thai == 'nhap_kho'"
+                    v-if="scope.row.trang_thai == 'nhap_kho' || scope.row.trang_thai == 'nhap_kho_ngoai'"
                   >Đã nhập kho</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
+              <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name" v-if="showColumn.tao_boi"></el-table-column>
               <el-table-column label="Hành động" align="center" fixed="right" width="120">
                 <template slot-scope="scope">
                   <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
@@ -150,10 +174,10 @@
 <script>
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
-import ThanhToan from "./thanhtoan"
+import ThanhToan from "./thanhtoan";
 export default {
   components: {
-    ThanhToan
+    ThanhToan,
   },
   data() {
     return {
@@ -170,6 +194,18 @@ export default {
       form: {
         date: [],
         nha_cung_cap: null,
+      },
+      showColumn: {
+        stt: true,
+        ma: true,
+        ten: true,
+        tong_tien: true,
+        ghi_chu: true,
+        da_tt: true,
+        thoi_gian_nhan_hang: true,
+        chiet_khau: true,
+        trang_thai: true,
+        tao_boi: true,
       },
       formAdd: {
         id: null,
@@ -319,4 +355,8 @@ export default {
 
 
 <style lang="scss" scoped>
+.d-flex {
+  display: flex;
+  flex-direction: row;
+}
 </style>
