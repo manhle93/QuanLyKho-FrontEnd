@@ -52,6 +52,9 @@
         </template>
       </el-table-column>
       <el-table-column label="Công ty" min-width="157" prop="cong_ty"></el-table-column>
+      <el-table-column label="Công nợ phải trả" min-width="157" prop="cong_no">
+        <template slot-scope="scope">{{formate.formatCurrency(scope.row.cong_no)}} đ</template>
+      </el-table-column>
       <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
@@ -289,6 +292,7 @@ export default {
       page: 1,
       per_page: 10,
       total: 0,
+      formate: formate,
       search: "",
       listLoading: true,
       labelPosition: "top",

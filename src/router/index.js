@@ -334,7 +334,7 @@ export const asyncRoutes = [
           import("@/views/quanlydonhang/trahangnhacungcap/index"),
         meta: {
           title: "Trả hàng nhà cung cấp",
-          icon: "donhangnhacungcap"
+          icon: "trahang"
         }
       },
       {

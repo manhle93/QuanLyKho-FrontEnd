@@ -105,3 +105,42 @@ export function donHangNhapKho(id) {
     method: "get",
   });
 }
+
+export function thanhToanDonNCC(data) {
+  return request({
+    url: "thanhtoandonhangnhacungcap",
+    method: "post",
+    data
+  });
+}
+
+export function getLichSuThanhToan(params) {
+  return request({
+    url: "thanhtoandonhangnhacungcap",
+    method: "get",
+    params
+  });
+}
+
+export function updateThanhToanDonNCC($id, data) {
+  return request({
+    url: "thanhtoandonhangnhacungcap/" + $id,
+    method: "put",
+    data
+  });
+}
+
+export function xoaThanhToanDonNCC($id) {
+  return request({
+    url: "thanhtoandonhangnhacungcap/" + $id,
+    method: "delete",
+  });
+}
+
+export function theoDoiCongNo(params) {
+  return request({
+    url: "theodoicongno" ,
+    method: "get",
+    params
+  });
+}

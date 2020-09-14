@@ -3,19 +3,9 @@
     <h3>Thông tin</h3>
     <el-col :span="8" style="text-align:center; margin-top:30px;">
       <img class="avatar-image" :src="src" />
-      <input
-        ref="upload-image"
-        class="upload-image"
-        type="file"
-        @change="handleChange($event)"
-      />
+      <input ref="upload-image" class="upload-image" type="file" @change="handleChange($event)" />
       <br />
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="Thay đổi ảnh đại diện"
-        placement="top"
-      >
+      <el-tooltip class="item" effect="dark" content="Thay đổi ảnh đại diện" placement="top">
         <el-button
           type="success"
           style="margin-top:20px;"
@@ -30,15 +20,8 @@
       <el-col :span="10">
         <el-row>
           <el-col :span="10">
-            <el-form-item
-              label="Tên đăng nhập"
-              prop="username"
-              :error="error.username"
-            >
-              <el-input
-                :disabled="true"
-                v-model="formLabelAlign.username"
-              ></el-input>
+            <el-form-item label="Tên đăng nhập" prop="username" :error="error.username">
+              <el-input :disabled="true" v-model="formLabelAlign.username"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10" :offset="4">
@@ -47,11 +30,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="Email" prop="email" :error="error.email">
-          <el-input v-model="formLabelAlign.email"></el-input>
-        </el-form-item>
         <el-row>
           <el-col :span="10">
+            <el-form-item label="Email" prop="email" :error="error.email">
+              <el-input v-model="formLabelAlign.email"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" :offset="4">
             <el-form-item label="Số điện thoại" :error="error.phone">
               <el-input v-model="formLabelAlign.phone"></el-input>
             </el-form-item>
@@ -61,27 +46,32 @@
           class="primary-button block"
           style="margin-top:20px;"
           @click="submit('formLabelAlign')"
-          >Cập nhật thông tin</el-button
-        >
-        <el-button type="warning" @click="showUpdate()" icon="el-icon-edit"
-          >Đổi mật khẩu</el-button
-        >
+        >Cập nhật thông tin</el-button>
+        <el-button type="warning" @click="showUpdate()" icon="el-icon-edit">Đổi mật khẩu</el-button>
         <el-card class="box-card" style="margin-top: 30px">
           <div slot="header" class="clearfix">
             <h4>Thông tin quyền quản trị</h4>
           </div>
-          <div class="text item">
-            <b>Mã quyền:</b>
-            {{ formLabelAlign.role.code }}
+          <el-row class="text item">
+            <el-col :span="4">Tên quyền:</el-col>
+            <el-col :span="10">
+              <b>{{ formLabelAlign.role.name }}</b>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="text item">Mô tả:</el-col>
+            <el-col :span="10" class="text item">
+              <b>{{ formLabelAlign.role.description }}</b>
+            </el-col>
+          </el-row>
+          <!-- <div class="text item">
+            Tên quyền:
+            <b>{{ formLabelAlign.role.name }}</b>
           </div>
           <div class="text item">
-            <b>Tên quyền:</b>
-            {{ formLabelAlign.role.name }}
-          </div>
-          <div class="text item">
-            <b>Mô Tả:</b>
-            {{ formLabelAlign.role.description }}
-          </div>
+            Mô Tả:
+           
+          </div>-->
         </el-card>
         <reset-password
           :active="showEditForm"
@@ -102,7 +92,7 @@ import { getQuanHuyen, getQuanHuyenTheoTinh } from "@/api/QuanHuyen";
 // import { logOut } from "@/api/company";
 export default {
   components: {
-    ResetPassword
+    ResetPassword,
   },
   data() {
     return {
@@ -119,7 +109,7 @@ export default {
         phone: "",
         avatar_url: "",
         tinh_thanh_id: "",
-        quan_huyen_id: ""
+        quan_huyen_id: "",
       },
       tinhthanhs: [],
       quanhuyens: [],
@@ -134,8 +124,8 @@ export default {
         role: {
           code: "",
           name: "",
-          description: ""
-        }
+          description: "",
+        },
       },
 
       rules: {
@@ -143,31 +133,31 @@ export default {
           {
             required: true,
             message: "Tên không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 2, message: "Tên tối thiểu 2 ký tự", trigger: "blur" }
+          { min: 2, message: "Tên tối thiểu 2 ký tự", trigger: "blur" },
         ],
         username: [
           {
             required: true,
             message: "Tên không được bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 2, message: "Tên tối thiểu 2 ký tự", trigger: "blur" }
+          { min: 2, message: "Tên tối thiểu 2 ký tự", trigger: "blur" },
         ],
         email: [
           {
             required: true,
             message: "Email đăng nhập không được bỏ trống",
-            trigger: "change"
+            trigger: "change",
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email",
-            trigger: ["blur", "change"]
-          }
-        ]
-      }
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
     };
   },
   created() {
@@ -180,7 +170,7 @@ export default {
       this.showEditForm = true;
     },
     async tinhThanh() {
-      getTinhThanh().then(res => {
+      getTinhThanh().then((res) => {
         this.tinhthanhs = res.data;
         this.tinhthanhs.sort((a, b) =>
           a.name > b.name ? 1 : b.name > a.name ? -1 : 0
@@ -188,7 +178,7 @@ export default {
       });
     },
     fetchData() {
-      getInfor().then(res => {
+      getInfor().then((res) => {
         this.formLabelAlign = res.data;
         if (res.data.avatar_url == null || res.data.avatar_url == "") {
           this.src =
@@ -218,20 +208,20 @@ export default {
       return formatted;
     },
     submit(updateInfo) {
-      this.$refs[updateInfo].validate(valid => {
+      this.$refs[updateInfo].validate((valid) => {
         if (valid) {
           this.error.email = "";
           this.error.name = "";
           this.error.phone = "";
           editInfor(this.formLabelAlign)
-            .then(res => {
+            .then((res) => {
               this.$message({
                 title: "Thành công",
                 message: "Cập nhật thành công",
-                type: "success"
+                type: "success",
               });
             })
-            .catch(error => {
+            .catch((error) => {
               this.$emit("onCreatePosition", error);
             });
         } else {
@@ -250,9 +240,9 @@ export default {
         this.$message({
           title: "Thành công",
           message: "Đổi mật khẩu thành công",
-          type: "success"
+          type: "success",
         });
-        this.logout().then(res => {});
+        this.logout().then((res) => {});
       }
     },
     async logout() {
@@ -272,24 +262,24 @@ export default {
         this.$message.error("Kích thước tập tin tối đa 20Mb!");
         return false;
       }
-      if (!dinhDangChoPhep.find(el => el == filePath)) {
+      if (!dinhDangChoPhep.find((el) => el == filePath)) {
         this.loadingUpload = false;
         this.listLoading = false;
         this.iconUpload = "el-icon-bottom";
         this.$message({
           message: "Tập tin không hợp lệ, hãy upload file ảnh",
-          type: "warning"
+          type: "warning",
         });
         return;
       } else {
         uploadAvatar(data)
-          .then(res => {
+          .then((res) => {
             this.src = process.env.VUE_APP_BASE + res;
           })
-          .catch(error => {});
+          .catch((error) => {});
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

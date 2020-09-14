@@ -56,8 +56,8 @@
         </div>
       </div>
     </div>
-    <div style="display: flex; height: calc(100vh - 250px); padding-bottom: 40px; margin-top: 30px">
-      <div style="flex: 1;">
+    <div style="display: flex; height: calc(100vh - 250px); padding-bottom: 40px; margin-top: 30px;">
+      <div style="flex: 2;">
         <!-- <div
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
         >SẢN PHẨM BÁN CHẠY</div>
@@ -106,7 +106,7 @@
         </div>
         <br />
         <el-table :data="dataUser" height="100%">
-          <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+          <!-- <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column> -->
           <el-table-column prop="user.name" width="250" label="Họ và tên">
             <template slot-scope="scope">
               <div
@@ -128,7 +128,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="E-Mail" prop="email"></el-table-column>
+          <!-- <el-table-column label="E-Mail" prop="email"></el-table-column> -->
           <el-table-column label="Vai trò" prop="role.name"></el-table-column>
           <el-table-column label="Trạng thái">
             <template slot-scope="scope">
