@@ -31,6 +31,14 @@
           @click="searchData()"
         >Tìm kiếm</el-button>
       </el-col>
+      <el-col :span="6">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+        >Thêm mới</el-button>
+      </el-col>
     </el-row>
     <br />
     <br />
@@ -45,7 +53,10 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table :data="props.row.don_hang ? props.row.don_hang.san_phams: []" style="width: 60%;">
+          <el-table
+            :data="props.row.don_hang ? props.row.don_hang.san_phams: []"
+            style="width: 60%;"
+          >
             <el-table-column label="STT" type="index"></el-table-column>
             <el-table-column label="Sản phẩm" prop="san_pham.ten_san_pham"></el-table-column>
             <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
@@ -60,11 +71,11 @@
           </el-table>
           <br />
           <div
-          v-if="props.row.don_hang"
+            v-if="props.row.don_hang"
             style="margin-top: 15px; font-size: 16px; font-family: time new roman"
           >Chiết khấu: {{formate.formatCurrency(props.row.don_hang.chiet_khau)}} đ</div>
           <div
-          v-if="props.row.don_hang"
+            v-if="props.row.don_hang"
             style="margin-top: 15px; font-size: 17px; font-family: time new roman; font-weight: bold"
           >Tổng tiền: {{formate.formatCurrency(props.row.don_hang.tong_tien)}} đ</div>
         </template>
@@ -81,7 +92,7 @@
       </el-table-column>
       <el-table-column label="Ghi chú" align="center">
         <template slot-scope="scope">
-          <el-tag type="success" effect="plain"  v-if="scope.row.don_hang_id">Nhập từ nhà cung cấp</el-tag>
+          <el-tag type="success" effect="plain" v-if="scope.row.don_hang_id">Nhập từ nhà cung cấp</el-tag>
           <el-tag type="warning" effect="plain" v-else>Hoàn hàng</el-tag>
         </template>
       </el-table-column>
@@ -178,14 +189,16 @@ export default {
       this.page = data.data.current_page;
       this.per_page = data.data.per_page;
       this.listLoading = false;
-      console.log(this.list)
+      console.log(this.list);
     },
     searchData() {
       this.listLoading = true;
-      getPhieuNhap({ search: this.search, date: this.date }).then((response) => {
-        this.list = response.data.data;
-        this.listLoading = false;
-      });
+      getPhieuNhap({ search: this.search, date: this.date }).then(
+        (response) => {
+          this.list = response.data.data;
+          this.listLoading = false;
+        }
+      );
     },
     deleteAppUserID(item) {
       this.$confirm(

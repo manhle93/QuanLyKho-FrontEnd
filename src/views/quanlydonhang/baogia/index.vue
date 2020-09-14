@@ -271,7 +271,7 @@ export default {
       this.listLoading = false;
     },
     edit(id) {
-      this.$router.push("/quanlydonhang/capnhatbaogia/" + id);
+      this.$router.push("/quanlykho/capnhatbaogia/" + id);
     }
   }
 };

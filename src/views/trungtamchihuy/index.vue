@@ -250,7 +250,7 @@ export default {
     async getInfo() {
       let data = await getInfor();
       if (data.data.role_id == 3) {
-        this.$router.push("/quanlydonhang/baogia");
+        this.$router.push("/quanlykho/baogia");
       }
     },
     formatDateTime(time) {
