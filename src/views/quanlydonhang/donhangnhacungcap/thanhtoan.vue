@@ -541,6 +541,7 @@ export default {
       this.don_hang_id = null;
       this.dataDonHang.push(donHang);
     },
+
     async showUpdate(data) {
       this.don_id = data.id;
       this.edit = true;
@@ -638,7 +639,7 @@ export default {
           hanh_dong: "tra_hang",
           ma: th.ma,
           ten: th.ten,
-          so_tien: parseInt(tt.tong_tien),
+          so_tien: parseInt(th.tong_tien),
         });
       });
       newData = newData.sort((a, b) => a.thoi_gian < b.thoi_gian);
@@ -660,6 +661,7 @@ export default {
       this.no_cuoi_ky = tempNoDauKy;
       this.tong_phat_sinh = tempPhatSinh;
       this.tableCongNo = newData;
+
     },
     changeTimeCongNo() {
       if (this.nha_cung_cap_id) {
