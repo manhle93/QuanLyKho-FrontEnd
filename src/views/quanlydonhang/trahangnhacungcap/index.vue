@@ -112,6 +112,7 @@
           placeholder="Chọn nhà cung cấp"
           v-model="formAdd.nha_cung_cap_id"
           clearable
+          @change="changeNhaCungCap(formAdd.nha_cung_cap_id)"
         >
           <el-option v-for="item in nhaCungCaps" :key="item.id" :label="item.ten" :value="item.id"></el-option>
         </el-select>
@@ -124,13 +125,14 @@
             style="width: 100%"
             placeholder="Chọn hàng hóa"
             v-model="addSanPham.hang_hoa_id"
+            @change="getDonGia(addSanPham.hang_hoa_id)"
           >
             <el-option
               v-for="item in hangHoas"
-              :key="item.id"
-              :label="item.ten_san_pham"
-              :value="item.id"
-              :disabled="checkDaChon(item.id)"
+              :key="item.san_pham.id"
+              :label="item.san_pham.ten_san_pham"
+              :value="item.san_pham.id"
+              :disabled="checkDaChon(item.san_pham.id)"
             ></el-option>
           </el-select>
         </el-col>
@@ -216,7 +218,8 @@ import {
   getDonTraHang,
   xoaDonTraHang,
   traHangNhaCungCap,
-  updateDonTraHang
+  updateDonTraHang,
+  getSanPhamNhaCungCap,
 } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import { listSanPham } from "@/api/sanpham";
@@ -304,7 +307,7 @@ export default {
   created() {
     this.getDonHang();
     this.getNhaCungCap();
-    this.getSanPham();
+    // this.getSanPham();
   },
 
   mounted() {},
@@ -314,8 +317,14 @@ export default {
       this.dataHangTra = [];
       this.showCreate = true;
       this.edit = false;
-      this.formAdd.nha_cung_cap_id = null
-      this.tongTien = 0
+      this.formAdd.nha_cung_cap_id = null;
+      this.tongTien = 0;
+      this.hangHoas = []
+    },
+    async changeNhaCungCap(id) {
+      let user_id = this.nhaCungCaps.find((el) => el.id == id).user_id;
+      let data = await getSanPhamNhaCungCap({ nha_cung_cap_id: user_id });
+      this.hangHoas = data;
     },
     async update() {
       if (!this.formAdd.nha_cung_cap_id) {
@@ -343,6 +352,11 @@ export default {
           type: "success",
         });
       } catch (error) {}
+    },
+    getDonGia(id) {
+      this.addSanPham.don_gia = this.hangHoas.find(
+        (el) => el.san_pham_id == id
+      ).don_gia;
     },
     async submit() {
       if (!this.formAdd.nha_cung_cap_id) {
@@ -420,11 +434,11 @@ export default {
       let sanPham = {};
       sanPham.san_pham_id = this.addSanPham.hang_hoa_id;
       sanPham.ten_san_pham = this.hangHoas.find(
-        (el) => el.id == this.addSanPham.hang_hoa_id
-      ).ten_san_pham;
+        (el) => el.san_pham_id == this.addSanPham.hang_hoa_id
+      ).san_pham.ten_san_pham;
       sanPham.don_vi_tinh = this.hangHoas.find(
-        (el) => el.id == this.addSanPham.hang_hoa_id
-      ).don_vi_tinh;
+        (el) => el.san_pham_id == this.addSanPham.hang_hoa_id
+      ).san_pham.don_vi_tinh;
       sanPham.so_luong = this.addSanPham.so_luong;
       sanPham.don_gia = this.addSanPham.don_gia;
       this.tongTien =
@@ -473,28 +487,29 @@ export default {
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
       });
-      console.log(data);
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;
       this.tableData = data.data;
       this.listLoading = false;
     },
-    showUpdate(data) {
-      this.don_id = data.id
+    async showUpdate(data) {
+      this.don_id = data.id;
       this.edit = true;
       this.showCreate = true;
       this.tongTien = data.tong_tien;
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;
+      await this.changeNhaCungCap(data.nha_cung_cap_id);
       this.dataHangTra = [];
       this.dataHangTra = data.san_phams.map((el) => {
         var { created_at, updated_at, ...rest } = el;
-        var exist = this.hangHoas.find((item) => item.id == el.san_pham_id);
+        var exist = this.hangHoas.find((item) => item.san_pham_id == el.san_pham_id).san_pham;
         return {
           ...rest,
           ten_san_pham: exist ? exist.ten_san_pham : "",
         };
       });
+      this.formAdd.donHangCu = JSON.parse(JSON.stringify(this.dataHangTra))
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({

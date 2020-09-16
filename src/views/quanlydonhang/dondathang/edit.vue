@@ -82,7 +82,7 @@
                     slot-scope="scope"
                   >{{formate.formatCurrency(Math.ceil(scope.row.so_luong * scope.row.don_gia))}} đ</template>
                 </el-table-column>
-                <el-table-column label="Xóa">
+                <el-table-column label="Xóa" v-if="!cap_nhat">
                   <template slot-scope="scope">
                     <el-button
                       type="danger"
@@ -98,7 +98,7 @@
           </div>
         </el-form>
       </div>
-      <div class="sanpham">
+      <div class="sanpham" v-if="!cap_nhat">
         <transition name="bounce" v-for="item in hangHoas" :key="item.id">
           <div v-show="!kiemTraDaChon(item.id)">
             <el-card :body-style="{ padding: '0px' }" style="width: 150px; margin-right: 20px">
@@ -142,6 +142,7 @@
           :class="form.trang_thai == 'hoa_don' ? 'success-button' : ''"
         >BÁN HÀNG</el-button>
         <el-button
+          v-if="!cap_nhat"
           size="small"
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
@@ -277,12 +278,19 @@
             @click="submit('form')"
           >ĐẶT HÀNG</el-button>
           <el-button
-            v-else
+            v-if="form.trang_thai != 'moi_tao' && !cap_nhat"
             style="float: right; width: 100%; height: 80px;font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
           >THANH TOÁN</el-button>
+          <el-button
+            v-if="cap_nhat"
+            style="float: right; width: 100%; height: 80px;font-size: 20px"
+            icon="el-icon-check"
+            class="success-button"
+            @click="submit('form')"
+          >CẬP NHẬT</el-button>
         </el-col>
         <div
           v-if="form.trang_thai == 'huy_bo' || form.trang_thai == 'khach_huy'"
@@ -342,7 +350,7 @@
       :visible.sync="showFormAddKhachHang"
       width="700px"
       center
-      >
+    >
       <el-form :model="formKhaHang" :rules="rulesKhachHang" ref="formKhaHang">
         <el-steps :space="200" :active="next ? 1 : 2" simple>
           <el-step title="Thông tin khách hàng" icon="el-icon-info"></el-step>
@@ -499,6 +507,7 @@ export default {
       endPointImage: process.env.VUE_APP_BASE,
       next: true,
       showFormAddKhachHang: false,
+      cap_nhat: false,
       formKhaHang: {
         id: null,
         ten: null,
@@ -715,6 +724,9 @@ export default {
         item.so_luong = sp.so_luong;
         item.hang_hoa = sp.san_pham;
         this.form.danhSachHang.push(item);
+      }
+      if (data.data.trang_thai == "hoa_don") {
+        this.cap_nhat = true;
       }
     },
     showInfo() {

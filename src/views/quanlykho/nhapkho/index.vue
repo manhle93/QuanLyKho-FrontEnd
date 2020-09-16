@@ -422,6 +422,7 @@ export default {
       try {
         let data = await nhapKhoNgoai(this.formAdd);
         this.getData();
+        this.showCreate = false;
         this.$message({
           type: "success",
           message: "Thành công",

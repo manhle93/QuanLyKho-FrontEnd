@@ -172,7 +172,7 @@
         <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
       </el-col>
       <el-col :span="6" :offset="2">
-        <el-row v-if="form.trang_thai != 'nhap_kho' && form.trang_thai != 'huy_bo'">
+        <el-row v-if="form.trang_thai != 'nhap_kho' && form.trang_thai != 'huy_bo' && form.trang_thai != 'nhap_kho_ngoai'">
           <el-col :span="8">
             <el-button
               v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh'"
@@ -208,7 +208,7 @@
             >Cập nhật</el-button>
           </el-col>
         </el-row>
-        <el-row v-if="form.trang_thai == 'nhap_kho'">
+        <el-row v-if="form.trang_thai == 'nhap_kho' || form.trang_thai == 'nhap_kho_ngoai'">
           <div
             style="height: 80px; width: 250px; border: 3px solid red; display: flex; align-items:center; justify-content: center; border-radius: 10px"
           >
