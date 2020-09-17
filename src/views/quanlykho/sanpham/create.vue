@@ -39,12 +39,12 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="Loại hàng hóa" prop="danh_muc_id">
+              <el-form-item label="Nhóm hàng hóa" prop="danh_muc_id">
                 <el-select
                   filterable
                   clearable
                   v-model="form.danh_muc_id"
-                  placeholder="Chọn loại hàng hóa"
+                  placeholder="Chọn nhóm hàng hóa"
                   style="width: 100%"
                 >
                   <el-option
@@ -306,7 +306,7 @@ export default {
         danh_muc_id: [
           {
             required: true,
-            message: "Danh mục không thể bỏ trống",
+            message: "Nhóm hàng hóa không thể bỏ trống",
             trigger: "blur",
           },
         ],

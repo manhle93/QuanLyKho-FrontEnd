@@ -173,3 +173,11 @@ export function checkUserCaptcha(params) {
         params
     });
 }
+
+export function updateNhanVien(data) {
+    return request({
+        url: "updatenhanvien",
+        method: "post",
+        data
+    });
+}

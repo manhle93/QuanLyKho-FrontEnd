@@ -40,6 +40,12 @@
       highlight-current-row
       style="font-size: 13px"
     >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
+        </template>
+      </el-table-column>
+
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên nhà cung cấp"></el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
@@ -55,7 +61,7 @@
       <el-table-column label="Công nợ phải trả" min-width="157" prop="cong_no">
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.cong_no)}} đ</template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column align="center" min-width="110"  label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
@@ -152,7 +158,8 @@
             <el-form-item label="Tín nhiệm">
               <br />
               <el-rate
-                v-model="form.tin_nhiem"
+                :value="+form.tin_nhiem"
+                @input="form.tin_nhiem = $event"
                 show-text
                 :colors="colors"
                 :texts="['Thường', 'Trung bình', 'Tốt', 'Tính nhiệm cao', 'Rất cao']"
@@ -250,8 +257,11 @@ import {
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
-
+import ChiTiet from "./chitiet";
 export default {
+  components: {
+    ChiTiet,
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -514,7 +524,6 @@ export default {
       this.page = val;
       this.getData();
     },
-
     handleSizeChange(val) {
       this.per_page = val;
       this.getData();
@@ -554,6 +563,6 @@ export default {
   z-index: -9999;
 }
 .el-form-item__label {
-  line-height: 30px
+  line-height: 30px;
 }
 </style>

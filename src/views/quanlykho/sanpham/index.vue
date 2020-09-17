@@ -36,7 +36,7 @@
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-          >Thêm mới</el-button>
+          >Thêm hàng hóa</el-button>
         </router-link>
       </el-col>
     </el-row>

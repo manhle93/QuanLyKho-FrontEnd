@@ -184,10 +184,10 @@ export const asyncRoutes = [
     children: [
       {
         path: "loaihanghoa",
-        name: "Danh mục hàng hóa",
+        name: "Nhóm hàng hóa",
         component: () => import("@/views/quanlykho/danhmucsanpham/index"),
         meta: {
-          title: "Danh mục hàng hóa",
+          title: "Nhóm hàng hóa",
           icon: "danhmuc"
         }
       },
@@ -203,10 +203,10 @@ export const asyncRoutes = [
 
       {
         path: "loaimathang",
-        name: "Loại mặt hàng",
+        name: "Quản lý hàng hóa",
         component: () => import("@/views/quanlykho/sanpham/index"),
         meta: {
-          title: "Loại mặt hàng",
+          title: "Quản lý hàng hóa",
           icon: "mathang"
         }
       },
@@ -216,6 +216,15 @@ export const asyncRoutes = [
         component: () => import("@/views/user/index"),
         meta: {
           title: "Quản lý người dùng",
+          icon: "quanlynguoidung"
+        }
+      },
+      {
+        path: "nhanvien",
+        name: "Quản lý nhân viên",
+        component: () => import("@/views/user/nhanvien/index"),
+        meta: {
+          title: "Quản lý nhân viên",
           icon: "quanlynguoidung"
         }
       },
