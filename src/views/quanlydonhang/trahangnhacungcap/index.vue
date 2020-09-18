@@ -192,7 +192,10 @@
         </el-table-column>
       </el-table>
       <br />
-      <span>Tổng tiền: {{formate.formatCurrency(tongTien)}} đ</span>
+      <div style="margin-bottom: 10px">
+        <el-input v-model="formAdd.ly_do" placeholder="Lý do trả hàng"></el-input>
+      </div>
+      <div>Tổng tiền: {{formate.formatCurrency(tongTien)}} đ</div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
         <el-button
@@ -201,7 +204,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-        >Thêm mới</el-button>
+        >Xuất trả</el-button>
         <el-button
           class="primary-button"
           size="small"
@@ -253,6 +256,7 @@ export default {
         nha_cung_cap_id: null,
         hangHoas: [],
         tong_tien: 0,
+        ly_do: null
       },
       hangHoas: [],
       nhaCungCaps: [],
@@ -318,8 +322,9 @@ export default {
       this.showCreate = true;
       this.edit = false;
       this.formAdd.nha_cung_cap_id = null;
+      this.formAdd.ly_do = null
       this.tongTien = 0;
-      this.hangHoas = []
+      this.hangHoas = [];
     },
     async changeNhaCungCap(id) {
       let user_id = this.nhaCungCaps.find((el) => el.id == id).user_id;
@@ -499,17 +504,20 @@ export default {
       this.showCreate = true;
       this.tongTien = data.tong_tien;
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;
+      this.formAdd.ly_do = data.ly_do
       await this.changeNhaCungCap(data.nha_cung_cap_id);
       this.dataHangTra = [];
       this.dataHangTra = data.san_phams.map((el) => {
         var { created_at, updated_at, ...rest } = el;
-        var exist = this.hangHoas.find((item) => item.san_pham_id == el.san_pham_id).san_pham;
+        var exist = this.hangHoas.find(
+          (item) => item.san_pham_id == el.san_pham_id
+        ).san_pham;
         return {
           ...rest,
           ten_san_pham: exist ? exist.ten_san_pham : "",
         };
       });
-      this.formAdd.donHangCu = JSON.parse(JSON.stringify(this.dataHangTra))
+      this.formAdd.donHangCu = JSON.parse(JSON.stringify(this.dataHangTra));
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({

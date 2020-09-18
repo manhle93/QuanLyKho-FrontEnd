@@ -127,7 +127,7 @@
           <el-form-item label="Phiếu xuất hủy" prop="ten">
             <el-input size="small" v-model="form.ten"></el-input>
           </el-form-item>
-          <el-form-item label="Ghi chú">
+          <el-form-item label="Nguyên nhân">
             <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
         </el-form>

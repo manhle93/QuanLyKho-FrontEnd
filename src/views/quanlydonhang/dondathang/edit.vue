@@ -71,7 +71,7 @@
                 <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
                 <el-table-column label="Số lượng" width="150px">
                   <template slot-scope="scope">
-                    <el-input-number size="small" :min="0.1" v-model="scope.row.so_luong"></el-input-number>
+                    <el-input-number size="small" :min="0.1" v-model="scope.row.so_luong" :disabled="cap_nhat"></el-input-number>
                   </template>
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá">
@@ -147,8 +147,9 @@
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
         >ĐẶT HÀNG</el-button>
-        <br />
-        <br />
+        <br /><br>
+        <el-checkbox v-model="doiTra" label="Đổi trả hàng" border size="small" style="background: white"></el-checkbox>
+        <br /><br>
         <el-form
           label-position="left"
           label-width="130px"
@@ -233,7 +234,7 @@
           <el-form-item label="Phương thúc" v-if="form.trang_thai == 'hoa_don'" prop="thanh_toan">
             <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
-              <el-option value="chuyen_khoan" label="Chuyển khoản"></el-option>
+              <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
               <el-option value="cod" label="Ship COD"></el-option>
               <el-option value="tai_khoan" label="Tài khoản"></el-option>
             </el-select>
@@ -508,6 +509,7 @@ export default {
       next: true,
       showFormAddKhachHang: false,
       cap_nhat: false,
+      doiTra: false,
       formKhaHang: {
         id: null,
         ten: null,
@@ -657,7 +659,9 @@ export default {
     timKiem: debounce(function () {
       this.getSanPham();
     }, 300),
-
+    doiTra(val){
+      this.cap_nhat = !val
+    },
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien - this.form.da_thanh_toan - val;

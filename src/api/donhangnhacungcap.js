@@ -144,3 +144,34 @@ export function theoDoiCongNo(params) {
     params
   });
 }
+
+export function getPhieuThu(params) {
+  return request({
+    url: "phieuthu" ,
+    method: "get",
+    params
+  });
+}
+
+export function updatePhieuThu(id, data) {
+  return request({
+    url: "phieuthu/" + id ,
+    method: "put",
+    data
+  });
+}
+
+export function addPhieuThu(data) {
+  return request({
+    url: "phieuthu"  ,
+    method: "post",
+    data
+  });
+}
+
+export function xoaPhieuThu(id) {
+  return request({
+    url: "phieuthu/" + id,
+    method: "delete",
+  });
+}

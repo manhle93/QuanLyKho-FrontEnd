@@ -2,57 +2,72 @@
   <el-tabs type="card">
     <el-tab-pane label="Đơn hàng">
       <div class="app-container" v-on:keyup.enter="getDonHang">
-        <el-form :model="form">
-          <el-row :gutter="20" justify="space-around">
-            <el-col :span="6">
-              <el-date-picker
-                style="width: 100%"
-                v-model="form.date"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="Từ ngày"
-                end-placeholder="Đến ngày"
-                size="small"
-                format="dd/MM/yyyy"
-              ></el-date-picker>
-            </el-col>
-            <el-col :span="4">
-              <el-select
-                filterable
-                clearable
-                size="small"
-                v-model="form.nha_cung_cap"
-                placeholder="Chọn nhà cung cấp"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in nhaCungCaps"
-                  :key="item.id"
-                  :label="item.ten"
-                  :value="item.user_id"
-                ></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="3">
+        <el-row :gutter="20" justify="space-around">
+          <el-col :span="6">
+            <el-date-picker
+              style="width: 100%"
+              v-model="form.date"
+              type="daterange"
+              range-separator="-"
+              start-placeholder="Từ ngày"
+              end-placeholder="Đến ngày"
+              size="small"
+              format="dd/MM/yyyy"
+            ></el-date-picker>
+          </el-col>
+          <el-col :span="4">
+            <el-select
+              filterable
+              multiple
+              clearable
+              size="small"
+              v-model="form.trang_thai"
+              placeholder="Trạng thái đơn hàng"
+              style="width: 100%"
+            >
+              <el-option label="Mới tạo" value="moi_tao"></el-option>
+              <el-option label="Hủy bỏ" value="huy_bo"></el-option>
+              <el-option label="Đã duyệt đơn" value="da_duyet"></el-option>
+              <el-option label="Đã nhập kho" value="nhap_kho"></el-option>
+              <el-option label="Đã nhập mua ngoài" value="nhap_kho_ngoai"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="4">
+            <el-select
+              filterable
+              clearable
+              size="small"
+              v-model="form.nha_cung_cap"
+              placeholder="Chọn nhà cung cấp"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in nhaCungCaps"
+                :key="item.id"
+                :label="item.ten"
+                :value="item.user_id"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="3">
+            <el-button
+              size="small"
+              class="primary-button"
+              icon="el-icon-search"
+              @click="getDonHang()"
+            >Tìm kiếm</el-button>
+          </el-col>
+          <el-col :span="7">
+            <router-link to="/quanlydonhang/taodonnhacungcap">
               <el-button
+                style="float: right"
                 size="small"
                 class="primary-button"
-                icon="el-icon-search"
-                @click="getDonHang()"
-              >Tìm kiếm</el-button>
-            </el-col>
-            <el-col :span="11">
-              <router-link to="/quanlydonhang/taodonnhacungcap">
-                <el-button
-                  style="float: right"
-                  size="small"
-                  class="primary-button"
-                  icon="el-icon-plus"
-                >Tạo đơn</el-button>
-              </router-link>
-            </el-col>
-          </el-row>
-        </el-form>
+                icon="el-icon-plus"
+              >Tạo đơn</el-button>
+            </router-link>
+          </el-col>
+        </el-row>
         <br />
         <div class="d-flex" style="align-items: center; justify-content: space-between">
           <h4>Danh sách đơn hàng nhà cung cấp</h4>
@@ -89,20 +104,59 @@
               border
             >
               <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
-              <el-table-column property="ma" label="Mã đơn hàng" min-width="125" v-if="showColumn.ma"></el-table-column>
-              <el-table-column property="ten" label="Tên đơn hàng" min-width="123" v-if="showColumn.ten"></el-table-column>
-              <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien" v-if="showColumn.tong_tien">
+              <el-table-column
+                property="ma"
+                label="Mã đơn hàng"
+                min-width="125"
+                v-if="showColumn.ma"
+              ></el-table-column>
+              <el-table-column
+                property="ten"
+                label="Tên đơn hàng"
+                min-width="123"
+                v-if="showColumn.ten"
+              ></el-table-column>
+              <el-table-column
+                label="Tổng tiền"
+                min-width="115"
+                prop="tong_tien"
+                v-if="showColumn.tong_tien"
+              >
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
               </el-table-column>
-              <el-table-column property="ghi_chu" label="Ghi chú" min-width="123" v-if="showColumn.ghi_chu"></el-table-column>
-              <el-table-column label="Chiết khấu" min-width="115" prop="chiet_khau" v-if="showColumn.chiet_khau">
+              <el-table-column
+                property="ghi_chu"
+                label="Ghi chú"
+                min-width="123"
+                v-if="showColumn.ghi_chu"
+              ></el-table-column>
+              <el-table-column
+                label="Chiết khấu"
+                min-width="115"
+                prop="chiet_khau"
+                v-if="showColumn.chiet_khau"
+              >
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.chiet_khau)}} đ</template>
               </el-table-column>
-              <el-table-column label="Đã thanh toán" min-width="115" prop="da_thanh_toan" v-if="showColumn.da_tt">
+              <el-table-column
+                label="Đã thanh toán"
+                min-width="115"
+                prop="da_thanh_toan"
+                v-if="showColumn.da_tt"
+              >
                 <template slot-scope="scope">{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
               </el-table-column>
-              <el-table-column prop="thoi_gian" label="Thời gian nhận hàng" v-if="showColumn.thoi_gian_nhan_hang"></el-table-column>
-              <el-table-column property="trang_thai" label="Trạng thái" min-width="125" v-if="showColumn.trang_thai">
+              <el-table-column
+                prop="thoi_gian"
+                label="Thời gian nhận hàng"
+                v-if="showColumn.thoi_gian_nhan_hang"
+              ></el-table-column>
+              <el-table-column
+                property="trang_thai"
+                label="Trạng thái"
+                min-width="125"
+                v-if="showColumn.trang_thai"
+              >
                 <template slot-scope="scope">
                   <el-tag
                     type="success"
@@ -126,7 +180,12 @@
                   >Đã nhập kho</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name" v-if="showColumn.tao_boi"></el-table-column>
+              <el-table-column
+                label="Đơn tạo bởi"
+                min-width="95"
+                prop="user.name"
+                v-if="showColumn.tao_boi"
+              ></el-table-column>
               <el-table-column label="Hành động" align="center" fixed="right" width="120">
                 <template slot-scope="scope">
                   <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
@@ -333,6 +392,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        trang_thai: this.form.trang_thai
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;

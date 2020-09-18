@@ -211,6 +211,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "phieuthu",
+        name: "Quản lý phiếu thu",
+        component: () => import("@/views/quanlydonhang/phieuthu/index"),
+        meta: {
+          title: "Quản lý phiếu thu",
+          icon: "mathang"
+        }
+      },
+      {
         path: "management",
         name: "Quản lý người dùng",
         component: () => import("@/views/user/index"),

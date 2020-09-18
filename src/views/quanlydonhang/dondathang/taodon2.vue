@@ -233,7 +233,7 @@
           <el-form-item label="Giảm giá">
             <el-input size="small" v-model="form.giam_gia"></el-input>
           </el-form-item>
-          <el-form-item label="Phụ thu" v-if="form.trang_thai == 'hoa_don'">
+          <el-form-item label="Phụ thu" v-if="mua_hang">
             <el-input type="number" v-model="form.phu_thu" placeholder="Phụ thu"></el-input>
           </el-form-item>
           <el-form-item label="Tổng tiền">
@@ -241,7 +241,7 @@
               style="color: green; font-size: 20px; font-weight: bold"
             >{{formate.formatCurrency(form.tong_tien)}} đ</span>
           </el-form-item>
-          <el-form-item label="Đã thanh toán" v-if="form.trang_thai != 'hoa_don'">
+          <el-form-item label="Đã thanh toán" v-if="!mua_hang">
             <el-input size="small" v-model="form.da_thanh_toan"></el-input>
           </el-form-item>
           <el-form-item label="Tổng thanh toán" v-else>
@@ -249,20 +249,20 @@
               style="color: green; font-size: 20px; font-weight: bold"
             >{{formate.formatCurrency(form.tong_tien - form.giam_gia + Number(form.phu_thu))}} đ</span>
           </el-form-item>
-          <el-form-item size="mini" v-if="form.trang_thai != 'hoa_don'" label="Phải thanh toán">
+          <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
             <span
               style="color: green; font-size: 20px; font-weight: bold"
             >{{formate.formatCurrency(form.con_phai_thanh_toan)}} đ</span>
           </el-form-item>
-          <el-form-item label="Phương thúc" v-if="form.trang_thai == 'hoa_don'" prop="thanh_toan">
+          <el-form-item label="Phương thúc" v-if="mua_hang" prop="thanh_toan">
             <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
-              <el-option value="chuyen_khoan" label="Chuyển khoản"></el-option>
+              <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
               <el-option value="cod" label="Ship COD"></el-option>
               <el-option value="tai_khoan" label="Tài khoản"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Shipper" v-if="form.trang_thai == 'hoa_don'">
+          <el-form-item label="Shipper" v-if="mua_hang">
             <el-select
               size="small"
               v-model="form.nhan_vien_giao_hang"
@@ -295,7 +295,7 @@
       <el-row>
         <el-col :span="23">
           <el-button
-            v-if="form.trang_thai == 'moi_tao'"
+            v-if="!mua_hang"
             style="float: right; width: 100%;height: 80px;font-size: 20px"
             icon="el-icon-plus"
             class="success-button"

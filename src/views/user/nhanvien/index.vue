@@ -49,6 +49,11 @@
       highlight-current-row
       style="font-size: 13px"
     >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <hoat-dong :data="props.row"></hoat-dong>
+        </template>
+      </el-table-column>
       <el-table-column label="STT" min-width="55" align="center">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
@@ -87,7 +92,7 @@
           <el-tag type="danger" v-else>Không hoạt động</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
@@ -199,12 +204,12 @@
                   icon="el-icon-edit"
                   circle
                 ></el-button>
-              </el-tooltip> -->
+              </el-tooltip>-->
               <!-- <img :src="src" > -->
             </div>
           </el-col>
         </el-row>
-        <br>
+        <br />
         <el-row :gutter="20" justify="space-around">
           <el-col :span="11">
             <el-form-item prop="name">
@@ -310,7 +315,7 @@
 <script>
 import { getUser, deleteUser, updateNhanVien } from "@/api/user";
 import { getInfor } from "@/api/taikhoan";
-
+import HoatDong from "./hoatdong";
 export default {
   filters: {
     statusFilter(status) {
@@ -321,6 +326,9 @@ export default {
       };
       return statusMap[status];
     },
+  },
+  components: {
+    HoatDong,
   },
   data() {
     return {
@@ -436,10 +444,10 @@ export default {
       this.formLabelAlign.phone = user.phone;
       this.formLabelAlign.email = user.email;
       this.formLabelAlign.ngay_bat_dau_lam_viec = user.created_at;
-      if(user.avatar_url){
-        this.src = user.avatar_url
-      }else {
-        this.src = "images/avatar/avatar_for_none.png"
+      if (user.avatar_url) {
+        this.src = user.avatar_url;
+      } else {
+        this.src = "images/avatar/avatar_for_none.png";
       }
       if (user.nhan_vien) {
         this.formLabelAlign.dia_chi = user.nhan_vien.dia_chi;
@@ -484,7 +492,7 @@ export default {
       await getInfor().then((res) => {
         this.user_login = res.data;
       });
-      getUser({ page: this.page, per_page: this.per_page, role: [2] }).then(
+      getUser({ page: this.page, per_page: this.per_page, role: [2, 5] }).then(
         (response) => {
           this.list = response.data.data;
           this.page = response.data.current_page;
