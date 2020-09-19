@@ -40,14 +40,13 @@
           >Tìm kiếm</el-button>
         </el-col>
         <el-col :span="11">
-          <router-link to="/quanlydonhang/taodondathang">
             <el-button
               style="float: right"
               size="small"
               class="primary-button"
               icon="el-icon-plus"
+              @click="datHang()"
             >ĐẶT HÀNG</el-button>
-          </router-link>
         </el-col>
       </el-row>
     </el-form>
@@ -351,7 +350,10 @@ export default {
       this.page = val;
       this.updateDataTable();
     },
-
+  datHang(){
+    this.$store.state.datmuahang.banHang = false;
+    this.$router.push('/quanlydonhang/taodondathang')
+  },
     handleSizeChange(val) {
       this.per_page = val;
       this.updateDataTable();

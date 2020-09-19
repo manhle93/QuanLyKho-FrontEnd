@@ -161,7 +161,7 @@
       <div style="margin-top: 10px;">
         <div style="font-size: 16px; color: #196F3D; font-weight: bold">Thông tin đơn hàng</div>
         <br />
-        <el-button
+        <!-- <el-button
           size="small"
           @click="setMuaHang"
           :class="mua_hang ? 'success-button' : ''"
@@ -170,7 +170,7 @@
           size="small"
           :class="!mua_hang ? 'success-button' : ''"
           @click="setDatHang"
-        >ĐẶT HÀNG</el-button>
+        >ĐẶT HÀNG</el-button> -->
         <br />
         <br />
         <el-form
@@ -565,7 +565,6 @@ export default {
         thoi_gian_nhan_hang: new Date(),
         phu_thu: null,
       },
-      mua_hang: false,
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       UserInfo: {},
@@ -657,8 +656,6 @@ export default {
     };
   },
   created() {
-    this.mua_hang = this.$store.state.datmuahang.banHang
-    console.log('m_h',this.mua_hang)
     this.getSanPham();
     this.getKhachHang();
     this.getBangGia();
@@ -715,6 +712,11 @@ export default {
         this.form.da_thanh_toan +
         Number(this.form.phu_thu);
     },
+  },
+  computed: {
+    mua_hang () {
+      return this.$store.state.datmuahang.banHang
+    }
   },
   methods: {
     addKhachHang(formKhaHang) {
