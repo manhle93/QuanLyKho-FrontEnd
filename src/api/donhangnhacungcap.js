@@ -175,3 +175,10 @@ export function xoaPhieuThu(id) {
     method: "delete",
   });
 }
+
+export function tonKhoDatTruoc(id) {
+  return request({
+    url: "tonkhodattruoc/" + id,
+    method: "get",
+  });
+}

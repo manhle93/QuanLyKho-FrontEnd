@@ -181,7 +181,7 @@ export default {
       });
       this.hangHoas = data.data.data;
     },
-    doiSanPham(id) {
+    async doiSanPham(id) {
       this.hangHoa = this.hangHoas.find((el) => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
     },

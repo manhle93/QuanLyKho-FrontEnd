@@ -70,6 +70,15 @@
                   circle
                 ></el-button>
               </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="In phiếu thu" placement="top">
+                <el-button
+                  size="small"
+                  @click="inPhieuThu(scope.row.id)"
+                  type="warning"
+                  icon="el-icon-printer"
+                  circle
+                ></el-button>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -154,7 +163,7 @@ import {
   getPhieuThu,
   updatePhieuThu,
   addPhieuThu,
-  xoaPhieuThu
+  xoaPhieuThu,
 } from "@/api/donhangnhacungcap";
 import { getKhachHang } from "@/api/khachhang";
 
@@ -219,6 +228,12 @@ export default {
       this.page = val;
       this.updateDataTable();
     },
+    inPhieuThu(id) {
+      window.open(
+        process.env.VUE_APP_BASE_API + "inphieuthu/" + id,
+        "_blank"
+      );
+    },
     async getKhachHang() {
       let data = await getKhachHang({
         per_page: 999999,
@@ -271,7 +286,8 @@ export default {
             "</strong>" +
             " Số tiền: " +
             "<strong>" +
-            this.formate.formatCurrency(data.so_tien) + ' đ' +
+            this.formate.formatCurrency(data.so_tien) +
+            " đ" +
             "</strong>",
           "Xóa phiếu thu",
           {

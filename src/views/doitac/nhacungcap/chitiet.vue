@@ -142,10 +142,45 @@
         <label>{{formate.formatCurrency(no_cuoi_ky)}} đ</label>
       </span>
     </el-tab-pane>
+    <el-tab-pane label="Báo giá">
+      <el-table :data="baoGias" style="width: 100%; font-size: 13px" border>
+        <el-table-column sortable type="index" label="STT"></el-table-column>
+        <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
+        <el-table-column property="ten" label="Tên báo giá" min-width="123"></el-table-column>
+        <el-table-column prop="created_at" label="Thời gian gửi"></el-table-column>
+        <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
+        <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
+        <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-button
+                size="small"
+                @click="edit(scope.row.id)"
+                class="primary-button"
+                icon="el-icon-edit"
+                circle
+              ></el-button>
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+              <el-button
+                size="small"
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="handleDelete(scope.row)"
+              ></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
 import { theoDoiCongNo } from "@/api/donhangnhacungcap";
+import { getBaoGia } from "@/api/baogia";
+
 export default {
   props: ["data"],
   data() {
@@ -157,10 +192,12 @@ export default {
       tableCongNo: [],
       formate: formate,
       nhapXuat: [],
+      baoGias: [],
     };
   },
   created() {
     this.getCongNo();
+    this.getBaoGia();
   },
   methods: {
     capNhatTT(data) {
@@ -227,6 +264,43 @@ export default {
       this.nhapXuat = this.tableCongNo.filter(
         (el) => el.hanh_dong != "thanh_toan"
       );
+    },
+    async getBaoGia() {
+      let data = await getBaoGia({
+        per_page: 999999,
+        page: 1,
+        nha_cung_cap: this.data.user_id,
+      });
+      this.baoGias = data.data.data;
+    },
+    edit(id) {
+      this.$router.push("/quanlykho/capnhatbaogia/" + id);
+    },
+    async handleDelete(data) {
+      try {
+        let comfirm = await this.$confirm(
+          "Bạn có chắc chắn muốn xóa báo giá: " +
+            "<strong>" +
+            data.ten +
+            "</strong>",
+          "Xóa báo giá",
+          {
+            confirmButtonText: "Xóa",
+            dangerouslyUseHTMLString: true,
+            cancelButtonText: "Hủy",
+            type: "warning",
+          }
+        );
+        this.listLoading = true;
+        let status = await xoaDonHang(data.id);
+        this.getDonHang();
+        this.$message({
+          message: "Xóa thành công",
+          type: "success",
+        });
+      } catch (error) {
+        this.listLoading = false;
+      }
     },
   },
 };

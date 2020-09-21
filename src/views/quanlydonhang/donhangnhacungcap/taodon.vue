@@ -117,17 +117,31 @@
           >
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
-            <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-            <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
+            <!-- <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column> -->
+            <el-table-column prop="ton_kho" label="Tồn kho">
+              <template slot-scope="scope">{{scope.row.ton_kho}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+            </el-table-column>
+            <el-table-column prop="dat_truoc" label="Đặt trước">
+              <template
+                slot-scope="scope"
+              >{{scope.row.dat_truoc}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+            </el-table-column>
+            <el-table-column prop="so_luong" label="Số lượng">
+              <template slot-scope="scope">{{scope.row.so_luong}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+            </el-table-column>
             <el-table-column prop="don_gia" label="Đơn giá">
-              <template slot-scope="scope">{{
+              <template slot-scope="scope">
+                {{
                 formate.formatCurrency(scope.row.don_gia)
-              }}</template>
+                }}
+              </template>
             </el-table-column>
             <el-table-column label="Thành tiền">
-              <template slot-scope="scope">{{
+              <template slot-scope="scope">
+                {{
                 formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)
-              }}</template>
+                }}
+              </template>
             </el-table-column>
             <el-table-column label="Xóa">
               <template slot-scope="scope">
@@ -151,9 +165,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6" :offset="1" style="padding-top: 60px">
-          <label
-            >Tổng thanh toán: {{ formate.formatCurrency(form.tong_tien) }} vnđ</label
-          >
+          <label>Tổng thanh toán: {{ formate.formatCurrency(form.tong_tien) }} vnđ</label>
         </el-col>
       </el-row>
     </el-form>
@@ -175,7 +187,11 @@
 </template>
 <script>
 import { listSanPham } from "@/api/sanpham";
-import { addSanPham, getSanPhamNhaCungCap } from "@/api/donhangnhacungcap";
+import {
+  addSanPham,
+  getSanPhamNhaCungCap,
+  tonKhoDatTruoc,
+} from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 
@@ -203,6 +219,8 @@ export default {
       don_vi_tinh: null,
       don_gia: null,
       formate: formate,
+      ton_kho: null,
+      dat_truoc: null,
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -227,10 +245,13 @@ export default {
     this.getInfo();
   },
   methods: {
-    doiSanPham(id) {
+    async doiSanPham(id) {
       this.hangHoa = this.hangHoas.find((el) => el.san_pham_id == id);
       this.don_vi_tinh = this.hangHoa.san_pham.don_vi_tinh;
       this.don_gia = this.hangHoa.don_gia;
+      let data = await tonKhoDatTruoc(id);
+      this.ton_kho = data.ton_kho;
+      this.dat_truoc = data.dat_truoc;
     },
     addSanPham() {
       if (this.hang_hoa_id && this.so_luong && this.don_gia) {
@@ -238,6 +259,8 @@ export default {
         data.hang_hoa = this.hangHoa.san_pham;
         data.so_luong = this.so_luong;
         data.don_gia = this.don_gia;
+        data.ton_kho = this.ton_kho;
+        data.dat_truoc = this.dat_truoc;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.san_pham.id) {
@@ -248,6 +271,8 @@ export default {
         this.so_luong = null;
         this.don_gia = null;
         this.don_vi_tinh = null;
+        this.ton_kho = null;
+        this.dat_truoc = null;
         this.hangHoa = {};
       }
     },
