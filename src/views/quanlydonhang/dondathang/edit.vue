@@ -155,6 +155,7 @@
         <br />
         <br />
         <el-checkbox
+          v-if="cap_nhat"
           v-model="doiTra"
           label="Đổi trả hàng"
           border
@@ -749,7 +750,10 @@ export default {
       if (data.data.trang_thai == "hoa_don") {
         this.cap_nhat = true;
       }
-      this.tongTienCu = Number(this.form.tong_tien) + Number(this.form.phu_thu) - Number(this.form.giam_gia)
+      this.tongTienCu =
+        Number(this.form.tong_tien) +
+        Number(this.form.phu_thu) -
+        Number(this.form.giam_gia);
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
@@ -844,7 +848,7 @@ export default {
           }
           this.form.hangCus = [];
           this.form.doiTra = [];
-          this.form.chenhLech = 0
+          this.form.chenhLech = 0;
           if (this.doiTra) {
             let dataDoiTra = [];
             this.hangCus.map((el) => {
@@ -866,7 +870,11 @@ export default {
             });
             this.form.doiTra = dataDoiTra;
             this.form.hangCus = this.hangCus;
-            this.form.chenhLech = Number(this.form.tong_tien) + Number(this.form.phu_thu) - Number(this.form.giam_gia) - Number(this.tongTienCu)
+            this.form.chenhLech =
+              Number(this.form.tong_tien) +
+              Number(this.form.phu_thu) -
+              Number(this.form.giam_gia) -
+              Number(this.tongTienCu);
           }
           editDonDathang(this.$route.params.id, this.form).then((res) => {
             this.$message({
@@ -874,7 +882,7 @@ export default {
               type: "success",
             });
           });
-          this.doiTra = false
+          this.doiTra = false;
           this.getData().catch((error) => {
             console.log(error);
           });
