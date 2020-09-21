@@ -365,6 +365,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "doitrahang",
+        name: "Đổi trả hàng",
+        component: () => import("@/views/quanlydonhang/doitrahang/index"),
+        meta: {
+          title: "Đổi trả hàng",
+          icon: "mathang"
+        }
+      },
+      {
         path: "taodonnhacungcap",
         name: "Tạo đơn hàng nhà cung cấp",
         component: () =>

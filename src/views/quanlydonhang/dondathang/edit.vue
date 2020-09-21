@@ -71,7 +71,12 @@
                 <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
                 <el-table-column label="Số lượng" width="150px">
                   <template slot-scope="scope">
-                    <el-input-number size="small" :min="0.1" v-model="scope.row.so_luong" :disabled="cap_nhat"></el-input-number>
+                    <el-input-number
+                      size="small"
+                      :min="0.1"
+                      v-model="scope.row.so_luong"
+                      :disabled="cap_nhat"
+                    ></el-input-number>
                   </template>
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá">
@@ -147,9 +152,17 @@
           :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
           @click="form.trang_thai = 'moi_tao'"
         >ĐẶT HÀNG</el-button>
-        <br /><br>
-        <el-checkbox v-model="doiTra" label="Đổi trả hàng" border size="small" style="background: white"></el-checkbox>
-        <br /><br>
+        <br />
+        <br />
+        <el-checkbox
+          v-model="doiTra"
+          label="Đổi trả hàng"
+          border
+          size="small"
+          style="background: white"
+        ></el-checkbox>
+        <br />
+        <br />
         <el-form
           label-position="left"
           label-width="130px"
@@ -510,6 +523,7 @@ export default {
       showFormAddKhachHang: false,
       cap_nhat: false,
       doiTra: false,
+      hangCus: [],
       formKhaHang: {
         id: null,
         ten: null,
@@ -557,6 +571,7 @@ export default {
         thoi_gian_nhan_hang: new Date(),
         phu_thu: null,
       },
+      tongTienCu: null,
       danh_muc_id: null,
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -659,8 +674,8 @@ export default {
     timKiem: debounce(function () {
       this.getSanPham();
     }, 300),
-    doiTra(val){
-      this.cap_nhat = !val
+    doiTra(val) {
+      this.cap_nhat = !val;
     },
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
@@ -722,16 +737,19 @@ export default {
       this.form.thoi_gian_nhan_hang = data.data.thoi_gian_nhan_hang;
       this.form.phu_thu = data.data.phu_thu;
       this.form.danhSachHang = [];
+      this.hangCus = [];
       for (let sp of data.data.san_phams) {
         let item = {};
         item.don_gia = sp.gia_ban;
         item.so_luong = sp.so_luong;
         item.hang_hoa = sp.san_pham;
-        this.form.danhSachHang.push(item);
+        this.form.danhSachHang.push({ ...item });
+        this.hangCus.push({ ...item });
       }
       if (data.data.trang_thai == "hoa_don") {
         this.cap_nhat = true;
       }
+      this.tongTienCu = Number(this.form.tong_tien) + Number(this.form.phu_thu) - Number(this.form.giam_gia)
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
@@ -807,10 +825,11 @@ export default {
     tongTien(param) {
       const { columns, data } = param;
       const sums = Array(7).fill("");
-      this.form.tong_tien = data.reduce(
+      const tongTien = data.reduce(
         (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
         0
       );
+      this.form.tong_tien = tongTien;
       return sums;
     },
     submit(formName) {
@@ -823,12 +842,39 @@ export default {
             });
             return;
           }
+          this.form.hangCus = [];
+          this.form.doiTra = [];
+          this.form.chenhLech = 0
+          if (this.doiTra) {
+            let dataDoiTra = [];
+            this.hangCus.map((el) => {
+              let exist = this.form.danhSachHang.find(
+                (it) => it.hang_hoa.id === el.hang_hoa.id
+              );
+              if (exist) {
+                if (el.so_luong > exist.so_luong)
+                  dataDoiTra.push({
+                    ...el,
+                    so_luong: el.so_luong - exist.so_luong,
+                  });
+              } else {
+                dataDoiTra.push({
+                  ...el,
+                  so_luong: el.so_luong,
+                });
+              }
+            });
+            this.form.doiTra = dataDoiTra;
+            this.form.hangCus = this.hangCus;
+            this.form.chenhLech = Number(this.form.tong_tien) + Number(this.form.phu_thu) - Number(this.form.giam_gia) - Number(this.tongTienCu)
+          }
           editDonDathang(this.$route.params.id, this.form).then((res) => {
             this.$message({
               message: "Cập nhật đơn hàng thành công",
               type: "success",
             });
           });
+          this.doiTra = false
           this.getData().catch((error) => {
             console.log(error);
           });

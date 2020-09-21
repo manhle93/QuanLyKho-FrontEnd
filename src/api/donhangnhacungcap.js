@@ -182,3 +182,11 @@ export function tonKhoDatTruoc(id) {
     method: "get",
   });
 }
+
+export function doiTraHang(params) {
+  return request({
+    url: "doitrahang",
+    method: "get",
+    params
+  });
+}
