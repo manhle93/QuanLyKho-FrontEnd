@@ -170,7 +170,7 @@
           size="small"
           :class="!mua_hang ? 'success-button' : ''"
           @click="setDatHang"
-        >ĐẶT HÀNG</el-button> -->
+        >ĐẶT HÀNG</el-button>-->
         <br />
         <br />
         <el-form
@@ -712,9 +712,9 @@ export default {
     },
   },
   computed: {
-    mua_hang () {
-      return this.$store.state.datmuahang.banHang
-    }
+    mua_hang() {
+      return this.$store.state.datmuahang.banHang;
+    },
   },
   methods: {
     addKhachHang(formKhaHang) {
@@ -828,6 +828,16 @@ export default {
             });
             return;
           }
+          if (this.mua_hang) {
+            this.form.trang_thai = "hoa_don";
+            if (!this.form.thanh_toan) {
+              this.$message({
+                message: "Chưa chọn phương thức thanh toán",
+                type: "warning",
+              });
+              return;
+            }
+          }
           addDonDatHang(this.form)
             .then((res) => {
               this.$message({
@@ -929,13 +939,13 @@ export default {
         this.shipper = res;
       });
     },
-    setMuaHang(){
-      this.mua_hang = true
-      this.form.trang_thai = 'hoa_don'
+    setMuaHang() {
+      this.mua_hang = true;
+      this.form.trang_thai = "hoa_don";
     },
-    setDatHang(){
-      this.mua_hang = false
-      this.form.trang_thai = 'moi_tao'
+    setDatHang() {
+      this.mua_hang = false;
+      this.form.trang_thai = "moi_tao";
     },
     resetFormKhaHang() {
       this.showFormAddKhachHang = false;
