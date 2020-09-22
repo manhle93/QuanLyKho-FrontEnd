@@ -59,7 +59,6 @@
         @click="capNhatTT(data)"
       >Cập nhật thông tin</el-button>
     </el-tab-pane>
-
     <el-tab-pane label="Lịch sử nhập/Trả hàng">
       <div>
         <el-table :data="nhapXuat">
@@ -103,7 +102,6 @@
         </el-table>
       </div>
     </el-tab-pane>
-
     <el-tab-pane label="Theo dõi công nợ">
       <el-table :data="tableCongNo" max-height="300px">
         <el-table-column type="index" label="STT"></el-table-column>
@@ -162,7 +160,7 @@
               ></el-button>
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+            <!-- <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
               <el-button
                 size="small"
                 type="danger"
@@ -170,7 +168,7 @@
                 circle
                 @click="handleDelete(scope.row)"
               ></el-button>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
         </el-table-column>
       </el-table>

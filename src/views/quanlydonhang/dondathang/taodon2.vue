@@ -682,7 +682,6 @@ export default {
       });
       this.hangHoas = data.data.data;
     }, 300),
-
     "form.giam_gia": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
@@ -690,7 +689,6 @@ export default {
         val +
         +Number(this.form.phu_thu);
     },
-
     "form.da_thanh_toan": function (val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -

@@ -237,8 +237,7 @@ export default {
         "Bạn chắc chắn muốn xóa danh mục: " +
           "<strong>" +
           item.ten_danh_muc +
-          "</strong>" +
-          ", cùng toàn bộ sản phẩm bên trong",
+          "</strong>" ,
         "Xóa danh mục sản phẩm",
         {
           dangerouslyUseHTMLString: true,
