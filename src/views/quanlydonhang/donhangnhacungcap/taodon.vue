@@ -118,10 +118,10 @@
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <!-- <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column> -->
-            <el-table-column prop="ton_kho" label="Tồn kho">
+            <el-table-column prop="ton_kho" label="Tồn kho" v-if="role_id ==1">
               <template slot-scope="scope">{{scope.row.ton_kho}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
             </el-table-column>
-            <el-table-column prop="dat_truoc" label="Đặt trước">
+            <el-table-column prop="dat_truoc" label="Đặt trước" v-if="role_id ==1">
               <template
                 slot-scope="scope"
               >{{scope.row.dat_truoc}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
@@ -221,6 +221,7 @@ export default {
       formate: formate,
       ton_kho: null,
       dat_truoc: null,
+      role_id: null,
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -358,6 +359,7 @@ export default {
     async getInfo() {
       let data = await getInfor();
       this.form.nha_cung_cap_id = null;
+      this.role_id = data.data.role_id
       if (data.data.role_id == 1 || data.data.role_id == 2) {
         this.admin = true;
       }

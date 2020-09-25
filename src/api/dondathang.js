@@ -64,3 +64,11 @@ export function getShipper() {
         method: 'get',
     })
 }
+
+export function thanhToanBoXung(data) {
+    return request({
+        url: 'thanhtoanboxung',
+        method: 'post',
+        data
+    })
+}

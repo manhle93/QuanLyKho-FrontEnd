@@ -356,6 +356,16 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "thanhtoannhacungcap",
+        name: "Thanh toán NCC",
+        component: () =>
+          import("@/views/quanlydonhang/thanhtoanhacungcap/index"),
+        meta: {
+          title: "Thanh toán NCC",
+          icon: "money"
+        }
+      },
+      {
         path: "nhapkho",
         name: "Nhập kho",
         component: () => import("@/views/quanlykho/nhapkho/index"),
