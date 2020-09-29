@@ -61,7 +61,7 @@
     </el-tab-pane>
     <el-tab-pane label="Lịch sử nhập/Trả hàng">
       <div>
-        <el-table :data="nhapXuat">
+        <el-table :data="nhapXuat" style="font-size: 13px">
           <el-table-column type="index"></el-table-column>
           <el-table-column label="Mã đơn hàng">
             <template slot-scope="scope">{{scope.row.ma ? scope.row.ma : scope.row.ma_don}}</template>
@@ -103,7 +103,7 @@
       </div>
     </el-tab-pane>
     <el-tab-pane label="Theo dõi công nợ">
-      <el-table :data="tableCongNo" max-height="300px">
+      <el-table :data="tableCongNo" max-height="300px" style="font-size: 13px">
         <el-table-column type="index" label="STT"></el-table-column>
         <el-table-column label="Thời gian" prop="thoi_gian"></el-table-column>
         <el-table-column label="Tên đơn" prop="ten" min-width="100">

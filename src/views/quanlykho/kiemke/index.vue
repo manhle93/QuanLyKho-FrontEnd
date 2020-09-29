@@ -29,13 +29,13 @@
               size="small"
               class="primary-button"
               icon="el-icon-plus"
-            >KIỂM KÊ</el-button>
+            >Thêm đơn kiểm kho</el-button>
           </router-link>
         </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách đơn kiểm kho</h4>
+    <h4><i style="color: green">DANH SÁCH ĐƠN KIỂM KHO</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

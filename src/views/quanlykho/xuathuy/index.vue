@@ -32,13 +32,13 @@
               size="small"
               class="primary-button"
               icon="el-icon-plus"
-            >TẠO XUẤT HỦY</el-button>
+            >Tạo phiếu xuất hủy</el-button>
           </router-link>
         </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách phiếu xuất hủy</h4>
+    <h4><i style="color: green">DANH SÁCH PHIẾU XUẤT HỦY</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

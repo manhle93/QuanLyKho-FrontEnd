@@ -47,7 +47,7 @@
       </el-col>
     </el-row>
     <br />
-    <h4>Danh sách phiếu thu</h4>
+    <h4><i style="color: green">DANH SÁCH PHIẾU THU</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -148,7 +148,7 @@
         <el-form-item label="Số tiền" prop="so_tien">
           <div
             v-if="formAdd.type != 'tu_nhap'"
-            style="font-size: 15px; font-weight: bold"
+            style="font-size: 13px; font-weight: bold"
           >{{formate.formatCurrency(formAdd.so_tien)}} đ</div>
           <el-input type="number" :min="0" v-model="formAdd.so_tien" v-else></el-input>
         </el-form-item>

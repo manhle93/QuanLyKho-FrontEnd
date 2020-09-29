@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách mua hàng nhập kho</h4>
+    <h4><i style="color: green">DANH SÁCH MUA HÀNG NHẬP KHO</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="6">
         <el-date-picker
@@ -124,7 +124,7 @@
       ></el-pagination>
     </div>
 
-    <el-dialog :visible.sync="showCreate" title="NHẬP KHO HÀNG MUA NGOÀI" width="600px">
+    <el-dialog :visible.sync="showCreate" title="NHẬP HÀNG HÓA MUA NGOÀI" width="600px" center>
       <el-row :gutter="20">
         <el-col :span="8">
           <el-select

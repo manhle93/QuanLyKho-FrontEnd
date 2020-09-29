@@ -20,7 +20,7 @@
             clearable
             size="small"
             v-model="form.nha_cung_cap"
-            placeholder="Chọn nhà cung cấp"
+            placeholder="Lựa chọn nhà cung cấp"
             style="width: 100%"
           >
             <el-option
@@ -52,7 +52,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách báo giá của nhà cung cấp</h4>
+    <h4><i style="color: green">DANH SÁCH BÁO GIÁ CỦA NHÀ CUNG CẤP</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

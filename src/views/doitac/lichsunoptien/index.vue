@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Lịch sử nạp tiền</h4>
+    <h4><i style="color: green">LỊCH SỬ NẠP TIỀN</i></h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="6">
@@ -100,7 +100,7 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog title="Nạp tiền vào tài khoản" :visible.sync="showForm" width="400px" center>
+    <el-dialog title="NẠP TIỀN VÀO TÀI KHOẢN" :visible.sync="showForm" width="400px" center>
       <el-form :model="form" :rules="rules" ref="form">
         <el-row :gutter="20">
           <el-col :span="24">

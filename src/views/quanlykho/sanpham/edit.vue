@@ -2,11 +2,11 @@
   <div class="app-container">
     <el-row>
       <el-col :span="20" :offset="2">
-        <h3>Thêm mới sản phẩm hàng hóa</h3>
+        <h4><i style="color: green"> CẬP NHẬT THÔNG TIN SẢN PHẨM/ HÀNG HÓA</i></h4>
         <el-form :model="form" :rules="rules" ref="form">
           <el-row :gutter="20">
             <el-col :span="6">
-              <el-form-item label="Tên sản phẩm" prop="ten_san_pham">
+              <el-form-item label="Tên sản phẩm/ Hàng hóa" prop="ten_san_pham">
                 <el-input v-model="form.ten_san_pham"></el-input>
               </el-form-item>
             </el-col>

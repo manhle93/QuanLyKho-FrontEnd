@@ -20,7 +20,7 @@
             clearable
             size="small"
             v-model="form.nha_cung_cap"
-            placeholder="Chọn nhà cung cấp"
+            placeholder="Lựa chọn nhà cung cấp"
             style="width: 100%"
           >
             <el-option
@@ -46,12 +46,12 @@
             size="small"
             class="primary-button"
             icon="el-icon-plus"
-          >Tạo đơn</el-button>
+          >Tạo đơn trả hàng</el-button>
         </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Lịch sử trả hàng nhà cung cấp</h4>
+    <h4><i style="color: green">LỊCH SỬ TRẢ HÀNG VỀ NHÀ CUNG CẤP</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -104,12 +104,12 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px">
+    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px" center>
       <el-row>
         <el-select
           size="small"
           style="width: 100%"
-          placeholder="Chọn nhà cung cấp"
+          placeholder="Lựa chọn nhà cung cấp"
           v-model="formAdd.nha_cung_cap_id"
           clearable
           @change="changeNhaCungCap(formAdd.nha_cung_cap_id)"

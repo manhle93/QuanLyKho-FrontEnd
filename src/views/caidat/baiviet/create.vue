@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Thêm mới bài viết</h3>
+    <h4><i style="color: green"> THÊM MỚI BÀI VIẾT</i></h4>
     <el-row>
       <el-form :rules="rules" ref="form" :model="form">
         <el-col :span="20">

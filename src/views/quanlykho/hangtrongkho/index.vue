@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Danh sách hàng trong kho</h3>
+    <h4><i style="color: green">DANH SÁCH HÀNG TRONG KHO</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -29,7 +29,7 @@
       border
       fit
       highlight-current-row
-      style="font-size: 15px"
+      style="font-size: 13px"
     >
       <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">

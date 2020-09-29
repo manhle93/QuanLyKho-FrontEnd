@@ -42,7 +42,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4>Danh sách đơn trả hàng nhập kho</h4>
+    <h4><i style="color: green">DANH SÁCH ĐƠN TRẢ HÀNG NHẬP KHO</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

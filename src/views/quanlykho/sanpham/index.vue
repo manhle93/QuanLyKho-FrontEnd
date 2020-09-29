@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách sản phẩm hàng hóa</h4>
+    <h4><i style="color: green"> DANH SÁCH SẢN PHẨM/ HÀNG HÓA</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -12,7 +12,7 @@
         ></el-input>
       </el-col>
       <el-col :span="4">
-        <el-select v-model="danh_muc_id" placeholder="Chọn danh mục" size="small" style="width: 100%">
+        <el-select v-model="danh_muc_id" placeholder="Lựa chọn danh mục" size="small" style="width: 100%">
           <el-option
             v-for="item in danhMucs"
             :key="item.id"

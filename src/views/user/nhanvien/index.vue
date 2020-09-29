@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách nhân viên</h4>
+    <h4><i style="color: green">DANH SÁCH NHÂN VIÊN</i></h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
@@ -172,7 +172,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="Cập nhật thông tin nhân viên" :visible.sync="showEditForm" center width="40%">
+    <el-dialog title="CẬP NHẬT THÔNG TIN NHÂN VIÊN" :visible.sync="showEditForm" center width="40%">
       <el-form
         :label-position="labelPosition"
         :rules="rules"

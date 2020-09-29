@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Lịch sử đăng nhập</h4>
+    <h4><i style="color: green">LỊCH SỬ ĐĂNG NHẬP</i></h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="4">

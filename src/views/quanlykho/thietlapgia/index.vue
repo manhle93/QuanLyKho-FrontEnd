@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Danh sách bảng giá</h3>
+    <h4><i style="color: green"> DANH SÁCH BẢNG GIÁ</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="6">
         <el-date-picker
@@ -116,7 +116,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'Cập nhật bảng giá' :'Thêm bảng giá'"
+      :title="edit ? 'CẬP NHẬT BẢNG GIÁ' :'THÊM BẢNG GIÁ'"
       :visible.sync="showForm"
       width="30%"
       center

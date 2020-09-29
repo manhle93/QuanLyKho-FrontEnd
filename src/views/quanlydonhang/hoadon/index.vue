@@ -40,7 +40,7 @@
             >Tìm kiếm</el-button
           >
         </el-col>
-        <el-col :span="11">
+        <!-- <el-col :span="11">
           <router-link to="/quanlydonhang/taodondathang">
             <el-button
               style="float: right"
@@ -50,7 +50,7 @@
               >HÓA ĐƠN</el-button
             >
           </router-link>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-form>
     <br />
@@ -59,7 +59,7 @@
       class="d-flex"
       style="align-items: center; justify-content: space-between"
     >
-      <h4>Danh sách hóa đơn xuất kho</h4>
+      <h4><i style="color: green">DANH SÁCH HÓA ĐƠN XUẤT KHO</i></h4>
       <el-dropdown trigger="click">
         <el-button
           class="el-dropdown-link primary-button"
@@ -90,6 +90,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <br>
     <el-row>
       <el-col :span="24">
         <el-table

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách Voucher khuyến mãi</h4>
+    <h4><i style="color: green"> DANH SÁCH VOUCHER KHUYẾN MÃI</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -11,7 +11,7 @@
           @keyup.enter.native="getData()"
         ></el-input>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="7">
         <el-date-picker
           size="small"
           v-model="date"
@@ -21,7 +21,7 @@
           end-placeholder="Đến ngày"
         ></el-date-picker>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="8">
         <el-button
           size="small"
           class="primary-button"
@@ -29,7 +29,7 @@
           @click="getData()"
         >Tìm kiếm</el-button>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="4">
         <el-button
           style="float: right"
           @click="showFormAdd"
