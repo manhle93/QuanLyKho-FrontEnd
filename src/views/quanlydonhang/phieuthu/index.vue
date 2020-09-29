@@ -14,6 +14,21 @@
         ></el-date-picker>
       </el-col>
       <el-col :span="3">
+          <el-select
+            filterable
+            clearable
+            style="width: 100%; height: 33px !important;background-color: yellow"
+            v-model="form.hinh_thuc"
+            placeholder="Phương thức thanh toán"
+            size="small"
+          >
+          <el-option value="tra_truoc" label="Trả trước"></el-option>
+            <el-option value="tien_mat" label="[Trả sau] Tiền mặt"></el-option>
+            <el-option value="chuyen_khoan" label="[Trả sau] Chuyển khoản/Quẹt thẻ"></el-option>
+            <el-option value="tai_khoan" label="[Trả sau] Tài khoản"></el-option>
+          </el-select>
+      </el-col>
+      <el-col :span="3">
         <el-button
           size="small"
           class="primary-button"
@@ -43,13 +58,41 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="created_at" label="Thời gian" min-width="125"></el-table-column>
-          <el-table-column property="noi_dung" label="Nội dung" min-width="123"></el-table-column>
-          <el-table-column prop="so_tien" label="Số tiền">
+          <el-table-column property="created_at" label="Thời gian" min-width="65"></el-table-column>
+          <el-table-column prop="so_tien" label="Số tiền" min-width="65">
             <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
           </el-table-column>
+          <el-table-column property="noi_dung" label="Nội dung" min-width="123"></el-table-column>
+          <el-table-column
+            property="hinh_thuc"
+            label="Hình thức"
+            min-width="125"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                type="success"
+                effect="plain"
+                v-if="scope.row.hinh_thuc == null"
+              >Thanh toán trước</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'chuyen_khoan'"
+              >Thanh toán sau: Chuyển Khoản</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'tien_mat'"
+              >Thanh toán sau: Tiền mặt</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'tai_khoan'"
+              >Thanh toán sau: Tài Khoản</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="thong_tin_khach_hang" label="Thông tin khách hàng"></el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <el-table-column label="Hành động" align="center" fixed="right" width="160">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
                 <el-button
@@ -546,6 +589,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        hinh_thuc: this.form.hinh_thuc
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

@@ -323,7 +323,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="Thanh toán bổ xung"
+                content="Thanh toán bổ sung"
                 placement="top"
               >
                 <el-button
@@ -332,7 +332,7 @@
                   type="primary"
                   icon="el-icon-postcard"
                   circle
-                  @click="thanhToanBoXung(scope.row)"
+                  @click="thanhToanBoSung(scope.row)"
                 ></el-button>
               </el-tooltip>
             </template>
@@ -352,7 +352,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      title="THANH TOÁN BỔ XUNG"
+      title="THANH TOÁN BỔ SUNG"
       width="450px"
       center
       :visible.sync="showThanhToan"
@@ -416,7 +416,7 @@ import {
   xoaDonDathang,
   huyDon,
   chuyenHoaDon,
-  thanhToanBoXung,
+  thanhToanBoSung,
 } from "@/api/dondathang";
 import { getKhachHang } from "@/api/khachhang";
 
@@ -534,7 +534,7 @@ export default {
       this.page = val;
       this.updateDataTable();
     },
-    thanhToanBoXung(data) {
+    thanhToanBoSung(data) {
       this.showThanhToan = true;
       this.formThanhToan.id = data.id;
       this.formThanhToan.tong_tien = data.con_phai_thanh_toan;
@@ -555,7 +555,7 @@ export default {
         });
         return;
       }
-      let data = await thanhToanBoXung(this.formThanhToan);
+      let data = await thanhToanBoSung(this.formThanhToan);
       this.showThanhToan = false;
       this.getDonHang();
       this.$message({
