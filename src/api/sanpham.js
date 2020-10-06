@@ -41,3 +41,11 @@ export function editSanPham(id, data) {
       data
   })
 }
+
+export function uploadSanPham(data) {
+  return request({
+      url: "uploadsanpham",
+      method: "post",
+      data
+  });
+}

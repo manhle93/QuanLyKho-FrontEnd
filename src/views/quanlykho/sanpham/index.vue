@@ -12,7 +12,12 @@
         ></el-input>
       </el-col>
       <el-col :span="4">
-        <el-select v-model="danh_muc_id" placeholder="Chọn danh mục" size="small" style="width: 100%">
+        <el-select
+          v-model="danh_muc_id"
+          placeholder="Chọn danh mục"
+          size="small"
+          style="width: 100%"
+        >
           <el-option
             v-for="item in danhMucs"
             :key="item.id"
@@ -27,17 +32,60 @@
           class="primary-button"
           icon="el-icon-search"
           @click="getData()"
-        >Tìm kiếm</el-button>
+          >Tìm kiếm</el-button
+        >
       </el-col>
       <el-col :span="10">
         <router-link to="themsanpham">
           <el-button
-            style="float:right"
+            style="float: right"
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-          >Thêm hàng hóa</el-button>
+            >Thêm hàng hóa</el-button
+          >
         </router-link>
+      </el-col>
+    </el-row>
+    <h5>Nhập dữ liệu từ excel</h5>
+    <el-row :gutter="20">
+      <input
+        ref="upload-image"
+        class="upload-image"
+        type="file"
+        @change="handleChange($event)"
+      />
+      <el-col :span="20">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="Tải xuống file Excel mẫu"
+          placement="top"
+        >
+          <el-button
+            size="mini"
+            class="primary-button block"
+            :icon="iconDowload"
+            @click="downloadMau"
+            >Tải file mẫu</el-button
+          >
+        </el-tooltip>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="Chọn file để tải lên"
+          placement="top"
+        >
+          <el-button
+            :disabled="loadingUpload"
+            size="mini"
+            type="warning"
+            class="block"
+            :icon="iconUpload"
+            @click="handleUpload"
+            >Nhập từ Excel</el-button
+          >
+        </el-tooltip>
       </el-col>
     </el-row>
     <br />
@@ -50,33 +98,72 @@
       fit
       highlight-current-row
       style="font-size: 13px"
-     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+    >
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien: src"
+            :src="
+              scope.row.anh_dai_dien
+                ? endPointImage + scope.row.anh_dai_dien
+                : src
+            "
             style="max-height: 90px; max-width: 90px"
           />
         </template>
       </el-table-column>
-      <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
-      <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
+      <el-table-column
+        prop="ten_san_pham"
+        min-width="160"
+        label="Tên sản phẩm"
+      ></el-table-column>
+      <el-table-column
+        prop="danh_muc.ten_danh_muc"
+        min-width="160"
+        label="Danh mục"
+      ></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
+        <template slot-scope="scope">{{
+          formate.formatCurrency(scope.row.gia_ban) + " đ"
+        }}</template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
+      <el-table-column
+        prop="don_vi_tinh"
+        min-width="160"
+        label="Đơn vị tính"
+      ></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
-        <template
-          slot-scope="scope"
-          v-if="scope.row.mo_ta_san_pham"
-        >{{scope.row.mo_ta_san_pham.length > 70 ? scope.row.mo_ta_san_pham.substr(0, 70)+'...' : scope.row.mo_ta_san_pham}}</template>
+        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">{{
+          scope.row.mo_ta_san_pham.length > 70
+            ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
+            : scope.row.mo_ta_san_pham
+        }}</template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column
+        align="center"
+        min-width="110"
+        fixed="right"
+        label="Hoạt động"
+      >
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
             <router-link :to="'capnhatsanpham/' + scope.row.id">
-              <el-button size="small" class="primary-button" icon="el-icon-edit" circle></el-button>
+              <el-button
+                size="small"
+                class="primary-button"
+                icon="el-icon-edit"
+                circle
+              ></el-button>
             </router-link>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
@@ -113,7 +200,7 @@ import {
   upAnhDanhMuc,
   xoaDanhMuc,
 } from "@/api/danhmucsanpham";
-import { listSanPham, addSanPham, xoaSanPham } from "@/api/sanpham";
+import { listSanPham, addSanPham, xoaSanPham, uploadSanPham } from "@/api/sanpham";
 
 export default {
   filters: {
@@ -141,6 +228,9 @@ export default {
       danhMucs: [],
       formate: formate,
       danh_muc_id: null,
+      iconDowload: "el-icon-bottom",
+      iconUpload: "el-icon-upload",
+      loadingUpload: false,
     };
   },
   created() {
@@ -151,6 +241,50 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
       this.getData(this.page, this.per_page);
+    },
+    handleChange(e) {
+      const files = e.target.files;
+      const data = new FormData();
+      data.append("file", files[0]);
+      this.loadingUpload = true;
+      this.iconUpload = "el-icon-loading";
+      var filePath = files[0].name.split(".").pop(); //lấy định dạng file
+      var dinhDangChoPhep = ["xlsx", "xls", "xlt", "xltx"]; //các tập tin cho phép
+
+      if (!dinhDangChoPhep.find((el) => el == filePath)) {
+        this.loadingUpload = false;
+        this.listLoading = false;
+        this.iconUpload = "el-icon-bottom";
+        this.$message({
+          message: "Tập tin không hợp lệ, hãy upload file excel",
+          type: "warning",
+        });
+      } else {
+        uploadSanPham(data)
+          .then((res) => {
+            this.src = process.env.VUE_APP_BASE + res;
+            this.listLoading = false;
+            this.iconUpload = "el-icon-bottom";
+            this.loadingUpload = false;
+            this.getData();
+            this.$message({
+              message: "Upload thành công",
+              type: "success",
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            this.iconUpload = "el-icon-bottom";
+            this.loadingUpload = false;
+          });
+      }
+      this.$refs["upload-image"].value = null;
+    },
+    handleUpload() {
+      this.$refs["upload-image"].click();
+    },
+   downloadMau() {
+       window.location.assign(process.env.VUE_APP_BASE_API + "downloadsanpham");
     },
     async getDanhMuc() {
       let data = await index();
@@ -166,7 +300,7 @@ export default {
         per_page: this.per_page,
         page: this.page,
         search: this.search,
-        danh_muc_id: this.danh_muc_id
+        danh_muc_id: this.danh_muc_id,
       });
       this.per_page = data.data.per_page;
       this.page = data.data.page;
@@ -174,16 +308,6 @@ export default {
       this.total = data.data.total;
       this.listLoading = false;
     },
-    // searchData(page = 1, per_page = 10) {
-    //   this.listLoading = true;
-    //   this.getData(this.form).then(response => {
-    //     this.list = response.data.data;
-    //     this.page = response.data.current_page;
-    //     this.per_page = response.data.per_page;
-    //     this.total = response.data.total;
-    //     this.listLoading = false;
-    //   });
-    // },
     deleteAppUserID(item) {
       this.$confirm(
         "Bạn chắc chắn muốn xóa sản phẩm: " +
