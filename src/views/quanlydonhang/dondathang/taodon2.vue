@@ -285,12 +285,18 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="Giảm giá">
-            <el-input size="small" v-model="form.giam_gia"></el-input>
+            <el-input
+              size="small"
+              v-model="giamGia"
+              @blur="isInputGiamGia = false"
+              @focus="isInputGiamGia = true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="Phụ thu" v-if="mua_hang">
             <el-input
-              type="number"
-              v-model="form.phu_thu"
+              v-model="phuThu"
+              @blur="isInputPhuThu = false"
+              @focus="isInputPhuThu = true"
               placeholder="Phụ thu"
             ></el-input>
           </el-form-item>
@@ -300,7 +306,12 @@
             >
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="!mua_hang">
-            <el-input size="small" v-model="form.da_thanh_toan"></el-input>
+            <el-input
+              size="small"
+              v-model="daThanhToan"
+              @blur="isInputDaThanhToan = false"
+              @focus="isInputDaThanhToan = true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="Tổng thanh toán" v-else>
             <span style="color: green; font-size: 20px; font-weight: bold"
@@ -726,7 +737,7 @@ export default {
         thanh_toan: null,
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
-        phu_thu: null,
+        phu_thu: 0,
       },
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -746,6 +757,9 @@ export default {
       shipper: [],
       hideSidebar: false,
       role_id: null,
+      isInputDaThanhToan: null,
+      isInputPhuThu: null,
+      isInputGiamGia: null,
       rulesKhachHang: {
         ten: [
           {
@@ -877,6 +891,81 @@ export default {
   computed: {
     mua_hang() {
       return this.$store.state.datmuahang.banHang;
+    },
+    daThanhToan: {
+      get() {
+        if (this.isInputDaThanhToan) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.da_thanh_toan.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.da_thanh_toan).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.da_thanh_toan = newValue;
+      },
+    },
+    phuThu: {
+      get() {
+        if (this.isInputPhuThu) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.phu_thu.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.phu_thu).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.phu_thu = newValue;
+      },
+    },
+    giamGia: {
+      get() {
+        if (this.isInputGiamGia) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.giam_gia.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.giam_gia).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.giam_gia = newValue;
+      },
     },
   },
   methods: {

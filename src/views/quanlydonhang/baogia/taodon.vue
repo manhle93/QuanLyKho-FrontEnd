@@ -5,7 +5,9 @@
     <el-form ref="form" :model="form" :rules="rules">
       <el-row :gutter="20">
         <br />
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin chung</div>
+        <div style="font-size: 16px; color: #1f618d; font-weight: bold">
+          1. Thông tin chung
+        </div>
         <br />
         <el-col :span="4">
           <el-form-item label="Mã đơn hàng">
@@ -42,7 +44,9 @@
         <br />
       </el-row>
       <el-row :gutter="20">
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">2. Sản phẩm, hàng hóa</div>
+        <div style="font-size: 16px; color: #1f618d; font-weight: bold">
+          2. Sản phẩm, hàng hóa
+        </div>
         <br />
         <el-col :span="6">
           <el-form-item label="Hàng hóa, sản phẩm">
@@ -70,7 +74,12 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="Đơn giá">
-            <el-input v-model="don_gia" :min="0" type="number">
+            <el-input
+              v-model="displayValue"
+              @blur="isInputActive = false"
+              @focus="isInputActive = true"
+              :min="0"
+            >
               <template slot="append">VNĐ</template>
             </el-input>
           </el-form-item>
@@ -85,21 +94,46 @@
         <el-col :span="4">
           <el-form-item>
             <br />
-            <el-button icon="el-icon-plus" class="primary-button" @click="addSanPham()"></el-button>
+            <el-button
+              icon="el-icon-plus"
+              class="primary-button"
+              @click="addSanPham()"
+            ></el-button>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="18">
-          <el-table :data="form.danhSachHang" style="width: 100%" max-height="350px">
-            <el-table-column type="index" label="STT" width="100px"></el-table-column>
-            <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
-            <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
+          <el-table
+            :data="form.danhSachHang"
+            style="width: 100%"
+            max-height="350px"
+          >
+            <el-table-column
+              type="index"
+              label="STT"
+              width="100px"
+            ></el-table-column>
+            <el-table-column
+              prop="hang_hoa.ten_san_pham"
+              label="Hàng hóa"
+            ></el-table-column>
+            <el-table-column
+              prop="hang_hoa.don_vi_tinh"
+              label="Đơn vị tính"
+            ></el-table-column>
             <el-table-column prop="don_gia" label="Đơn giá">
-              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+              <template slot-scope="scope"
+                >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
+              >
             </el-table-column>
             <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo">
-              <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_khuyen_cao)}} đ</template>
+              <template slot-scope="scope"
+                >{{
+                  formate.formatCurrency(scope.row.gia_khuyen_cao)
+                }}
+                đ</template
+              >
             </el-table-column>
             <el-table-column label="Xóa">
               <template slot-scope="scope">
@@ -120,7 +154,9 @@
     <br />
     <el-row>
       <el-col :span="10">
-        <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
+        <el-button icon="el-icon-back" type="warning" @click="back()"
+          >Quay lại</el-button
+        >
       </el-col>
       <el-col :span="10">
         <el-button
@@ -128,7 +164,8 @@
           icon="el-icon-right"
           class="primary-button"
           @click="submit('form')"
-        >GỬI BÁO GIÁ</el-button>
+          >GỬI BÁO GIÁ</el-button
+        >
       </el-col>
     </el-row>
   </div>
@@ -152,6 +189,7 @@ export default {
         danhSachHang: [],
         nha_cung_cap_id: null,
       },
+      isInputActive: null,
       formate: formate,
       gia_khuyen_cao: null,
       admin: false,
@@ -160,7 +198,7 @@ export default {
       hang_hoa_id: null,
       hangHoas: [],
       don_vi_tinh: null,
-      don_gia: null,
+      don_gia: "",
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên báo giá", trigger: "blur" },
@@ -168,6 +206,33 @@ export default {
         ],
       },
     };
+  },
+    computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.don_gia.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.don_gia).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.don_gia = newValue;
+      },
+    },
   },
   created() {
     this.getSanPham();
@@ -199,7 +264,7 @@ export default {
         }
         this.gia_khuyen_cao = null;
         this.hang_hoa_id = null;
-        this.don_gia = null;
+        this.don_gia = "";
         this.don_vi_tinh = null;
         this.hangHoa = {};
       }
@@ -222,7 +287,6 @@ export default {
             });
             return;
           }
-          console.log(this.form);
           addBaoGia(this.form)
             .then((res) => {
               this.$message({

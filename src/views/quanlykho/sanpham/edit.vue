@@ -30,7 +30,13 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="Giá bán" prop="gia_ban">
-                <el-input type="number" style="width: 100%" :min="1" v-model="form.gia_ban"></el-input>
+                <el-input
+                  @blur="isInputActive = false"
+                  @focus="isInputActive = true"
+                  style="width: 100%"
+                  :min="1"
+                  v-model="giaBan"
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -40,15 +46,26 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="Giá vốn">
-                <el-input type="number" style="width: 100%" :min="1" v-model="form.gia_von"></el-input>
+                <el-input
+                  @blur="isInputActiveGiaVon = false"
+                  @focus="isInputActiveGiaVon = true"
+                  style="width: 100%"
+                  :min="1"
+                  v-model="giaVon"
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <div style="display:flex; flex-direction: row">
+              <div style="display: flex; flex-direction: row">
                 <div>
                   <el-form-item label="Thương hiệu">
                     <br />
-                    <el-select filterable clearable v-model="form.thuong_hieu_id" placeholder="Chọn thương hiệu">
+                    <el-select
+                      filterable
+                      clearable
+                      v-model="form.thuong_hieu_id"
+                      placeholder="Chọn thương hiệu"
+                    >
                       <el-option
                         v-for="item in thuongHieus"
                         :key="item.id"
@@ -91,7 +108,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item :label="'Tồn kho tối thiểu (' + form.don_vi_tinh + ')'">
+              <el-form-item
+                :label="'Tồn kho tối thiểu (' + form.don_vi_tinh + ')'"
+              >
                 <el-input
                   type="number"
                   style="width: 100%"
@@ -113,18 +132,25 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <div style="display:flex; flex-direction: row">
-                <div style="flex-grow: 4;">
+              <div style="display: flex; flex-direction: row">
+                <div style="flex-grow: 4">
                   <label>Mô tả sản phẩm</label>
                   <br />
                   <br />
-                  <vue-simplemde v-model="form.mo_ta_san_pham" ref="markdownEditor" />
+                  <vue-simplemde
+                    v-model="form.mo_ta_san_pham"
+                    ref="markdownEditor"
+                  />
                 </div>
                 <div style="margin-left: 50px">
                   <el-form-item label="Ảnh đại diện">
                     <br />
                     <a>
-                      <img @click="handleUpload" style="widht: 150px; height: 150px" :src="src" />
+                      <img
+                        @click="handleUpload"
+                        style="widht: 150px; height: 150px"
+                        :src="src"
+                      />
                     </a>
                     <input
                       ref="upload-image"
@@ -165,7 +191,9 @@
 
             <el-col :span="12">
               <router-link to="/quanlykho/loaimathang">
-                <el-button type="warning" icon="el-icon-back">Quay lại</el-button>
+                <el-button type="warning" icon="el-icon-back"
+                  >Quay lại</el-button
+                >
               </router-link>
             </el-col>
             <el-col :span="12">
@@ -174,7 +202,8 @@
                 class="primary-button"
                 icon="el-icon-check"
                 @click="addSanPham('form')"
-              >Cập nhật</el-button>
+                >Cập nhật</el-button
+              >
             </el-col>
           </el-row>
         </el-form>
@@ -186,37 +215,54 @@
       width="25%"
       center
     >
-      <el-form :model="formAddThuongHieu" :rules="rules" ref="formAddThuongHieu">
+      <el-form
+        :model="formAddThuongHieu"
+        :rules="rules"
+        ref="formAddThuongHieu"
+      >
         <el-form-item label="Tên thương hiệu" prop="ten">
           <el-input v-model="formAddThuongHieu.ten"></el-input>
         </el-form-item>
         <el-form-item label="Mô tả">
-          <el-input :rows="2" type="textarea" v-model="formAddThuongHieu.mo_ta"></el-input>
+          <el-input
+            :rows="2"
+            type="textarea"
+            v-model="formAddThuongHieu.mo_ta"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="huyThuongHieu()">Hủy bỏ</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="huyThuongHieu()"
+          >Hủy bỏ</el-button
+        >
         <el-button
           v-if="!editThuongHieu"
           size="small"
           class="primary-button"
           icon="el-icon-plus"
           @click="themThuongHieu('formAddThuongHieu')"
-        >Thêm mới</el-button>
+          >Thêm mới</el-button
+        >
         <el-button
           v-if="editThuongHieu"
           size="small"
           class="primary-button"
           icon="el-icon-edit"
           @click="updateThuongHieu('formAddThuongHieu')"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
         <el-button
           v-if="editThuongHieu"
           size="small"
           type="danger"
           icon="el-icon-delete"
           @click="xoaThuongHieu()"
-        >Xóa</el-button>
+          >Xóa</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -250,6 +296,8 @@ export default {
       danhMucS: [],
       token: "",
       showThuongHieu: false,
+      isInputActive: null,
+      isInputActiveGiaVon: null,
       form: {
         id: null,
         anh_dai_dien: "",
@@ -264,7 +312,7 @@ export default {
         ket_thuc_khuyen_mai: null,
         fileList: [],
         thuong_hieu_id: null,
-        gia_von: null,
+        gia_von: "",
         vi_tri: null,
         ton_kho_thap_nhat: 0,
         thoi_gian_bao_quan: 1,
@@ -306,6 +354,58 @@ export default {
         ],
       },
     };
+  },
+  computed: {
+    giaBan: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.gia_ban.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.gia_ban).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.gia_ban = newValue;
+      },
+    },
+    giaVon: {
+      get() {
+        if (this.isInputActiveGiaVon) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.gia_von.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.gia_von).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.gia_von = newValue;
+      },
+    },
   },
   created() {
     this.getDanhMuc();
