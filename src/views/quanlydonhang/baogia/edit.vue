@@ -58,6 +58,7 @@
             <el-table-column type="index" label="STT" width="100px"></el-table-column>
             <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
             <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
+            <el-table-column prop="hang_hoa.gia_ban" label="Giá bán hiện tại"></el-table-column>
             <el-table-column prop="don_gia" label="Giá giao">
               <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
             </el-table-column>
@@ -206,6 +207,7 @@ export default {
         item.lua_chon = sp.lua_chon;
         this.form.danhSachHang.push(item);
       }
+      console.log(this.form.danhSachHang)
       let toggleList = this.form.danhSachHang.filter((el) => el.lua_chon);
       setTimeout(() => {
         this.toggleSelection(toggleList);

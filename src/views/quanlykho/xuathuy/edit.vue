@@ -27,6 +27,7 @@
                     slot-scope="scope"
                   >{{scope.row.ton_kho_truoc_xuat_huy - scope.row.so_xuat_huy}}</template>
                 </el-table-column>
+                 <el-table-column label="Lý do" prop="ly_do"></el-table-column>
               </el-table>
             </div>
           </div>
@@ -174,6 +175,7 @@ export default {
         item.ton_kho_truoc_xuat_huy = sp.ton_kho_truoc_xuat_huy;
         item.hang_hoa = sp.san_pham;
         item.so_xuat_huy = sp.so_xuat_huy;
+        item.ly_do = sp.ly_do
         this.form.danhSachHang.push(item);
       }
     },

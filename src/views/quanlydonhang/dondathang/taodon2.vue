@@ -49,6 +49,30 @@
                   size="small"
                   style="width: 100%"
                   clearable
+                  remote
+                  reserve-keyword
+                  v-model="idSanPham"
+                  :remote-method="remoteMethod"
+                  placeholder="Hàng hóa, sản phẩm"
+                  filterable
+                  @change="doiSanPham(idSanPham)"
+                >
+                  <el-option
+                    :disabled="kiemTraDaChon(item.id)"
+                    v-for="item in hangHoas"
+                    :key="item.id"
+                    :label="item.ten_san_pham"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-form-item>
+                <el-select
+                  size="small"
+                  style="width: 100%"
+                  clearable
                   v-model="danh_muc_id"
                   placeholder="Danh mục sản phẩm"
                   filterable
@@ -338,7 +362,7 @@
                 value="chuyen_khoan"
                 label="Chuyển khoản/Quẹt thẻ"
               ></el-option>
-              <el-option value="cod" label="Ship COD"></el-option>
+              <!-- <el-option value="cod" label="Ship COD"></el-option> -->
               <el-option value="tai_khoan" label="Tài khoản"></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
@@ -721,6 +745,7 @@ export default {
         diem_quy_doi: null,
         tien_vay: null,
       },
+      idSanPham: null,
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
         ten: "Đơn hàng tại quầy ",
@@ -1026,8 +1051,8 @@ export default {
       } else {
         this.don_gia = this.hangHoa.gia_ban;
       }
-
       this.addSanPham();
+      this.idSanPham = null;
     },
     kiemTraDaChon(SanPhamID) {
       let a = this.form.danhSachHang.find((el) => el.hang_hoa.id == SanPhamID);
@@ -1115,6 +1140,14 @@ export default {
     },
     back() {
       this.$router.push("/quanlydonhang/nhacungcap");
+    },
+    async remoteMethod(query) {
+      let data = await listSanPham({
+        per_page: 6,
+        search: query,
+        danh_muc_id: this.danh_muc_id,
+      });
+      this.hangHoas = data.data.data;
     },
     resetForm() {
       this.form = {

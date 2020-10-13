@@ -347,7 +347,7 @@
                 value="chuyen_khoan"
                 label="Chuyển khoản/Quẹt thẻ"
               ></el-option>
-              <el-option value="cod" label="Ship COD"></el-option>
+              <!-- <el-option value="cod" label="Ship COD"></el-option> -->
               <el-option value="tai_khoan" label="Tài khoản"></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>

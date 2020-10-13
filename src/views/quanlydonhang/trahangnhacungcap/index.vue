@@ -111,6 +111,7 @@
           style="width: 100%"
           placeholder="Chọn nhà cung cấp"
           v-model="formAdd.nha_cung_cap_id"
+          filterable
           clearable
           @change="changeNhaCungCap(formAdd.nha_cung_cap_id)"
         >
@@ -329,7 +330,8 @@ export default {
     async changeNhaCungCap(id) {
       let user_id = this.nhaCungCaps.find((el) => el.id == id).user_id;
       let data = await getSanPhamNhaCungCap({ nha_cung_cap_id: user_id });
-      this.hangHoas = data;
+      this.hangHoas = data.filter(el => el.san_pham);
+      
     },
     async update() {
       if (!this.formAdd.nha_cung_cap_id) {

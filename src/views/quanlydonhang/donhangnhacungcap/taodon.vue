@@ -14,7 +14,9 @@
     <el-form ref="form" :model="form" :rules="rules">
       <el-row :gutter="20">
         <br />
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin đơn hàng</div>
+        <div style="font-size: 16px; color: #1f618d; font-weight: bold">
+          1. Thông tin đơn hàng
+        </div>
         <br />
         <el-col :span="6">
           <el-form-item label="Mã đơn hàng">
@@ -34,6 +36,7 @@
               v-model="form.thoi_gian"
               type="datetime"
               placeholder="Nhập thời gian"
+              :picker-options="pickerOptions"
             ></el-date-picker>
           </el-form-item>
         </el-col>
@@ -61,7 +64,9 @@
           </el-form-item>
         </el-col>
         <br />
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">2. Sản phẩm, hàng hóa</div>
+        <div style="font-size: 16px; color: #1f618d; font-weight: bold">
+          2. Sản phẩm, hàng hóa
+        </div>
         <br />
         <el-col :span="6">
           <el-form-item label="Hàng hóa, sản phẩm">
@@ -102,7 +107,11 @@
         <el-col :span="4">
           <el-form-item>
             <br />
-            <el-button icon="el-icon-plus" class="primary-button" @click="addSanPham()"></el-button>
+            <el-button
+              icon="el-icon-plus"
+              class="primary-button"
+              @click="addSanPham()"
+            ></el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -115,31 +124,47 @@
             :summary-method="tongTien"
             max-height="600px"
           >
-            <el-table-column type="index" label="STT" width="100px"></el-table-column>
-            <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
+            <el-table-column
+              type="index"
+              label="STT"
+              width="100px"
+            ></el-table-column>
+            <el-table-column
+              prop="hang_hoa.ten_san_pham"
+              label="Hàng hóa"
+            ></el-table-column>
             <!-- <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column> -->
-            <el-table-column prop="ton_kho" label="Tồn kho" v-if="role_id ==1">
-              <template slot-scope="scope">{{scope.row.ton_kho}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+            <el-table-column prop="ton_kho" label="Tồn kho" v-if="role_id == 1">
+              <template slot-scope="scope"
+                >{{ scope.row.ton_kho }}
+                {{ scope.row.hang_hoa.don_vi_tinh }}</template
+              >
             </el-table-column>
-            <el-table-column prop="dat_truoc" label="Đặt trước" v-if="role_id ==1">
-              <template
-                slot-scope="scope"
-              >{{scope.row.dat_truoc}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+            <el-table-column
+              prop="dat_truoc"
+              label="Đặt trước"
+              v-if="role_id == 1"
+            >
+              <template slot-scope="scope"
+                >{{ scope.row.dat_truoc }}
+                {{ scope.row.hang_hoa.don_vi_tinh }}</template
+              >
             </el-table-column>
             <el-table-column prop="so_luong" label="Số lượng">
-              <template slot-scope="scope">{{scope.row.so_luong}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+              <template slot-scope="scope"
+                >{{ scope.row.so_luong }}
+                {{ scope.row.hang_hoa.don_vi_tinh }}</template
+              >
             </el-table-column>
             <el-table-column prop="don_gia" label="Đơn giá">
               <template slot-scope="scope">
-                {{
-                formate.formatCurrency(scope.row.don_gia)
-                }}
+                {{ formate.formatCurrency(scope.row.don_gia) }}
               </template>
             </el-table-column>
             <el-table-column label="Thành tiền">
               <template slot-scope="scope">
                 {{
-                formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)
+                  formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)
                 }}
               </template>
             </el-table-column>
@@ -165,14 +190,19 @@
           </el-form-item>
         </el-col>
         <el-col :span="6" :offset="1" style="padding-top: 60px">
-          <label>Tổng thanh toán: {{ formate.formatCurrency(form.tong_tien) }} vnđ</label>
+          <label
+            >Tổng thanh toán:
+            {{ formate.formatCurrency(form.tong_tien) }} vnđ</label
+          >
         </el-col>
       </el-row>
     </el-form>
     <br />
     <el-row>
       <el-col :span="10">
-        <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
+        <el-button icon="el-icon-back" type="warning" @click="back()"
+          >Quay lại</el-button
+        >
       </el-col>
       <el-col :span="10">
         <el-button
@@ -180,7 +210,8 @@
           icon="el-icon-plus"
           class="primary-button"
           @click="submit('form')"
-        >Thêm mới</el-button>
+          >Thêm mới</el-button
+        >
       </el-col>
     </el-row>
   </div>
@@ -202,13 +233,24 @@ export default {
       src: process.env.VUE_APP_BASE,
       form: {
         ma: "ĐH_" + new Date().getTime(),
-        ten: null,
+        ten:
+          "Đơn hàng, ngày" +
+          new Date().getUTCDate() +
+          "/" +
+          (+new Date().getMonth() + 1) +
+          "/" +
+          new Date().getUTCFullYear(),
         thoi_gian: null,
         ghi_chu: null,
         tong_tien: null,
         chiet_khau: null,
         danhSachHang: [],
         nha_cung_cap_id: null,
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
       },
       admin: false,
       nhaCungCaps: [],
@@ -359,7 +401,7 @@ export default {
     async getInfo() {
       let data = await getInfor();
       this.form.nha_cung_cap_id = null;
-      this.role_id = data.data.role_id
+      this.role_id = data.data.role_id;
       if (data.data.role_id == 1 || data.data.role_id == 2) {
         this.admin = true;
       }

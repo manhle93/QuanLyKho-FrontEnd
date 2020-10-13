@@ -1,56 +1,65 @@
 <template>
   <div class="app-container" v-on:keyup.enter="searchData">
-    <el-form :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="6">
-          <el-date-picker
-            style="width: 100%"
-            v-model="form.date"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="Từ ngày"
-            end-placeholder="Đến ngày"
-            size="small"
-            format="dd/MM/yyyy"
-          ></el-date-picker>
-        </el-col>
-        <el-col :span="4">
-          <el-select
-            filterable
-            clearable
-            size="small"
-            v-model="form.nha_cung_cap"
-            placeholder="Chọn nhà cung cấp"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in nhaCungCaps"
-              :key="item.id"
-              :label="item.ten"
-              :value="item.user_id"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="3">
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="4">
+        <el-input
+           icon="el-icon-search"
+          v-model="form.search"
+          size="small"
+          placeholder="Tìm kiếm"
+        ></el-input>
+      </el-col>
+
+      <el-col :span="6">
+        <el-date-picker
+          style="width: 100%"
+          v-model="form.date"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="Từ ngày"
+          end-placeholder="Đến ngày"
+          size="small"
+          format="dd/MM/yyyy"
+        ></el-date-picker>
+      </el-col>
+      <el-col :span="4">
+        <el-select
+          filterable
+          clearable
+          size="small"
+          v-model="form.nha_cung_cap"
+          placeholder="Chọn nhà cung cấp"
+          style="width: 100%"
+        >
+          <el-option
+            v-for="item in nhaCungCaps"
+            :key="item.id"
+            :label="item.ten"
+            :value="item.user_id"
+          ></el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="3">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+          >Tìm kiếm</el-button
+        >
+      </el-col>
+      <el-col :span="7">
+        <router-link to="/quanlykho/taobaogia">
           <el-button
+            style="float: right"
             size="small"
             class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="11">
-          <router-link to="/quanlykho/taobaogia">
-            <el-button
-              style="float: right"
-              size="small"
-              class="primary-button"
-              icon="el-icon-plus"
-            >Tạo báo giá</el-button>
-          </router-link>
-        </el-col>
-      </el-row>
-    </el-form>
+            icon="el-icon-plus"
+            >Tạo báo giá</el-button
+          >
+        </router-link>
+      </el-col>
+    </el-row>
     <br />
     <h4>Danh sách báo giá của nhà cung cấp</h4>
     <el-row>
@@ -63,14 +72,43 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
-          <el-table-column property="ten" label="Tên báo giá" min-width="123"></el-table-column>
-          <el-table-column prop="created_at" label="Thời gian gửi"></el-table-column>
-          <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-          <el-table-column label="Đơn tạo bởi" min-width="95" prop="user.name"></el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <el-table-column
+            property="ma"
+            label="Mã báo giá"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="ten"
+            label="Tên báo giá"
+            min-width="123"
+          ></el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="Thời gian gửi"
+          ></el-table-column>
+          <el-table-column
+            property="ghi_chu"
+            label="Ghi chú"
+            min-width="123"
+          ></el-table-column>
+          <el-table-column
+            label="Đơn tạo bởi"
+            min-width="95"
+            prop="user.name"
+          ></el-table-column>
+          <el-table-column
+            label="Hành động"
+            align="center"
+            fixed="right"
+            width="120"
+          >
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Chi tiết"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="edit(scope.row.id)"
@@ -80,7 +118,12 @@
                 ></el-button>
               </el-tooltip>
 
-              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Xóa"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   type="danger"
@@ -123,11 +166,11 @@ export default {
       tableData: null,
       listLoading: true,
       loading: false,
-      search: "",
       list: [],
       form: {
         date: [],
-        nha_cung_cap: []
+        nha_cung_cap: [],
+        search: "",
       },
       formAdd: {
         id: null,
@@ -145,7 +188,7 @@ export default {
         thoi_gian: null,
         nguoi_mua_hang: "",
         tong_tien: 0,
-        hinh_anhs: []
+        hinh_anhs: [],
       },
       nhaCungCaps: [],
       showCreate: false,
@@ -154,45 +197,45 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đơn hàng",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         ma: [
           {
             required: true,
             message: "Mã đơn hàng không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         tinh_thanh_id: [
           {
             required: true,
             message: "Hãy chọn một tỉnh thành",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         toa_nha_id: [
           {
             required: true,
             message: "Hãy chọn một tòa nhà",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         trang_thai: [
           {
             required: true,
             message: "Trạng thái không thể bỏ trống",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
 
@@ -208,25 +251,19 @@ export default {
     huyDon() {},
     handleCurrentChange(val) {
       this.page = val;
-      this.updateDataTable();
+      this.getDonHang();
     },
 
     handleSizeChange(val) {
       this.per_page = val;
-      this.updateDataTable();
+      this.getDonHang()
     },
-    updateDataTable() {
-      let first = (this.page - 1) * this.per_page;
-      let last = first + this.per_page;
-      last = last > this.tableData.length ? this.tableData.length : last;
-      this.searchData(this.page, this.per_page);
-    },
-    searchData(page, per_page) {
+    searchData() {
       this.getDonHang();
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({
-        per_page: 999999
+        per_page: 999999,
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -242,7 +279,7 @@ export default {
             confirmButtonText: "Xóa",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning"
+            type: "warning",
           }
         );
         this.listLoading = true;
@@ -250,7 +287,7 @@ export default {
         this.getDonHang();
         this.$message({
           message: "Xóa thành công",
-          type: "success"
+          type: "success",
         });
       } catch (error) {
         this.listLoading = false;
@@ -262,7 +299,8 @@ export default {
         per_page: this.per_page,
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
-        date: this.form.date
+        date: this.form.date,
+        search: this.form.search
       });
       this.tableData = data.data.data;
       this.page = data.data.page;
@@ -272,8 +310,8 @@ export default {
     },
     edit(id) {
       this.$router.push("/quanlykho/capnhatbaogia/" + id);
-    }
-  }
+    },
+  },
 };
 </script>
 

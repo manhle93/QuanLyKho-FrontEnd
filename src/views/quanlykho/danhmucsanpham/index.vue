@@ -1,35 +1,37 @@
 <template>
   <div class="app-container">
     <h4>Danh mục sản phẩm hàng hóa</h4>
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >Thêm mới</el-button>
-        </el-col>
-      </el-row>
-      <br><br>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="searchData"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+          >Tìm kiếm</el-button
+        >
+      </el-col>
+      <el-col :span="12">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+          >Thêm mới</el-button
+        >
+      </el-col>
+    </el-row>
+    <br /><br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -39,23 +41,56 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien : src"
+            :src="
+              scope.row.anh_dai_dien
+                ? endPointImage + scope.row.anh_dai_dien
+                : src
+            "
             style="max-height: 90px; max-width: 90px"
           />
         </template>
       </el-table-column>
-      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
+      <el-table-column
+        sortable
+        prop="ten_danh_muc"
+        min-width="160"
+        label="Tên"
+      ></el-table-column>
+      <el-table-column
+        label="Mô tả"
+        prop="mo_ta"
+        min-width="157"
+      ></el-table-column>
       <el-table-column label="Số mặt hàng" min-width="157">
-        <template slot-scope="scope">{{scope.row.so_mat_hang}} sản phẩm</template>
+        <template slot-scope="scope"
+          >{{ scope.row.so_mat_hang }} sản phẩm</template
+        >
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column label="Thứ tự hiển thị" >
+        <template slot-scope="scope">{{ scope.row.thu_tu_hien_thi }}</template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        min-width="110"
+        fixed="right"
+        label="Hoạt động"
+      >
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
             <el-button
               size="small"
               class="primary-button"
@@ -77,7 +112,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="edit ? 'Cập nhật danh mục sản phẩm' :'Thêm danh mục sản phẩm'"
+      :title="edit ? 'Cập nhật danh mục sản phẩm' : 'Thêm danh mục sản phẩm'"
       :visible.sync="showForm"
       width="30%"
       center
@@ -102,7 +137,7 @@
               >
                 <el-button
                   class="primary-button block"
-                  style="margin-top:20px;"
+                  style="margin-top: 20px"
                   @click="handleUpload"
                   icon="el-icon-edit"
                   circle
@@ -119,28 +154,45 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
+            <el-form-item label="Thứ tự hiển thị">
+              <el-input type="number" v-model="form.thu_tu_hien_thi"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
             <el-form-item label="Mô tả">
-              <el-input type="textarea" v-model="form.mo_ta" :rows="2"></el-input>
+              <el-input
+                type="textarea"
+                v-model="form.mo_ta"
+                :rows="2"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showForm = false"
+          >Hủy</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="addDanhMuc('form')"
-        >Thêm mới</el-button>
+          >Thêm mới</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="updateDanhMuc('form')"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -152,7 +204,7 @@ import {
   index,
   updateDanhMuc,
   upAnhDanhMuc,
-  xoaDanhMuc
+  xoaDanhMuc,
 } from "@/api/danhmucsanpham";
 import { getTinhThanh } from "@/api/TinhThanh";
 import { getInfor } from "@/api/taikhoan";
@@ -163,10 +215,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -187,18 +239,19 @@ export default {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
+        thu_tu_hien_thi: null,
       },
       rules: {
         ten_danh_muc: [
           {
             required: true,
             message: "Tên danh mục không thể bỏ trống",
-            trigger: "blur"
+            trigger: "blur",
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
-        ]
-      }
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -212,11 +265,12 @@ export default {
       this.form.ten_danh_muc = data.ten_danh_muc;
       this.form.mo_ta = data.mo_ta;
       this.form.id = data.id;
+      this.form.thu_tu_hien_thi = data.thu_tu_hien_thi;
+      this.form.anh_dai_dien = data.anh_dai_dien;
       if (data.anh_dai_dien) {
         this.srcForm = process.env.VUE_APP_BASE + data.anh_dai_dien;
       } else {
-        this.srcForm =
-          process.env.VUE_APP_BASE + "images/avatar/product.png";
+        this.srcForm = process.env.VUE_APP_BASE + "images/avatar/product.png";
       }
     },
     async getData() {
@@ -227,7 +281,7 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      index({ search: this.search }).then(response => {
+      index({ search: this.search }).then((response) => {
         this.list = response.data;
         this.listLoading = false;
       });
@@ -237,40 +291,40 @@ export default {
         "Bạn chắc chắn muốn xóa danh mục: " +
           "<strong>" +
           item.ten_danh_muc +
-          "</strong>" ,
+          "</strong>",
         "Xóa danh mục sản phẩm",
         {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning"
+          type: "warning",
         }
       )
-        .then(_ => {
-          xoaDanhMuc(item.id).then(res => {
+        .then((_) => {
+          xoaDanhMuc(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
-              type: "success"
+              type: "success",
             });
             this.getData();
           });
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     showFormAdd() {
       this.resetForm();
       this.showForm = true;
-      this.edit = false
+      this.edit = false;
     },
     addDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          addDanhMuc(this.form).then(res => {
+          addDanhMuc(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công"
+              message: "Thêm mới thành công",
             });
           });
         } else {
@@ -280,14 +334,14 @@ export default {
       });
     },
     updateDanhMuc(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          updateDanhMuc(this.form).then(res => {
+          updateDanhMuc(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
               type: "success",
-              message: "Cập nhật thành công"
+              message: "Cập nhật thành công",
             });
           });
         } else {
@@ -303,7 +357,8 @@ export default {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
+        thu_tu_hien_thi: null,
       };
     },
     handleChange(e) {
@@ -311,16 +366,16 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then(res => {
+        .then((res) => {
           this.form.anh_dai_dien = res;
           this.srcForm = process.env.VUE_APP_BASE + res;
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
