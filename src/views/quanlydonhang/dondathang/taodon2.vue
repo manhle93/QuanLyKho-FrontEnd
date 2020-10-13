@@ -878,7 +878,7 @@ export default {
   watch: {
     timKiem: debounce(async function (val) {
       let data = await listSanPham({
-        per_page: 6,
+        per_page: 20,
         search: val,
         danh_muc_id: this.danh_muc_id,
       });
@@ -1143,7 +1143,7 @@ export default {
     },
     async remoteMethod(query) {
       let data = await listSanPham({
-        per_page: 6,
+        per_page: 20,
         search: query,
         danh_muc_id: this.danh_muc_id,
       });

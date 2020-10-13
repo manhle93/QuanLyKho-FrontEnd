@@ -175,6 +175,14 @@
               label="Đơn vị tính"
             ></el-table-column>
             <el-table-column prop="so_luong" label="Số lượng"></el-table-column>
+            <el-table-column prop="so_luong_thuc_te" label="Số lượng thực tế">
+              <template scope="scope">
+                <el-input-number
+                  size="small"
+                  v-model="scope.row.so_luong_thuc_te"
+                ></el-input-number>
+              </template>
+            </el-table-column>
             <el-table-column prop="don_gia" label="Đơn giá">
               <template slot-scope="scope"
                 >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
@@ -224,7 +232,12 @@
           >Quay lại</el-button
         >
         <el-button
-          v-if="form.trang_thai != 'huy_bo' && form.trang_thai != 'hoan_thanh' && form.trang_thai != 'nhap_kho_ngoai' &&  form.trang_thai != 'nhap_kho'"
+          v-if="
+            form.trang_thai != 'huy_bo' &&
+            form.trang_thai != 'hoan_thanh' &&
+            form.trang_thai != 'nhap_kho_ngoai' &&
+            form.trang_thai != 'nhap_kho'
+          "
           style="float: right"
           icon="el-icon-close"
           type="danger"
@@ -467,6 +480,11 @@ export default {
       this.form.danhSachHang = [];
       for (let sp of data.data.san_phams) {
         let item = {};
+        if (sp.so_luong_thuc_te == null || sp.so_luong_thuc_te == undefined) {
+          item.so_luong_thuc_te = sp.so_luong;
+        } else {
+          item.so_luong_thuc_te = sp.so_luong_thuc_te;
+        }
         item.don_gia = sp.don_gia;
         item.so_luong = sp.so_luong;
         item.hang_hoa = sp.san_pham;
@@ -493,6 +511,7 @@ export default {
         let data = {};
         data.hang_hoa = this.hangHoa.san_pham;
         data.so_luong = this.so_luong;
+        data.so_luong_thuc_te = this.so_luong
         data.don_gia = this.don_gia;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
