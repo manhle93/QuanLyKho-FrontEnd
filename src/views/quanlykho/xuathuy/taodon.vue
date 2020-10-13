@@ -15,7 +15,7 @@
         <div class="d-flex fill-height flex-collumn">
           <el-row :gutter="20">
             <br />
-            <el-col :span="4">
+            <el-col :span="8">
               <el-select
                 style="width: 100%"
                 clearable
@@ -36,11 +36,11 @@
                 ></el-option>
               </el-select>
             </el-col>
-            <el-col :span="8">
+            <!-- <el-col :span="8">
               <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
-            </el-col>
+            </el-col> -->
             <el-col :span="4">
               <el-select
                 clearable

@@ -90,7 +90,6 @@ this.getBaiViet()
   methods: {
    async getBaiViet(){
     let data = await chiTietBaiViet(this.$route.params.id);
-    console.log(data)
     this.form.anh_dai_dien = data.anh_dai_dien
     if(this.form.anh_dai_dien){
       this.src = this.endPointImage + this.form.anh_dai_dien

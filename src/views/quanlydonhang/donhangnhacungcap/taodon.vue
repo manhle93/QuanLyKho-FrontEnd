@@ -206,6 +206,7 @@
       </el-col>
       <el-col :span="10">
         <el-button
+        :disabled="disableAdd"
           style="float: right"
           icon="el-icon-plus"
           class="primary-button"
@@ -264,6 +265,7 @@ export default {
       ton_kho: null,
       dat_truoc: null,
       role_id: null,
+      disableAdd: false,
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên đơn hàng", trigger: "blur" },
@@ -355,12 +357,14 @@ export default {
             });
             return;
           }
+          this.disableAdd = true
           addSanPham(this.form)
             .then((res) => {
               this.$message({
                 message: "Tạo đơn hàng thành công",
                 type: "success",
               });
+              this.disableAdd = false
               this.resetForm();
             })
             .catch((error) => {
@@ -378,7 +382,12 @@ export default {
     resetForm() {
       this.form = {
         ma: new Date().getTime(),
-        ten: null,
+        ten:  "Đơn hàng, ngày" +
+          new Date().getUTCDate() +
+          "/" +
+          (+new Date().getMonth() + 1) +
+          "/" +
+          new Date().getUTCFullYear(),
         thoi_gian: null,
         ghi_chu: null,
         tong_tien: null,

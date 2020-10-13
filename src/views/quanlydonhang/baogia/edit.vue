@@ -8,7 +8,7 @@
         <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin báo giá</div>
         <br />
         <el-col :span="3">
-          <el-form-item label="Mã đơn hàng">
+          <el-form-item label="Mã báo giá">
             <el-input v-model="form.ma" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
@@ -207,7 +207,6 @@ export default {
         item.lua_chon = sp.lua_chon;
         this.form.danhSachHang.push(item);
       }
-      console.log(this.form.danhSachHang)
       let toggleList = this.form.danhSachHang.filter((el) => el.lua_chon);
       setTimeout(() => {
         this.toggleSelection(toggleList);

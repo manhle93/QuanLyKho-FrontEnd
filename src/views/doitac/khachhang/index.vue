@@ -40,6 +40,11 @@
       highlight-current-row
       style="font-size: 13px"
     >
+        <el-table-column type="expand">
+      <template slot-scope="props">
+        <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
+      </template>
+    </el-table-column>
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên khách hàng"></el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
@@ -57,7 +62,7 @@
       <el-table-column label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_hoa_don)}} đ</template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
@@ -126,8 +131,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Mã số thuế">
-              <el-input size="small" v-model="form.ma_so_thue"></el-input>
+            <el-form-item label="Facebook">
+              <el-input size="small" v-model="form.facebook"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -338,8 +343,9 @@ import {
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
-
+import ChiTiet from "./chitiet"
 export default {
+  components: {ChiTiet},
   filters: {
     statusFilter(status) {
       const statusMap = {

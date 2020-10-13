@@ -234,7 +234,6 @@ export default {
     var firstDay = new Date(y, m, 1);
     var lastDay = new Date(y, m + 1, 0);
     this.date = [firstDay, lastDay];
-    console.log(this.date);
   },
   methods: {
     thoiGianSanPham(e) {

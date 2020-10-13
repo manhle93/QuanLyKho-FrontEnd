@@ -110,7 +110,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.form)
           addBaiViet(this.form).then((res) => {
             this.$message({
               type: "success",

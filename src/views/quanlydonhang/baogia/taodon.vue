@@ -10,7 +10,7 @@
         </div>
         <br />
         <el-col :span="4">
-          <el-form-item label="Mã đơn hàng">
+          <el-form-item label="Mã báo giá">
             <el-input v-model="form.ma" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
@@ -54,6 +54,8 @@
             <el-select
               style="width: 100%"
               v-model="hang_hoa_id"
+              filterable
+              clearable
               placeholder="Chọn hàng hóa, sản phẩm"
               @change="doiSanPham(hang_hoa_id)"
             >

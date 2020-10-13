@@ -39,7 +39,7 @@
             @click="getDonHang()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="11">
+        <!-- <el-col :span="11">
           <el-button
             @click="taoDon"
             style="float: right"
@@ -47,7 +47,7 @@
             class="primary-button"
             icon="el-icon-plus"
           >Tạo đơn</el-button>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-form>
     <br />
@@ -79,16 +79,6 @@
                   circle
                 ></el-button>
               </el-tooltip>
-
-              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
-                <el-button
-                  size="small"
-                  type="danger"
-                  icon="el-icon-delete"
-                  circle
-                  @click="handleDelete(scope.row)"
-                ></el-button>
-              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -106,66 +96,7 @@
       ></el-pagination>
     </div>
     <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px">
-      <el-row>
-        <el-select
-          size="small"
-          style="width: 100%"
-          placeholder="Chọn nhà cung cấp"
-          v-model="formAdd.nha_cung_cap_id"
-          filterable
-          clearable
-          @change="changeNhaCungCap(formAdd.nha_cung_cap_id)"
-        >
-          <el-option v-for="item in nhaCungCaps" :key="item.id" :label="item.ten" :value="item.id"></el-option>
-        </el-select>
-      </el-row>
-      <br />
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <el-select
-            size="small"
-            style="width: 100%"
-            placeholder="Chọn hàng hóa"
-            v-model="addSanPham.hang_hoa_id"
-            @change="getDonGia(addSanPham.hang_hoa_id)"
-          >
-            <el-option
-              v-for="item in hangHoas"
-              :key="item.san_pham.id"
-              :label="item.san_pham.ten_san_pham"
-              :value="item.san_pham.id"
-              :disabled="checkDaChon(item.san_pham.id)"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="7">
-          <el-input
-            v-model="addSanPham.so_luong"
-            placeholder="Số lượng trả"
-            type="number"
-            size="small"
-            :min="0"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-input
-            v-model="addSanPham.don_gia"
-            placeholder="Đơn giá trả hàng"
-            type="number"
-            size="small"
-            :min="0"
-          ></el-input>
-        </el-col>
-        <el-col :span="2">
-          <el-button
-            class="primary-button"
-            size="small"
-            circle
-            icon="el-icon-plus"
-            @click="themSanPham()"
-          ></el-button>
-        </el-col>
-      </el-row>
+      <div>Nhà cung cấp: <span style="font-weight: bold">{{tenNCC}}</span></div>
       <br />
       <el-table :data="dataHangTra" height="400px">
         <el-table-column type="index" label="STT"></el-table-column>
@@ -181,17 +112,6 @@
             slot-scope="scope"
           >{{formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)}} đ</template>
         </el-table-column>
-        <el-table-column label="Xóa">
-          <template slot-scope="scope">
-            <el-button
-              icon="el-icon-delete"
-              type="danger"
-              circle
-              size="mini"
-              @click="xoaSanPham(scope.$index)"
-            ></el-button>
-          </template>
-        </el-table-column>
       </el-table>
       <br />
       <div style="margin-bottom: 10px">
@@ -200,7 +120,7 @@
       <div>Tổng tiền: {{formate.formatCurrency(tongTien)}} đ</div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
-        <el-button
+        <!-- <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
@@ -213,7 +133,7 @@
           v-else
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+        >Cập nhật</el-button> -->
       </span>
     </el-dialog>
   </div>
@@ -233,6 +153,7 @@ export default {
   data() {
     return {
       dataHangTra: [],
+      tenNCC: null,
       endPointImage: process.env.VUE_APP_BASE,
       page: 1,
       per_page: 10,
@@ -313,7 +234,6 @@ export default {
   created() {
     this.getDonHang();
     this.getNhaCungCap();
-    // this.getSanPham();
   },
 
   mounted() {},
@@ -500,10 +420,12 @@ export default {
       this.total = data.data.total;
       this.tableData = data.data;
       this.listLoading = false;
+      console.log(this.tableData)
     },
     async showUpdate(data) {
       this.don_id = data.id;
       this.edit = true;
+      this.tenNCC = data.nha_cung_cap.ten
       this.showCreate = true;
       this.tongTien = data.tong_tien;
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;

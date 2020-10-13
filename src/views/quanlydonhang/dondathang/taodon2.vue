@@ -32,7 +32,7 @@
                 </el-tooltip>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <!-- <el-col :span="8">
               <el-form-item>
                 <el-input
                   size="small"
@@ -42,8 +42,8 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
-            </el-col>
-            <el-col :span="4">
+            </el-col> -->
+            <el-col :span="8">
               <el-form-item>
                 <el-select
                   size="small"

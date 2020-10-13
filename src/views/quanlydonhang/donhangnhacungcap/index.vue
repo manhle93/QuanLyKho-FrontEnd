@@ -29,7 +29,10 @@
               <el-option label="Hủy bỏ" value="huy_bo"></el-option>
               <el-option label="Đã duyệt đơn" value="da_duyet"></el-option>
               <el-option label="Đã nhập kho" value="nhap_kho"></el-option>
-              <el-option label="Đã nhập mua ngoài" value="nhap_kho_ngoai"></el-option>
+              <el-option
+                label="Đã nhập mua ngoài"
+                value="nhap_kho_ngoai"
+              ></el-option>
             </el-select>
           </el-col>
           <el-col :span="4">
@@ -55,7 +58,8 @@
               class="primary-button"
               icon="el-icon-search"
               @click="getDonHang()"
-            >Tìm kiếm</el-button>
+              >Tìm kiếm</el-button
+            >
           </el-col>
           <el-col :span="7">
             <router-link to="/quanlydonhang/taodonnhacungcap">
@@ -64,12 +68,16 @@
                 size="small"
                 class="primary-button"
                 icon="el-icon-plus"
-              >Tạo đơn</el-button>
+                >Tạo đơn</el-button
+              >
             </router-link>
           </el-col>
         </el-row>
         <br />
-        <div class="d-flex" style="align-items: center; justify-content: space-between">
+        <div
+          class="d-flex"
+          style="align-items: center; justify-content: space-between"
+        >
           <h4>Danh sách đơn hàng nhà cung cấp</h4>
           <el-dropdown trigger="click">
             <el-button
@@ -79,16 +87,32 @@
               size="mini"
             ></el-button>
             <el-dropdown-menu slot="dropdown" style="padding-right: 5px">
-              <el-checkbox v-model="showColumn.stt" style="padding-left: 10px">STT</el-checkbox>
+              <el-checkbox v-model="showColumn.stt" style="padding-left: 10px"
+                >STT</el-checkbox
+              >
               <el-checkbox v-model="showColumn.ma">Mã đơn hàng</el-checkbox>
               <el-checkbox v-model="showColumn.ten">Tên đơn hàng</el-checkbox>
-              <el-checkbox v-model="showColumn.tong_tien">Tổng tiền</el-checkbox>
+              <el-checkbox v-model="showColumn.tong_tien"
+                >Tổng tiền</el-checkbox
+              >
               <el-checkbox v-model="showColumn.ghi_chu">Ghi chú</el-checkbox>
-              <el-checkbox v-model="showColumn.chiet_khau">Chiết khấu</el-checkbox>
-              <el-checkbox v-model="showColumn.da_tt">Đã thanh toán</el-checkbox>
-              <el-checkbox v-model="showColumn.thoi_gian_nhan_hang">Còn phải thanh toán</el-checkbox>
-              <el-checkbox v-model="showColumn.trang_thai">Trạng thái</el-checkbox>
-              <el-checkbox v-model="showColumn.tao_boi" style="padding-right: 10px">Đơn tạo bởi</el-checkbox>
+              <el-checkbox v-model="showColumn.chiet_khau"
+                >Chiết khấu</el-checkbox
+              >
+              <el-checkbox v-model="showColumn.da_tt"
+                >Đã thanh toán</el-checkbox
+              >
+              <el-checkbox v-model="showColumn.thoi_gian_nhan_hang"
+                >Còn phải thanh toán</el-checkbox
+              >
+              <el-checkbox v-model="showColumn.trang_thai"
+                >Trạng thái</el-checkbox
+              >
+              <el-checkbox
+                v-model="showColumn.tao_boi"
+                style="padding-right: 10px"
+                >Đơn tạo bởi</el-checkbox
+              >
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -103,7 +127,12 @@
               style="width: 100%; font-size: 13px"
               border
             >
-              <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
+              <el-table-column
+                sortable
+                type="index"
+                label="STT"
+                v-if="showColumn.stt"
+              ></el-table-column>
               <el-table-column
                 property="ma"
                 label="Mã đơn hàng"
@@ -122,7 +151,9 @@
                 prop="tong_tien"
                 v-if="showColumn.tong_tien"
               >
-                <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+                <template slot-scope="scope"
+                  >{{ formate.formatCurrency(scope.row.tong_tien) }} đ</template
+                >
               </el-table-column>
               <el-table-column
                 property="ghi_chu"
@@ -136,7 +167,12 @@
                 prop="chiet_khau"
                 v-if="showColumn.chiet_khau"
               >
-                <template slot-scope="scope">{{formate.formatCurrency(scope.row.chiet_khau)}} đ</template>
+                <template slot-scope="scope"
+                  >{{
+                    formate.formatCurrency(scope.row.chiet_khau)
+                  }}
+                  đ</template
+                >
               </el-table-column>
               <el-table-column
                 label="Đã thanh toán"
@@ -144,7 +180,12 @@
                 prop="da_thanh_toan"
                 v-if="showColumn.da_tt"
               >
-                <template slot-scope="scope">{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
+                <template slot-scope="scope"
+                  >{{
+                    formate.formatCurrency(scope.row.da_thanh_toan)
+                  }}
+                  đ</template
+                >
               </el-table-column>
               <el-table-column
                 prop="thoi_gian"
@@ -162,22 +203,29 @@
                     type="success"
                     effect="plain"
                     v-if="scope.row.trang_thai == 'moi_tao'"
-                  >Mới tạo</el-tag>
+                    >Mới tạo</el-tag
+                  >
                   <el-tag
                     effect="plain"
                     type="danger"
                     v-if="scope.row.trang_thai == 'huy_bo'"
-                  >Hủy bỏ</el-tag>
+                    >Hủy bỏ</el-tag
+                  >
                   <el-tag
                     effect="plain"
                     type="success"
                     v-if="scope.row.trang_thai == 'da_duyet'"
-                  >Đã duyệt đơn</el-tag>
+                    >Đã duyệt đơn</el-tag
+                  >
                   <el-tag
                     effect="dark"
                     type="success"
-                    v-if="scope.row.trang_thai == 'nhap_kho' || scope.row.trang_thai == 'nhap_kho_ngoai'"
-                  >Đã nhập kho</el-tag>
+                    v-if="
+                      scope.row.trang_thai == 'nhap_kho' ||
+                      scope.row.trang_thai == 'nhap_kho_ngoai'
+                    "
+                    >Đã nhập kho</el-tag
+                  >
                 </template>
               </el-table-column>
               <el-table-column
@@ -186,9 +234,19 @@
                 prop="user.name"
                 v-if="showColumn.tao_boi"
               ></el-table-column>
-              <el-table-column label="Hành động" align="center" fixed="right" width="120">
+              <el-table-column
+                label="Hành động"
+                align="center"
+                fixed="right"
+                width="120"
+              >
                 <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="Chi tiết"
+                    placement="top"
+                  >
                     <el-button
                       size="small"
                       @click="edit(scope.row.id)"
@@ -198,7 +256,12 @@
                     ></el-button>
                   </el-tooltip>
 
-                  <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="Xóa"
+                    placement="top"
+                  >
                     <el-button
                       size="small"
                       type="danger"
@@ -228,15 +291,20 @@
     <el-tab-pane label="Thanh toán">
       <thanh-toan :nhaCungCaps="nhaCungCaps"></thanh-toan>
     </el-tab-pane>
+    <el-tab-pane label="Trả hàng">
+      <tra-hang></tra-hang>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import ThanhToan from "./thanhtoan";
+import TraHang from "./trahang"
 export default {
   components: {
     ThanhToan,
+    TraHang
   },
   data() {
     return {
@@ -392,7 +460,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
-        trang_thai: this.form.trang_thai
+        trang_thai: this.form.trang_thai,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
