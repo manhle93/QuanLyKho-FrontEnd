@@ -208,7 +208,7 @@
         >
         <br />
         <br />
-        <el-checkbox
+        <!-- <el-checkbox
           v-if="cap_nhat"
           v-model="doiTra"
           label="Đổi trả hàng"
@@ -216,7 +216,7 @@
           size="small"
           style="background: white"
         ></el-checkbox>
-        <br />
+        <br /> -->
         <br />
         <el-form
           label-position="left"
@@ -348,7 +348,7 @@
                 label="Chuyển khoản/Quẹt thẻ"
               ></el-option>
               <!-- <el-option value="cod" label="Ship COD"></el-option> -->
-              <el-option value="tai_khoan" label="Tài khoản"></el-option>
+              <el-option value="tai_khoan" label="Tài khoản" :disabled="!form.khach_hang_id"></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
           </el-form-item>
@@ -1021,7 +1021,7 @@ export default {
       this.form.thanh_toan = data.data.thanh_toan;
       this.form.dia_chi = data.data.dia_chi;
       this.form.thoi_gian_nhan_hang = data.data.thoi_gian_nhan_hang;
-      this.form.phu_thu = data.data.phu_thu;
+      this.form.phu_thu = data.data.phu_thu ? data.data.phu_thu : 0;
       this.form.danhSachHang = [];
       this.hangCus = [];
       for (let sp of data.data.san_phams) {
@@ -1195,7 +1195,7 @@ export default {
         thanh_toan: null,
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
-        phu_thu: null,
+        phu_thu: 0,
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;

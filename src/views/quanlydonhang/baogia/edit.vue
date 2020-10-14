@@ -5,7 +5,9 @@
     <el-form ref="form" :model="form" :rules="rules">
       <el-row :gutter="20" style="margin-left: 20px">
         <br />
-        <div style="font-size: 16px; color: #1F618D; font-weight: bold">1. Thông tin báo giá</div>
+        <div style="font-size: 16px; color: #1f618d; font-weight: bold">
+          1. Thông tin báo giá
+        </div>
         <br />
         <el-col :span="3">
           <el-form-item label="Mã báo giá">
@@ -42,8 +44,15 @@
       </el-row>
 
       <div
-        style="font-size: 16px; color: #1F618D; font-weight: bold; margin-left: 20px"
-      >2. Sản phẩm, hàng hóa</div>
+        style="
+          font-size: 16px;
+          color: #1f618d;
+          font-weight: bold;
+          margin-left: 20px;
+        "
+      >
+        2. Sản phẩm, hàng hóa
+      </div>
       <br />
       <el-row style="margin-left: 20px">
         <el-col :span="20">
@@ -54,16 +63,44 @@
             ref="multipleTable"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55" label="Lựa chọn"></el-table-column>
-            <el-table-column type="index" label="STT" width="100px"></el-table-column>
-            <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
-            <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-            <el-table-column prop="hang_hoa.gia_ban" label="Giá bán hiện tại"></el-table-column>
+            <el-table-column
+              type="selection"
+              width="55"
+              label="Lựa chọn"
+            ></el-table-column>
+            <el-table-column
+              type="index"
+              label="STT"
+              width="100px"
+            ></el-table-column>
+            <el-table-column
+              prop="hang_hoa.ten_san_pham"
+              label="Hàng hóa"
+            ></el-table-column>
+            <el-table-column
+              prop="hang_hoa.don_vi_tinh"
+              label="Đơn vị tính"
+            ></el-table-column>
+            <el-table-column prop="hang_hoa.gia_ban" label="Giá bán hiện tại">
+              <template slot-scope="scope"
+                >{{
+                  formate.formatCurrency(scope.row.hang_hoa.gia_ban)
+                }}
+                đ</template
+              >
+            </el-table-column>
             <el-table-column prop="don_gia" label="Giá giao">
-              <template slot-scope="scope">{{formate.formatCurrency(scope.row.don_gia)}} đ</template>
+              <template slot-scope="scope"
+                >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
+              >
             </el-table-column>
             <el-table-column prop="gia_khuyen_cao" label="Giá khuyến cáo">
-              <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_khuyen_cao)}} đ</template>
+              <template slot-scope="scope"
+                >{{
+                  formate.formatCurrency(scope.row.gia_khuyen_cao)
+                }}
+                đ</template
+              >
             </el-table-column>
             <el-table-column label="Giá bán" v-if="admin">
               <template slot-scope="scope">
@@ -84,7 +121,9 @@
     <br />
     <el-row>
       <el-col :span="10">
-        <el-button icon="el-icon-back" type="warning" @click="back()">Quay lại</el-button>
+        <el-button icon="el-icon-back" type="warning" @click="back()"
+          >Quay lại</el-button
+        >
       </el-col>
       <el-col :span="7">
         <el-button
@@ -92,25 +131,50 @@
           style="float: right"
           class="primary-button"
           @click="submit('form')"
-        >DUYỆT BÁO GIÁ</el-button>
+          >DUYỆT BÁO GIÁ</el-button
+        >
       </el-col>
     </el-row>
 
-    <el-dialog title="CẬP NHẬT GIÁ BÁN" :visible.sync="showAddGia" width="25%" center>
+    <el-dialog
+      title="CẬP NHẬT GIÁ BÁN"
+      :visible.sync="showAddGia"
+      width="25%"
+      center
+    >
       <el-form>
         <el-form-item label="Sản phẩm, hàng hóa">
-          <el-input :disabled="true" v-model="sanPham.ten_san_pham" size="small"></el-input>
+          <div>{{ sanPham.ten_san_pham }}</div>
+          <!-- <el-input
+            :disabled="true"
+            v-model="sanPham.ten_san_pham"
+            size="small"
+          ></el-input> -->
         </el-form-item>
         <el-form-item label="Giá khuyến cáo">
-          <el-input size="small" :disabled="true" v-model="sanPham.gia_khuyen_cao"></el-input>
+          <div>{{ formate.formatCurrency(sanPham.gia_khuyen_cao) }} đ</div>
+          <!-- <el-input
+            size="small"
+            :disabled="true"
+            v-model="sanPham.gia_khuyen_cao"
+          ></el-input> -->
         </el-form-item>
-        <el-form-item label="Giá bán">
-          <el-input size="small" v-model="sanPham.gia_ban"></el-input>
+        <el-form-item label="Giá bán (đồng)">
+          <el-input
+            size="small"
+            v-model="displayValue"
+            @blur="isInputActive = false"
+            @focus="isInputActive = true"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" @click="showAddGia = false">Hủy bỏ</el-button>
-        <el-button class="primary-button" size="small" @click="capNhatGiaban">Xác nhận</el-button>
+        <el-button size="small" type="warning" @click="showAddGia = false"
+          >Hủy bỏ</el-button
+        >
+        <el-button class="primary-button" size="small" @click="capNhatGiaban"
+          >Xác nhận</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -137,6 +201,7 @@ export default {
       active: 1,
       src: process.env.VUE_APP_BASE,
       showAddGia: false,
+      isInputActive: null,
       form: {
         ma: new Date().getTime(),
         ten: null,
@@ -190,6 +255,33 @@ export default {
     this.getNhaCungCap();
     this.getData();
     this.getInfo();
+  },
+  computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.sanPham.gia_ban.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.sanPham.gia_ban).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.sanPham.gia_ban = newValue;
+      },
+    },
   },
   methods: {
     async getData() {

@@ -37,7 +37,8 @@
             class="primary-button"
             icon="el-icon-search"
             @click="getDonHang()"
-          >Tìm kiếm</el-button>
+            >Tìm kiếm</el-button
+          >
         </el-col>
         <el-col :span="11">
           <el-button
@@ -46,7 +47,8 @@
             size="small"
             class="primary-button"
             icon="el-icon-plus"
-          >Tạo đơn</el-button>
+            >Tạo đơn</el-button
+          >
         </el-col>
       </el-row>
     </el-form>
@@ -62,15 +64,39 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="ma_don" label="Mã đơn hàng" min-width="125"></el-table-column>
-          <el-table-column property="created_at" label="Thời gian tạo" min-width="125"></el-table-column>
-          <el-table-column property="nha_cung_cap.ten" label="Nhà cung cấp" min-width="125"></el-table-column>
+          <el-table-column
+            property="ma_don"
+            label="Mã đơn hàng"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="created_at"
+            label="Thời gian tạo"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="nha_cung_cap.ten"
+            label="Nhà cung cấp"
+            min-width="125"
+          ></el-table-column>
           <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien">
-            <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+            <template slot-scope="scope"
+              >{{ formate.formatCurrency(scope.row.tong_tien) }} đ</template
+            >
           </el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <el-table-column
+            label="Hành động"
+            align="center"
+            fixed="right"
+            width="120"
+          >
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Chi tiết"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="showUpdate(scope.row)"
@@ -80,7 +106,12 @@
                 ></el-button>
               </el-tooltip>
 
-              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Xóa"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   type="danger"
@@ -116,7 +147,12 @@
           clearable
           @change="changeNhaCungCap(formAdd.nha_cung_cap_id)"
         >
-          <el-option v-for="item in nhaCungCaps" :key="item.id" :label="item.ten" :value="item.id"></el-option>
+          <el-option
+            v-for="item in nhaCungCaps"
+            :key="item.id"
+            :label="item.ten"
+            :value="item.id"
+          ></el-option>
         </el-select>
       </el-row>
       <br />
@@ -149,11 +185,12 @@
         </el-col>
         <el-col :span="7">
           <el-input
-            v-model="addSanPham.don_gia"
             placeholder="Đơn giá trả hàng"
-            type="number"
             size="small"
             :min="0"
+            v-model="displayValue"
+            @blur="isInputActive = false"
+            @focus="isInputActive = true"
           ></el-input>
         </el-col>
         <el-col :span="2">
@@ -172,14 +209,19 @@
         <el-table-column label="Hàng hóa" prop="ten_san_pham"></el-table-column>
         <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
         <el-table-column label="Đơn giá" prop="don_gia">
-          <template
-            slot-scope="scope"
-          >{{formate.formatCurrency(scope.row.don_gia)}} đ/{{scope.row.don_vi_tinh}}</template>
+          <template slot-scope="scope"
+            >{{ formate.formatCurrency(scope.row.don_gia) }} đ/{{
+              scope.row.don_vi_tinh
+            }}</template
+          >
         </el-table-column>
         <el-table-column label="Thành tiền">
-          <template
-            slot-scope="scope"
-          >{{formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)}} đ</template>
+          <template slot-scope="scope"
+            >{{
+              formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)
+            }}
+            đ</template
+          >
         </el-table-column>
         <el-table-column label="Xóa">
           <template slot-scope="scope">
@@ -195,25 +237,36 @@
       </el-table>
       <br />
       <div style="margin-bottom: 10px">
-        <el-input v-model="formAdd.ly_do" placeholder="Lý do trả hàng"></el-input>
+        <el-input
+          v-model="formAdd.ly_do"
+          placeholder="Lý do trả hàng"
+        ></el-input>
       </div>
-      <div>Tổng tiền: {{formate.formatCurrency(tongTien)}} đ</div>
+      <div>Tổng tiền: {{ formate.formatCurrency(tongTien) }} đ</div>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showCreate = false"
+          >Hủy</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-        >Xuất trả</el-button>
+          >Xuất trả</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -241,12 +294,13 @@ export default {
       listLoading: true,
       loading: false,
       search: "",
+      isInputActive: null,
       edit: false,
       tongTien: 0,
       addSanPham: {
         hang_hoa_id: null,
         so_luong: null,
-        don_gia: null,
+        don_gia: "",
       },
       list: [],
       formate: formate,
@@ -258,7 +312,7 @@ export default {
         nha_cung_cap_id: null,
         hangHoas: [],
         tong_tien: 0,
-        ly_do: null
+        ly_do: null,
       },
       hangHoas: [],
       nhaCungCaps: [],
@@ -309,7 +363,33 @@ export default {
       },
     };
   },
-
+  computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.addSanPham.don_gia.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.addSanPham.don_gia).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.addSanPham.don_gia = newValue;
+      },
+    },
+  },
   created() {
     this.getDonHang();
     this.getNhaCungCap();
@@ -324,15 +404,14 @@ export default {
       this.showCreate = true;
       this.edit = false;
       this.formAdd.nha_cung_cap_id = null;
-      this.formAdd.ly_do = null
+      this.formAdd.ly_do = null;
       this.tongTien = 0;
       this.hangHoas = [];
     },
     async changeNhaCungCap(id) {
       let user_id = this.nhaCungCaps.find((el) => el.id == id).user_id;
       let data = await getSanPhamNhaCungCap({ nha_cung_cap_id: user_id });
-      this.hangHoas = data.filter(el => el.san_pham);
-      
+      this.hangHoas = data.filter((el) => el.san_pham);
     },
     async update() {
       if (!this.formAdd.nha_cung_cap_id) {
@@ -454,7 +533,7 @@ export default {
       this.dataHangTra.push(sanPham);
       this.addSanPham.hang_hoa_id = null;
       this.addSanPham.so_luong = null;
-      this.addSanPham.don_gia = null;
+      this.addSanPham.don_gia = "";
     },
     checkDaChon(id) {
       let check = this.dataHangTra.find((el) => el.san_pham_id == id);
@@ -507,7 +586,7 @@ export default {
       this.showCreate = true;
       this.tongTien = data.tong_tien;
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;
-      this.formAdd.ly_do = data.ly_do
+      this.formAdd.ly_do = data.ly_do;
       await this.changeNhaCungCap(data.nha_cung_cap_id);
       this.dataHangTra = [];
       this.dataHangTra = data.san_phams.map((el) => {

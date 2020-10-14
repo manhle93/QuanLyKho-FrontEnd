@@ -88,13 +88,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="Số lượng">
-            <el-input type="number" :min="0" v-model="so_luong"></el-input>
+          <el-form-item label="Đơn vị tính">
+            <el-input :disabled="true" v-model="don_vi_tinh"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="Đơn vị tính">
-            <el-input :disabled="true" v-model="don_vi_tinh"></el-input>
+          <el-form-item label="Số lượng">
+            <el-input type="number" :min="0" v-model="so_luong"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -206,7 +206,7 @@
       </el-col>
       <el-col :span="10">
         <el-button
-        :disabled="disableAdd"
+          :disabled="disableAdd"
           style="float: right"
           icon="el-icon-plus"
           class="primary-button"
@@ -357,14 +357,14 @@ export default {
             });
             return;
           }
-          this.disableAdd = true
+          this.disableAdd = true;
           addSanPham(this.form)
             .then((res) => {
               this.$message({
                 message: "Tạo đơn hàng thành công",
                 type: "success",
               });
-              this.disableAdd = false
+              this.disableAdd = false;
               this.resetForm();
             })
             .catch((error) => {
@@ -382,7 +382,8 @@ export default {
     resetForm() {
       this.form = {
         ma: new Date().getTime(),
-        ten:  "Đơn hàng, ngày" +
+        ten:
+          "Đơn hàng, ngày" +
           new Date().getUTCDate() +
           "/" +
           (+new Date().getMonth() + 1) +

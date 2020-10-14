@@ -384,6 +384,28 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "doihang/:id",
+        name: "Đổi hàng",
+        component: () =>
+          import("@/views/quanlydonhang/doitrahang/doihang"),
+        meta: {
+          title: "Đổi hàng",
+          icon: "eyes"
+        },
+        hidden: true
+      },
+      {
+        path: "khachtrahang/:id",
+        name: "Trả hàng",
+        component: () =>
+          import("@/views/quanlydonhang/doitrahang/trahang"),
+        meta: {
+          title: "Trả hàng",
+          icon: "eyes"
+        },
+        hidden: true
+      },
+      {
         path: "taodonnhacungcap",
         name: "Tạo đơn hàng nhà cung cấp",
         component: () =>

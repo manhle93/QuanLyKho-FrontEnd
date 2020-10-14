@@ -245,7 +245,7 @@
           >Hủy đơn</el-button
         >
       </el-col>
-      <el-col :span="6" :offset="4">
+      <el-col :span="8" :offset="2">
         <el-row
           v-if="
             form.trang_thai != 'nhap_kho' &&

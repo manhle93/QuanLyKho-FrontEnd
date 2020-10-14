@@ -72,3 +72,18 @@ export function thanhToanBoXung(data) {
         data
     })
 }
+
+export function doiHang(id, data) {
+    return request({
+        url: 'doihang/' + id,
+        method: 'post',
+        data
+    })
+}
+export function traHang(id, data) {
+    return request({
+        url: 'trahang/' + id,
+        method: 'post',
+        data
+    })
+}

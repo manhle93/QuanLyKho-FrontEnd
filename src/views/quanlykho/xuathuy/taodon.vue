@@ -309,7 +309,7 @@ export default {
       async remoteMethod(query) {
       let data = await getSanPhamTonKho({
         search: query,
-        per_page: 20,
+        per_page: 12,
         danh_muc: this.danh_muc_id,
       });
       this.hangHoas = data.data.data;

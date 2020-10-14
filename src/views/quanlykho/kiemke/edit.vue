@@ -294,7 +294,7 @@ export default {
 
     async getSanPham() {
       let data = await getSanPhamTonKho({
-        per_page: 6,
+        per_page: 12,
         search: this.timKiem,
         danh_muc: this.danh_muc_id,
       });
