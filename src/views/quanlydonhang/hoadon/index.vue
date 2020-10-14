@@ -323,7 +323,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="Thanh toán bổ xung"
+                content="Thanh toán bổ sung"
                 placement="top"
               >
                 <el-button
