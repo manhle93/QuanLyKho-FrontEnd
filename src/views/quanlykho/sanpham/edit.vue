@@ -543,7 +543,7 @@ export default {
         ket_thuc_khuyen_mai: null,
         fileList: [],
         thuong_hieu_id: null,
-        gia_von: null,
+        gia_von: "",
         vi_tri: null,
         ton_kho_thap_nhat: 0,
         thoi_gian_bao_quan: 1,
@@ -571,6 +571,7 @@ export default {
     async getChiTietSanPham() {
       let data = await chiTietSP(this.$route.params.id);
       this.form = data;
+      this.form.gia_von = data.gia_von ?  data.gia_von : ""
       this.form.fileList = [];
       if (this.form.anh_dai_dien) {
         this.src = process.env.VUE_APP_BASE + this.form.anh_dai_dien;

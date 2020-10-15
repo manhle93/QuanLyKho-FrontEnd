@@ -1018,11 +1018,11 @@ export default {
       this.form.trang_thai = data.data.trang_thai;
       this.trang_thai = data.data.trang_thai;
       this.form.khach_hang_id = data.data.user_id;
-      this.form.giam_gia = data.data.giam_gia;
+      this.form.giam_gia = data.data.giam_gia ? data.data.giam_gia : 0;
       this.form.con_phai_thanh_toan = data.data.con_phai_thanh_toan;
       this.form.nhan_vien_giao_hang = data.data.nhan_vien_giao_hang;
       this.form.bang_gia_id = data.data.bang_gia_id;
-      this.form.thanh_toan = data.data.thanh_toan;
+      this.form.thanh_toan = data.data.thanh_toan ? data.data.thanh_toan : 0;
       this.form.dia_chi = data.data.dia_chi;
       this.form.thoi_gian_nhan_hang = data.data.thoi_gian_nhan_hang;
       this.form.phu_thu = data.data.phu_thu ? data.data.phu_thu : 0;
