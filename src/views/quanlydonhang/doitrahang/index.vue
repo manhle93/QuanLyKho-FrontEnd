@@ -13,6 +13,14 @@
           format="dd/MM/yyyy"
         ></el-date-picker>
       </el-col>
+      <el-col :span="5">
+        <el-input
+          v-model="form.search"
+          size="small"
+          placeholder="Tìm kiếm: Mã, tên đơn hàng, SĐT khách hàng ..."
+          @keyup.enter.native="searchData()"
+        ></el-input>
+      </el-col>
       <el-col :span="3">
         <el-button
           size="small"
@@ -66,11 +74,18 @@
                 ></el-table-column>
                 <el-table-column label="Loại">
                   <template slot-scope="scope">
-                    <el-tag v-if="scope.row.type == 'doi_hang'" type="warning">Đổi hàng</el-tag>
-                     <el-tag v-if="scope.row.type == 'tra_hang'" type="danger">Trả hàng</el-tag>
+                    <el-tag v-if="scope.row.type == 'doi_hang'" type="warning"
+                      >Đổi hàng</el-tag
+                    >
+                    <el-tag v-if="scope.row.type == 'tra_hang'" type="danger"
+                      >Trả hàng</el-tag
+                    >
                   </template>
                 </el-table-column>
-                <el-table-column prop="nguyen_nhan" label="Nguyên nhân"></el-table-column>
+                <el-table-column
+                  prop="nguyen_nhan"
+                  label="Nguyên nhân"
+                ></el-table-column>
                 <el-table-column
                   property="gia_ban"
                   label="Giá bán"
@@ -125,7 +140,7 @@
             <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
           </el-table-column>-->
           <el-table-column
-            prop="nguoi_mua_hang"
+            prop="user.name"
             label="Khách hàng"
           ></el-table-column>
           <el-table-column
@@ -235,7 +250,10 @@
               content="Chọn hóa đơn này"
               placement="top"
             >
-              <el-button size="small" @click="doiTraHang(scope.row.id)"
+              <el-button
+                type="warning"
+                size="small"
+                @click="doiTraHang(scope.row.id)"
                 >Chọn</el-button
               >
             </el-tooltip>
@@ -286,6 +304,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: [],
+        search: "",
       },
     };
   },
@@ -343,6 +362,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search,
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

@@ -31,6 +31,15 @@
             ></el-option>
           </el-select>
         </el-col>
+        <el-col :span="4">
+          <el-input
+            v-model="form.search"
+            placeholder="Tìm kiếm"
+            size="small"
+            @keyup.enter.native="getDonHang()"
+          ></el-input>
+        </el-col>
+
         <el-col :span="3">
           <el-button
             size="small"
@@ -40,7 +49,7 @@
             >Tìm kiếm</el-button
           >
         </el-col>
-        <el-col :span="11">
+        <el-col :span="7">
           <el-button
             @click="taoDon"
             style="float: right"
@@ -301,6 +310,7 @@ export default {
         hang_hoa_id: null,
         so_luong: null,
         don_gia: "",
+        search: ""
       },
       list: [],
       formate: formate,
@@ -573,6 +583,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;

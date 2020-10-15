@@ -277,20 +277,22 @@
             >
           </el-form-item> -->
           <el-form-item label="Phương thức hoàn tiền">
-            <el-select v-model="form.phuong_thuc_hoan_tien" placeholder="Chọn phương thức">
+            <el-select
+              v-model="form.phuong_thuc_hoan_tien"
+              placeholder="Chọn phương thức"
+            >
               <el-option label="Tiền mặt" value="tien_mat"></el-option>
-               <el-option label="Tài khoản" value="tai_khoan" :disabled="!form.khach_hang_id"></el-option>
+              <el-option
+                label="Tài khoản"
+                value="tai_khoan"
+                :disabled="!form.khach_hang_id"
+              ></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="Số tiền hoàn trả">
             <span style="color: green; font-size: 20px; font-weight: bold"
-              >{{
-                formate.formatCurrency(
-                  tienHoanTra
-                )
-              }}
-              đ</span
+              >{{ formate.formatCurrency(tienHoanTra) }} đ</span
             >
           </el-form-item>
           <!-- <el-form-item label="Phương thúc" prop="thanh_toan">
@@ -394,7 +396,15 @@
           ></el-rate>
         </div>
       </div>
-      <el-row style="margin-top: 50px">
+      <br />
+      <el-row>
+        <el-col :span="22" :offset="1"
+          ><div style="font-weight: bold">
+            Ghi chú: <span style="color: green">{{ UserInfo.ghi_chu }}</span>
+          </div></el-col
+        >
+      </el-row>
+      <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">
           <el-col :span="14" :offset="1">
             <el-form-item label="Khách hàng: ">{{ UserInfo.ten }}</el-form-item>
@@ -681,7 +691,7 @@ export default {
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
         ten: null,
-        phuong_thuc_hoan_tien: 'tien_mat',  
+        phuong_thuc_hoan_tien: "tien_mat",
         ghi_chu: null,
         tong_tien: null,
         da_thanh_toan: null,
@@ -796,13 +806,13 @@ export default {
   },
   computed: {
     tienHoanTra: {
-      get(){
+      get() {
         let tong = 0;
-        for(let item of this.form.danhSachHang){
-          tong = +tong + item.don_gia * item.so_luong_doi_tra
+        for (let item of this.form.danhSachHang) {
+          tong = +tong + item.don_gia * item.so_luong_doi_tra;
         }
-        return tong
-      }
+        return tong;
+      },
     },
     daThanhToan: {
       get() {

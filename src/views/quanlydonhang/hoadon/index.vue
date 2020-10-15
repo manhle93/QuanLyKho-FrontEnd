@@ -1,6 +1,5 @@
 <template>
-  <div class="app-container" v-on:keyup.enter="searchData">
-    <el-form :model="form">
+  <div class="app-container" v-on:keyup.enter="getDonHang">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="6">
           <el-date-picker
@@ -31,6 +30,9 @@
             ></el-option>
           </el-select>
         </el-col>
+        <el-col :span="5">
+          <el-input v-model="form.search" size="small" placeholder="Tìm kiếm: Mã, tên đơn hàng, SĐT khách hàng ..." @keyup.enter.native="getDonHang()"></el-input>
+        </el-col>
         <el-col :span="3">
           <el-button
             size="small"
@@ -40,7 +42,7 @@
             >Tìm kiếm</el-button
           >
         </el-col>
-        <el-col :span="11">
+        <el-col :span="6">
           <router-link to="/quanlydonhang/taodondathang">
             <el-button
               style="float: right"
@@ -52,7 +54,6 @@
           </router-link>
         </el-col>
       </el-row>
-    </el-form>
     <br />
 
     <div
@@ -447,6 +448,7 @@ export default {
       form: {
         date: [],
         khach_hang: null,
+        search: null
       },
       formThanhToan: {
         id: null,
@@ -608,6 +610,7 @@ export default {
         khach_hang: this.form.khach_hang,
         date: this.form.date,
         hoa_don: true,
+        search: this.form.search
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

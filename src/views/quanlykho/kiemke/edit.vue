@@ -1,15 +1,19 @@
 <template>
   <div
     class="c-flex fh ttch"
-    style="padding-left: 20px; height: calc(100vh - 50px);overflow: hidden;"
+    style="padding-left: 20px; height: calc(100vh - 50px); overflow: hidden"
   >
     <div
       class="c-grow c-flex c-column"
-      style="border-right: 2px solid #2E86C1; justify-content: space-between; flex: 1"
+      style="
+        border-right: 2px solid #2e86c1;
+        justify-content: space-between;
+        flex: 1;
+      "
     >
       <div class="d-flex flex-collumn" style="flex: 1; min-height: 0">
         <div class="d-flex fill-height flex-collumn">
-          <el-row :gutter="20">
+          <el-row :gutter="20" v-if="false">
             <br />
             <el-col :span="8">
               <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
@@ -36,28 +40,48 @@
           <br />
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 100%">
-              <el-table :data="form.danhSachHang" style="width: 100%;">
-                <el-table-column type="index" label="STT" width="100px"></el-table-column>
-                <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
-                <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
-                <el-table-column label="Tồn kho" prop="ton_kho"></el-table-column>
+              <el-table :data="form.danhSachHang" style="width: 100%">
+                <el-table-column
+                  type="index"
+                  label="STT"
+                  width="100px"
+                ></el-table-column>
+                <el-table-column
+                  prop="hang_hoa.ten_san_pham"
+                  label="Hàng hóa"
+                ></el-table-column>
+                <el-table-column
+                  prop="hang_hoa.don_vi_tinh"
+                  label="Đơn vị tính"
+                ></el-table-column>
+                <el-table-column
+                  label="Tồn kho"
+                  prop="ton_kho"
+                ></el-table-column>
                 <el-table-column label="Số thực tế" prop="so_thuc_te">
                   <template slot-scope="scope">
-                    <div v-if="form.trang_thai !='moi_tao'">{{scope.row.so_thuc_te}}</div>
+                    <div v-if="form.trang_thai != 'moi_tao'">
+                      {{ scope.row.so_thuc_te }}
+                    </div>
                     <div v-else>
-                      <el-input-number size="small" :min="0" v-model="scope.row.so_thuc_te"></el-input-number>
+                      <el-input-number
+                        size="small"
+                        :min="0"
+                        v-model="scope.row.so_thuc_te"
+                      ></el-input-number>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column label="Chênh lệch" prop="so_thuc_te">
-                  <template
-                    slot-scope="scope"
-                  >{{scope.row.so_thuc_te - scope.row.ton_kho}} {{scope.row.hang_hoa.don_vi_tinh}}</template>
+                  <template slot-scope="scope"
+                    >{{ scope.row.so_thuc_te - scope.row.ton_kho }}
+                    {{ scope.row.hang_hoa.don_vi_tinh }}</template
+                  >
                 </el-table-column>
                 <el-table-column label="Xóa">
                   <template slot-scope="scope">
                     <el-button
-                      v-if="scope.row.trang_thai =='moi_tao'"
+                      v-if="scope.row.trang_thai == 'moi_tao'"
                       type="danger"
                       icon="el-icon-delete"
                       circle
@@ -71,44 +95,65 @@
           </div>
         </div>
       </div>
-      <div
-        class="c-column"
-        style="padding-bottom: 20px; border-top: 1px solid #2E86C1; background-color: #58D68D; padding-left: 20px; padding-right: 20px"
-      >
-        <el-row :gutter="20">
-          <br />
-          <el-col :xl="3" :md="4" :sm="6" v-for="item in hangHoas" :key="item.id">
-            <el-card :body-style="{ padding: '0px' }">
-              <img :src="item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src" class="image" />
-              <div style="padding: 14px;">
+      <div class="sanpham" v-if="false">
+        <transition name="bounce" v-for="item in hangHoas" :key="item.id">
+          <div v-show="!kiemTraDaChon(item.id)">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              style="width: 140px; margin-right: 20px"
+            >
+              <a @click="doiSanPham(item.id)">
+                <img
+                  :src="
+                    item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src
+                  "
+                  class="image"
+                />
+              </a>
+              <div style="padding: 14px">
                 <span
-                  style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;"
-                >{{item.ten_san_pham}}</span>
+                  style="
+                    font-size: 14px;
+                    display: inline-block;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis;
+                  "
+                  >{{ item.ten_san_pham }}</span
+                >
                 <div class="bottom clearfix">
-                  <time
-                    class="time"
-                  >{{ formate.formatCurrency(item.gia_ban) }} đ/{{item.don_vi_tinh}}</time>
+                  <time class="time"
+                    >{{ formate.formatCurrency(item.gia_ban) }} đ</time
+                  >
                 </div>
-                <div class="bottom clearfix">
+                <!-- <div class="bottom clearfix">
                   <el-button
                     :disabled="kiemTraDaChon(item.id)"
                     type="text"
                     class="button"
                     @click="doiSanPham(item.id)"
                   >Lựa chọn</el-button>
-                </div>
+                </div>-->
               </div>
             </el-card>
-          </el-col>
-        </el-row>
+          </div>
+        </transition>
       </div>
     </div>
     <div
       class="fh c-flex c-column"
-      style="padding-left: 15px; padding-right: 10px; background-color: #F2F4F4; width: 320px;"
+      style="
+        padding-left: 15px;
+        padding-right: 10px;
+        background-color: #f2f4f4;
+        width: 320px;
+      "
     >
-      <div style="margin-top: 10px;">
-        <div style="font-size: 16px; color: #196F3D; font-weight: bold">Phiếu kiểm kho</div>
+      <div style="margin-top: 10px">
+        <div style="font-size: 16px; color: #196f3d; font-weight: bold">
+          Phiếu kiểm kho
+        </div>
         <br />
         <br />
         <el-form
@@ -120,7 +165,11 @@
           size="small"
         >
           <el-form-item label="Tên kiểm kê" prop="ten">
-            <el-input :disabled="true" size="small" v-model="form.ten"></el-input>
+            <el-input
+              :disabled="true"
+              size="small"
+              v-model="form.ten"
+            ></el-input>
           </el-form-item>
           <el-form-item label="Nhân viên">
             <el-select
@@ -128,7 +177,7 @@
               size="small"
               v-model="form.user_nhan_vien_id"
               filterable
-              style="width:100%"
+              style="width: 100%"
               placeholder="Chọn nhân viên"
             >
               <el-option
@@ -140,7 +189,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Ghi chú">
-            <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="form.ghi_chu"
+            ></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -153,7 +206,8 @@
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
-          >KIỂM KHO</el-button>
+            >KIỂM KHO</el-button
+          >
         </el-col>
         <el-col :span="12">
           <el-button
@@ -161,7 +215,8 @@
             icon="el-icon-check"
             class="success-button"
             @click="pheDuyet('form')"
-          >PHÊ DUYỆT</el-button>
+            >PHÊ DUYỆT</el-button
+          >
         </el-col>
         <el-col :span="12">
           <el-button
@@ -169,20 +224,38 @@
             icon="el-icon-close"
             type="warning"
             @click="huyBo('form')"
-          >HỦY BỎ</el-button>
+            >HỦY BỎ</el-button
+          >
         </el-col>
         <div
-          style="height: 80px; width: 250px; border: 3px solid #E74C3C; display: flex; align-items:center; justify-content: center; border-radius: 10px; margin-left: 30px"
-          v-if="form.trang_thai != 'moi_tao' && form.trang_thai != 'da_kiem_kho' && form.trang_thai"
+          style="
+            height: 80px;
+            width: 250px;
+            border: 3px solid #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-left: 30px;
+          "
+          v-if="
+            form.trang_thai != 'moi_tao' &&
+            form.trang_thai != 'da_kiem_kho' &&
+            form.trang_thai
+          "
         >
           <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
+            style="color: #e74c3c; font-weight: bold; font-size: 24px"
             v-if="trang_thai == 'da_huy'"
-          >ĐÃ HỦY PHIẾU</p>
+          >
+            ĐÃ HỦY PHIẾU
+          </p>
           <p
-            style="color: #E74C3C; font-weight: bold; font-size: 24px"
+            style="color: #e74c3c; font-weight: bold; font-size: 24px"
             v-if="trang_thai == 'da_duyet'"
-          >ĐÃ PHÊ DUYỆT</p>
+          >
+            ĐÃ PHÊ DUYỆT
+          </p>
         </div>
       </el-row>
     </div>
@@ -488,5 +561,39 @@ export default {
 
 .clearfix:after {
   clear: both;
+}
+.sanpham {
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+  border-top: 1px solid #2e86c1;
+  background-color: #58d68d;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  scroll-behavior: smooth;
+}
+.bounce-enter-active {
+  animation: bounce-in 0.8s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.8s reverse;
+}
+.maint {
+  padding-left: 10px;
+  overflow: hidden;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

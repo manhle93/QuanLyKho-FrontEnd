@@ -31,6 +31,9 @@
             ></el-option>
           </el-select>
         </el-col>
+        <el-col :span="4">
+          <el-input v-model="form.search" placeholder="Tìm kiếm" size="small" @keyup.enter.native="getLichSuThanhToan"></el-input>
+        </el-col>
         <el-col :span="6">
           <el-button
             size="small"
@@ -45,7 +48,7 @@
             @click="showFormCongNo"
           >Theo dõi công nợ</el-button>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="4">
           <el-button
             style="float: right"
             size="small"
@@ -414,6 +417,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: null,
+        search: ""
       },
       listLoading: false,
       dateCongNo: [],
@@ -480,6 +484,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search
       });
       this.listLoading = false;
       this.tableData = data.data;

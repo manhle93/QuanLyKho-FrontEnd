@@ -108,7 +108,11 @@
                     ></el-input-number>
                   </template>
                 </el-table-column>
-                <el-table-column prop="hang_hoa.don_vi_tinh" label="Lý do đổi" width="260">
+                <el-table-column
+                  prop="hang_hoa.don_vi_tinh"
+                  label="Lý do đổi"
+                  width="260"
+                >
                   <template slot-scope="scope">
                     <el-input
                       placeholder="Nhập lý do"
@@ -373,7 +377,15 @@
           ></el-rate>
         </div>
       </div>
-      <el-row style="margin-top: 50px">
+      <br />
+      <el-row>
+        <el-col :span="22" :offset="1"
+          ><div style="font-weight: bold">
+            Ghi chú: <span style="color: green">{{ UserInfo.ghi_chu }}</span>
+          </div></el-col
+        >
+      </el-row>
+      <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">
           <el-col :span="14" :offset="1">
             <el-form-item label="Khách hàng: ">{{ UserInfo.ten }}</el-form-item>
@@ -924,7 +936,7 @@ export default {
       this.hangCus = [];
       for (let sp of data.data.san_phams) {
         let item = {};
-        item.nguyen_nhan_doi_hang = ""
+        item.nguyen_nhan_doi_hang = "";
         item.don_gia = sp.gia_ban;
         item.so_luong = Number(sp.so_luong);
         item.so_luong_ban_dau = Number(sp.so_luong);

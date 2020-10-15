@@ -31,13 +31,22 @@
             ></el-option>
           </el-select>
         </el-col>
+        <el-col :span="4">
+          <el-input
+            placeholder="Tìm kiếm"
+            v-model="form.search"
+            size="small"
+            @keyup.enter.native="getDonHang()"
+          ></el-input>
+        </el-col>
         <el-col :span="3">
           <el-button
             size="small"
             class="primary-button"
             icon="el-icon-search"
             @click="getDonHang()"
-          >Tìm kiếm</el-button>
+            >Tìm kiếm</el-button
+          >
         </el-col>
         <!-- <el-col :span="11">
           <el-button
@@ -62,15 +71,39 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="ma_don" label="Mã đơn hàng" min-width="125"></el-table-column>
-          <el-table-column property="created_at" label="Thời gian tạo" min-width="125"></el-table-column>
-          <el-table-column property="nha_cung_cap.ten" label="Nhà cung cấp" min-width="125"></el-table-column>
+          <el-table-column
+            property="ma_don"
+            label="Mã đơn hàng"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="created_at"
+            label="Thời gian tạo"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="nha_cung_cap.ten"
+            label="Nhà cung cấp"
+            min-width="125"
+          ></el-table-column>
           <el-table-column label="Tổng tiền" min-width="115" prop="tong_tien">
-            <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+            <template slot-scope="scope"
+              >{{ formate.formatCurrency(scope.row.tong_tien) }} đ</template
+            >
           </el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <el-table-column
+            label="Hành động"
+            align="center"
+            fixed="right"
+            width="120"
+          >
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Chi tiết"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="showUpdate(scope.row)"
@@ -96,30 +129,46 @@
       ></el-pagination>
     </div>
     <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px">
-      <div>Nhà cung cấp: <span style="font-weight: bold">{{tenNCC}}</span></div>
+      <div>
+        Nhà cung cấp: <span style="font-weight: bold">{{ tenNCC }}</span>
+      </div>
       <br />
       <el-table :data="dataHangTra" height="400px">
         <el-table-column type="index" label="STT"></el-table-column>
         <el-table-column label="Hàng hóa" prop="ten_san_pham"></el-table-column>
         <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
         <el-table-column label="Đơn giá" prop="don_gia">
-          <template
-            slot-scope="scope"
-          >{{formate.formatCurrency(scope.row.don_gia)}} đ/{{scope.row.don_vi_tinh}}</template>
+          <template slot-scope="scope"
+            >{{ formate.formatCurrency(scope.row.don_gia) }} đ/{{
+              scope.row.don_vi_tinh
+            }}</template
+          >
         </el-table-column>
         <el-table-column label="Thành tiền">
-          <template
-            slot-scope="scope"
-          >{{formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)}} đ</template>
+          <template slot-scope="scope"
+            >{{
+              formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)
+            }}
+            đ</template
+          >
         </el-table-column>
       </el-table>
       <br />
       <div style="margin-bottom: 10px">
-        <el-input v-model="formAdd.ly_do" placeholder="Lý do trả hàng"></el-input>
+        <el-input
+          v-model="formAdd.ly_do"
+          placeholder="Lý do trả hàng"
+        ></el-input>
       </div>
-      <div>Tổng tiền: {{formate.formatCurrency(tongTien)}} đ</div>
+      <div>Tổng tiền: {{ formate.formatCurrency(tongTien) }} đ</div>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showCreate = false"
+          >Hủy</el-button
+        >
         <!-- <el-button
           class="primary-button"
           size="small"
@@ -174,12 +223,13 @@ export default {
       form: {
         date: [],
         nha_cung_cap: null,
+        search: "",
       },
       formAdd: {
         nha_cung_cap_id: null,
         hangHoas: [],
         tong_tien: 0,
-        ly_do: null
+        ly_do: null,
       },
       hangHoas: [],
       nhaCungCaps: [],
@@ -244,15 +294,14 @@ export default {
       this.showCreate = true;
       this.edit = false;
       this.formAdd.nha_cung_cap_id = null;
-      this.formAdd.ly_do = null
+      this.formAdd.ly_do = null;
       this.tongTien = 0;
       this.hangHoas = [];
     },
     async changeNhaCungCap(id) {
       let user_id = this.nhaCungCaps.find((el) => el.id == id).user_id;
       let data = await getSanPhamNhaCungCap({ nha_cung_cap_id: user_id });
-      this.hangHoas = data.filter(el => el.san_pham);
-      
+      this.hangHoas = data.filter((el) => el.san_pham);
     },
     async update() {
       if (!this.formAdd.nha_cung_cap_id) {
@@ -414,22 +463,22 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;
       this.tableData = data.data;
       this.listLoading = false;
-      console.log(this.tableData)
     },
     async showUpdate(data) {
       this.don_id = data.id;
       this.edit = true;
-      this.tenNCC = data.nha_cung_cap.ten
+      this.tenNCC = data.nha_cung_cap.ten;
       this.showCreate = true;
       this.tongTien = data.tong_tien;
       this.formAdd.nha_cung_cap_id = data.nha_cung_cap_id;
-      this.formAdd.ly_do = data.ly_do
+      this.formAdd.ly_do = data.ly_do;
       await this.changeNhaCungCap(data.nha_cung_cap_id);
       this.dataHangTra = [];
       this.dataHangTra = data.san_phams.map((el) => {

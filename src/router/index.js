@@ -504,10 +504,10 @@ export const asyncRoutes = [
       },
       {
         path: "trahang",
-        name: "Trả hàng",
+        name: "Hóa đơn đã hủy",
         component: () => import("@/views/quanlydonhang/trahang/index"),
         meta: {
-          title: "Trả hàng",
+          title: "Hóa đơn đã hủy",
           icon: "trahang"
         }
       },

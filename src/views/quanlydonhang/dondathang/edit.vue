@@ -475,7 +475,11 @@
           ></el-rate>
         </div>
       </div>
-      <el-row style="margin-top: 50px">
+      <br>
+      <el-row>
+        <el-col :span="22" :offset="1"><div style="font-weight: bold">Ghi chú: <span style="color: green">{{UserInfo.ghi_chu}}</span></div></el-col>
+      </el-row>
+      <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">
           <el-col :span="14" :offset="1">
             <el-form-item label="Khách hàng: ">{{ UserInfo.ten }}</el-form-item>

@@ -31,28 +31,40 @@
             ></el-option>
           </el-select>
         </el-col>
+        <el-col :span="4">
+          <el-input
+            v-model="form.search"
+            placeholder="Tìm kiếm"
+            size="small"
+            @keyup.enter.native="getLichSuThanhToan"
+            clearable
+          ></el-input>
+        </el-col>
         <el-col :span="6">
           <el-button
             size="small"
             class="primary-button"
             icon="el-icon-search"
             @click="getLichSuThanhToan()"
-          >Tìm kiếm</el-button>
+            >Tìm kiếm</el-button
+          >
           <el-button
             size="small"
             type="warning"
             icon="el-icon-view"
             @click="showFormCongNo"
-          >Theo dõi công nợ</el-button>
+            >Theo dõi công nợ</el-button
+          >
         </el-col>
-        <el-col :span="8">
+        <el-col :span="4">
           <el-button
             style="float: right"
             size="small"
             class="primary-button"
             icon="el-icon-plus"
             @click="taoDon()"
-          >Tạo đơn</el-button>
+            >Tạo đơn</el-button
+          >
         </el-col>
       </el-row>
     </el-form>
@@ -66,24 +78,71 @@
       border
     >
       <el-table-column sortable type="index" label="STT"></el-table-column>
-      <el-table-column property="ma_don" label="Mã đơn hàng" min-width="125"></el-table-column>
-      <el-table-column property="created_at" label="Thời gian tạo" min-width="125"></el-table-column>
-      <el-table-column property="nhan_cung_cap.ten" label="Nhà cung cấp" min-width="125"></el-table-column>
-      <el-table-column label="Phải thanh toán" min-width="115" prop="phai_thanh_toan">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.phai_thanh_toan)}} đ</template>
+      <el-table-column
+        property="ma_don"
+        label="Mã đơn hàng"
+        min-width="125"
+      ></el-table-column>
+      <el-table-column
+        property="created_at"
+        label="Thời gian tạo"
+        min-width="125"
+      ></el-table-column>
+      <el-table-column
+        property="nhan_cung_cap.ten"
+        label="Nhà cung cấp"
+        min-width="125"
+      ></el-table-column>
+      <el-table-column
+        label="Phải thanh toán"
+        min-width="115"
+        prop="phai_thanh_toan"
+      >
+        <template slot-scope="scope"
+          >{{ formate.formatCurrency(scope.row.phai_thanh_toan) }} đ</template
+        >
       </el-table-column>
-      <el-table-column label="Số tiền thanh toán" min-width="115" prop="thanh_toan">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.thanh_toan)}} đ</template>
+      <el-table-column
+        label="Số tiền thanh toán"
+        min-width="115"
+        prop="thanh_toan"
+      >
+        <template slot-scope="scope"
+          >{{ formate.formatCurrency(scope.row.thanh_toan) }} đ</template
+        >
       </el-table-column>
-      <el-table-column label="Còn phải thanh toán" min-width="115" prop="thanh_toan">
-        <template
-          slot-scope="scope"
-        >{{formate.formatCurrency(scope.row.phai_thanh_toan - scope.row.thanh_toan)}} đ</template>
+      <el-table-column
+        label="Còn phải thanh toán"
+        min-width="115"
+        prop="thanh_toan"
+      >
+        <template slot-scope="scope"
+          >{{
+            formate.formatCurrency(
+              scope.row.phai_thanh_toan - scope.row.thanh_toan
+            )
+          }}
+          đ</template
+        >
       </el-table-column>
-      <el-table-column property="user.name" label="Người tạo" min-width="125"></el-table-column>
-      <el-table-column label="Hành động" align="center" fixed="right" width="120">
+      <el-table-column
+        property="user.name"
+        label="Người tạo"
+        min-width="125"
+      ></el-table-column>
+      <el-table-column
+        label="Hành động"
+        align="center"
+        fixed="right"
+        width="120"
+      >
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chi tiết"
+            placement="top"
+          >
             <el-button
               size="small"
               @click="showUpdate(scope.row)"
@@ -115,7 +174,11 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="showCreate" title="THANH TOÁN ĐƠN HÀNG" width="900px">
+    <el-dialog
+      :visible.sync="showCreate"
+      title="THANH TOÁN ĐƠN HÀNG"
+      width="900px"
+    >
       <el-row :gutter="20">
         <el-col :span="10">
           <el-select
@@ -169,7 +232,9 @@
                 @click.native="chonDon('mua_hang')"
               >
                 <span style="float: left">{{ item.ten }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.ma }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{
+                  item.ma
+                }}</span>
               </el-option>
             </el-option-group>
 
@@ -183,7 +248,9 @@
                 @click.native="chonDon('tra_hang')"
               >
                 <span style="float: left">{{ item.ma_don }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">-{{ item.tong_tien }} đ</span>
+                <span style="float: right; color: #8492a6; font-size: 13px"
+                  >-{{ item.tong_tien }} đ</span
+                >
               </el-option>
             </el-option-group>
           </el-select>
@@ -204,27 +271,30 @@
         <el-table-column label="Ngày nhập" prop="updated_at"></el-table-column>
         <el-table-column label="Tên đơn hàng" prop="ten" min-width="100">
           <template slot-scope="scope">
-            {{scope.row.ten}}
+            {{ scope.row.ten }}
             <br />
-            {{scope.row.ma}}
+            {{ scope.row.ma }}
           </template>
         </el-table-column>
         <el-table-column label="Tổng thanh toán" prop="da_thanh_toan">
-          <template
-            slot-scope="scope"
-            v-if="scope.row.loai == 'mua_hang'"
-          >{{formate.formatCurrency(scope.row.tong_tien)}} đ</template>
+          <template slot-scope="scope" v-if="scope.row.loai == 'mua_hang'"
+            >{{ formate.formatCurrency(scope.row.tong_tien) }} đ</template
+          >
         </el-table-column>
         <el-table-column label="Đã thanh toán" prop="da_thanh_toan">
-          <template
-            slot-scope="scope"
-            v-if="scope.row.loai == 'mua_hang'"
-          >{{formate.formatCurrency(scope.row.da_thanh_toan)}} đ</template>
+          <template slot-scope="scope" v-if="scope.row.loai == 'mua_hang'"
+            >{{ formate.formatCurrency(scope.row.da_thanh_toan) }} đ</template
+          >
         </el-table-column>
         <el-table-column label="Phải thanh toán" prop="so_luong">
-          <template
-            slot-scope="scope"
-          >{{formate.formatCurrency(scope.row.tong_tien - scope.row.da_thanh_toan)}} đ</template>
+          <template slot-scope="scope"
+            >{{
+              formate.formatCurrency(
+                scope.row.tong_tien - scope.row.da_thanh_toan
+              )
+            }}
+            đ</template
+          >
         </el-table-column>
         <el-table-column label="Xóa" width="80">
           <template slot-scope="scope">
@@ -241,7 +311,7 @@
       <br />
       <span>
         Tổng tiền phải thanh toán:
-        <label>{{formate.formatCurrency(tongTienPhaiThanhToan)}} đ</label>
+        <label>{{ formate.formatCurrency(tongTienPhaiThanhToan) }} đ</label>
       </span>
       <br />
       <br />
@@ -261,28 +331,46 @@
       <br />
       <span>
         Còn phải thanh toán:
-        <label>{{formate.formatCurrency(tongTienPhaiThanhToan - formAdd.thanh_toan)}} đ</label>
+        <label
+          >{{
+            formate.formatCurrency(tongTienPhaiThanhToan - formAdd.thanh_toan)
+          }}
+          đ</label
+        >
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showCreate = false"
+          >Hủy</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-        >Thêm mới</el-button>
+          >Thêm mới</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
 
-    <el-dialog :visible.sync="showCongNo" title="THEO DÕI CÔNG NỢ" width="900px" center>
+    <el-dialog
+      :visible.sync="showCongNo"
+      title="THEO DÕI CÔNG NỢ"
+      width="900px"
+      center
+    >
       <el-row :gutter="20">
         <el-col :span="12">
           <el-date-picker
@@ -319,7 +407,7 @@
       <br />
       <span>
         Công nợ đầu kỳ:
-        <label>{{formate.formatCurrency(this.no_dau_ky)}} đ</label>
+        <label>{{ formate.formatCurrency(this.no_dau_ky) }} đ</label>
       </span>
       <br />
       <el-table :data="tableCongNo" height="350px">
@@ -327,46 +415,63 @@
         <el-table-column label="Thời gian" prop="thoi_gian"></el-table-column>
         <el-table-column label="Tên đơn" prop="ten" min-width="100">
           <template slot-scope="scope">
-            {{scope.row.ten}}
+            {{ scope.row.ten }}
             <br />
-            {{scope.row.ma}}
+            {{ scope.row.ma }}
           </template>
         </el-table-column>
         <el-table-column label="Hành động" prop="hanh_dong">
           <template slot-scope="scope">
-            <el-tag effect="plain" v-if="scope.row.hanh_dong == 'nhap_hang'">Nhập hàng</el-tag>
+            <el-tag effect="plain" v-if="scope.row.hanh_dong == 'nhap_hang'"
+              >Nhập hàng</el-tag
+            >
             <el-tag
               effect="plain"
               type="success"
               v-if="scope.row.hanh_dong == 'thanh_toan'"
-            >Thanh toán</el-tag>
-            <el-tag effect="plain" type="warning" v-if="scope.row.hanh_dong == 'tra_hang'">Trả hàng</el-tag>
+              >Thanh toán</el-tag
+            >
+            <el-tag
+              effect="plain"
+              type="warning"
+              v-if="scope.row.hanh_dong == 'tra_hang'"
+              >Trả hàng</el-tag
+            >
           </template>
         </el-table-column>
         <el-table-column label="Nợ phát sinh" prop="so_tien">
-          <template
-            slot-scope="scope"
-          >{{scope.row.hanh_dong == 'nhap_hang' ? '+ ' : '- ' }} {{formate.formatCurrency(scope.row.so_tien)}} đ</template>
+          <template slot-scope="scope"
+            >{{ scope.row.hanh_dong == "nhap_hang" ? "+ " : "- " }}
+            {{ formate.formatCurrency(scope.row.so_tien) }} đ</template
+          >
         </el-table-column>
         <el-table-column label="Nợ cuối" prop="no_cuoi">
-          <template slot-scope="scope">{{formate.formatCurrency(scope.row.no_cuoi)}} đ</template>
+          <template slot-scope="scope"
+            >{{ formate.formatCurrency(scope.row.no_cuoi) }} đ</template
+          >
         </el-table-column>
       </el-table>
       <br />
       <br />
       <span>
         Phát sinh trong kỳ:
-        <label>{{formate.formatCurrency(tong_phat_sinh)}} đ</label>
+        <label>{{ formate.formatCurrency(tong_phat_sinh) }} đ</label>
       </span>
       <br />
       <br />
       <span>
         Công nợ cuối kỳ:
-        <label>{{formate.formatCurrency(no_cuoi_ky)}} đ</label>
+        <label>{{ formate.formatCurrency(no_cuoi_ky) }} đ</label>
       </span>
 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCongNo = false">Đóng</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showCongNo = false"
+          >Đóng</el-button
+        >
         <!-- <el-button class="primary-button" size="small" icon="el-icon-download">Xuất file</el-button> -->
       </span>
     </el-dialog>
@@ -413,6 +518,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: null,
+        search: ""
       },
       listLoading: false,
       dateCongNo: [],
@@ -472,6 +578,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search
       });
       this.listLoading = false;
       this.tableData = data.data;
@@ -484,8 +591,8 @@ export default {
       this.dataDonHang = [];
       this.thanh_toan = 0;
       this.tongTienPhaiThanhToan = 0;
-      this.donhangnhacungcaps = []
-      this.traHangNhaCungCaps = []
+      this.donhangnhacungcaps = [];
+      this.traHangNhaCungCaps = [];
       this.don_hang_id = null;
       this.formAdd = {
         nha_cung_cap_id: null,
@@ -555,7 +662,7 @@ export default {
           sanPham = this.donhangnhacungcaps.find(
             (it) => it.id === el.don_hang_id
           );
-          sanPham.loai = "mua_hang"
+          sanPham.loai = "mua_hang";
         }
         if (el.loai == "tra_hang") {
           sanPham = this.traHangNhaCungCaps.find(
@@ -565,12 +672,12 @@ export default {
           sanPham.tong_tien = 0;
           sanPham.da_thanh_toan = tt;
           sanPham.ten = "Trả hàng NCC";
-          sanPham.loai = "tra_hang"
+          sanPham.loai = "tra_hang";
         }
 
         return sanPham;
       });
-      this.dataDonHang = donHang
+      this.dataDonHang = donHang;
       this.formAdd.donHangCus = JSON.parse(JSON.stringify(donHang));
       this.don_thanh_toan_id = data.id;
       this.formAdd.phai_thanh_toan = +data.phai_thanh_toan;
@@ -661,7 +768,6 @@ export default {
       this.no_cuoi_ky = tempNoDauKy;
       this.tong_phat_sinh = tempPhatSinh;
       this.tableCongNo = newData;
-
     },
     changeTimeCongNo() {
       if (this.nha_cung_cap_id) {

@@ -13,6 +13,15 @@
           format="dd/MM/yyyy"
         ></el-date-picker>
       </el-col>
+      <el-col :span="4">
+        <el-input
+          v-model="form.search"
+          placeholder="Tìm kiếm"
+          size="small"
+          @keyup.enter.native="searchData"
+          clearable
+        ></el-input>
+      </el-col>
       <el-col :span="3">
         <el-button
           size="small"
@@ -22,7 +31,7 @@
           >Tìm kiếm</el-button
         >
       </el-col>
-      <el-col :span="15">
+      <el-col :span="11">
         <el-button
           style="float: right"
           size="small"
@@ -527,6 +536,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: [],
+        search: ""
       },
       next: true,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -722,6 +732,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
+        search: this.form.search
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

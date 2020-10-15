@@ -52,6 +52,14 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="4">
+            <el-input
+              v-model="form.search"
+              size="small"
+              placeholder="Tìm kiếm: Mã, tên đơn hàng, SĐT khách hàng ..."
+              @keyup.enter.native="getDonHang()"
+            ></el-input>
+          </el-col>
           <el-col :span="3">
             <el-button
               size="small"
@@ -61,7 +69,7 @@
               >Tìm kiếm</el-button
             >
           </el-col>
-          <el-col :span="7">
+          <el-col :span="3">
             <router-link to="/quanlydonhang/taodonnhacungcap">
               <el-button
                 style="float: right"
@@ -300,11 +308,11 @@
 import { listDonHang, xoaDonHang } from "@/api/donhangnhacungcap";
 import { getNhaCungCap } from "@/api/khachhang";
 import ThanhToan from "./thanhtoan";
-import TraHang from "./trahang"
+import TraHang from "./trahang";
 export default {
   components: {
     ThanhToan,
-    TraHang
+    TraHang,
   },
   data() {
     return {
@@ -321,6 +329,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: null,
+        search: "",
       },
       showColumn: {
         stt: true,
@@ -461,6 +470,7 @@ export default {
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
         trang_thai: this.form.trang_thai,
+        search: this.form.search,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;

@@ -1,39 +1,48 @@
 <template>
-  <div class="app-container" v-on:keyup.enter="searchData">
-    <el-form :model="form">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="6">
-          <el-date-picker
-            style="width: 100%"
-            v-model="form.date"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="Từ ngày"
-            end-placeholder="Đến ngày"
-            size="small"
-            format="dd/MM/yyyy"
-          ></el-date-picker>
-        </el-col>
-        <el-col :span="7">
+  <div class="app-container" v-on:keyup.enter="getDonHang">
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="6">
+        <el-date-picker
+          style="width: 100%"
+          v-model="form.date"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="Từ ngày"
+          end-placeholder="Đến ngày"
+          size="small"
+          format="dd/MM/yyyy"
+        ></el-date-picker>
+      </el-col>
+      <el-col :span="4">
+        <el-input
+          v-model="form.search"
+          placeholder="Tìm kiếm"
+          size="small"
+          @keyup.enter.native="getDonHang"
+          clearable
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getDonHang()"
+          >Tìm kiếm</el-button
+        >
+      </el-col>
+      <el-col :span="7">
+        <router-link to="/quanlydonhang/taokiemke">
           <el-button
+            style="float: right"
             size="small"
             class="primary-button"
-            icon="el-icon-search"
-            @click="getDonHang()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="11">
-          <router-link to="/quanlydonhang/taokiemke">
-            <el-button
-              style="float: right"
-              size="small"
-              class="primary-button"
-              icon="el-icon-plus"
-            >KIỂM KÊ</el-button>
-          </router-link>
-        </el-col>
-      </el-row>
-    </el-form>
+            icon="el-icon-plus"
+            >KIỂM KÊ</el-button
+          >
+        </router-link>
+      </el-col>
+    </el-row>
     <br />
     <h4>Danh sách đơn kiểm kho</h4>
     <el-row>
@@ -46,31 +55,80 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="ma" label="Mã đơn" min-width="125"></el-table-column>
-          <el-table-column property="ten" label="Tên kiểm kê" min-width="123"></el-table-column>
-          <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
-          <el-table-column property="ghi_chu" label="Ghi chú" min-width="123"></el-table-column>
-           <el-table-column label="Người tạo" min-width="95" prop="nguoi_tao.name"></el-table-column>
-          <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
+          <el-table-column
+            property="ma"
+            label="Mã đơn"
+            min-width="125"
+          ></el-table-column>
+          <el-table-column
+            property="ten"
+            label="Tên kiểm kê"
+            min-width="123"
+          ></el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="Thời gian tạo"
+          ></el-table-column>
+          <el-table-column
+            property="ghi_chu"
+            label="Ghi chú"
+            min-width="123"
+          ></el-table-column>
+          <el-table-column
+            label="Người tạo"
+            min-width="95"
+            prop="nguoi_tao.name"
+          ></el-table-column>
+          <el-table-column
+            property="trang_thai"
+            label="Trạng thái"
+            min-width="125"
+          >
             <template slot-scope="scope">
-              <el-tag type="success" effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
+              <el-tag
+                type="success"
+                effect="plain"
+                v-if="scope.row.trang_thai == 'moi_tao'"
+                >Mới tạo</el-tag
+              >
               <el-tag
                 effect="plain"
                 type="success"
                 v-if="scope.row.trang_thai == 'da_kiem_kho'"
-              >Đã kiểm kê, chờ duyệt</el-tag>
+                >Đã kiểm kê, chờ duyệt</el-tag
+              >
               <el-tag
                 effect="dark"
                 type="success"
                 v-if="scope.row.trang_thai == 'da_duyet'"
-              >Đã duyệt</el-tag>
-              <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'da_huy'">Hủy bỏ</el-tag>
+                >Đã duyệt</el-tag
+              >
+              <el-tag
+                effect="plain"
+                type="danger"
+                v-if="scope.row.trang_thai == 'da_huy'"
+                >Hủy bỏ</el-tag
+              >
             </template>
           </el-table-column>
-          <el-table-column label="Nhân viên" min-width="95" prop="nhan_vien.name"></el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="200">
+          <el-table-column
+            label="Nhân viên"
+            min-width="95"
+            prop="nhan_vien.name"
+          ></el-table-column>
+          <el-table-column
+            label="Hành động"
+            align="center"
+            fixed="right"
+            width="200"
+          >
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Chi tiết"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="edit(scope.row.id)"
@@ -79,9 +137,17 @@
                   circle
                 ></el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Xóa"
+                placement="top"
+              >
                 <el-button
-                  v-if="scope.row.trang_thai == 'moi_tao' || scope.row.trang_thai == 'da_huy'"
+                  v-if="
+                    scope.row.trang_thai == 'moi_tao' ||
+                    scope.row.trang_thai == 'da_huy'
+                  "
                   size="small"
                   type="danger"
                   icon="el-icon-delete"
@@ -126,6 +192,7 @@ export default {
       form: {
         date: [],
         khach_hang: null,
+        search: "",
       },
       formAdd: {
         id: null,
@@ -252,9 +319,9 @@ export default {
         khach_hang: this.form.khach_hang,
         date: this.form.date,
         don_hang: true,
+        search: this.form.search,
       });
       this.tableData = data.data.data;
-      console.log(this.tableData);
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;

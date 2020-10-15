@@ -171,7 +171,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ghi chú">
-              <el-input size="small" type="textarea" v-model="form.mo_ta" :rows="2"></el-input>
+              <el-input size="small" type="textarea" v-model="form.ghi_chu" :rows="2"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
