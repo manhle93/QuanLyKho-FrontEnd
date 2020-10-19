@@ -12,12 +12,16 @@
         ></el-input>
       </el-col>
       <el-col :span="4">
+<<<<<<< HEAD
         <el-select
           v-model="danh_muc_id"
           placeholder="Lựa chọn danh mục"
           size="small"
           style="width: 100%"
         >
+=======
+        <el-select v-model="danh_muc_id" placeholder="Lựa chọn danh mục" size="small" style="width: 100%">
+>>>>>>> 4e4a6f6bf0d0c6cd23b2a3128a53f627dae479f9
           <el-option
             v-for="item in danhMucs"
             :key="item.id"

@@ -20,7 +20,7 @@
             clearable
             size="small"
             v-model="form.nha_cung_cap"
-            placeholder="Chọn nhà cung cấp"
+            placeholder="Lựa chọn nhà cung cấp"
             style="width: 100%"
           >
             <el-option
@@ -145,12 +145,12 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px">
+    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px" center>
       <el-row>
         <el-select
           size="small"
           style="width: 100%"
-          placeholder="Chọn nhà cung cấp"
+          placeholder="Lựa chọn nhà cung cấp"
           v-model="formAdd.nha_cung_cap_id"
           filterable
           clearable

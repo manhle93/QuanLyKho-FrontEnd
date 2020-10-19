@@ -1,7 +1,7 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="Hoạt động">
-      <el-table :data="hoatDong" v-loading="loading">
+      <el-table :data="hoatDong" v-loading="loading" style="font-size: 13px">
         <el-table-column label="STT" type="index"></el-table-column>
         <el-table-column label="Thời gian" prop="created_at"></el-table-column>
         <el-table-column label="Hành động" prop="noi_dung"></el-table-column>
@@ -18,7 +18,7 @@
       </div>
     </el-tab-pane>
     <el-tab-pane label="Giao dịch">
-      <el-table :data="giaoDich">
+      <el-table :data="giaoDich" style="font-size: 13px">
         <el-table-column label="STT" type="index"></el-table-column>
         <el-table-column label="Thời gian" prop="created_at"></el-table-column>
         <el-table-column label="Hành động" prop="noi_dung"></el-table-column>

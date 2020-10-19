@@ -23,6 +23,21 @@
         ></el-input>
       </el-col>
       <el-col :span="3">
+          <el-select
+            filterable
+            clearable
+            style="width: 100%; height: 33px !important;background-color: yellow"
+            v-model="form.hinh_thuc"
+            placeholder="Phương thức thanh toán"
+            size="small"
+          >
+          <el-option value="tra_truoc" label="Trả trước"></el-option>
+            <el-option value="tien_mat" label="[Trả sau] Tiền mặt"></el-option>
+            <el-option value="chuyen_khoan" label="[Trả sau] Chuyển khoản/Quẹt thẻ"></el-option>
+            <el-option value="tai_khoan" label="[Trả sau] Tài khoản"></el-option>
+          </el-select>
+      </el-col>
+      <el-col :span="3">
         <el-button
           size="small"
           class="primary-button"
@@ -54,31 +69,41 @@
           border
         >
           <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column
-            property="created_at"
-            label="Thời gian"
-            min-width="125"
-          ></el-table-column>
-          <el-table-column
-            property="noi_dung"
-            label="Nội dung"
-            min-width="123"
-          ></el-table-column>
-          <el-table-column prop="so_tien" label="Số tiền">
-            <template slot-scope="scope"
-              >{{ formate.formatCurrency(scope.row.so_tien) }} đ</template
-            >
+          <el-table-column property="created_at" label="Thời gian" min-width="65"></el-table-column>
+          <el-table-column prop="so_tien" label="Số tiền" min-width="65">
+            <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
           </el-table-column>
+          <el-table-column property="noi_dung" label="Nội dung" min-width="123"></el-table-column>
           <el-table-column
-            prop="thong_tin_khach_hang"
-            label="Thông tin khách hàng"
-          ></el-table-column>
-          <el-table-column
-            label="Hành động"
-            align="center"
-            fixed="right"
-            width="120"
+            property="hinh_thuc"
+            label="Hình thức"
+            min-width="125"
           >
+            <template slot-scope="scope">
+              <el-tag
+                type="success"
+                effect="plain"
+                v-if="scope.row.hinh_thuc == null"
+              >Thanh toán trước</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'chuyen_khoan'"
+              >Thanh toán sau: Chuyển Khoản</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'tien_mat'"
+              >Thanh toán sau: Tiền mặt</el-tag>
+              <el-tag
+                type="primary"
+                effect="plain"
+                v-if="scope.row.hinh_thuc !== null && scope.row.hinh_thuc == 'tai_khoan'"
+              >Thanh toán sau: Tài Khoản</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="thong_tin_khach_hang" label="Thông tin khách hàng"></el-table-column>
+          <el-table-column label="Hành động" align="center" fixed="right" width="160">
             <template slot-scope="scope">
               <el-tooltip
                 class="item"
@@ -150,16 +175,8 @@
           <div
             v-if="formAdd.type != 'tu_nhap'"
             style="font-size: 13px; font-weight: bold"
-          >
-            {{ formate.formatCurrency(formAdd.so_tien) }} đ
-          </div>
-          <el-input
-            @blur="isInputActive = false"
-            @focus="isInputActive = true"
-            :min="0"
-            v-model="displayValue"
-            v-else
-          ></el-input>
+          >{{formate.formatCurrency(formAdd.so_tien)}} đ</div>
+          <el-input type="number" :min="0" v-model="formAdd.so_tien" v-else></el-input>
         </el-form-item>
         <el-form-item label="Nội dung" prop="noi_dung">
           <el-input
@@ -732,7 +749,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
-        search: this.form.search
+        hinh_thuc: this.form.hinh_thuc
       });
       this.tableData = data.data.data;
       this.page = data.data.page;

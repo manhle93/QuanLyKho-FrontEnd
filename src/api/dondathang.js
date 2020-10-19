@@ -65,9 +65,9 @@ export function getShipper() {
     })
 }
 
-export function thanhToanBoXung(data) {
+export function thanhToanBoSung(data) {
     return request({
-        url: 'thanhtoanboxung',
+        url: 'thanhtoanbosung',
         method: 'post',
         data
     })

@@ -29,7 +29,7 @@
       border
       fit
       highlight-current-row
-      style="font-size: 15px"
+      style="font-size: 13px"
     >
       <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">

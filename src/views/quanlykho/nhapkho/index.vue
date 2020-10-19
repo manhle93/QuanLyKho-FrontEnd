@@ -192,11 +192,7 @@
       ></el-pagination>
     </div>
 
-    <el-dialog
-      :visible.sync="showCreate"
-      title="NHẬP KHO HÀNG MUA NGOÀI"
-      width="600px"
-    >
+    <el-dialog :visible.sync="showCreate" title="NHẬP HÀNG HÓA MUA NGOÀI" width="600px" center>
       <el-row :gutter="20">
         <el-col :span="8">
           <el-select
