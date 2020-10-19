@@ -8,7 +8,7 @@
         @onEditUser="result => handleEditUser(result)"
       ></edit-user>
     </div>
-    <h4>Danh sách người dùng</h4>
+    <h4><i style="color: green">DANH SÁCH NGƯỜI DÙNG HỆ THỐNG</i></h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">

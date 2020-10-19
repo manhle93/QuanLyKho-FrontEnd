@@ -63,7 +63,7 @@
             class="primary-button"
             icon="el-icon-plus"
             @click="taoDon()"
-            >Tạo đơn</el-button
+            >TẠO ĐƠN</el-button
           >
         </el-col>
       </el-row>
@@ -352,7 +352,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           class="primary-button"

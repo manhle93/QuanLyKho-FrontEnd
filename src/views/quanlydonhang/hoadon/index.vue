@@ -60,7 +60,7 @@
       class="d-flex"
       style="align-items: center; justify-content: space-between"
     >
-      <h4>Danh sách hóa đơn xuất kho</h4>
+      <h4><i style="color: green">DANH SÁCH HÓA ĐƠN XUẤT KHO</i></h4>
       <el-dropdown trigger="click">
         <el-button
           class="el-dropdown-link primary-button"

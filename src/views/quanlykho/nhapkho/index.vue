@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách mua hàng nhập kho</h4>
+    <h4><i style="color: green">DANH SÁCH MUA HÀNG NHẬP KHO</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="6">
         <el-date-picker
@@ -39,7 +39,7 @@
           class="primary-button"
           icon="el-icon-plus"
           @click="showNhapKho()"
-          >Nhập kho ngoài</el-button
+          >NHẬP KHO NGOÀI</el-button
         >
       </el-col>
     </el-row>
@@ -293,7 +293,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           class="primary-button"

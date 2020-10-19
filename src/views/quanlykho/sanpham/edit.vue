@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row>
       <el-col :span="20" :offset="2">
-        <h3>Thêm mới sản phẩm hàng hóa</h3>
+        <h4><i style="color: green"> CẬP NHẬT THÔNG TIN SẢN PHẨM/ HÀNG HÓA</i></h4>
         <el-form :model="form" :rules="rules" ref="form">
           <el-row :gutter="20">
             <el-col :span="6">
@@ -245,7 +245,7 @@
           class="primary-button"
           icon="el-icon-plus"
           @click="themThuongHieu('formAddThuongHieu')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           v-if="editThuongHieu"

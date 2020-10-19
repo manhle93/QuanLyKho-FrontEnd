@@ -76,7 +76,7 @@
                 size="small"
                 class="primary-button"
                 icon="el-icon-plus"
-                >Tạo đơn</el-button
+                >TẠO ĐƠN</el-button
               >
             </router-link>
           </el-col>
@@ -86,7 +86,7 @@
           class="d-flex"
           style="align-items: center; justify-content: space-between"
         >
-          <h4>Danh sách đơn hàng nhà cung cấp</h4>
+          <h4><i style="color: green">DANH SÁCH ĐƠN HÀNG TỪ NHÀ CUNG CẤP</i></h4>
           <el-dropdown trigger="click">
             <el-button
               class="el-dropdown-link primary-button"

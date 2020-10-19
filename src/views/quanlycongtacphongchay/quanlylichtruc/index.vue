@@ -75,7 +75,7 @@
               size="small"
               style="float:right"
               class="primary-button"
-              >Thêm mới</el-button
+              >THÊM MỚI</el-button
             >
           </router-link>
         </el-col>

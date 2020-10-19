@@ -56,13 +56,13 @@
             size="small"
             class="primary-button"
             icon="el-icon-plus"
-            >Tạo đơn</el-button
+            >TẠO ĐƠN</el-button
           >
         </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Lịch sử trả hàng nhà cung cấp</h4>
+    <h4><i style="color: green">LỊCH SỬ TRẢ HÀNG CHO NHÀ CUNG CẤP</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

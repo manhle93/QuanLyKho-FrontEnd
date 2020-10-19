@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Tích lũy điểm thưởng</h4>
+    <h4><i style="color: green">TÍCH LŨY ĐIỂM THƯỞNG</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -36,7 +36,7 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >Cấu hình</el-button>
+        >CẤU HÌNH</el-button>
       </el-col>
     </el-row>
     <br />
@@ -192,7 +192,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="addKhoHang('form')"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
         <el-button
           class="primary-button"
           size="small"

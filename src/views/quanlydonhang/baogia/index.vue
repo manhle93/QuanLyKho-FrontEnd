@@ -28,7 +28,7 @@
           clearable
           size="small"
           v-model="form.nha_cung_cap"
-          placeholder="Chọn nhà cung cấp"
+          placeholder="Lựa chọn nhà cung cấp"
           style="width: 100%"
         >
           <el-option
@@ -55,13 +55,13 @@
             size="small"
             class="primary-button"
             icon="el-icon-plus"
-            >Tạo báo giá</el-button
+            >TẠO BÁO GIÁ</el-button
           >
         </router-link>
       </el-col>
     </el-row>
     <br />
-    <h4>Danh sách báo giá của nhà cung cấp</h4>
+    <h4><i style="color: green">DANH SÁCH BÁO GIÁ CỦA NHÀ CUNG CẤP</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

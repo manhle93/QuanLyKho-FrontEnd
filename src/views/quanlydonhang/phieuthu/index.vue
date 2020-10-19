@@ -38,12 +38,12 @@
           class="primary-button"
           icon="el-icon-plus"
           @click="showFormAdd()"
-          >Tạo phiếu thu</el-button
+          >TẠO PHIẾU THU</el-button
         >
       </el-col>
     </el-row>
     <br />
-    <h4>Danh sách phiếu thu</h4>
+    <h4><i style="color: green">DANH SÁCH PHIẾU THU</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table
@@ -149,7 +149,7 @@
         <el-form-item label="Số tiền" prop="so_tien">
           <div
             v-if="formAdd.type != 'tu_nhap'"
-            style="font-size: 15px; font-weight: bold"
+            style="font-size: 13px; font-weight: bold"
           >
             {{ formate.formatCurrency(formAdd.so_tien) }} đ
           </div>
@@ -248,7 +248,7 @@
           size="small"
           icon="el-icon-plus"
           @click="add('formAdd')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </span>
     </el-dialog>
@@ -485,7 +485,7 @@
           v-if="!next"
           icon="el-icon-plus"
           @click="addKhachHang('formKhaHang')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </span>
     </el-dialog>

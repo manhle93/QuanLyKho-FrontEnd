@@ -928,7 +928,7 @@
           icon="el-icon-plus"
           :loading="btnLoading"
           @click="addPhuongTien('formPhuongTien')"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
         <el-button
           v-else
           style="background-color: #3498DB; color: white"
@@ -1013,7 +1013,7 @@
           icon="el-icon-plus"
           :loading="btnLoading"
           @click="addPcccCoSo('formPcccCoSo')"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
         <el-button
           v-else
           style="background-color: #3498DB; color: white"

@@ -129,8 +129,8 @@
     </div>
     <div style="display:flex; flex-direction: row; align-items: center">
       <div style="margin-right: 50px">
-        <el-button size="small" class="primary-button" @click="banHang()">Bán hàng</el-button>
-        <el-button size="small" type="warning" @click="datHang()">Đặt hàng</el-button>
+        <el-button size="small" class="primary-button" @click="banHang()">BÁN HÀNG</el-button>
+        <el-button size="small" type="warning" @click="datHang()">ĐẶT HÀNG</el-button>
       </div>
 
       <div class="right-menu">

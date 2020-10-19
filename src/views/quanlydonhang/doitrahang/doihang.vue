@@ -589,7 +589,7 @@
           v-if="!next"
           icon="el-icon-plus"
           @click="addKhachHang('formKhaHang')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </span>
     </el-dialog>

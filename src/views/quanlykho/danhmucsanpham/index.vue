@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh mục sản phẩm hàng hóa</h4>
+    <h4><i style="color: green"> DANH SÁCH NHÓM HÀNG HÓA</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -27,7 +27,7 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </el-col>
     </el-row>
@@ -112,7 +112,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="edit ? 'Cập nhật danh mục sản phẩm' : 'Thêm danh mục sản phẩm'"
+      :title="edit ? 'CẬP NHẬT NHÓM HÀNG HÓA' :'THÊM NHÓM HÀNG HÓA'"
       :visible.sync="showForm"
       width="30%"
       center
@@ -149,7 +149,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="Tên danh mục" prop="ten_danh_muc">
+            <el-form-item label="Tên nhóm hàng hóa" prop="ten_danh_muc">
               <el-input v-model="form.ten_danh_muc"></el-input>
             </el-form-item>
           </el-col>
@@ -159,7 +159,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="Mô tả">
+            <el-form-item label="Mô tả thêm">
               <el-input
                 type="textarea"
                 v-model="form.mo_ta"
@@ -183,7 +183,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="addDanhMuc('form')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           class="primary-button"

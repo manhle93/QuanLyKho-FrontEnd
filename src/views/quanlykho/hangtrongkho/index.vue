@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Danh sách hàng trong kho</h3>
+  <h4><i style="color: green">DANH SÁCH HÀNG TRONG KHO</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input

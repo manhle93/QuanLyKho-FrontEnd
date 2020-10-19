@@ -36,19 +36,19 @@
           type="warning"
           icon="el-icon-plus"
           @click="traHang()"
-          >Trả hàng</el-button
+          >TRẢ HÀNG</el-button
         >
         <el-button
           size="small"
           type="danger"
           icon="el-icon-plus"
           @click="doiHang()"
-          >Đổi hàng</el-button
+          >ĐỔI HÀNG</el-button
         >
       </el-col>
     </el-row>
     <br />
-    <h4>Danh sách đơn đổi trả hàng</h4>
+    <h4><i style="color: green">DANH SÁCH ĐƠN ĐỔI TRẢ HÀNG</i></h4>
     <el-row>
       <el-col :span="24">
         <el-table

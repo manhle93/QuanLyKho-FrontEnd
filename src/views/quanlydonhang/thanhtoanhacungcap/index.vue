@@ -20,7 +20,7 @@
             clearable
             size="small"
             v-model="form.nha_cung_cap"
-            placeholder="Chọn nhà cung cấp"
+            placeholder="Lựa chọn nhà cung cấp"
             style="width: 100%"
           >
             <el-option
@@ -55,12 +55,12 @@
             class="primary-button"
             icon="el-icon-plus"
             @click="taoDon()"
-          >Tạo đơn</el-button>
+          >TẠO ĐƠN</el-button>
         </el-col>
       </el-row>
     </el-form>
     <br />
-    <h4>Lịch sử thanh toán cho nhà cung cấp</h4>
+    <h4><i style="color: green">LỊCH SỬ TRẢ HÀNG VỀ NHÀ CUNG CẤP</i></h4>
     <el-table
       v-loading="listLoading"
       element-loading-text="Đang tải dữ liệu"
@@ -274,7 +274,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
         <el-button
           class="primary-button"
           size="small"

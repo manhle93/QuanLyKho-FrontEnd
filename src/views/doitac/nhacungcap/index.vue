@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách nhà cung cấp</h4>
+    <h4><i style="color: green">DANH SÁCH NHÀ CUNG CẤP</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -27,7 +27,7 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </el-col>
     </el-row>
@@ -329,7 +329,7 @@
           v-if="!edit && !next"
           icon="el-icon-plus"
           @click="addNhaCungCap('form')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           class="primary-button"

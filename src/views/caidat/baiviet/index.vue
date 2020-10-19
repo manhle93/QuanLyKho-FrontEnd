@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách bài viết - Sinh thái ruộng bậc thang</h4>
+    <h4><i style="color: green">DANH SÁCH BÀI VIẾT- SINH THÁI RUỘNG BẬC THANG</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -26,7 +26,7 @@
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-          >Thêm mới</el-button>
+          >THÊM MỚI</el-button>
         </router-link>
       </el-col>
     </el-row>

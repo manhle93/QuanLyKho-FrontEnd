@@ -65,7 +65,7 @@
       class="d-flex"
       style="align-items: center; justify-content: space-between"
     >
-      <h4>Danh sách đơn đặt hàng</h4>
+      <h4><i style="color: green">DANH SÁCH ĐƠN ĐẶT HÀNG</i></h4>
       <el-dropdown trigger="click">
         <el-button
           class="el-dropdown-link primary-button"

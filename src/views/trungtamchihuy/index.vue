@@ -102,10 +102,10 @@
         >NHÂN VIÊN, QUẢN LÝ</div>
         <br>
         <div style="display:flex; justify-content: space-between;">
-          <div style="color: #515A5A; font-weight: bold;">Trạng thái hoạt động</div>
+          <div style="color: #515A5A; font-weight: bold;" center><h4><i style="color: green">TRẠNG THÁI HOẠT ĐỘNG</i></h4></div>
         </div>
         <br />
-        <el-table :data="dataUser" height="100%">
+        <el-table :data="dataUser" height="100%" style="font-size: 13px">
           <!-- <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column> -->
           <el-table-column prop="user.name" width="250" label="Họ và tên">
             <template slot-scope="scope">

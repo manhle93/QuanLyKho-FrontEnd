@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Tạo đơn hàng cho nhà cung cấp</h3>
+    <h4><i style="color: green">TẠO ĐƠN HÀNG TỚI NHÀ CUNG CẤP</i></h4>
     <el-row>
       <el-col :span="12" :offset="6">
         <el-steps :active="active" finish-status="success">
@@ -211,7 +211,7 @@
           icon="el-icon-plus"
           class="primary-button"
           @click="submit('form')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
       </el-col>
     </el-row>

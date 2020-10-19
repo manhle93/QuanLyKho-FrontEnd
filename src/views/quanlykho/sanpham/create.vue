@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row>
       <el-col :span="20" :offset="2">
-        <h3>Thêm mới sản phẩm hàng hóa</h3>
+        <h4><i style="color: green">THÊM MỚI SẢN PHẨM/ HÀNG HÓA</i></h4>
         <el-form :model="form" :rules="rules" ref="form">
           <!-- <el-row>
             <el-col style="text-align: center">
@@ -34,7 +34,7 @@
           </el-row>-->
           <el-row :gutter="20">
             <el-col :span="6">
-              <el-form-item label="Tên sản phẩm" prop="ten_san_pham">
+              <el-form-item label="Tên sản phẩm/ Hàng hóa" prop="ten_san_pham">
                 <el-input v-model="form.ten_san_pham"></el-input>
               </el-form-item>
             </el-col>
@@ -230,7 +230,7 @@
                 class="primary-button"
                 icon="el-icon-plus"
                 @click="addSanPham('form')"
-                >Thêm mới</el-button
+                >THÊM MỚI</el-button
               >
             </el-col>
           </el-row>
@@ -273,7 +273,7 @@
           class="primary-button"
           icon="el-icon-plus"
           @click="themThuongHieu('formAddThuongHieu')"
-          >Thêm mới</el-button
+          >THÊM MỚI</el-button
         >
         <el-button
           v-if="editThuongHieu"

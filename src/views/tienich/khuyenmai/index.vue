@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách khuyến mãi</h4>
+    <h4><i style="color: green">DANH SÁCH KHUYỄN MÃI</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -36,7 +36,7 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
       </el-col>
     </el-row>
     <br />
@@ -245,7 +245,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="addKhoHang('form')"
-        >Thêm mới</el-button>
+        >THÊM MỚI</el-button>
         <el-button
           class="primary-button"
           size="small"

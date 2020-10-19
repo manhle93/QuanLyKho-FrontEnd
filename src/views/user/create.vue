@@ -5,7 +5,7 @@
       class="primary-button"
       @click="showCreateUsers = true"
       icon="el-icon-plus"
-    >Thêm người dùng</el-button>
+    >THÊM NGƯỜI DÙNG</el-button>
     <el-dialog
       :visible.sync="showCreateUsers"
       @close="close()"
@@ -172,7 +172,7 @@
             icon="el-icon-plus"
             :loading="loading"
             @click="submit('formLabelAlign')"
-          >Thêm mới</el-button>
+          >THÊM MỚI</el-button>
         </el-row>
       </el-form>
     </el-dialog>
