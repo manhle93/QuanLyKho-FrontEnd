@@ -1,39 +1,6 @@
 <template>
   <div class="app-container">
     <h4><i style="color: green"> DANH SÁCH NHÓM HÀNG HÓA</i></h4>
-<<<<<<< HEAD
-    <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
-        <el-input
-          size="small"
-          placeholder="Thông tin tìm kiếm"
-          v-model="search"
-          suffix-icon="el-icon-search"
-          @keyup.enter.native="searchData"
-        ></el-input>
-      </el-col>
-      <el-col :span="7">
-        <el-button
-          size="small"
-          class="primary-button"
-          icon="el-icon-search"
-          @click="searchData()"
-          >Tìm kiếm</el-button
-        >
-      </el-col>
-      <el-col :span="12">
-        <el-button
-          style="float: right"
-          @click="showFormAdd"
-          size="small"
-          icon="el-icon-plus"
-          class="primary-button"
-          >THÊM MỚI</el-button
-        >
-      </el-col>
-    </el-row>
-    <br /><br />
-=======
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
           <el-input
@@ -63,7 +30,6 @@
         </el-col>
       </el-row>
       <br><br>
->>>>>>> 4e4a6f6bf0d0c6cd23b2a3128a53f627dae479f9
     <el-table
       v-loading="listLoading"
       :data="list"
