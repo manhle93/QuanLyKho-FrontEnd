@@ -5,11 +5,11 @@
   >
     <div style="display: flex;">
       <div class="danhmuc" style="margin-left: 0px">
-        <div class="item-danhmuc" style="background-color: #27AE60">
+        <div class="item-danhmuc" style="background-color: #B2DFDB">
           <div>
             <div class="so-item">
               {{(data.doanh_thu/1000000).toFixed(2)}}
-              <span style="font-size: 14px">triệu đ</span>
+              <span style="font-size: 14px">(triệu)</span>
             </div>
             <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>
           </div>
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="danhmuc">
-        <div class="item-danhmuc" style="background-color: #D68910">
+        <div class="item-danhmuc" style="background-color: #80CBC4">
           <div>
             <div class="so-item">{{data.hoa_don}}</div>
             <div class="ten-item">Hóa đơn: {{month}}/{{year}}</div>
@@ -27,7 +27,7 @@
       </div>
 
       <div class="danhmuc">
-        <div class="item-danhmuc">
+        <div class="item-danhmuc" style="background-color: #B2DFDB">
           <div>
             <div class="so-item">{{data.don_hang}}</div>
             <div class="ten-item">Đơn hàng: {{month}}/{{year}}</div>
@@ -37,7 +37,7 @@
       </div>
 
       <div class="danhmuc">
-        <div class="item-danhmuc" style="background-color: #2471A3">
+        <div class="item-danhmuc" style="background-color: #80CBC4">
           <div>
             <div class="so-item">{{data.don_online}}</div>
             <div class="ten-item">Đặt hàng Online {{month}}/{{year}}</div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="danhmuc" style="background-color: #A93226">
+      <div class="danhmuc" style="background-color: #B2DFDB">
         <div class="item-danhmuc">
           <div>
             <div class="so-item">{{data.san_pham}}</div>
@@ -299,13 +299,13 @@ export default {
   justify-content: space-around;
 }
 .so-item {
-  color: white;
+  color: #004D40;
   font-size: 34px;
   font-weight: bold;
 }
 .ten-item {
   margin-top: 15px;
-  color: white;
-  font-family: time new roman;
+  color:#00695C;
+  font-family: 'segoe ui', 'Open Sans', 'sans-serif';
 }
 </style>
