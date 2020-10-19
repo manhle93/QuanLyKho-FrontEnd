@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4><i style="color: green">DANH SÁCH NHÀ CUNG CẤP</i></h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
+      <el-col :span="9">
         <el-input
           size="small"
           placeholder="Thông tin tìm kiếm"
@@ -11,7 +11,7 @@
           @keyup.enter.native="searchData()"
         ></el-input>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <el-button
           size="small"
           class="primary-button"
@@ -20,7 +20,7 @@
           >Tìm kiếm</el-button
         >
       </el-col>
-      <el-col :span="12">
+      <el-col :span="10">
         <el-button
           style="float: right"
           @click="showFormAdd"
@@ -135,7 +135,7 @@
     <el-dialog
       :title="edit ? 'CẬP NHẬT NHÀ CUNG CẤP' : 'THÊM MỚI NHÀ CUNG CẤP'"
       :visible.sync="showForm"
-      width="40%"
+      width="60%"
       center
     >
       <el-form :model="form" :rules="rules" ref="form">

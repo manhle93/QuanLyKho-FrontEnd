@@ -16,15 +16,38 @@
           <el-row :gutter="20">
             <br />
             <el-col :span="8">
-              <el-form-item>
-                <el-input placeholder="Tìm kiếm sản phẩm" v-model="timKiem">
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-              </el-form-item>
+              <el-select
+                size="small"
+                style="width: 100%"
+                clearable
+                remote
+                reserve-keyword
+                v-model="idSanPham"
+                :remote-method="remoteMethod"
+                placeholder="Hàng hóa, sản phẩm"
+                filterable
+                @change="doiSanPham(idSanPham)"
+              >
+                <el-option
+                  :disabled="kiemTraDaChon(item.id)"
+                  v-for="item in hangHoas"
+                  :key="item.id"
+                  :label="item.ten_san_pham"
+                  :value="item.id"
+                >
+                  <span style="float: left">{{ item.ten_san_pham }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    item.thuong_hieu
+                      ? "Thương hiệu: " + item.thuong_hieu.ten
+                      : "Danh mục: " + item.danh_muc.ten_danh_muc
+                  }}</span>
+                </el-option>
+              </el-select>
             </el-col>
             <el-col :span="4">
               <el-select
                 clearable
+                size="small"
                 v-model="danh_muc_id"
                 placeholder="Danh mục sản phẩm"
                 filterable
@@ -35,27 +58,27 @@
                   :key="item.id"
                   :label="item.ten_danh_muc"
                   :value="item.id"
-                ></el-option>
+                >
+                </el-option>
               </el-select>
             </el-col>
             <el-col :span="5">
-              <el-form-item>
-                <el-select
-                  clearable
-                  filterable
-                  style="width: 100%"
-                  v-model="form.bang_gia_id"
-                  placeholder="Chọn bảng giá"
-                  @change="chonBangGia(form.bang_gia_id)"
-                >
-                  <el-option
-                    v-for="item in bangGias"
-                    :key="item.id"
-                    :label="item.ten"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+              <el-select
+                clearable
+                filterable
+                size="small"
+                style="width: 100%"
+                v-model="form.bang_gia_id"
+                placeholder="Chọn bảng giá"
+                @change="chonBangGia(form.bang_gia_id)"
+              >
+                <el-option
+                  v-for="item in bangGias"
+                  :key="item.id"
+                  :label="item.ten"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </el-col>
             <el-col :span="1">
               <el-form-item>
@@ -348,7 +371,11 @@
                 label="Chuyển khoản/Quẹt thẻ"
               ></el-option>
               <!-- <el-option value="cod" label="Ship COD"></el-option> -->
-              <el-option value="tai_khoan" label="Tài khoản" :disabled="!form.khach_hang_id"></el-option>
+              <el-option
+                value="tai_khoan"
+                label="Tài khoản"
+                :disabled="!form.khach_hang_id"
+              ></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
           </el-form-item>
@@ -475,9 +502,13 @@
           ></el-rate>
         </div>
       </div>
-      <br>
+      <br />
       <el-row>
-        <el-col :span="22" :offset="1"><div style="font-weight: bold">Ghi chú: <span style="color: green">{{UserInfo.ghi_chu}}</span></div></el-col>
+        <el-col :span="22" :offset="1"
+          ><div style="font-weight: bold">
+            Ghi chú: <span style="color: green">{{ UserInfo.ghi_chu }}</span>
+          </div></el-col
+        >
       </el-row>
       <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">
@@ -733,6 +764,7 @@ export default {
       showFormAddKhachHang: false,
       cap_nhat: false,
       doiTra: false,
+      idSanPham: null,
       hangCus: [],
       formKhaHang: {
         id: null,
@@ -1076,6 +1108,7 @@ export default {
       }
 
       this.addSanPham();
+      this.idSanPham = null;
     },
     async getBangGia() {
       let data = await getBangGia({

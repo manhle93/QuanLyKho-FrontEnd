@@ -127,7 +127,8 @@
           <el-col :span="24">
             <el-form-item label="Số tiền (Vnđ)" prop="so_tien">
               <br />
-              <el-input-number style="width: 100%" :min="0" :step="500" v-model="form.so_tien"></el-input-number>
+              <el-input        @blur="isInputActive = false"
+            @focus="isInputActive = true" v-model="displayValue" style="width: 100%" :min="0" :step="500"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -172,7 +173,7 @@ export default {
       showForm: false,
       edit: false,
       page: 1,
-      per_page: 10,
+      per_page: 5,
       total: 0,
       search: "",
       date: null,
@@ -185,6 +186,7 @@ export default {
         noi_dung: "",
         so_tien: 0,
       },
+      isInputActive: null,
       khachHangs: [],
       rules: {
         id_user_khach_hang: [
@@ -207,6 +209,33 @@ export default {
   created() {
     this.getData();
     this.getKhachHang();
+  },
+    computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.form.so_tien.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.form.so_tien).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.form.so_tien = newValue;
+      },
+    },
   },
   methods: {
     async getData() {

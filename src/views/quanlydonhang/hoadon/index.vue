@@ -1,45 +1,60 @@
 <template>
   <div class="app-container" v-on:keyup.enter="getDonHang">
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="6">
-          <el-date-picker
-            style="width: 100%"
-            v-model="form.date"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="Từ ngày"
-            end-placeholder="Đến ngày"
-            size="small"
-            format="dd/MM/yyyy"
-          ></el-date-picker>
-        </el-col>
-        <el-col :span="4">
-          <el-select
-            filterable
-            clearable
-            size="small"
-            v-model="form.khach_hang"
-            placeholder="Chọn khách hàng"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in nhaCungCaps"
-              :key="item.id"
-              :label="item.ten"
-              :value="item.user_id"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="5">
-          <el-input v-model="form.search" size="small" placeholder="Tìm kiếm: Mã, tên đơn hàng, SĐT khách hàng ..." @keyup.enter.native="getDonHang()"></el-input>
-        </el-col>
-        <el-col :span="3">
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="6">
+        <el-date-picker
+          style="width: 100%"
+          v-model="form.date"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="Từ ngày"
+          end-placeholder="Đến ngày"
+          size="small"
+          format="dd/MM/yyyy"
+        ></el-date-picker>
+      </el-col>
+      <el-col :span="4">
+        <el-select
+          filterable
+          clearable
+          size="small"
+          v-model="form.khach_hang"
+          placeholder="Chọn khách hàng"
+          style="width: 100%"
+        >
+          <el-option
+            v-for="item in nhaCungCaps"
+            :key="item.id"
+            :label="item.ten"
+            :value="item.user_id"
+          ></el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="5">
+        <el-input
+          v-model="form.search"
+          size="small"
+          placeholder="Tìm kiếm: Mã, tên đơn hàng, SĐT khách hàng ..."
+          @keyup.enter.native="getDonHang()"
+        ></el-input>
+      </el-col>
+      <el-col :span="3">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="getDonHang()"
+          >Tìm kiếm</el-button
+        >
+      </el-col>
+      <el-col :span="6">
+        <router-link to="/quanlydonhang/taodondathang">
           <el-button
+            style="float: right"
             size="small"
             class="primary-button"
-            icon="el-icon-search"
-            @click="getDonHang()"
-            >Tìm kiếm</el-button
+            icon="el-icon-plus"
+            >HÓA ĐƠN</el-button
           >
         </el-col>
         <el-col :span="6">
@@ -190,7 +205,12 @@
               </el-tabs>
             </template>
           </el-table-column>
-          <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
+          <el-table-column
+            sortable
+            type="index"
+            label="STT"
+            v-if="showColumn.stt"
+          ></el-table-column>
           <el-table-column
             property="ma"
             label="Mã đơn hàng"
@@ -198,24 +218,24 @@
             v-if="showColumn.ma"
           ></el-table-column>
           <el-table-column
-          v-if="showColumn.ten"
+            v-if="showColumn.ten"
             property="ten"
             label="Tên đơn hàng"
             min-width="123"
           ></el-table-column>
           <el-table-column
-          v-if="showColumn.thoi_gian"
+            v-if="showColumn.thoi_gian"
             prop="created_at"
             label="Thời gian tạo"
           ></el-table-column>
           <el-table-column
-          v-if="showColumn.ghi_chu"
+            v-if="showColumn.ghi_chu"
             property="ghi_chu"
             label="Ghi chú"
             min-width="123"
           ></el-table-column>
           <el-table-column
-          v-if="showColumn.da_tt"
+            v-if="showColumn.da_tt"
             label="Đã thanh toán"
             min-width="115"
             prop="da_thanh_toan"
@@ -225,7 +245,7 @@
             >
           </el-table-column>
           <el-table-column
-          v-if="showColumn.con_phai_tt"
+            v-if="showColumn.con_phai_tt"
             label="Còn phải thanh toán"
             min-width="115"
             prop="con_phai_thanh_toan"
@@ -243,7 +263,7 @@
             </template>
           </el-table-column>
           <el-table-column
-           v-if="showColumn.trang_thai"
+            v-if="showColumn.trang_thai"
             property="trang_thai"
             label="Trạng thái"
             min-width="125"
@@ -273,7 +293,7 @@
             </template>
           </el-table-column>
           <el-table-column
-           v-if="showColumn.khach_hang"
+            v-if="showColumn.khach_hang"
             label="Khách hàng"
             min-width="95"
             prop="user.name"
@@ -381,16 +401,22 @@
               value="chuyen_khoan"
               label="Chuyển khoản/Quẹt thẻ"
             ></el-option>
-            <el-option value="tai_khoan" label="Tài khoản"></el-option>
+            <el-option
+              value="tai_khoan"
+              label="Tài khoản"
+              :disabled="!thanhToanTaiKhoan"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Số tiền thanh toán">
-          <el-input-number
+          <el-input
+            @blur="isInputActive = false"
+            @focus="isInputActive = true"
             :min="0"
             :max="Number(formThanhToan.tong_tien)"
-            v-model="formThanhToan.thanh_toan"
+            v-model="displayValue"
             style="width: 100%"
-          ></el-input-number>
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -433,6 +459,7 @@ export default {
       listLoading: true,
       loading: false,
       search: "",
+      thanhToanTaiKhoan: false,
       showColumn: {
         stt: true,
         ma: true,
@@ -449,7 +476,7 @@ export default {
       form: {
         date: [],
         khach_hang: null,
-        search: null
+        search: null,
       },
       formThanhToan: {
         id: null,
@@ -457,6 +484,7 @@ export default {
         tong_tien: 0,
         thanh_toan: 0,
       },
+      isInputActive: null,
       formAdd: {
         id: null,
         ten: "",
@@ -529,7 +557,36 @@ export default {
     this.getDonHang();
     this.getKhachHang();
   },
-
+  computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.formThanhToan.thanh_toan.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.formThanhToan.thanh_toan).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        if(newValue > this.formThanhToan.tong_tien){
+          newValue =  this.formThanhToan.tong_tien
+        }
+        this.formThanhToan.thanh_toan = newValue;
+      },
+    },
+  },
   mounted() {},
 
   methods: {
@@ -537,7 +594,8 @@ export default {
       this.page = val;
       this.updateDataTable();
     },
-    thanhToanBoSung(data) {
+    thanhToanBoXung(data) {
+      this.thanhToanTaiKhoan = data.user_id;
       this.showThanhToan = true;
       this.formThanhToan.id = data.id;
       this.formThanhToan.tong_tien = data.con_phai_thanh_toan;
@@ -611,7 +669,7 @@ export default {
         khach_hang: this.form.khach_hang,
         date: this.form.date,
         hoa_don: true,
-        search: this.form.search
+        search: this.form.search,
       });
       this.tableData = data.data.data;
       this.page = data.data.page;
@@ -682,4 +740,5 @@ export default {
 .d-flex {
   display: flex;
   flex-direction: row;
-}</style>
+}
+</style>

@@ -63,7 +63,17 @@
                     :key="item.id"
                     :label="item.ten_san_pham"
                     :value="item.id"
-                  ></el-option>
+                  >
+                    <span style="float: left">{{ item.ten_san_pham }}</span>
+                    <span
+                      style="float: right; color: #8492a6; font-size: 13px"
+                      >{{
+                        item.thuong_hieu
+                          ? 'Thương hiệu: '+ item.thuong_hieu.ten
+                          : "Danh mục: " + item.danh_muc.ten_danh_muc
+                      }}</span
+                    >
+                  </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -363,7 +373,11 @@
                 label="Chuyển khoản/Quẹt thẻ"
               ></el-option>
               <!-- <el-option value="cod" label="Ship COD"></el-option> -->
-              <el-option value="tai_khoan" label="Tài khoản" :disabled="!form.khach_hang_id"></el-option>
+              <el-option
+                value="tai_khoan"
+                label="Tài khoản"
+                :disabled="!form.khach_hang_id"
+              ></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
           </el-form-item>
@@ -463,9 +477,13 @@
           ></el-rate>
         </div>
       </div>
-      <br>
+      <br />
       <el-row>
-        <el-col :span="22" :offset="1"><div style="font-weight: bold">Ghi chú: <span style="color: green">{{UserInfo.ghi_chu}}</span></div></el-col>
+        <el-col :span="22" :offset="1"
+          ><div style="font-weight: bold">
+            Ghi chú: <span style="color: green">{{ UserInfo.ghi_chu }}</span>
+          </div></el-col
+        >
       </el-row>
       <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">

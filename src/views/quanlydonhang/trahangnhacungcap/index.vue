@@ -27,7 +27,7 @@
               v-for="item in nhaCungCaps"
               :key="item.id"
               :label="item.ten"
-              :value="item.user_id"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -145,7 +145,7 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="600px" center>
+    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="800px">
       <el-row>
         <el-select
           size="small"
@@ -171,6 +171,7 @@
             size="small"
             style="width: 100%"
             placeholder="Chọn hàng hóa"
+            filterable
             v-model="addSanPham.hang_hoa_id"
             @change="getDonGia(addSanPham.hang_hoa_id)"
           >
