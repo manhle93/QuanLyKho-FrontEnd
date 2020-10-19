@@ -47,18 +47,8 @@
           >Tìm kiếm</el-button
         >
       </el-col>
-      <el-col :span="6">
-        <router-link to="/quanlydonhang/taodondathang">
-          <el-button
-            style="float: right"
-            size="small"
-            class="primary-button"
-            icon="el-icon-plus"
-            >HÓA ĐƠN</el-button
-          >
-        </el-col>
         <el-col :span="6">
-          <router-link to="/quanlydonhang/taodondathang">
+          <router-link :to="'/quanlydonhang/taodondathang'">
             <el-button
               style="float: right"
               size="small"
@@ -67,10 +57,9 @@
               >HÓA ĐƠN</el-button
             >
           </router-link>
-        </el-col> -->
+        </el-col>
       </el-row>
-    <br />
-
+    <br/>
     <div
       class="d-flex"
       style="align-items: center; justify-content: space-between"

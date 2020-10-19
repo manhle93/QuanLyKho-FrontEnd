@@ -100,7 +100,7 @@
               :loading="loading"
               @click="submit('formLabelAlign')"
               icon="el-icon-plus"
-            >Thêm mới</el-button>
+            >THÊM MỚI</el-button>
           </el-col>
         </el-row>
       </el-form>

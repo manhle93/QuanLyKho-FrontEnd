@@ -107,7 +107,7 @@
         <br />
         <el-table :data="dataUser" height="100%" style="font-size: 13px">
           <!-- <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column> -->
-          <el-table-column prop="user.name" width="250" label="Họ và tên">
+          <el-table-column prop="user.name" width="230" label="Họ và tên">
             <template slot-scope="scope">
               <div
                 style="display: flex; flex-wrap: nowrap; align-items: center;"

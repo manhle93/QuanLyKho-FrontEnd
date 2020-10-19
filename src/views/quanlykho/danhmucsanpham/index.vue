@@ -26,7 +26,7 @@
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-          >Thêm mới</el-button>
+          >THÊM MỚI</el-button>
         </el-col>
       </el-row>
       <br><br>
