@@ -310,7 +310,7 @@ export const asyncRoutes = [
         name: "Danh sách hàng trong kho",
         component: () => import("@/views/quanlykho/hangtrongkho/index"),
         meta: {
-          title: "Danh sách hàng trong kho",
+          title: "Hàng tồn kho",
           icon: "danhsachhangtrongkho"
         }
       },
