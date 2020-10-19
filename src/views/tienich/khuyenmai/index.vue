@@ -11,7 +11,7 @@
           @keyup.enter.native="getData()"
         ></el-input>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="6">
         <el-date-picker
           size="small"
           v-model="date"
@@ -21,7 +21,7 @@
           end-placeholder="Đến ngày"
         ></el-date-picker>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="6">
         <el-button
           size="small"
           class="primary-button"

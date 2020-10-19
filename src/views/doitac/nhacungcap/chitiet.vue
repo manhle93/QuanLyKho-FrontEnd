@@ -92,7 +92,7 @@
           <el-table-column label="Số tiền" prop="so_tien">
             <template slot-scope="scope">{{
               formate.formatCurrency(scope.row.so_tien)
-            }}</template>
+            }} đ</template>
           </el-table-column>
           <el-table-column label="Chi tiết">
             <template slot-scope="scope">

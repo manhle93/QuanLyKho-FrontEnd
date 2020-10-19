@@ -191,7 +191,7 @@
             <el-table-column label="Thành tiền">
               <template slot-scope="scope"
                 >{{
-                  formate.formatCurrency(scope.row.so_luong * scope.row.don_gia)
+                  formate.formatCurrency(scope.row.so_luong_thuc_te * scope.row.don_gia)
                 }}
                 đ</template
               >
@@ -548,14 +548,14 @@ export default {
       sums[5] =
         formate.formatCurrency(
           data.reduce(
-            (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
+            (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong_thuc_te)),
             0
           )
         ) + " VND";
       sums[0] = "Tổng tiền";
       this.form.tong_tien =
         data.reduce(
-          (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong)),
+          (acc, el) => (acc += Number(el.don_gia) * Number(el.so_luong_thuc_te)),
           0
         ) - this.form.chiet_khau;
       return sums;

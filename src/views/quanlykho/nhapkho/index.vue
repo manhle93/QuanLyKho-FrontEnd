@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4>Danh sách mua hàng nhập kho</h4>
+    <h4>Danh sách hàng hóa nhập kho</h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="6">
         <el-date-picker
@@ -195,10 +195,10 @@
     <el-dialog
       :visible.sync="showCreate"
       title="NHẬP KHO HÀNG MUA NGOÀI"
-      width="600px"
+      width="990px"
     >
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="12">
           <el-select
             filterable
             clearable
@@ -213,10 +213,17 @@
               :label="item.ten_san_pham"
               :value="item.id"
               :disabled="checkDaChon(item.id)"
-            ></el-option>
+            >
+              <span style="float: left">{{ item.ten_san_pham }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{
+                item.thuong_hieu
+                  ? "Thương hiệu: " + item.thuong_hieu.ten
+                  : "Danh mục: " + item.danh_muc.ten_danh_muc
+              }}</span>
+            </el-option>
           </el-select>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <el-input
             v-model="addSanPham.so_luong"
             placeholder="Số lượng mua"
@@ -225,7 +232,7 @@
             :min="0"
           ></el-input>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <el-input
             @blur="isInputActive = false"
             @focus="isInputActive = true"

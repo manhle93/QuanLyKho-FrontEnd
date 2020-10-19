@@ -34,13 +34,13 @@
           @click="getData()"
         >Tìm kiếm</el-button>
       </el-col>-->
-      <el-col :span="5">
+      <el-col :span="8">
         <el-select
           remote
           filterable
           v-model="sanPhamID"
           placeholder="Chọn sản phẩm"
-          size="small"
+          size="medium"
           style="width: 80%"
           :remote-method="remoteMethod"
           :loading="loading"
@@ -51,18 +51,31 @@
             :label="item.ten_san_pham"
             :value="item.id"
             :disabled="checkDaChon(item.id)"
-          ></el-option>
+          >
+            <span style="float: left">{{ item.ten_san_pham }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{
+              item.thuong_hieu
+                ? "Thương hiệu: " + item.thuong_hieu.ten
+                : "Danh mục: " + item.danh_muc.ten_danh_muc
+            }}</span></el-option
+          >
         </el-select>
-        <el-button circle icon="el-icon-plus" class="primary-button" @click="addData()"></el-button>
+        <el-button
+          circle
+          icon="el-icon-plus"
+          class="primary-button"
+          @click="addData()"
+        ></el-button>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="16">
         <el-button
           style="float: right"
           size="small"
           icon="el-icon-plus"
           class="primary-button"
           @click="addSanPham"
-        >CẬP NHẬT</el-button>
+          >CẬP NHẬT</el-button
+        >
       </el-col>
     </el-row>
     <br />
@@ -76,28 +89,57 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien: src"
+            :src="
+              scope.row.anh_dai_dien
+                ? endPointImage + scope.row.anh_dai_dien
+                : src
+            "
             style="max-height: 90px; max-width: 90px"
           />
         </template>
       </el-table-column>
-      <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
-      <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
+      <el-table-column
+        prop="ten_san_pham"
+        min-width="160"
+        label="Tên sản phẩm"
+      ></el-table-column>
+      <el-table-column
+        prop="danh_muc.ten_danh_muc"
+        min-width="160"
+        label="Danh mục"
+      ></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
+        <template slot-scope="scope">{{
+          formate.formatCurrency(scope.row.gia_ban) + " đ"
+        }}</template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
+      <el-table-column
+        prop="don_vi_tinh"
+        min-width="160"
+        label="Đơn vị tính"
+      ></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
-        <template
-          slot-scope="scope"
-          v-if="scope.row.mo_ta_san_pham"
-        >{{scope.row.mo_ta_san_pham.length > 70 ? scope.row.mo_ta_san_pham.substr(0, 70)+'...' : scope.row.mo_ta_san_pham}}</template>
+        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">{{
+          scope.row.mo_ta_san_pham.length > 70
+            ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
+            : scope.row.mo_ta_san_pham
+        }}</template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column
+        align="center"
+        min-width="110"
+        fixed="right"
+        label="Hoạt động"
+      >
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
             <el-button
@@ -176,10 +218,10 @@ export default {
       this.list.splice(index, 1);
     },
     async getMonNgonMoiNgay() {
-      this.listLoading = true
+      this.listLoading = true;
       let data = await getMonNgon();
       this.list = data;
-      this.listLoading = false
+      this.listLoading = false;
     },
     async getDanhMuc() {
       let data = await index();
@@ -187,7 +229,7 @@ export default {
     },
     async addSanPham() {
       this.monNgon = [];
-      this.monNgon = this.list.map(el => el.id)
+      this.monNgon = this.list.map((el) => el.id);
       try {
         let data = await addMonNgon({ data: this.monNgon });
         this.$message({
@@ -201,7 +243,7 @@ export default {
         let sanPham = this.sanPhams.find((el) => el.id == this.sanPhamID);
         this.list.push(sanPham);
       }
-      this.sanPhamID = null
+      this.sanPhamID = null;
     },
     checkDaChon(id) {
       let a = this.list.find((el) => el.id == id);

@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4>Danh sách khách hàng</h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
+      <el-col :span="9">
         <el-input
           size="small"
           placeholder="Thông tin tìm kiếm"
@@ -11,7 +11,7 @@
           @keyup.enter.native="getData()"
         ></el-input>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <el-button
           size="small"
           class="primary-button"
@@ -19,14 +19,14 @@
           @click="getData()"
         >Tìm kiếm</el-button>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="10">
         <el-button
           style="float: right"
           @click="showFormAdd"
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >Thêm mới</el-button>
+        >Thêm khách hàng</el-button>
       </el-col>
     </el-row>
     <br />

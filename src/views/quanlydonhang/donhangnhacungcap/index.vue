@@ -111,6 +111,9 @@
                 >Đã thanh toán</el-checkbox
               >
               <el-checkbox v-model="showColumn.thoi_gian_nhan_hang"
+                >Thời gian nhận</el-checkbox
+              >
+              <el-checkbox v-model="showColumn.con_phai_thanh_toan"
                 >Còn phải thanh toán</el-checkbox
               >
               <el-checkbox v-model="showColumn.trang_thai"
@@ -195,6 +198,22 @@
                   đ</template
                 >
               </el-table-column>
+
+              <el-table-column
+                label="Còn phải thanh toán"
+                min-width="115"
+                v-if="showColumn.con_phai_thanh_toan"
+              >
+                <template slot-scope="scope"
+                  >{{
+                    formate.formatCurrency(
+                      scope.row.tong_tien - scope.row.da_thanh_toan
+                    )
+                  }}
+                  đ</template
+                >
+              </el-table-column>
+
               <el-table-column
                 prop="thoi_gian"
                 label="Thời gian nhận hàng"
@@ -339,6 +358,7 @@ export default {
         ghi_chu: true,
         da_tt: true,
         thoi_gian_nhan_hang: true,
+        con_phai_thanh_toan: true,
         chiet_khau: true,
         trang_thai: true,
         tao_boi: true,

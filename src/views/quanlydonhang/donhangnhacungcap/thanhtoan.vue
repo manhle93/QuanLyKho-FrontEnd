@@ -63,7 +63,7 @@
             class="primary-button"
             icon="el-icon-plus"
             @click="taoDon()"
-            >Tạo đơn</el-button
+            >Thanh toán</el-button
           >
         </el-col>
       </el-row>
