@@ -67,7 +67,7 @@
             class="primary-button block"
             :icon="iconDowload"
             @click="downloadMau"
-            >Tải file mẫu</el-button
+            >Tải dữ liệu</el-button
           >
         </el-tooltip>
         <el-tooltip
@@ -83,7 +83,7 @@
             class="block"
             :icon="iconUpload"
             @click="handleUpload"
-            >Nhập từ Excel</el-button
+            >Import dữ liệu</el-button
           >
         </el-tooltip>
       </el-col>
