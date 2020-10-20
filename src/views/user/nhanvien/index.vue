@@ -57,7 +57,7 @@
       <el-table-column label="STT" min-width="55" align="center">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column prop="name" min-width="160" label="Họ Tên">
+      <el-table-column prop="name" min-width="220" label="Họ Tên">
         <template slot-scope="scope">
           <div style="display: flex; flex-wrap: nowrap; align-items: center;">
             <img
@@ -76,16 +76,16 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="email" label="Tên đăng nhập" min-width="150"></el-table-column>
-      <el-table-column label="Số điện thoại" min-width="157" prop="phone"></el-table-column>
-      <el-table-column prop="nhan_vien.so_cmt" label="Số chứng minh thư" min-width="150"></el-table-column>
+      <el-table-column prop="username" label="Tên đăng nhập" min-width="140"></el-table-column>
+      <el-table-column label="Số điện thoại" min-width="110" prop="phone" align="center"></el-table-column>
+      <el-table-column prop="nhan_vien.so_cmt" label="CMND" min-width="100" align="center"></el-table-column>
       <el-table-column min-width="157" label="Địa chỉ" prop="nhan_vien.dia_chi"></el-table-column>
       <el-table-column
         prop="active"
         class-name="status-col"
         label="Trạng thái"
         align="center"
-        min-width="157"
+        min-width="130"
       >
         <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.active">Hoạt động</el-tag>

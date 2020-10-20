@@ -31,8 +31,8 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" width="100px" type="index" align="center"></el-table-column>
-      <el-table-column label="Hình ảnh" width="200" align="center">
+      <el-table-column label="STT" width="80" type="index" align="center"></el-table-column>
+      <el-table-column label="Hình ảnh" min-width="150px" align="center">
         <template slot-scope="scope">
           <img
             :src="scope.row.san_pham.anh_dai_dien ? endPointImage + scope.row.san_pham.anh_dai_dien: src"
@@ -40,22 +40,22 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="Tên hàng hóa, sản phẩm" align="center" prop="san_pham.ten_san_pham"></el-table-column>
+      <el-table-column label="Tên hàng hóa, sản phẩm" align="center" min-width="250" prop="san_pham.ten_san_pham"></el-table-column>
       <!-- <el-table-column label="Đơn vị tính" align="center" prop="san_pham.don_vi_tinh"></el-table-column> -->
-      <el-table-column label="Tồn kho hiện tại" align="center" prop="so_luong">
+      <el-table-column label="Tồn kho hiện tại" align="center" prop="so_luong" min-width="150">
         <template slot-scope="scope">{{scope.row.so_luong}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh: null}}</template>
       </el-table-column>
       <!-- <el-table-column label="Kho hàng" prop="kho.ten"></el-table-column> -->
-      <el-table-column label="Tồn kho tối thiểu" align="center" prop="san_pham.ton_kho_thap_nhat">
+      <el-table-column label="Tồn kho tối thiểu" align="center" min-width="160" prop="san_pham.ton_kho_thap_nhat">
         <template
         v-if="scope.row.san_pham && scope.row.san_pham.ton_kho_thap_nhat"
           slot-scope="scope"
         >{{scope.row.san_pham.ton_kho_thap_nhat}} {{scope.row.san_pham.don_vi_tinh}}</template>
       </el-table-column>
-      <el-table-column label="Giá bán mặc định" align="center" prop="san_pham.gia_ban">
+      <el-table-column label="Giá bán mặc định" align="center" prop="san_pham.gia_ban" min-width="150">
         <template v-if="scope.row.san_pham" slot-scope="scope">{{formate.formatCurrency(scope.row.san_pham.gia_ban)}} đ</template>
       </el-table-column>
-      <el-table-column label="Đã bán" align="center" prop="da_ban">
+      <el-table-column label="Đã bán" align="center" prop="da_ban" min-width="110">
           <template slot-scope="scope">{{scope.row.da_ban}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : null}}</template>
       </el-table-column>
     </el-table>

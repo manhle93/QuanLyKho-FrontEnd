@@ -11,7 +11,7 @@
     <h4><i style="color: green">DANH SÁCH NGƯỜI DÙNG HỆ THỐNG</i></h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
+        <el-col :span="7">
           <el-input
             size="small"
             placeholder="Thông tin tìm kiếm"
@@ -38,7 +38,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <el-button
             size="small"
             class="primary-button"
@@ -64,7 +64,7 @@
       <el-table-column label="STT" min-width="55" align="center">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column sortable prop="name" min-width="160" label="Họ Tên">
+      <el-table-column sortable prop="name" min-width="220" label="Họ Tên">
         <template slot-scope="scope">
           <div style="display: flex; flex-wrap: nowrap; align-items: center;">
             <img
@@ -83,15 +83,15 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="150">
+      <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="140">
         <template slot-scope="scope">{{ scope.row.username }}</template>
       </el-table-column>
-      <el-table-column label="Vai trò" min-width="150">
+      <el-table-column label="Vai trò" min-width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.role.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Số điện thoại" min-width="157">
+      <el-table-column label="Số điện thoại" min-width="110" align="center">
         <template slot-scope="scope">{{ scope.row.phone }}</template>
       </el-table-column>
       <el-table-column min-width="157" label="Địa chỉ">
@@ -103,7 +103,7 @@
         class-name="status-col"
         label="Trạng thái"
         align="center"
-        min-width="157"
+        min-width="125"
       >
         <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.active">Hoạt động</el-tag>

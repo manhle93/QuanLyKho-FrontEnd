@@ -50,32 +50,28 @@
 
       <el-table-column
         label="STT"
-        min-width="55"
+        min-width="65"
         type="index"
         align="center"
       ></el-table-column>
       <el-table-column
         sortable
         prop="ten"
-        min-width="160"
+        min-width="170"
         label="Tên nhà cung cấp"
       ></el-table-column>
       <el-table-column
         label="Địa chỉ"
         prop="dia_chi"
-        min-width="157"
+        min-width="197"
       ></el-table-column>
       <el-table-column
         label="Số điện thoại"
         prop="so_dien_thoai"
-        min-width="157"
+        min-width="130"
+        align="center"
       ></el-table-column>
-      <el-table-column
-        label="Địa chỉ email"
-        prop="email"
-        min-width="157"
-      ></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157">
+      <el-table-column label="Trạng thái" min-width="130" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain"
             >HOẠT ĐỘNG</el-tag

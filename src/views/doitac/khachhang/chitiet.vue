@@ -4,11 +4,11 @@
       <el-row>
         <el-col :span="8">
           <div class="tieu-de">
-            <div class="sub-title">Mã nhà khách hàng:</div>
+            <div class="sub-title">Mã khách hàng:</div>
             <label>{{ data.ma }}</label>
           </div>
           <div class="tieu-de">
-            <div class="sub-title">Tên nhà khách hàng:</div>
+            <div class="sub-title">Tên khách hàng:</div>
             <label>{{ data.ten }}</label>
           </div>
           <div class="tieu-de">

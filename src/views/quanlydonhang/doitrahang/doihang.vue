@@ -69,7 +69,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <h4>Đổi hàng</h4>
+          <h4><i style="color: green">THÔNG TIN ĐỔI HÀNG HÓA</i></h4>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 100%">
               <el-table
@@ -81,11 +81,12 @@
                 <el-table-column
                   type="index"
                   label="STT"
-                  width="100px"
+                  min-width="50px"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.ten_san_pham"
                   label="Hàng hóa"
+                  min-width="120px"
                 ></el-table-column>
                 <el-table-column
                   label="Số lượng đã mua"

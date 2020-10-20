@@ -56,7 +56,7 @@
             size="small"
             class="primary-button"
             icon="el-icon-plus"
-            >TẠO ĐƠN</el-button
+            >TRẢ HÀNG</el-button
           >
         </el-col>
       </el-row>
@@ -145,11 +145,11 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="800px">
+    <el-dialog :visible.sync="showCreate" title="TRẢ HÀNG NHẬP" width="1000px" align="center">
       <el-row>
+        <el-col :span="6">
         <el-select
           size="small"
-          style="width: 100%"
           placeholder="Lựa chọn nhà cung cấp"
           v-model="formAdd.nha_cung_cap_id"
           filterable
@@ -163,13 +163,10 @@
             :value="item.id"
           ></el-option>
         </el-select>
-      </el-row>
-      <br />
-      <el-row :gutter="20">
-        <el-col :span="8">
+        </el-col>
+        <el-col :span="6">
           <el-select
             size="small"
-            style="width: 100%"
             placeholder="Chọn hàng hóa"
             filterable
             v-model="addSanPham.hang_hoa_id"
@@ -184,7 +181,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="4">
           <el-input
             v-model="addSanPham.so_luong"
             placeholder="Số lượng trả"
@@ -193,7 +190,7 @@
             :min="0"
           ></el-input>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <el-input
             placeholder="Đơn giá trả hàng"
             size="small"
@@ -214,10 +211,10 @@
         </el-col>
       </el-row>
       <br />
-      <el-table :data="dataHangTra" height="400px">
-        <el-table-column type="index" label="STT"></el-table-column>
+      <el-table :data="dataHangTra" height="290px">
+        <el-table-column type="index" label="STT" align="center" ></el-table-column>
         <el-table-column label="Hàng hóa" prop="ten_san_pham"></el-table-column>
-        <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
+        <el-table-column label="Số lượng" prop="so_luong" align="center"></el-table-column>
         <el-table-column label="Đơn giá" prop="don_gia">
           <template slot-scope="scope"
             >{{ formate.formatCurrency(scope.row.don_gia) }} đ/{{
@@ -252,14 +249,14 @@
           placeholder="Lý do trả hàng"
         ></el-input>
       </div>
-      <div>Tổng tiền: {{ formate.formatCurrency(tongTien) }} đ</div>
+      <div>Tổng tiền: <b> {{ formate.formatCurrency(tongTien) }} </b> đ</div>
       <span slot="footer" class="dialog-footer">
         <el-button
           size="small"
           type="warning"
           icon="el-icon-close"
           @click="showCreate = false"
-          >Hủy</el-button
+          >HỦY ĐƠN</el-button
         >
         <el-button
           class="primary-button"
@@ -267,7 +264,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-          >Xuất trả</el-button
+          >XUẤT TRẢ</el-button
         >
         <el-button
           class="primary-button"
@@ -275,7 +272,7 @@
           v-else
           icon="el-icon-check"
           @click="update()"
-          >Cập nhật</el-button
+          >CẬP NHẬT</el-button
         >
       </span>
     </el-dialog>

@@ -142,12 +142,13 @@
                 sortable
                 type="index"
                 label="STT"
+                align="center"
                 v-if="showColumn.stt"
               ></el-table-column>
               <el-table-column
                 property="ma"
                 label="Mã đơn hàng"
-                min-width="125"
+                min-width="110"
                 v-if="showColumn.ma"
               ></el-table-column>
               <el-table-column
@@ -158,7 +159,7 @@
               ></el-table-column>
               <el-table-column
                 label="Tổng tiền"
-                min-width="115"
+                min-width="95"
                 prop="tong_tien"
                 v-if="showColumn.tong_tien"
               >
@@ -174,7 +175,7 @@
               ></el-table-column>
               <el-table-column
                 label="Chiết khấu"
-                min-width="115"
+                min-width="95"
                 prop="chiet_khau"
                 v-if="showColumn.chiet_khau"
               >
@@ -187,7 +188,7 @@
               </el-table-column>
               <el-table-column
                 label="Đã thanh toán"
-                min-width="115"
+                min-width="95"
                 prop="da_thanh_toan"
                 v-if="showColumn.da_tt"
               >
@@ -201,7 +202,7 @@
 
               <el-table-column
                 label="Còn phải thanh toán"
-                min-width="115"
+                min-width="95"
                 v-if="showColumn.con_phai_thanh_toan"
               >
                 <template slot-scope="scope"
@@ -217,6 +218,7 @@
               <el-table-column
                 prop="thoi_gian"
                 label="Thời gian nhận hàng"
+                min-width="145"
                 v-if="showColumn.thoi_gian_nhan_hang"
               ></el-table-column>
               <el-table-column

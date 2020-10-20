@@ -69,7 +69,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <h4>Trả hàng</h4>
+          <h4><i style="color: green">TRẢ HÀNG</i></h4>
           <div class="d-flex" style="flex: 1; min-height: 0; overflow-y: auto">
             <div style="width: 100%">
               <el-table
@@ -81,15 +81,18 @@
                 <el-table-column
                   type="index"
                   label="STT"
-                  width="100px"
+                  min-width="50px"
+                  align="center"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.ten_san_pham"
                   label="Hàng hóa"
+                  min-width="100px"
                 ></el-table-column>
                 <el-table-column
                   label="Số lượng đã mua"
                   prop="so_luong_ban_dau"
+                  min-width="100px"
                 >
                   <template slot-scope="scope">
                     {{ scope.row.so_luong_ban_dau }}
@@ -98,7 +101,7 @@
                     }}
                   </template>
                 </el-table-column>
-                <el-table-column label="Số lượng trả" width="180px">
+                <el-table-column label="Số lượng trả" min-width="150px">
                   <template slot-scope="scope">
                     <el-input-number
                       size="small"
@@ -117,15 +120,16 @@
                     <el-input
                       placeholder="Nhập lý do"
                       v-model="scope.row.nguyen_nhan_doi_hang"
+                      min-width="150px"
                     ></el-input>
                   </template>
                 </el-table-column>
-                <el-table-column prop="don_gia" label="Đơn giá">
+                <el-table-column prop="don_gia" label="Đơn giá" min-width="80px">
                   <template slot-scope="scope"
                     >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
                   >
                 </el-table-column>
-                <el-table-column label="Thành tiền">
+                <el-table-column label="Thành tiền" min-width="80px">
                   <template slot-scope="scope"
                     >{{
                       formate.formatCurrency(

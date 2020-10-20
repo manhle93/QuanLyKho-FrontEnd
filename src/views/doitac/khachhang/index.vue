@@ -47,10 +47,10 @@
     </el-table-column>
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên khách hàng"></el-table-column>
-      <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
-      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
-      <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column>
-      <el-table-column label="Số dư" prop="so_du" min-width="157">
+      <el-table-column label="Địa chỉ" prop="dia_chi" min-width="190"></el-table-column>
+      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="120" align="center"></el-table-column>
+      <!-- <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column> -->
+      <el-table-column label="Số dư" prop="so_du" min-width="130">
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_du)}} đ</template>
       </el-table-column>
       <!-- <el-table-column label="Trạng thái" min-width="157" prop="trang_thai">
@@ -58,7 +58,7 @@
 
         </template>
       </el-table-column>-->
-      <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi"></el-table-column>
+      <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi" align="center"></el-table-column>
       <el-table-column label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
         <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_hoa_don)}} đ</template>
       </el-table-column>
@@ -97,7 +97,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'CẬP NHẬT KHÁCH HÀNG' :'THÊM MỚI KHÁCH HÀNG'"
+      :title="edit ? 'CẬP NHẬT THÔNG TIN KHÁCH HÀNG' :'THÊM MỚI KHÁCH HÀNG'"
       :visible.sync="showForm"
       width="700px"
       center
