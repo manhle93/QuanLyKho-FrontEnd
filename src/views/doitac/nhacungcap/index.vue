@@ -59,7 +59,11 @@
         prop="ten"
         min-width="170"
         label="Tên nhà cung cấp"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <a @click="showUpdate(scope.row)">{{ scope.row.ten }}</a>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Địa chỉ"
         prop="dia_chi"
@@ -498,7 +502,7 @@ export default {
       this.form.trang_thai = data.user.active;
       this.form.cong_ty = data.cong_ty;
       this.form.ngay_chot_cong_no = data.ngay_chot_cong_no;
-      this.form.ngay_thanh_toan = data.ngay_thanh_toan
+      this.form.ngay_thanh_toan = data.ngay_thanh_toan;
     },
     async getData() {
       this.listLoading = true;

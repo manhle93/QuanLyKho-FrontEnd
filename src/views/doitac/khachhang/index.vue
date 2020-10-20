@@ -46,7 +46,11 @@
       </template>
     </el-table-column>
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column sortable prop="ten" min-width="160" label="Tên khách hàng"></el-table-column>
+      <el-table-column sortable prop="ten" min-width="160" label="Tên khách hàng">
+        <template slot-scope="scope">
+          <a @click="showUpdate(scope.row)">{{scope.row.ten}}</a>
+        </template>
+      </el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="190"></el-table-column>
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="120" align="center"></el-table-column>
       <!-- <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column> -->
