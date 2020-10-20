@@ -9,7 +9,7 @@
             placeholder="Thông tin tìm kiếm"
             v-model="form.search"
             suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
+            @keyup.enter.native="fetchData"
           ></el-input>
         </el-col>
         <el-col :span="4">
@@ -35,7 +35,7 @@
             size="small"
             class="primary-button"
             icon="el-icon-search"
-            @click="searchData()"
+            @click="fetchData()"
           >Tìm kiếm</el-button>
         </el-col>
       </el-row>
@@ -480,18 +480,18 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.updateDataTable();
+      this.fetchData();
     },
     handleSizeChange(val) {
       this.per_page = val;
-      this.updateDataTable();
+      this.fetchData();
     },
-    async fetchData(page = 1, per_page = 10) {
+    async fetchData() {
       this.listLoading = true;
       await getInfor().then((res) => {
         this.user_login = res.data;
       });
-      getUser({ page: this.page, per_page: this.per_page, role: [2, 5] }).then(
+      getUser({ page: this.page, per_page: this.per_page, role: [2, 5], search: this.form.search,  active: this.form.active}).then(
         (response) => {
           this.list = response.data.data;
           this.page = response.data.current_page;
@@ -500,25 +500,6 @@ export default {
           this.listLoading = false;
         }
       );
-    },
-
-    searchData(page = 1, per_page = 10) {
-      this.listLoading = true;
-      this.form.page = this.page;
-      this.form.per_page = this.per_page;
-      getUser(this.form).then((response) => {
-        this.list = response.data.data;
-        this.page = response.data.current_page;
-        this.per_page = response.data.per_page;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
-    },
-    updateDataTable() {
-      let first = (this.page - 1) * this.per_page;
-      let last = first + this.per_page;
-      last = last > this.list.length ? this.list.length : last;
-      this.fetchData(this.page, this.per_page);
     },
     handleCreateUser(result) {
       if (result === true) {

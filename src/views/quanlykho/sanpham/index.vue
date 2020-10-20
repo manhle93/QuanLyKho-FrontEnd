@@ -284,7 +284,7 @@ export default {
       this.$refs["upload-image"].click();
     },
    downloadMau() {
-       window.location.assign(process.env.VUE_APP_BASE_API + "downloadsanpham");
+       window.location.assign(process.env.VUE_APP_BASE_API + "exportsanpham");
     },
     async getDanhMuc() {
       let data = await index();
