@@ -192,7 +192,7 @@
       ></el-pagination>
     </div>
 
-    <el-dialog :visible.sync="showCreate" title="NHẬP HÀNG HÓA MUA NGOÀI" width="600px" center>
+    <el-dialog :visible.sync="showCreate" title="NHẬP HÀNG HÓA MUA NGOÀI" width="800px" center>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-select
@@ -249,18 +249,18 @@
         </el-col>
       </el-row>
       <br />
-      <el-table :data="dataMuaHang" height="400px">
-        <el-table-column type="index" label="STT"></el-table-column>
-        <el-table-column label="Hàng hóa" prop="ten_san_pham"></el-table-column>
-        <el-table-column label="Số lượng" prop="so_luong"></el-table-column>
-        <el-table-column label="Đơn giá" prop="don_gia">
+      <el-table :data="dataMuaHang" height="300px">
+        <el-table-column type="index" label="STT" align="center" min-width="100px"></el-table-column>
+        <el-table-column label="Hàng hóa" prop="ten_san_pham" min-width="140px"></el-table-column>
+        <el-table-column label="Số lượng" prop="so_luong" align="center" min-width="70px"></el-table-column>
+        <el-table-column label="Đơn giá" prop="don_gia" min-width="100px">
           <template slot-scope="scope"
             >{{ formate.formatCurrency(scope.row.don_gia) }} đ/{{
               scope.row.don_vi_tinh
             }}</template
           >
         </el-table-column>
-        <el-table-column label="Thành tiền">
+        <el-table-column label="Thành tiền" min-width="100px">
           <template slot-scope="scope"
             >{{
               formate.formatCurrency(scope.row.don_gia * scope.row.so_luong)
@@ -281,7 +281,7 @@
         </el-table-column>
       </el-table>
       <br />
-      <span>Tổng tiền: {{ formate.formatCurrency(tongTien) }} đ</span>
+      <span>Tổng tiền:<b> {{ formate.formatCurrency(tongTien) }} </b>đ</span>
       <span slot="footer" class="dialog-footer">
         <el-button
           size="small"
@@ -296,7 +296,7 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-          >THÊM MỚI</el-button
+          >NHẬP KHO</el-button
         >
         <el-button
           class="primary-button"

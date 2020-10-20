@@ -26,7 +26,7 @@
           <el-select
             filterable
             clearable
-            style="width: 100%; height: 33px !important;background-color: yellow"
+            style="width: 100%; height: 33px !important;"
             v-model="form.hinh_thuc"
             placeholder="Phương thức thanh toán"
             size="small"
@@ -68,16 +68,17 @@
           style="width: 100%; font-size: 13px"
           border
         >
-          <el-table-column sortable type="index" label="STT"></el-table-column>
-          <el-table-column property="created_at" label="Thời gian" min-width="65"></el-table-column>
-          <el-table-column prop="so_tien" label="Số tiền" min-width="65">
+          <el-table-column sortable type="index" label="STT" align="center"></el-table-column>
+          <el-table-column property="created_at" label="Thời gian" min-width="75" align="center"></el-table-column>
+          <el-table-column prop="so_tien" label="Số tiền" min-width="55" align="center">
             <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
           </el-table-column>
-          <el-table-column property="noi_dung" label="Nội dung" min-width="123"></el-table-column>
+          <el-table-column property="noi_dung" label="Nội dung" min-width="200"></el-table-column>
           <el-table-column
             property="hinh_thuc"
             label="Hình thức"
-            min-width="125"
+            min-width="75"
+            align="center"
           >
             <template slot-scope="scope">
               <el-tag
@@ -102,8 +103,8 @@
               >Thanh toán sau: Tài Khoản</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="thong_tin_khach_hang" label="Thông tin khách hàng"></el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="160">
+          <el-table-column prop="thong_tin_khach_hang" label="Thông tin khách hàng" min-width="120" align="center"></el-table-column>
+          <el-table-column label="Hành động" align="center" fixed="right" width="120">
             <template slot-scope="scope">
               <el-tooltip
                 class="item"

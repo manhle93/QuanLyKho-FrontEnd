@@ -122,6 +122,7 @@
       <el-row :gutter="20">
         <el-col :span="10">
           <el-select
+            filterable
             size="small"
             style="width: 100%"
             placeholder="Chọn nhà cung cấp"
@@ -159,6 +160,7 @@
           <el-select
             size="small"
             style="width: 100%"
+            filterable
             placeholder="Chọn đơn hàng"
             v-model="don_hang_id"
           >
@@ -266,22 +268,29 @@
         Còn phải thanh toán:
         <label>{{formate.formatCurrency(tongTienPhaiThanhToan - formAdd.thanh_toan)}} đ</label>
       </span>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
+      <span slot="footer" class="dialog-footer" align="right">
+        <el-button 
+          size="small"
+          type="warning" 
+          icon="el-icon-close" 
+          padding-right="20px"
+          @click="showCreate = false"
+        >Hủy</el-button>
+
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="submit()"
-        >THÊM MỚI</el-button>
+        >TẠO ĐƠN</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+        >CẬP NHẬT</el-button>
       </span>
     </el-dialog>
 
@@ -304,6 +313,7 @@
           <el-select
             size="small"
             style="width: 100%"
+            filterable
             placeholder="Chọn nhà cung cấp"
             v-model="nha_cung_cap_id"
             clearable

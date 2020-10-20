@@ -54,10 +54,10 @@
     >
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên bảng giá"></el-table-column>
-      <el-table-column label="Thời gian bắt đầu" prop="ngay_bat_dau" min-width="157"></el-table-column>
-      <el-table-column label="Thời gian bắt đầu" prop="ngay_ket_thuc" min-width="157"></el-table-column>
-      <el-table-column label="Số sản phẩm" prop="so_san_pham" min-width="80"></el-table-column>
-      <el-table-column label="Trạng thái">
+      <el-table-column label="Thời gian bắt đầu" prop="ngay_bat_dau" min-width="150" align="center"></el-table-column>
+      <el-table-column label="Thời gian kết thúc" prop="ngay_ket_thuc" min-width="150" align="center"></el-table-column>
+      <el-table-column label="Số sản phẩm" prop="so_san_pham" min-width="80" align="center"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="120" align="center">
         <template slot-scope="scope">
           <el-tag effect="plain" v-if="scope.row.ap_dung" type="success">Đang áp dụng</el-tag>
           <el-tag effect="plain" v-else type="warning">Chưa áp dụng</el-tag>
@@ -260,7 +260,7 @@
     <br />
     <h4>Danh sách sản phẩm</h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
+      <el-col :span="6">
         <el-input
           size="small"
           placeholder="Thông tin tìm kiếm"
@@ -269,7 +269,7 @@
           suffix-icon="el-icon-search"
         ></el-input>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="6">
         <el-button
           size="small"
           class="primary-button"
@@ -294,16 +294,16 @@
         <template slot-scope="scope">
           <img
             :src="scope.row.anh_dai_dien ? endPointImage + scope.row.anh_dai_dien: src"
-            style="max-height: 90px; max-width: 90px"
+            style="max-height: 90px; max-width: 80px"
           />
         </template>
       </el-table-column>
-      <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
-      <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
+      <el-table-column prop="ten_san_pham" min-width="200" label="Tên sản phẩm"></el-table-column>
+      <el-table-column prop="danh_muc.ten_danh_muc" min-width="140" label="Danh mục"></el-table-column>
+      <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định" align="center">
+        <template slot-scope="scope" color: blue>{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
+      <el-table-column prop="don_vi_tinh" min-width="160" align="center" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Bảng giá" min-width="157">
         <template slot-scope="scope">
           <p v-for="item in scope.row.bang_gias" :key="item.id">{{item.ten}}</p>

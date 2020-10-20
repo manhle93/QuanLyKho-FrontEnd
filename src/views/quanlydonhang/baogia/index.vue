@@ -71,11 +71,15 @@
           style="width: 100%; font-size: 13px"
           border
         >
-          <el-table-column sortable type="index" label="STT"></el-table-column>
+          <el-table-column
+            sortable type="index"
+            label="STT"
+            align="center">
+          </el-table-column>
           <el-table-column
             property="ma"
             label="Mã báo giá"
-            min-width="125"
+            min-width="90"
           ></el-table-column>
           <el-table-column
             property="ten"
@@ -85,6 +89,7 @@
           <el-table-column
             prop="created_at"
             label="Thời gian gửi"
+            align="center"
           ></el-table-column>
           <el-table-column
             property="ghi_chu"

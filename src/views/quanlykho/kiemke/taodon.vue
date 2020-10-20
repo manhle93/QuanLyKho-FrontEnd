@@ -60,7 +60,8 @@
                 <el-table-column
                   type="index"
                   label="STT"
-                  width="100px"
+                  min-width="50px"
+                  align="center"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.ten_san_pham"
@@ -148,7 +149,7 @@
     >
       <div style="margin-top: 10px">
         <div style="font-size: 16px; color: #196f3d; font-weight: bold">
-          Phiếu kiểm kho
+          <h4><i style="color: green">THÔNG TIN PHIẾU KIỂM KHO</i></h4>
         </div>
         <br />
         <br />

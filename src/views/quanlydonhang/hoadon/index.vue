@@ -73,7 +73,7 @@
           size="mini"
         ></el-button>
         <el-dropdown-menu slot="dropdown" style="padding-right: 5px">
-          <el-checkbox v-model="showColumn.stt" style="padding-left: 10px"
+          <el-checkbox v-model="showColumn.stt" style="padding-left: 10px" align="center"
             >STT</el-checkbox
           >
           <el-checkbox v-model="showColumn.ma">Mã đơn hàng</el-checkbox>
