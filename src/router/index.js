@@ -647,11 +647,11 @@ export const asyncRoutes = [
     name: "Báo cáo",
     children: [
       {
-        path: "thietbi",
+        path: "banhang",
         name: "Báo cáo tài chính",
         component: () => import("@/views/baocao/baocaobanhang"),
         meta: {
-          title: "Báo cáo tài chính",
+          title: "Báo cáo bán hàng",
           icon: "report"
         }
       }
