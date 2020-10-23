@@ -93,3 +93,19 @@ export function getPolygol(params) {
         params
     })
 }
+
+export function baoCaoBanHang(params) {
+    return request({
+        url: 'baocaobanhang',
+        method: 'get',
+        params
+    })
+}
+
+export function downloadBaoCaoBanHang(params) {
+    return request({
+        url: 'downloadbaocaobanhang',
+        method: 'get',
+        params
+    })
+}

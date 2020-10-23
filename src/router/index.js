@@ -649,63 +649,9 @@ export const asyncRoutes = [
       {
         path: "thietbi",
         name: "Báo cáo tài chính",
-        component: () => import("@/views/baocao/BaoCaoThietBi"),
+        component: () => import("@/views/baocao/baocaobanhang"),
         meta: {
           title: "Báo cáo tài chính",
-          icon: "report"
-        }
-      },
-      {
-        path: "xulychay",
-        name: "Báo cáo xử lý cháy",
-        component: () => import("@/views/baocao/BaoCaoXuLyChay"),
-        meta: {
-          title: "Báo cáo trạng thái xử lý cháy",
-          icon: "report"
-        }
-      },
-      {
-        path: "sodiemchay",
-        name: "Báo cáo kinh doanh",
-        component: () => import("@/views/baocao/BaoCaoSoDiemChay"),
-        meta: {
-          title: "Báo cáo kinh doanh",
-          icon: "report"
-        }
-      },
-      {
-        path: "tytrongthietbi",
-        name: "Báo cáo tỷ trọng thiết bị",
-        component: () => import("@/views/baocao/BaoCaoTyTrongThietBi"),
-        meta: {
-          title: "Báo cáo tỷ trọng thiết bị",
-          icon: "report"
-        }
-      },
-      {
-        path: "trangthaiphuongtienpccc",
-        name: "Trạng thái phương tiện PCCC",
-        component: () => import("@/views/baocao/BaoCaoPhuongTienPCCC"),
-        meta: {
-          title: "Trạng thái phương tiện PCCC",
-          icon: "report"
-        }
-      },
-      {
-        path: "ketquakiemtra",
-        name: "Kết quả kiểm tra AT PCCC",
-        component: () => import("@/views/baocao/BaoCaoKetQuaKiemTra"),
-        meta: {
-          title: "Kết quả kiểm tra AT PCCC",
-          icon: "report"
-        }
-      },
-      {
-        path: "sochiensithamgiachuachay",
-        name: "Số lượng CB tham gia chữa cháy",
-        component: () => import("@/views/baocao/BaoCaoSoChienSiThamGia"),
-        meta: {
-          title: "Số lượng CB tham gia chữa cháy",
           icon: "report"
         }
       }
