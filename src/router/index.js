@@ -647,11 +647,74 @@ export const asyncRoutes = [
     name: "Báo cáo",
     children: [
       {
-        path: "banhang",
-        name: "Báo cáo tài chính",
-        component: () => import("@/views/baocao/baocaobanhang"),
+        path: "baocaocuoingay",
+        name: "Báo cáo cuối ngày",
+        component: () => import("@/views/baocao/cuoingay"),
+        meta: {
+          title: "Báo cáo cuối ngày",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaobanhang",
+        name: "Báo cáo bán hàng",
+        component: () => import("@/views/baocao/banhang"),
         meta: {
           title: "Báo cáo bán hàng",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaodathang",
+        name: "Báo cáo đặt hàng",
+        component: () => import("@/views/baocao/dathang"),
+        meta: {
+          title: "Báo cáo đặt hàng",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaohanghoa",
+        name: "Báo cáo hàng hóa",
+        component: () => import("@/views/baocao/hanghoa"),
+        meta: {
+          title: "Báo cáo hàng hóa",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaokhachhang",
+        name: "Báo cáo khách hàng",
+        component: () => import("@/views/baocao/khachhang"),
+        meta: {
+          title: "Báo cáo khách hàng",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaonhacungcap",
+        name: "Báo cáo nhà cung cấp",
+        component: () => import("@/views/baocao/nhacungcap"),
+        meta: {
+          title: "Báo cáo nhà cung cấp",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaonhanvien",
+        name: "Báo cáo nhân viên",
+        component: () => import("@/views/baocao/nhanvien"),
+        meta: {
+          title: "Báo cáo nhà nhân viên",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaotaichinh",
+        name: "Báo cáo tài chính",
+        component: () => import("@/views/baocao/taichinh"),
+        meta: {
+          title: "Báo cáo tài chính",
           icon: "report"
         }
       }
