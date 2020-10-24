@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3>Báo cáo bán hàng</h3>
+    <h4><i style="color: green">BÁO CÁO ĐẶT HÀNG</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="6">
         <el-date-picker
@@ -105,7 +105,7 @@
   </div>
 </template>
 <script>
-import { baoCaoBanHang, downloadBaoCaoBanHang } from "@/api/baocao";
+import { baoCaoDatHang, downloadBaoCaoDatHang } from "@/api/baocao";
 
 export default {
   data: () => ({
@@ -127,7 +127,7 @@ export default {
   methods: {
     async getData() {
       this.tableLoading = true;
-      let data = await baoCaoBanHang(this.form);
+      let data = await baoCaoDatHang(this.form);
       this.dataBanHang = data.ban_hang;
       this.dataDatHang = data.dat_hang;
       this.tableLoading = false;
