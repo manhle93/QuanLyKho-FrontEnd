@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4><i style="color: green">BÁO CÁO ĐẶT HÀNG</i></h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="6">
+      <el-col :span="5">
         <el-date-picker
           @change="getData()"
           style="width: 100%"
@@ -16,30 +16,32 @@
         >
         </el-date-picker>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <el-select
           v-model="form.don_hang"
-          placeholder="Select"
+          placeholder="Lựa chọn kiểu đặt hàng"
+          clearable
           size="small"
           style="width: 100%"
         >
-          <el-option value="hoa_don" label="Hóa đơn"></el-option>
-          <el-option value="don_dat_hang" label="Đơn đặt hàng"></el-option>
+          <el-option value="dat_hang_tai_quay" label="Đặt hàng tại quầy"></el-option>
+          <el-option value="dat_hang_online" label="Đặt hàng Online"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <el-select
           @change="getData()"
           v-model="form.orderBy"
-          placeholder="Select"
+          placeholder="Trạng thái đặt hàng"
           size="small"
           style="width: 100%"
         >
-          <el-option value="doanh_thu" label="Doanh thu cao nhất"></el-option>
-          <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
+          <el-option value="moi_tao" label="Mới tạo"></el-option>
+          <el-option value="da_chuyen_hoa_don" label="Đã chuyển hóa đơn"></el-option>
+          <el-option value="huy_dat_hang" label="Hủy đặt hàng"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="13">
         <el-button
           style="float: right"
           class="primary-button"
@@ -50,31 +52,48 @@
         >
       </el-col>
     </el-row>
-    <br />
-    <h4>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Danh sản phẩm đã bán"
-          : "Danh sách sản phẩm đặt hàng"
-      }}
-    </h4>
-    <h5>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Doanh thu bán hàng: " +
-            formate.formatCurrency(doanhThuBanHang) +
-            " đ"
-          : "Doanh thu đặt hàng: " +
-            formate.formatCurrency(doanhThuDatHang) +
-            " đ"
-      }}
-    </h5>
+    <br>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <span style="color: black; font-weight: bold;">
+          Chi nhánh RBT
+        </span>
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          {{
+            form.don_hang == "hoa_don"
+              ? "Tổng doanh thu bán hàng: "
+              : "Tổng doanh thu đặt hàng: "
+          }}
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng đơn:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Đơn)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng sản phẩm
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Sản phẩm)
+      </el-col>
+      <br>
+      <br>
+    </el-row>
     <el-table
       :data="form.don_hang == 'hoa_don' ? dataBanHang : dataDatHang"
       v-loading="tableLoading"
+      border
+      fit
     >
       <el-table-column type="index" label="STT"></el-table-column>
-      <el-table-column prop="created_at" label="Thời gian"></el-table-column>
       <el-table-column
         prop="san_pham.ten_san_pham"
         label="Sản phẩm"
@@ -106,16 +125,17 @@
 </template>
 <script>
 import { baoCaoDatHang, downloadBaoCaoDatHang } from "@/api/baocao";
-
+import { getKhachHang } from "@/api/khachhang";
 export default {
   data: () => ({
     form: {
       date: [new Date(), new Date()],
-      orderBy: "doanh_thu",
-      don_hang: "hoa_don",
+      orderBy: null,
+      don_hang: null,
     },
     dataBanHang: [],
     dataDatHang: [],
+    khachHangs: [],
     formate: formate,
     tableLoading: false,
     doanhThuBanHang: 0,
@@ -123,6 +143,7 @@ export default {
   }),
   created() {
     this.getData();
+    this.getKhachHang();
   },
   methods: {
     async getData() {
@@ -143,6 +164,12 @@ export default {
           (this.doanhThuDatHang =
             +this.doanhThuDatHang + el.gia_ban * el.so_luong)
       );
+    },
+    async getKhachHang() {
+      let data = await getKhachHang({
+        per_page: 999999,
+      });
+      this.khachHangs = data.data.data;
     },
     taiBaoCao() {
       let start = new Date(this.form.date[0]).toISOString()

@@ -18,16 +18,18 @@
       </el-col>
       <el-col :span="3">
         <el-select
+        @change="getData()"
           v-model="form.don_hang"
           placeholder="Select"
           size="small"
           style="width: 100%"
+          clearable
         >
           <el-option value="hoa_don" label="Đơn bán hàng"></el-option>
           <el-option value="don_dat_hang" label="Đơn đặt hàng"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="3">
+      <!-- <el-col :span="3">
         <el-select
           @change="getData()"
           v-model="form.orderBy"
@@ -38,8 +40,8 @@
           <el-option value="doanh_thu" label="Doanh thu cao nhất"></el-option>
           <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
         </el-select>
-      </el-col>
-      <el-col :span="14">
+      </el-col> -->
+      <el-col :span="17">
         <el-button
           style="float: right"
           class="primary-button"
@@ -99,16 +101,15 @@
         align="center"
         >
       </el-table-column>
-      <el-table-column 
-        prop="created_at" 
-        label="Thời gian"
-        min-width="45"
-        align="center"
+      <el-table-column
+        label="Mã HĐ"
+        min-width="65"
+        prop="ma"
         >
       </el-table-column>
       <el-table-column
-        prop="san_pham.ten_san_pham"
-        label="Hóa đơn"
+        prop="ten"
+        label="Tên hóa đơn"
         min-width="85"
       ></el-table-column>
       <el-table-column
@@ -122,14 +123,21 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="gia_ban" 
+        prop="tong_tien" 
         label="Thành tiền"
         min-width="45"
         >
         <template slot-scope="scope">
-          {{ formate.formatCurrency(scope.row.gia_ban) + " đ/ "
-          }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
+          {{ formate.formatCurrency(scope.row.tong_tien) + " đ"
+          }}
         </template>
+      </el-table-column>
+      <el-table-column 
+        prop="updated_at" 
+        label="Thời gian"
+        min-width="45"
+        align="center"
+        >
       </el-table-column>
     </el-table>
   </div>
@@ -141,8 +149,8 @@ export default {
   data: () => ({
     form: {
       date: [new Date(), new Date()],
-      orderBy: "doanh_thu",
-      don_hang: "hoa_don",
+      orderBy: null,
+      don_hang: null,
     },
     dataBanHang: [],
     dataDatHang: [],
@@ -158,8 +166,8 @@ export default {
     async getData() {
       this.tableLoading = true;
       let data = await baoCaoCuoiNgay(this.form);
-      this.dataBanHang = data.ban_hang;
-      this.dataDatHang = data.dat_hang;
+      this.dataBanHang = data.data;
+      this.dataDatHang = data.data;
       this.tableLoading = false;
       this.doanhThuBanHang = 0;
       this.doanhThuDatHang = 0;

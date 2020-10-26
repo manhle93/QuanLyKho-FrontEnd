@@ -705,7 +705,7 @@ export const asyncRoutes = [
         name: "Báo cáo nhân viên",
         component: () => import("@/views/baocao/nhanvien"),
         meta: {
-          title: "Báo cáo nhà nhân viên",
+          title: "Báo cáo nhân viên",
           icon: "report"
         }
       },

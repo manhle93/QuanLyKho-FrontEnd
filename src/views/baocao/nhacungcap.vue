@@ -18,13 +18,19 @@
       </el-col>
       <el-col :span="4">
         <el-select
-          v-model="form.don_hang"
-          placeholder="Select"
+          filterable
+          clearable
           size="small"
+          v-model="form.nha_cung_cap"
+          placeholder="Chọn nhà cung cấp"
           style="width: 100%"
         >
-          <el-option value="hoa_don" label="Hóa đơn"></el-option>
-          <el-option value="don_dat_hang" label="Đơn đặt hàng"></el-option>
+          <el-option
+            v-for="item in nhaCungCaps"
+            :key="item.id"
+            :label="item.ten"
+            :value="item.user_id"
+          ></el-option>
         </el-select>
       </el-col>
       <el-col :span="4">
@@ -51,62 +57,55 @@
       </el-col>
     </el-row>
     <br />
-    <h4>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Danh sản phẩm đã bán"
-          : "Danh sách sản phẩm đặt hàng"
-      }}
-    </h4>
-    <h5>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Doanh thu bán hàng: " +
-            formate.formatCurrency(doanhThuBanHang) +
-            " đ"
-          : "Doanh thu đặt hàng: " +
-            formate.formatCurrency(doanhThuDatHang) +
-            " đ"
-      }}
-    </h5>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <span style="color: black; font-weight: bold;">
+          Chi nhánh RBT
+        </span>
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Tổng chi nhập hàng:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng đơn nhập:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Đơn)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng sản phẩm
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Sản phẩm)
+      </el-col>
+      <br>
+      <br>
+    </el-row>
     <el-table
       :data="form.don_hang == 'hoa_don' ? dataBanHang : dataDatHang"
       v-loading="tableLoading"
+      border
+      fit
     >
       <el-table-column type="index" label="STT"></el-table-column>
-      <el-table-column prop="created_at" label="Thời gian"></el-table-column>
-      <el-table-column
-        prop="san_pham.ten_san_pham"
-        label="Sản phẩm"
-      ></el-table-column>
-      <el-table-column prop="gia_ban" label="Giá bán">
-        <template slot-scope="scope">
-          {{ formate.formatCurrency(scope.row.gia_ban) + " đ/ "
-          }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="so_luong" label="Số lượng">
-        <template slot-scope="scope">
-          {{ formate.formatCurrency(scope.row.so_luong) + " "
-          }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Doanh thu">
-        <template slot-scope="scope">
-          {{
-            scope.row.doanh_thu
-              ? formate.formatCurrency(scope.row.doanh_thu) + " đ"
-              : formate.formatCurrency(scope.row.gia_ban * scope.row.so_luong) +
-                " đ"
-          }}
-        </template>
-      </el-table-column>
+      <el-table-column prop="created_at" label="Tên nhà cung cấp"></el-table-column>
+      <el-table-column prop="created_at" label="Mã nhà cung cấp"></el-table-column>
+      <el-table-column prop="created_at" label="SL nhập"></el-table-column>
+      <el-table-column prop="created_at" label="Giá trị nhập"></el-table-column>
+      <el-table-column prop="created_at" label="SL trả"></el-table-column>
+      <el-table-column prop="created_at" label="Giá trị trả"></el-table-column>
     </el-table>
   </div>
 </template>
 <script>
 import { baoCaoNhaCungCap, downloadBaoCaoNhaCungCap } from "@/api/baocao";
-
+import { getNhaCungCap } from "@/api/khachhang";
 export default {
   data: () => ({
     form: {
@@ -116,6 +115,7 @@ export default {
     },
     dataBanHang: [],
     dataDatHang: [],
+    nhaCungCaps: [],
     formate: formate,
     tableLoading: false,
     doanhThuBanHang: 0,
@@ -123,6 +123,7 @@ export default {
   }),
   created() {
     this.getData();
+    this.getNhaCungCap();
   },
   methods: {
     async getData() {
@@ -143,6 +144,12 @@ export default {
           (this.doanhThuDatHang =
             +this.doanhThuDatHang + el.gia_ban * el.so_luong)
       );
+    },
+    async getNhaCungCap() {
+      let data = await getNhaCungCap({
+        per_page: 999999,
+      });
+      this.nhaCungCaps = data.data.data;
     },
     taiBaoCao() {
       let start = new Date(this.form.date[0]).toISOString()

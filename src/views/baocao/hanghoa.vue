@@ -51,41 +51,59 @@
       </el-col>
     </el-row>
     <br />
-    <h4>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Danh sản phẩm đã bán"
-          : "Danh sách sản phẩm đặt hàng"
-      }}
-    </h4>
-    <h5>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Doanh thu bán hàng: " +
-            formate.formatCurrency(doanhThuBanHang) +
-            " đ"
-          : "Doanh thu đặt hàng: " +
-            formate.formatCurrency(doanhThuDatHang) +
-            " đ"
-      }}
-    </h5>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <span style="color: black; font-weight: bold;">
+          Chi nhánh RBT
+        </span>
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          {{
+            form.don_hang == "hoa_don"
+              ? "Tổng doanh thu bán hàng: "
+              : "Tổng doanh thu đặt hàng: "
+          }}
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng đơn:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Đơn)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Số lượng sản phẩm
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (Sản phẩm)
+      </el-col>
+      <br>
+      <br>
+    </el-row>
     <el-table
       :data="form.don_hang == 'hoa_don' ? dataBanHang : dataDatHang"
       v-loading="tableLoading"
+      border
+      fit
     >
       <el-table-column type="index" label="STT"></el-table-column>
-      <el-table-column prop="created_at" label="Thời gian"></el-table-column>
+      <el-table-column prop="created_at" label="Mã hàng hóa"></el-table-column>
       <el-table-column
         prop="san_pham.ten_san_pham"
-        label="Sản phẩm"
+        label="Tên hàng hóa"
       ></el-table-column>
-      <el-table-column prop="gia_ban" label="Giá bán">
+      <el-table-column prop="gia_ban" label="số lượng bán">
         <template slot-scope="scope">
           {{ formate.formatCurrency(scope.row.gia_ban) + " đ/ "
           }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
         </template>
       </el-table-column>
-      <el-table-column prop="so_luong" label="Số lượng">
+      <el-table-column prop="so_luong" label="Số lượng trả">
         <template slot-scope="scope">
           {{ formate.formatCurrency(scope.row.so_luong) + " "
           }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}

@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4><i style="color: green">BÁO CÁO TÀI CHÍNH</i></h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="6">
+      <el-col :span="5">
         <el-date-picker
           @change="getData()"
           style="width: 100%"
@@ -23,23 +23,11 @@
           size="small"
           style="width: 100%"
         >
-          <el-option value="hoa_don" label="Hóa đơn"></el-option>
-          <el-option value="don_dat_hang" label="Đơn đặt hàng"></el-option>
+          <el-option value="hoa_don" label="Bán hàng"></el-option>
+          <el-option value="don_dat_hang" label="Thanh toán NCC"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="4">
-        <el-select
-          @change="getData()"
-          v-model="form.orderBy"
-          placeholder="Select"
-          size="small"
-          style="width: 100%"
-        >
-          <el-option value="doanh_thu" label="Doanh thu cao nhất"></el-option>
-          <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="10">
+      <el-col :span="15">
         <el-button
           style="float: right"
           class="primary-button"
@@ -51,56 +39,47 @@
       </el-col>
     </el-row>
     <br />
-    <h4>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Danh sản phẩm đã bán"
-          : "Danh sách sản phẩm đặt hàng"
-      }}
-    </h4>
-    <h5>
-      {{
-        form.don_hang == "hoa_don"
-          ? "Doanh thu bán hàng: " +
-            formate.formatCurrency(doanhThuBanHang) +
-            " đ"
-          : "Doanh thu đặt hàng: " +
-            formate.formatCurrency(doanhThuDatHang) +
-            " đ"
-      }}
-    </h5>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <span style="color: black; font-weight: bold;">
+          Chi nhánh RBT
+        </span>
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Tổng thu:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Tổng thanh toán NCC:
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <el-col :span="5">
+        <span style="color: green;">
+          Lợi nhuận
+        </span>
+        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
+          (VND)
+      </el-col>
+      <br>
+      <br>
+    </el-row>
     <el-table
       :data="form.don_hang == 'hoa_don' ? dataBanHang : dataDatHang"
       v-loading="tableLoading"
+      border
+      fit
     >
       <el-table-column type="index" label="STT"></el-table-column>
-      <el-table-column prop="created_at" label="Thời gian"></el-table-column>
-      <el-table-column
-        prop="san_pham.ten_san_pham"
-        label="Sản phẩm"
-      ></el-table-column>
-      <el-table-column prop="gia_ban" label="Giá bán">
-        <template slot-scope="scope">
-          {{ formate.formatCurrency(scope.row.gia_ban) + " đ/ "
-          }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="so_luong" label="Số lượng">
-        <template slot-scope="scope">
-          {{ formate.formatCurrency(scope.row.so_luong) + " "
-          }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Doanh thu">
-        <template slot-scope="scope">
-          {{
-            scope.row.doanh_thu
-              ? formate.formatCurrency(scope.row.doanh_thu) + " đ"
-              : formate.formatCurrency(scope.row.gia_ban * scope.row.so_luong) +
-                " đ"
-          }}
-        </template>
-      </el-table-column>
+      <el-table-column prop="created_at" label="Thời gian(tháng)"></el-table-column>
+      <el-table-column prop="created_at" label="Doanh thu"></el-table-column>
+      <el-table-column prop="created_at" label="Thanh toán NCC"></el-table-column>
+      <el-table-column prop="created_at" label="Lợi nhuận(tạm tính)"></el-table-column>
     </el-table>
   </div>
 </template>
