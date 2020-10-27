@@ -23,6 +23,7 @@
           clearable
           size="small"
           style="width: 100%"
+          @change="getData()"
         >
           <el-option value="dat_hang_tai_quay" label="Đặt hàng tại quầy"></el-option>
           <el-option value="dat_hang_online" label="Đặt hàng Online"></el-option>
@@ -149,8 +150,8 @@ export default {
     async getData() {
       this.tableLoading = true;
       let data = await baoCaoDatHang(this.form);
-      this.dataBanHang = data.ban_hang;
-      this.dataDatHang = data.dat_hang;
+      this.dataBanHang = data.data;
+      this.dataDatHang = data.data;
       this.tableLoading = false;
       this.doanhThuBanHang = 0;
       this.doanhThuDatHang = 0;

@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4><i style="color: green">BÁO CÁO HÀNG HÓA</i></h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="6">
+      <el-col :span="5">
         <el-date-picker
           @change="getData()"
           style="width: 100%"
@@ -16,30 +16,23 @@
         >
         </el-date-picker>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <el-select
-          v-model="form.don_hang"
-          placeholder="Select"
+          v-model="form.danh_muc_id"
+          placeholder="Lựa chọn danh mục"
           size="small"
           style="width: 100%"
-        >
-          <el-option value="hoa_don" label="Hóa đơn"></el-option>
-          <el-option value="don_dat_hang" label="Đơn đặt hàng"></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="4">
-        <el-select
           @change="getData()"
-          v-model="form.orderBy"
-          placeholder="Select"
-          size="small"
-          style="width: 100%"
         >
-          <el-option value="doanh_thu" label="Doanh thu cao nhất"></el-option>
-          <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
+          <el-option
+            v-for="item in danhMucs"
+            :key="item.id"
+            :label="item.ten_danh_muc"
+            :value="item.id"
+          ></el-option>
         </el-select>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="16">
         <el-button
           style="float: right"
           class="primary-button"
@@ -124,13 +117,15 @@
 </template>
 <script>
 import { baoCaoHangHoa, downloadBaoCaoHangHoa } from "@/api/baocao";
+import { index } from "@/api/danhmucsanpham";
 
 export default {
   data: () => ({
     form: {
       date: [new Date(), new Date()],
-      orderBy: "doanh_thu",
-      don_hang: "hoa_don",
+      orderBy: null,
+      don_hang: null,
+      danh_muc_id: null,
     },
     dataBanHang: [],
     dataDatHang: [],
@@ -138,16 +133,18 @@ export default {
     tableLoading: false,
     doanhThuBanHang: 0,
     doanhThuDatHang: 0,
+    danhMucs: [],
   }),
   created() {
     this.getData();
+    this.getDanhMuc();
   },
   methods: {
     async getData() {
       this.tableLoading = true;
       let data = await baoCaoHangHoa(this.form);
-      this.dataBanHang = data.ban_hang;
-      this.dataDatHang = data.dat_hang;
+      this.dataBanHang = data.data;
+      this.dataDatHang = data.data;
       this.tableLoading = false;
       this.doanhThuBanHang = 0;
       this.doanhThuDatHang = 0;
@@ -161,6 +158,10 @@ export default {
           (this.doanhThuDatHang =
             +this.doanhThuDatHang + el.gia_ban * el.so_luong)
       );
+    },
+    async getDanhMuc() {
+      let data = await index();
+      this.danhMucs = data.data;
     },
     taiBaoCao() {
       let start = new Date(this.form.date[0]).toISOString()

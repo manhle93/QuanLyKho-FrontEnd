@@ -33,19 +33,7 @@
           ></el-option>
         </el-select>
       </el-col>
-      <el-col :span="4">
-        <el-select
-          @change="getData()"
-          v-model="form.orderBy"
-          placeholder="Select"
-          size="small"
-          style="width: 100%"
-        >
-          <el-option value="doanh_thu" label="Doanh thu cao nhất"></el-option>
-          <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="10">
+      <el-col :span="14">
         <el-button
           style="float: right"
           class="primary-button"
