@@ -1,7 +1,4 @@
 <template>
-  <div style="padding: 0 15px;" @click="toggleClick">
-    <i class="fa fa-bars" style="font-size: 24px"></i>
-  </div>
 </template>
 
 <script>
