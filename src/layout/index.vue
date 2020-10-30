@@ -1,7 +1,5 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar v-if="!hideSidebar" class="sidebar-container" />
     <div :class="hideSidebar ? null : 'main-container'">
       <div v-if="!hideSidebar" :class="{'fixed-header':fixedHeader}">
         <navbar ref="navbar" />

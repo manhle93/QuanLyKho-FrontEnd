@@ -1,89 +1,9 @@
 <template>
-  <div class="navbar" style="display:flex;flex-direction: row;background: green;">
-    <div style="width: 70%; display:flex; justify-content: center; align-items: center">
-     <el-menu
-        :default-active="activeIndex2"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="green"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="1">Tổng quan</el-menu-item>
-        <el-submenu index="2" style="margin-right:20px;">
-          <template slot="title" style="font-size:14px !important" class="menu_con">Hàng hóa</template>
-          <el-menu-item index="2-1">Nhóm hàng hóa</el-menu-item>
-          <el-menu-item index="2-2">Thiết lập giá</el-menu-item>
-          <el-menu-item index="2-2">Danh sách hàng hóa</el-menu-item>
-          <el-menu-item index="2-2">Hàng tồn kho</el-menu-item>
-          <el-menu-item index="2-2">Danh sách kho</el-menu-item>
-        </el-submenu>
-        <el-submenu index="3" style="margin-right:20px;">
-          <template slot="title">Giao dịch</template>
-          <el-menu-item index="3-1">Hóa đơn</el-menu-item>
-          <el-menu-item index="3-2">Đặt hàng</el-menu-item>
-          <el-menu-item index="3-3">Nhập kho</el-menu-item>
-          <el-menu-item index="3-4">Đổi trả hàng</el-menu-item>
-          <el-menu-item index="3-5">Kiểm kê kho</el-menu-item>
-          <el-menu-item index="3-6">Xuất hủy</el-menu-item>
-          <el-menu-item index="3-7">Thanh toán NCC</el-menu-item>
-          <el-menu-item index="3-8">Hóa đơn đã hủy</el-menu-item>
-          <el-menu-item index="3-9">Lịch sử nạp tiền</el-menu-item>
-        </el-submenu>
-        <el-submenu index="4" style="margin-right:20px;">
-          <template slot="title">Người dùng</template>
-          <el-menu-item index="2-1">Danh sách người dùng</el-menu-item>
-          <el-menu-item index="2-2">Danh sách nhân viên</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử đăng nhập</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử đăng nhập</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử hoạt động</el-menu-item>
-        </el-submenu>
-        <el-submenu index="5" style="margin-right:20px;">
-          <template slot="title">Khách hàng</template>
-          <el-menu-item index="2-1">Danh sách khác hàng</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử đăng nhập</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử nạp tiền</el-menu-item>
-        </el-submenu>
-        <el-submenu index="6" style="margin-right:20px;">
-          <template slot="title">Nhà cung cấp</template>
-          <el-menu-item index="2-1">Danh sách nhà cung cấp</el-menu-item>
-          <el-menu-item index="2-1">Trả hàng</el-menu-item>
-          <el-menu-item index="2-1">Báo giá</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử đăng nhập</el-menu-item>
-          <el-menu-item index="2-3">Đơn hàng nhà cung cấp</el-menu-item>
-          <el-menu-item index="2-4">Trả hàng nhà cung cấp</el-menu-item>
-          <el-menu-item index="2-4">Thanh toán</el-menu-item>
-          <el-menu-item index="2-5">Phân quyền</el-menu-item>
-        </el-submenu>
-        <el-submenu index="7" style="margin-right:20px;">
-          <template slot="title">Báo cáo</template>
-          <el-menu-item index="2-1">Báo cáo cuối ngày</el-menu-item>
-          <el-menu-item index="2-2">Báo cáo bán hàng</el-menu-item>
-          <el-menu-item index="2-3">Báo cáo đặt hàng</el-menu-item>
-          <el-menu-item index="2-4">Báo cáo hàng hóa</el-menu-item>
-          <el-menu-item index="2-5">Báo cáo khách hàng</el-menu-item>
-          <el-menu-item index="2-5">Báo cáo nhà cung cấp</el-menu-item>
-          <el-menu-item index="2-5">Báo cáo nhân viên</el-menu-item>
-          <el-menu-item index="2-5">Báo cáo tài chính</el-menu-item>
-        </el-submenu>
-        <el-submenu index="8" style="margin-right:20px;">
-          <template slot="title">Nâng cao</template>
-          <el-menu-item index="2-1">Tích điểm thưởng</el-menu-item>
-          <el-menu-item index="2-2">Lịch sử đăng nhập</el-menu-item>
-          <el-menu-item index="2-3">Phân quyền</el-menu-item>
-          <el-menu-item index="2-4">Bài viết</el-menu-item>
-          <el-menu-item index="2-5">Phân quyền</el-menu-item>
-        </el-submenu>
-        <el-submenu index="9" style="margin-right:20px;">
-          <template slot="title">Thiết lập chung</template>
-          <el-menu-item index="2-1">Slide</el-menu-item>
-          <el-menu-item index="2-2">Món ngon mỗi ngày</el-menu-item>
-          <el-menu-item index="2-3">Khuyến mãi</el-menu-item>
-          <el-menu-item index="2-4">Bài viết</el-menu-item>
-          <el-menu-item index="2-5">Voucher</el-menu-item>
-        </el-submenu>
-      </el-menu>
+  <div class="navbar" style="display:flex;flex-direction: row;background: green;margin-bottom: 0px;">
+    <div style="width: 60%; display:flex; justify-content: center; align-items: center">
+      <Menu/>
     </div>
-    <div style="width: 30%; display:flex; justify-content: flex-end; align-items: center">
+    <div style="width: 40%; display:flex; justify-content: flex-end; align-items: center">
         <div style="margin-right:50px;">
           <el-button size="small" class="primary-button" @click="banHang()">BÁN HÀNG</el-button>
           <el-button size="small" type="warning" @click="datHang()">ĐẶT HÀNG</el-button>
@@ -116,28 +36,22 @@ import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import { getInfor } from "@/api/taikhoan";
 import { getSoThietBi, getThongBao, docThongBao } from "@/api/baocao";
+import { getMenus } from "@/api/user";
 import logo from "@/assets/logo/logorbt.jpg";
+import Menu from "./menu";
 
-var realTimeThongBao;
 export default {
   components: {
-    Breadcrumb
+    Breadcrumb,
+    Menu
   },
   data() {
     return {
       src: process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png",
       homeIcon: false,
-      online: 0,
-      offline: 0,
-      soThongBao: 0,
-      dsOnline: [],
-      dsOffline: [],
-      perPageThongBao: 5,
-      loadingThongBao: false,
-      thongBao: 0,
-      ten_tinh_thanh: null,
       logo: logo,
-      activeIndex2: '1'
+      activeIndex2: '1',
+      menus: []
     };
   },
   computed: {
@@ -147,9 +61,6 @@ export default {
     this.fetchData();
   },
   methods: {
-    handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },
@@ -160,7 +71,6 @@ export default {
     loadThongBao() {
       if (!this.loadingThongBao) {
         this.getThongBao(false);
-        clearInterval(realTimeThongBao);
       }
     },
     formatDateTime(time) {
@@ -188,7 +98,6 @@ export default {
     async logout() {
       await this.$store.dispatch("user/logout");
       this.$router.push(`/customer/login?redirect=${this.$route.fullPath}`);
-      clearInterval(realTimeThongBao);
     },
     async getSoThietBi() {
       try {
@@ -202,7 +111,6 @@ export default {
     },
     async docThongBao() {
       this.soThongBao = 0;
-      clearInterval(realTimeThongBao);
       await docThongBao();
     },
     banHang() {
@@ -228,13 +136,13 @@ export default {
           this.src = process.env.VUE_APP_BASE + res.data.avatar_url;
         }
       });
+      getMenus().then((res) => {
+        this.menus = res.data
+        console.log(this.menus);
+      });
     },
     async getThongBao(realTime) {
-      this.loadingThongBao = true;
-      if (!realTime) this.perPageThongBao = this.perPageThongBao + 5;
-      let data = await getThongBao({ perPage: this.perPageThongBao });
       this.dsOffline = data;
-      this.loadingThongBao = false;
     },
   },
 };
@@ -242,7 +150,7 @@ export default {
 
 <style lang="scss">
 .el-dropdown-menu {
-  z-index: 100000000000 !important;
+  z-index: 10000 !important;
 }
 .el-menu-item {
   font-size: 14px !important;
