@@ -8,9 +8,10 @@
       active-text-color="yellow"
       style="width: 100%; display:flex; justify-content:center; align-items: center"
     >
-      <el-menu-item index="22"><router-link :to="'/tongquan'">
-              Tổng quan
-            </router-link></el-menu-item>
+      <el-menu-item index="22">
+        <router-link :to="'/tongquan'">
+          <b>Tổng quan</b>
+        </router-link></el-menu-item>
       <el-submenu 
         class="sub-menu"
         style="background-color:green;margin-right: 22px;"
