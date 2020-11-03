@@ -479,7 +479,7 @@ export default {
           });
           this.showThuongHieu = false;
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -498,7 +498,7 @@ export default {
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -513,7 +513,6 @@ export default {
       this.formAddThuongHieu.mo_ta = thuonghieu.mo_ta;
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -576,7 +575,7 @@ export default {
             })
             .catch((res) => {});
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

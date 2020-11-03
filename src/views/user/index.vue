@@ -298,7 +298,6 @@ export default {
       });
       getUser({ page: this.page, per_page: this.per_page }).then((response) => {
         this.list = response.data.data;
-        console.log(this.list);
         this.page = response.data.current_page;
         this.per_page = response.data.per_page;
         this.total = response.data.total;

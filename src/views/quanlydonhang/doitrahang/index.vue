@@ -386,7 +386,6 @@ export default {
         hoa_don: true,
       });
       this.hoaDons = data.data.data;
-      console.log("csa", this.hoaDons);
     },
   },
 };

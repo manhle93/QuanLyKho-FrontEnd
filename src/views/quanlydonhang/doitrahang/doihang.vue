@@ -901,7 +901,7 @@ export default {
             });
           });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -1042,7 +1042,6 @@ export default {
             });
             return;
           }
-          console.log(this.form);
           let tongDoiTra = 0;
           this.form.danhSachHang.map(
             (el) => (tongDoiTra = tongDoiTra + el.so_luong_doi_tra)
@@ -1062,7 +1061,7 @@ export default {
             this.$router.push("/quanlydonhang/doitrahang");
           });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

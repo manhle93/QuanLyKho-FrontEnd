@@ -24,7 +24,6 @@ L.Polyline.include({
     }
     this._latlngs = [[ this._snakeLatLngs[0][0], this._snakeLatLngs[0][0] ]]
     this._update()
-    // console.log(this._latlngs)
     this._snake()
     this.fire('snakestart')
     return this
@@ -75,7 +74,6 @@ L.Polyline.include({
       var headPoint = nextPoint.multiplyBy(percent).add(currPoint.multiplyBy(1 - percent))
       var headLatLng = this._map.containerPointToLatLng(headPoint)
     } catch (err) {
-      //console.log(err)
       return
     }
     this._latlngs[ this._snakingRings ].push(headLatLng)

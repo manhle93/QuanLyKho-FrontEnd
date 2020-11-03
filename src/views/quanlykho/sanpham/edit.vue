@@ -460,7 +460,7 @@ export default {
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -479,7 +479,7 @@ export default {
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -563,7 +563,7 @@ export default {
             })
             .catch((res) => {});
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

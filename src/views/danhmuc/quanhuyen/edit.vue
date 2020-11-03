@@ -145,7 +145,6 @@ export default {
               this.$emit("onEditQuan", true);
             })
             .catch(error => {
-             // console.log(this.error);
               this.loading = false;
               this.$emit("onEditQuan", error);
             });

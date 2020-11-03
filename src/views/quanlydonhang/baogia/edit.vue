@@ -338,10 +338,10 @@ export default {
               // this.resetForm();
             })
             .catch((error) => {
-              console.log(error);
+              
             });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -381,7 +381,6 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
     },
     addGiaBan(data) {
       this.showAddGia = true;

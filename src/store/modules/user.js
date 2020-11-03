@@ -24,7 +24,7 @@ const mutations = {
     }
 }
 function getState() {
-    //console.log(state);
+    
 }
 const actions = {
     login({ commit }, userInfo) {

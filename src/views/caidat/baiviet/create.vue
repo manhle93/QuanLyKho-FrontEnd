@@ -118,7 +118,7 @@ export default {
             this.resetForm();
           });
         } else {
-          console.log("error submit!!");
+          // 
           return false;
         }
       });

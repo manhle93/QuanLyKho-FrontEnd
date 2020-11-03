@@ -579,10 +579,10 @@ export default {
               this.getData();
             })
             .catch((error) => {
-              console.log(error);
+              
             });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

@@ -1026,7 +1026,7 @@ export default {
             });
           });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -1204,11 +1204,11 @@ export default {
               type: "success",
             });
             this.getData().catch((error) => {
-              console.log(error);
+              
             });
           });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

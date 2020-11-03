@@ -47,6 +47,7 @@ const routes = [
   }]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
@@ -79,7 +80,6 @@ describe('Breadcrumb.vue', () => {
   //   router.push('/menu/menu1/menu1-2/menu1-2-2')
   //   const breadcrumbArray = wrapper.findAll('.el-breadcrumb__inner')
   //   const second = breadcrumbArray.at(1)
-  //   console.log(breadcrumbArray)
   //   const href = second.find('a').attributes().href
   //   expect(href).toBe('#/menu/menu1')
   // })

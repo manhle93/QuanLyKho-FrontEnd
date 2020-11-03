@@ -692,7 +692,7 @@ export default {
             }
           });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -752,10 +752,10 @@ export default {
           } catch (error) {
             this.btnLoading = false;
             this.loading = false;
-            console.log(error);
+            
           }
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });

@@ -273,7 +273,7 @@ export default {
             });
           })
           .catch((error) => {
-            console.log(error);
+            
             this.iconUpload = "el-icon-bottom";
             this.loadingUpload = false;
           });

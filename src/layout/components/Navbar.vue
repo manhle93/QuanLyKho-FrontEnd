@@ -138,7 +138,6 @@ export default {
       });
       getMenus().then((res) => {
         this.menus = res.data
-        console.log(this.menus);
       });
     },
     async getThongBao(realTime) {

@@ -204,7 +204,6 @@ export default {
         this.loginForm.username = this.loginForm.username.toLowerCase();
         await this.$store.dispatch("user/login", this.loginForm);
         // const permissions = await getMenuRole()
-        // console.log(this.permissions.data);
         this.$router.push({ path: "/" });
         this.loading = false;
       } catch (error) {

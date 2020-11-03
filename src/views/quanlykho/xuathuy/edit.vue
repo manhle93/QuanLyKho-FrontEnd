@@ -247,10 +247,10 @@ export default {
               });
             })
             .catch((error) => {
-              console.log(error);
+              
             });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -303,10 +303,10 @@ export default {
               });
             })
             .catch((error) => {
-              console.log(error);
+              
             });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
@@ -323,10 +323,10 @@ export default {
               });
             })
             .catch((error) => {
-              console.log(error);
+              
             });
         } else {
-          console.log("error submit!!");
+          
           return false;
         }
       });
