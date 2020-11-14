@@ -60,7 +60,7 @@
       </el-row>
     </el-form>
     <br />
-    <h4><i style="color: green">LỊCH SỬ TRẢ HÀNG VỀ NHÀ CUNG CẤP</i></h4>
+    <h4><i style="color: green">LỊCH SỬ THANH TOÁN CHO NHÀ CUNG CẤP</i></h4>
     <el-table
       v-loading="listLoading"
       element-loading-text="Đang tải dữ liệu"

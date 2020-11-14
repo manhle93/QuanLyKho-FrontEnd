@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green">DANH SÁCH KHÁCH HÀNG</i></h4>
+    <h4>
+      <i style="color: green">DANH SÁCH KHÁCH HÀNG CÒN CÔNG NỢ</i>
+    </h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="9">
         <el-input
@@ -19,7 +21,7 @@
           @click="getData()"
         >Tìm kiếm</el-button>
       </el-col>
-      <el-col :span="10">
+      <!-- <el-col :span="10">
         <el-button
           style="float: right"
           @click="showFormAdd"
@@ -27,7 +29,7 @@
           icon="el-icon-plus"
           class="primary-button"
         >THÊM MỚI</el-button>
-      </el-col>
+      </el-col>-->
     </el-row>
     <br />
     <br />
@@ -40,22 +42,22 @@
       highlight-current-row
       style="font-size: 13px"
     >
-        <el-table-column type="expand">
-      <template slot-scope="props">
-        <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
-      </template>
-    </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
+        </template>
+      </el-table-column>
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column prop="ten" min-width="160" label="Tên khách hàng">
         <template slot-scope="scope">
-          <a @click="showUpdate(scope.row)">{{scope.row.ten}}</a>
+          <a @click="showUpdate(scope.row)">{{ scope.row.ten }}</a>
         </template>
       </el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="190"></el-table-column>
       <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="120" align="center"></el-table-column>
       <!-- <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column> -->
       <el-table-column label="Số dư" sortable prop="so_du" min-width="130">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_du)}} đ</template>
+        <template slot-scope="scope">{{ formate.formatCurrency(scope.row.so_du) }} đ</template>
       </el-table-column>
       <!-- <el-table-column label="Trạng thái" min-width="157" prop="trang_thai">
         <template slot-scope="scope">
@@ -64,25 +66,23 @@
       </el-table-column>-->
       <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi" align="center"></el-table-column>
       <el-table-column sortable label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_hoa_don)}} đ</template>
+        <template slot-scope="scope">{{ formate.formatCurrency(scope.row.tong_hoa_don) }} đ</template>
       </el-table-column>
       <el-table-column sortable label="Tổng nợ" min-width="157" prop="tong_no">
         <template slot-scope="scope">
-          <div v-if="scope.row.tong_no == 0">
-             {{formate.formatCurrency(scope.row.tong_no)}} đ
-          </div>
-          <el-tag v-else type="danger">{{formate.formatCurrency(scope.row.tong_no)}} đ</el-tag>
-          </template>
+          <div v-if="scope.row.tong_no == 0">{{ formate.formatCurrency(scope.row.tong_no) }} đ</div>
+          <el-tag v-else type="danger">{{ formate.formatCurrency(scope.row.tong_no) }} đ</el-tag>
+        </template>
       </el-table-column>
       <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip class="item" effect="dark" content="Thanh toán" placement="top">
             <el-button
               size="small"
               style="background-color: #2E86C1; color: white"
               icon="el-icon-edit"
               circle
-              @click="showUpdate(scope.row)"
+              @click="showThanhToanBoXung(scope.row)"
             ></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Khóa tài khoản" placement="top">
@@ -109,7 +109,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'CẬP NHẬT THÔNG TIN KHÁCH HÀNG' :'THÊM MỚI KHÁCH HÀNG'"
+      :title="edit ? 'CẬP NHẬT THÔNG TIN KHÁCH HÀNG' : 'THÊM MỚI KHÁCH HÀNG'"
       :visible.sync="showForm"
       width="700px"
       center
@@ -240,7 +240,7 @@
             <el-form-item label="Số dư">
               <!-- <el-input size="small" :disabled="true" v-model="form.so_du"></el-input> -->
               <br />
-              {{formate.formatCurrency(form.so_du)}} VNĐ
+              {{ formate.formatCurrency(form.so_du) }} VNĐ
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -304,7 +304,13 @@
                 v-model="form.tin_nhiem"
                 show-text
                 :colors="colors"
-                :texts="['Thường', 'Trung bình', 'Tốt', 'Tính nhiệm cao', 'Rất cao']"
+                :texts="[
+                  'Thường',
+                  'Trung bình',
+                  'Tốt',
+                  'Tính nhiệm cao',
+                  'Rất cao'
+                ]"
               ></el-rate>
             </el-form-item>
           </el-col>
@@ -343,6 +349,67 @@
         >Cập nhật</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="THANH TOÁN BỔ SUNG" width="450px" center :visible.sync="showThanhToan">
+      <el-form>
+        <el-form-item label="Thanh toán đơn hàng">
+          <el-select
+            style="width: 100%"
+            v-model="formThanhToan.id"
+            placeholder="Chọn đơn hàng thanh toán"
+            @change="chonDonHang(formThanhToan.id)"
+          >
+            <el-option
+              v-for="item in donHangConNos"
+              :value="item.id"
+              :key="item.id"
+              :label="item.ma"
+            >
+              <span style="float: left">{{ item.ten }} - Ngày: {{ item.created_at }}</span>
+              <span
+                style="float: right; color: #8492a6; font-size: 13px"
+              >Còn nợ: {{ item.con_phai_thanh_toan }}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <label style="font-size: 16px">
+          Số tiền còn phải thanh toán:
+          {{
+          formate.formatCurrency(
+          formThanhToan.tong_tien - formThanhToan.thanh_toan
+          )
+          }}
+          đ
+        </label>
+        <br />
+        <br />
+        <el-form-item label="Hình thức thanh toán">
+          <el-select
+            style="width: 100%"
+            v-model="formThanhToan.hinh_thuc"
+            placeholder="Phương thức thanh toán"
+          >
+            <el-option value="tien_mat" label="Tiền mặt"></el-option>
+            <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
+            <el-option value="tai_khoan" label="Tài khoản" :disabled="!thanhToanTaiKhoan"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Số tiền thanh toán">
+          <el-input
+            @blur="isInputActive = false"
+            @focus="isInputActive = true"
+            :min="0"
+            :max="Number(formThanhToan.tong_tien)"
+            v-model="displayValue"
+            style="width: 100%"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="warning" @click="showThanhToan = false" icon="el-icon-close">Đóng</el-button>
+        <el-button class="primary-button" @click="thanhToan()" icon="el-icon-close">Thanh toán</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -352,12 +419,14 @@ import {
   editKhachHang,
   addKhachHang,
   xoaKhachHang,
+  donHangConNo,
 } from "@/api/khachhang";
+import { thanhToanBoSung } from "@/api/dondathang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
-import ChiTiet from "./chitiet"
+import ChiTiet from "./chitiet";
 export default {
-  components: {ChiTiet},
+  components: { ChiTiet },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -404,6 +473,16 @@ export default {
       user: null,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       formate: formate,
+      isInputActive: null,
+      thanhToanTaiKhoan: false,
+      showThanhToan: false,
+      formThanhToan: {
+        id: null,
+        hinh_thuc: null,
+        tong_tien: 0,
+        thanh_toan: 0,
+      },
+      donHangConNos: [],
       form: {
         id: null,
         ten: null,
@@ -490,6 +569,36 @@ export default {
   created() {
     this.getData();
   },
+  computed: {
+    displayValue: {
+      get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.formThanhToan.thanh_toan.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.formThanhToan.thanh_toan).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        if (newValue > this.formThanhToan.tong_tien) {
+          newValue = this.formThanhToan.tong_tien;
+        }
+        this.formThanhToan.thanh_toan = newValue;
+      },
+    },
+  },
   methods: {
     showUpdate(data) {
       this.resetForm();
@@ -530,7 +639,7 @@ export default {
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;
-      this.list = data.data.data;
+      this.list = data.data.data.filter((el) => el.tong_no > 0);
       this.listLoading = false;
     },
     searchData() {
@@ -540,6 +649,53 @@ export default {
         this.listLoading = false;
       });
     },
+    async showThanhToanBoXung(data) {
+      this.thanhToanTaiKhoan = data.user_id;
+      this.showThanhToan = true;
+      this.formThanhToan.tong_tien = data.tong_no;
+      this.formThanhToan.thanh_toan = 0;
+      this.formThanhToan.id = null;
+      this.donHangConNos = await donHangConNo({
+        user_id: this.thanhToanTaiKhoan,
+      });
+    },
+    chonDonHang(id) {
+      if (id) {
+        let donHang = this.donHangConNos.find((el) => el.id == id);
+        this.formThanhToan.tong_tien = donHang.con_phai_thanh_toan;
+      }
+    },
+    async thanhToan() {
+      if (!this.formThanhToan.id) {
+        this.$message({
+          message: "Chọn một đơn hàng để thanh toán",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.formThanhToan.hinh_thuc) {
+        this.$message({
+          message: "Hãy chọn hình thức thanh toán",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.formThanhToan.thanh_toan == 0) {
+        this.$message({
+          message: "Nhập số tiền thanh toán",
+          type: "warning",
+        });
+        return;
+      }
+      let data = await thanhToanBoSung(this.formThanhToan);
+      this.showThanhToan = false;
+      this.getData();
+      this.$message({
+        message: "Thành công",
+        type: "success",
+      });
+    },
+
     deleteAppUserID(item) {
       this.$confirm(
         "Bạn chắc chắn muốn khóa tài khoản và ẩn khách hàng: " +

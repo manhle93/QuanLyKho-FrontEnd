@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green">DANH SÁCH KHÁCH HÀNG</i></h4>
+    <h4><i style="color: green">DANH SÁCH CÔNG NỢ PHẢI TRẢ NHÀ CUNG CẤP</i></h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="9">
         <el-input
@@ -8,7 +8,7 @@
           placeholder="Thông tin tìm kiếm"
           v-model="search"
           suffix-icon="el-icon-search"
-          @keyup.enter.native="getData()"
+          @keyup.enter.native="searchData()"
         ></el-input>
       </el-col>
       <el-col :span="5">
@@ -16,17 +16,28 @@
           size="small"
           class="primary-button"
           icon="el-icon-search"
-          @click="getData()"
-        >Tìm kiếm</el-button>
+          @click="searchData()"
+          >Tìm kiếm</el-button
+        >
       </el-col>
       <el-col :span="10">
-        <el-button
+        <!-- <el-button
           style="float: right"
           @click="showFormAdd"
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        > -->
+        <router-link :to="'/quanlydonhang/thanhtoannhacungcap'">
+        <el-button
+          style="float: right"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+          >THANH TOÁN CHO NCC</el-button
+        >
+        </router-link>
       </el-col>
     </el-row>
     <br />
@@ -40,62 +51,84 @@
       highlight-current-row
       style="font-size: 13px"
     >
-        <el-table-column type="expand">
-      <template slot-scope="props">
-        <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
-      </template>
-    </el-table-column>
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column prop="ten" min-width="160" label="Tên khách hàng">
-        <template slot-scope="scope">
-          <a @click="showUpdate(scope.row)">{{scope.row.ten}}</a>
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
         </template>
       </el-table-column>
-      <el-table-column label="Địa chỉ" prop="dia_chi" min-width="190"></el-table-column>
-      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="120" align="center"></el-table-column>
-      <!-- <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column> -->
-      <el-table-column label="Số dư" sortable prop="so_du" min-width="130">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_du)}} đ</template>
-      </el-table-column>
-      <!-- <el-table-column label="Trạng thái" min-width="157" prop="trang_thai">
-        <template slot-scope="scope">
 
+      <el-table-column
+        label="STT"
+        min-width="65"
+        type="index"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="ten"
+        min-width="170"
+        label="Tên nhà cung cấp"
+      >
+        <template slot-scope="scope">
+          <a @click="showUpdate(scope.row)">{{ scope.row.ten }}</a>
         </template>
-      </el-table-column>-->
-      <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi" align="center"></el-table-column>
-      <el-table-column sortable label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
-        <template slot-scope="scope">{{formate.formatCurrency(scope.row.tong_hoa_don)}} đ</template>
       </el-table-column>
-      <el-table-column sortable label="Tổng nợ" min-width="157" prop="tong_no">
+      <el-table-column
+        label="Địa chỉ"
+        prop="dia_chi"
+        min-width="197"
+      ></el-table-column>
+      <el-table-column
+        label="Số điện thoại"
+        prop="so_dien_thoai"
+        min-width="130"
+        align="center"
+      ></el-table-column>
+      <el-table-column label="Trạng thái" min-width="130" align="center">
         <template slot-scope="scope">
-          <div v-if="scope.row.tong_no == 0">
-             {{formate.formatCurrency(scope.row.tong_no)}} đ
-          </div>
-          <el-tag v-else type="danger">{{formate.formatCurrency(scope.row.tong_no)}} đ</el-tag>
-          </template>
+          <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain"
+            >HOẠT ĐỘNG</el-tag
+          >
+          <el-tag v-else effect="plain" type="danger">KHÔNG HOẠT ĐỘNG</el-tag>
+        </template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" label="Hoạt động">
+      <el-table-column
+        label="Công ty"
+        min-width="157"
+        prop="cong_ty"
+      ></el-table-column>
+      <el-table-column label="Công nợ phải trả" min-width="157" prop="cong_no">
+        <template slot-scope="scope"
+          ><el-tag type="danger">{{ formate.formatCurrency(scope.row.cong_no) }} đ</el-tag></template
+        >
+      </el-table-column>
+      <!-- <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
             <el-button
               size="small"
-              style="background-color: #2E86C1; color: white"
+              style="background-color: #2e86c1; color: white"
               icon="el-icon-edit"
               circle
               @click="showUpdate(scope.row)"
             ></el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="Khóa tài khoản" placement="top">
+          <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
             <el-button
               size="small"
               type="danger"
-              icon="el-icon-document-delete"
+              icon="el-icon-delete"
               circle
               @click="deleteAppUserID(scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <br />
     <div class="block">
@@ -109,71 +142,98 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'CẬP NHẬT THÔNG TIN KHÁCH HÀNG' :'THÊM MỚI KHÁCH HÀNG'"
+      :title="edit ? 'CẬP NHẬT NHÀ CUNG CẤP' : 'THÊM MỚI NHÀ CUNG CẤP'"
       :visible.sync="showForm"
-      width="700px"
+      width="60%"
       center
     >
       <el-form :model="form" :rules="rules" ref="form">
         <el-steps :space="200" :active="next ? 1 : 2" simple v-if="!edit">
-          <el-step title="Thông tin khách hàng" icon="el-icon-info"></el-step>
+          <el-step title="Thông tin nhà cung cấp" icon="el-icon-info"></el-step>
           <el-step title="Tài khoản đăng nhập" icon="el-icon-user"></el-step>
-        </el-steps>
-        <el-steps :space="200" :active="next ? 1 : 2" simple v-else>
-          <el-step title="Thông tin khách hàng" icon="el-icon-info"></el-step>
-          <el-step title="Thông tin giao dịch" icon="el-icon-money"></el-step>
         </el-steps>
         <br />
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
-            <el-form-item label="Mã khách hàng" prop="ma">
-              <el-input size="small" v-model="form.ma" :disabled="true"></el-input>
+            <el-form-item label="Mã nhà cung cấp" prop="ma">
+              <el-input
+                size="small"
+                :disabled="true"
+                v-model="form.ma"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Loại khách hàng">
-              <br />
-              <el-radio v-model="form.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
-              <el-radio v-model="form.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Tên khách hàng" prop="ten">
+            <el-form-item label="Tên nhà cung cấp" prop="ten">
               <el-input size="small" v-model="form.ten"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Facebook">
-              <el-input size="small" v-model="form.facebook"></el-input>
+            <el-form-item label="Ngày chốt công nợ">
+              <el-date-picker
+                size="small"
+                style="width: 100%"
+                v-model="form.ngay_chot_cong_no"
+                type="date"
+                format="'Ngày:' dd 'Hàng tháng'"
+                placeholder="Ngày chốt công nợ"
+              >
+              </el-date-picker>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="Ngày thanh toán">
+              <el-date-picker
+                size="small"
+                style="width: 100%"
+                v-model="form.ngay_thanh_toan"
+                type="date"
+                format="'Ngày:' dd 'Hàng tháng'"
+                placeholder="Ngày thanh toán"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
               <el-input size="small" v-model="form.so_dien_thoai"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Giới tính">
-              <br />
-              <el-radio v-model="form.gioi_tinh" :label="true" border size="small">Nam</el-radio>
-              <el-radio v-model="form.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
+            <el-form-item label="Mã số thuế">
+              <el-input size="small" v-model="form.ma_so_thue"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Ngày sinh">
-              <br />
-              <el-date-picker
-                size="small"
-                style="width: 100%"
-                v-model="form.ngay_sinh"
-                type="date"
-                placeholder="Chọn ngày sinh"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Địa chỉ email">
+            <el-form-item label="Địa chỉ emal" prop="email">
               <el-input size="small" v-model="form.email"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Công ty">
+              <el-input size="small" v-model="form.cong_ty"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Trạng thái">
+              <br />
+              <el-checkbox
+                size="small"
+                v-model="form.trang_thai"
+                label="Hoạt động"
+                border
+              ></el-checkbox>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Ghi chú">
+              <el-input
+                size="small"
+                type="textarea"
+                v-model="form.mo_ta"
+                :rows="2"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -182,11 +242,25 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Ghi chú">
-              <el-input size="small" type="textarea" v-model="form.ghi_chu" :rows="2"></el-input>
+            <el-form-item label="Tín nhiệm">
+              <br />
+              <el-rate
+                :value="+form.tin_nhiem"
+                @input="form.tin_nhiem = $event"
+                show-text
+                :colors="colors"
+                :texts="[
+                  'Thường',
+                  'Trung bình',
+                  'Tốt',
+                  'Tính nhiệm cao',
+                  'Rất cao',
+                ]"
+              ></el-rate>
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row :gutter="40" v-show="!next" v-if="!edit">
           <el-col style="text-align: center">
             <div class="block">
@@ -206,7 +280,7 @@
               >
                 <el-button
                   class="primary-button block"
-                  style="margin-top:20px;"
+                  style="margin-top: 20px"
                   @click="handleUpload"
                   icon="el-icon-edit"
                   circle
@@ -225,87 +299,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="5">
-            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
-              <el-input type="password" v-model="form.password_confirmation"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40" v-show="!next" v-else>
-          <el-col :span="12">
-            <el-form-item label="Số tài khoản">
-              <el-input size="small" v-model="form.so_tai_khoan"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Số dư">
-              <!-- <el-input size="small" :disabled="true" v-model="form.so_du"></el-input> -->
-              <br />
-              {{formate.formatCurrency(form.so_du)}} VNĐ
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Chuyển khoản cuối">
-              <el-date-picker
-                size="small"
-                style="width: 100%"
-                v-model="form.chuyen_khoan_cuoi"
-                type="datetime"
-                :disabled="true"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Giao dịch cuối">
-              <el-date-picker
-                :disabled="true"
-                size="small"
-                style="width: 100%"
-                v-model="form.giao_dich_cuoi"
-                type="datetime"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Loại thành viên">
-              <el-input size="small" v-model="form.loai_thanh_vien_id"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Điểm quy đổi">
-              <el-input size="small" v-model="form.diem_quy_doi"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Tiền vay">
-              <el-input size="small" v-model="form.tien_vay"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Trạng thái">
-              <br />
-              <el-select
-                size="small"
-                style="width: 100%"
-                v-model="form.trang_thai"
-                placeholder="Select"
-              >
-                <el-option label="Mới tạo" :value="'moi_tao'"></el-option>
-                <el-option label="Xác nhận" :value="'xac_nhan'"></el-option>
-                <el-option label="Hoạt động" :value="'hoat_dong'"></el-option>
-                <el-option label="Khách hàng" :value="'khach_hang'"></el-option>
-                <el-option label="Dừng hoạt động" :value="'dung_hoat_dong'"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Tín nhiệm">
-              <br />
-              <el-rate
-                v-model="form.tin_nhiem"
-                show-text
-                :colors="colors"
-                :texts="['Thường', 'Trung bình', 'Tốt', 'Tính nhiệm cao', 'Rất cao']"
-              ></el-rate>
+            <el-form-item
+              label="Nhập lại mật khẩu"
+              prop="password_confirmation"
+            >
+              <el-input
+                type="password"
+                v-model="form.password_confirmation"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -314,33 +315,39 @@
         <!-- <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Cancel</el-button> -->
         <el-button
           class="primary-button"
-          :disabled="!form.ma || !form.ten || !form.so_dien_thoai"
+          :disabled="
+            !form.ma || !form.ten || !form.so_dien_thoai || !form.email
+          "
           size="small"
-          v-if="next"
+          v-if="next && !edit"
           icon="el-icon-right"
           @click="next = !next"
-        >Tiếp theo</el-button>
+          >Tiếp theo</el-button
+        >
         <el-button
           type="warning"
           size="small"
-          v-if="!next"
+          v-if="!next && !edit"
           icon="el-icon-back"
           @click="next = !next"
-        >Quay lại</el-button>
+          >Quay lại</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit && !next"
           icon="el-icon-plus"
-          @click="addKhachHang('form')"
-        >THÊM MỚI</el-button>
+          @click="addNhaCungCap('form')"
+          >THÊM MỚI</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="edit"
           icon="el-icon-check"
-          @click="updateKhachHang('form')"
-        >Cập nhật</el-button>
+          @click="updateNhaCungCap('form')"
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -348,16 +355,18 @@
 
 <script>
 import {
-  getKhachHang,
-  editKhachHang,
-  addKhachHang,
-  xoaKhachHang,
+  getNhaCungCap,
+  editNhaCungCap,
+  addNhaCungCap,
+  xoaNhaCungCap,
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
-import ChiTiet from "./chitiet"
+import ChiTiet from "./chitiet";
 export default {
-  components: {ChiTiet},
+  components: {
+    ChiTiet,
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -398,39 +407,31 @@ export default {
       page: 1,
       per_page: 10,
       total: 0,
+      formate: formate,
       search: "",
       listLoading: true,
       labelPosition: "top",
       user: null,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
-      formate: formate,
       form: {
         id: null,
         ten: null,
-        ma: "KH" + new Date().getTime(),
+        ma: "NCC" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,
         ghi_chu: null,
-        ca_nhan: false,
         ma_so_thue: null,
-        gioi_tinh: true,
         email: null,
         username: null,
         password: null,
         password_confirmation: null,
         anh_dai_dien: null,
-        facebook: null,
-        trang_thai: null,
-        so_tai_khoan: null,
-        so_du: null,
-        chuyen_khoan_cuoi: null,
-        giao_dich_cuoi: null,
-        nhom_id: null,
-        loai_thanh_vien_id: null,
+        trang_thai: false,
         tin_nhiem: null,
-        diem_quy_doi: null,
-        tien_vay: null,
+        cong_ty: null,
+        ngay_chot_cong_no: null,
+        ngay_thanh_toan: null,
       },
       rules: {
         ten: [
@@ -494,69 +495,57 @@ export default {
     showUpdate(data) {
       this.resetForm();
       this.edit = true;
+      this.next = true;
       this.showForm = true;
       this.form.id = data.id;
       this.form.ten = data.ten;
       this.form.ma = data.ma;
       this.form.so_dien_thoai = data.so_dien_thoai;
       this.form.dia_chi = data.dia_chi;
-      this.form.ngay_sinh = data.ngay_sinh;
       this.form.ghi_chu = data.ghi_chu;
-      this.form.ca_nhan = data.ca_nhan;
       this.form.ma_so_thue = data.ma_so_thue;
-      this.form.gioi_tinh = data.gioi_tinh;
       this.form.email = data.email;
       this.form.username = data.username;
       this.form.anh_dai_dien = data.anh_dai_dien;
-      this.form.facebook = data.facebook;
-      this.form.so_tai_khoan = data.so_tai_khoan;
-      this.form.so_du = data.so_du;
-      this.form.chuyen_khoan_cuoi = data.chuyen_khoan_cuoi;
-      this.form.giao_dich_cuoi = data.giao_dich_cuoi;
-      this.form.nhom_id = data.nhom_id;
-      this.form.loai_thanh_vien_id = data.loai_thanh_vien_id;
       this.form.tin_nhiem = data.tin_nhiem;
-      this.form.diem_quy_doi = data.diem_quy_doi;
-      this.form.tien_vay = data.tien_vay;
-      this.form.trang_thai = data.trang_thai;
+      this.form.trang_thai = data.user.active;
+      this.form.cong_ty = data.cong_ty;
+      this.form.ngay_chot_cong_no = data.ngay_chot_cong_no;
+      this.form.ngay_thanh_toan = data.ngay_thanh_toan;
     },
-    async getData(page, per_page) {
+    async getData() {
       this.listLoading = true;
-      let data = await getKhachHang({
-        per_page: per_page,
-        page: page,
+      let data = await getNhaCungCap({
+        per_page: this.per_page,
+        page: this.page,
         search: this.search,
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
       this.total = data.data.total;
-      this.list = data.data.data;
+      this.list = data.data.data.filter(el=> el.cong_no > 0);
       this.listLoading = false;
     },
     searchData() {
-      this.listLoading = true;
-      getKhachHang({ search: this.search }).then((response) => {
-        this.list = response.data;
-        this.listLoading = false;
-      });
+      this.getData();
     },
     deleteAppUserID(item) {
       this.$confirm(
-        "Bạn chắc chắn muốn khóa tài khoản và ẩn khách hàng: " +
+        "Bạn chắc chắn muốn xóa nhà cung cấp: " +
           "<strong>" +
           item.ten +
           "</strong>",
 
-        "Khóa tài khoản khách hàng",
+        "Xóa nhà cung cấp",
         {
           dangerouslyUseHTMLString: true,
-          confirmButtonText: "Xác nhận",
+          confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
           type: "warning",
         }
       )
         .then((_) => {
-          xoaKhachHang(item.id).then((res) => {
+          xoaNhaCungCap(item.id).then((res) => {
             this.$message({
               message: "Xóa thành công",
               type: "success",
@@ -571,10 +560,10 @@ export default {
       this.edit = false;
       this.showForm = true;
     },
-    addKhachHang(formName) {
+    addNhaCungCap(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addKhachHang(this.form).then((res) => {
+          addNhaCungCap(this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
@@ -588,10 +577,10 @@ export default {
         }
       });
     },
-    updateKhachHang(formName) {
+    updateNhaCungCap(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          editKhachHang(this.form.id, this.form).then((res) => {
+          editNhaCungCap(this.form.id, this.form).then((res) => {
             this.resetForm();
             this.getData();
             this.$message({
@@ -610,30 +599,22 @@ export default {
       this.form = {
         id: null,
         ten: null,
-        ma: "KH" + new Date().getTime(),
+        ma: "NCC" + new Date().getTime(),
         so_dien_thoai: null,
         dia_chi: null,
         ngay_sinh: null,
         ghi_chu: null,
-        ca_nhan: false,
         ma_so_thue: null,
-        gioi_tinh: true,
         email: null,
         username: null,
         password: null,
         password_confirmation: null,
         anh_dai_dien: null,
-        facebook: null,
-        so_tai_khoan: null,
-        so_du: null,
-        chuyen_khoan_cuoi: null,
-        giao_dich_cuoi: null,
-        nhom_id: null,
-        loai_thanh_vien_id: null,
+        trang_thai: false,
         tin_nhiem: null,
-        diem_quy_doi: null,
-        tien_vay: null,
-        trang_thai: null,
+        cong_ty: null,
+        ngay_chot_cong_no: null,
+        ngay_thanh_toan: null,
       };
     },
     handleChange(e) {
@@ -652,12 +633,11 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
     },
-
     handleSizeChange(val) {
       this.per_page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
     },
   },
 };

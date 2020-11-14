@@ -326,6 +326,45 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: "/quanly",
+    component: Layout,
+    redirect: "/taichinh",
+    name: "Tài chính",
+    meta: {
+      title: "Tài chính",
+      icon: "hanghoa"
+    },
+    children: [
+      {
+        path: "congnokhachhang",
+        name: "Công nợ khách hàng",
+        component: () => import("@/views/taichinh/congnokhachhang/index"),
+        meta: {
+          title: "Công nợ khách hàng",
+          icon: "khachhang "
+        }
+      },
+      {
+        path: "congnoncc",
+        name: "Công nợ nhà cung cấp",
+        component: () => import("@/views/taichinh/congnoncc/index"),
+        meta: {
+          title: "Công nợ nhà cung cấp",
+          icon: "nhacungcap "
+        }
+      },
+      // {
+      //   path: "thuchinoibo",
+      //   name: "Thu chi nội bộ",
+      //   component: () => import("@/views/taichinh/thuchinoibo/index"),
+      //   meta: {
+      //     title: "Thu chi nội bộ",
+      //     icon: "thongtin "
+      //   }
+      // }
+    ]
+  },
+  {
     path: "/quanlydonhang",
     component: Layout,
     redirect: "/quanlykho",
