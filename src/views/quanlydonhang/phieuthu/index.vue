@@ -117,6 +117,7 @@
             min-width="120"
             align="center"
           ></el-table-column>
+           <el-table-column property="nguoi_tao.name" label="Người tạo" min-width="75" align="center"></el-table-column>
           <el-table-column label="Hành động" align="center" fixed="right" width="120">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">

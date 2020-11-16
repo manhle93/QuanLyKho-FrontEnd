@@ -171,6 +171,53 @@
         <label>{{ formate.formatCurrency(daThanhToan) }} đ</label>
       </span>
     </el-tab-pane>
+
+    <el-tab-pane label="Phiếu chi - Thanh toán NCC">
+      <el-table :data="tableThanhToan" max-height="300px" style="font-size: 13px">
+        <el-table-column type="index" label="STT"></el-table-column>
+        <el-table-column label="Thời gian" prop="thoi_gian"></el-table-column>
+        <el-table-column label="Tên đơn" prop="ten" min-width="100">
+          <template slot-scope="scope">
+            {{ scope.row.ten }}
+            <br />
+            {{ scope.row.ma }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Hành động">
+            <el-tag
+              effect="plain"
+              type="success"
+            >Thanh toán</el-tag>
+        </el-table-column>
+        <el-table-column label="Số tiền thanh toán" prop="so_tien">
+          <template slot-scope="scope">
+            {{ formate.formatCurrency(scope.row.so_tien) }} đ
+          </template>
+        </el-table-column>
+        <el-table-column label="Nợ cuối" prop="no_cuoi">
+          <template slot-scope="scope">{{ formate.formatCurrency(scope.row.no_cuoi) }} đ</template>
+        </el-table-column>
+      </el-table>
+      <br />
+      <br />
+      <span>
+        Công nợ cuối kỳ:
+        <label>{{ formate.formatCurrency(no_cuoi_ky) }} đ</label>
+      </span>
+      <br />
+      <br />
+      <span>
+        Tổng đơn hàng:
+        <label>{{ formate.formatCurrency(tongDon) }} đơn hàng</label>
+      </span>
+      <br />
+      <br />
+      <span>
+        Đã thanh toán:
+        <label>{{ formate.formatCurrency(daThanhToan) }} đ</label>
+      </span>
+    </el-tab-pane>
+
     <el-tab-pane label="Báo giá">
       <el-table :data="baoGias" style="width: 100%; font-size: 13px" border>
         <el-table-column sortable type="index" label="STT"></el-table-column>
@@ -219,6 +266,7 @@ export default {
       no_cuoi_ky: 0,
       tong_phat_sinh: 0,
       tableCongNo: [],
+      tableThanhToan: [],
       formate: formate,
       nhapXuat: [],
       baoGias: [],
@@ -299,6 +347,7 @@ export default {
       this.nhapXuat = this.tableCongNo.filter(
         (el) => el.hanh_dong != "thanh_toan"
       );
+      this.tableThanhToan = this.tableCongNo.filter(el => el.hanh_dong == 'thanh_toan')
     },
     async getBaoGia() {
       let data = await getBaoGia({

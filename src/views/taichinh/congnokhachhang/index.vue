@@ -64,7 +64,7 @@
 
         </template>
       </el-table-column>-->
-      <el-table-column label="Giao dịch cuối" min-width="157" prop="giao_dich_cuoi" align="center"></el-table-column>
+      <el-table-column label="Giao dịch cuối" sortable min-width="157" prop="giao_dich_cuoi" align="center"></el-table-column>
       <el-table-column sortable label="Tổng hóa đơn" min-width="157" prop="tong_hoa_don">
         <template slot-scope="scope">{{ formate.formatCurrency(scope.row.tong_hoa_don) }} đ</template>
       </el-table-column>
@@ -80,12 +80,12 @@
             <el-button
               size="small"
               style="background-color: #2E86C1; color: white"
-              icon="el-icon-edit"
+              icon="el-icon-document-checked"
               circle
               @click="showThanhToanBoXung(scope.row)"
             ></el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="Khóa tài khoản" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" content="Khóa tài khoản" placement="top">
             <el-button
               size="small"
               type="danger"
@@ -93,7 +93,7 @@
               circle
               @click="deleteAppUserID(scope.row)"
             ></el-button>
-          </el-tooltip>
+          </el-tooltip> -->
         </template>
       </el-table-column>
     </el-table>
@@ -105,7 +105,6 @@
         @current-change="handleCurrentChange"
         :page-sizes="[5, 10, 15, 20]"
         layout="total, sizes, prev, pager, next"
-        :total="total"
       ></el-pagination>
     </div>
     <el-dialog
@@ -638,7 +637,6 @@ export default {
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
-      this.total = data.data.total;
       this.list = data.data.data.filter((el) => el.tong_no > 0);
       this.listLoading = false;
     },

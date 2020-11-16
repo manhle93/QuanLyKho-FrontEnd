@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'has-logo': showLogo }" style="width: 100%; display:flex; justify-content:space-around; align-items: center">
+  <div
+    :class="{ 'has-logo': showLogo }"
+    style="width: 100%; display:flex; justify-content:space-around; align-items: center"
+  >
     <el-menu
       class="el-menu-demo"
       mode="horizontal"
@@ -11,8 +14,9 @@
       <el-menu-item index="22">
         <router-link :to="'/tongquan'">
           <b>Tổng quan</b>
-        </router-link></el-menu-item>
-      <el-submenu 
+        </router-link>
+      </el-menu-item>
+      <el-submenu
         class="sub-menu"
         style="background-color:green;margin-right: 22px;"
         :index="index + ''"
@@ -20,16 +24,13 @@
         :key="index"
       >
         <template slot="title" v-if="!route.hidden">{{ route.name }}</template>
-        <el-menu-item
+        <router-link
           v-for="(item, index2) in route.children"
           :key="index2"
-          :index="index + '-' + index2"
-          v-if="!item.hidden"
+          :to="route.path + '/' + item.path"
         >
-          <router-link :to="route.path + '/' + item.path">
-            {{ item.name }}
-          </router-link>
-        </el-menu-item>
+          <el-menu-item :index="index + '-' + index2" v-if="!item.hidden">{{ item.name }}</el-menu-item>
+        </router-link>
       </el-submenu>
     </el-menu>
   </div>
@@ -68,10 +69,10 @@ export default {
 </script>
 <style lang="scss">
 .sub-menu:hover {
-    background-color: red !important;
+  background-color: red !important;
 }
-.sub-menu:hover li>ul>li{
-background: red !important;
+.sub-menu:hover li > ul > li {
+  background: red !important;
 }
 </style>
 
