@@ -353,15 +353,15 @@ export const asyncRoutes = [
           icon: "nhacungcap "
         }
       },
-      // {
-      //   path: "thuchinoibo",
-      //   name: "Thu chi nội bộ",
-      //   component: () => import("@/views/taichinh/thuchinoibo/index"),
-      //   meta: {
-      //     title: "Thu chi nội bộ",
-      //     icon: "thongtin "
-      //   }
-      // }
+      {
+        path: "thuchinoibo",
+        name: "Thu chi nội bộ",
+        component: () => import("@/views/taichinh/thuchinoibo/index"),
+        meta: {
+          title: "Thu chi nội bộ",
+          icon: "thongtin "
+        }
+      }
     ]
   },
   {
