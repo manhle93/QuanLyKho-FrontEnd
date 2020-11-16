@@ -87,3 +87,11 @@ export function lichSu(params) {
       params
   })
 }
+
+export function donHangConNo(params) {
+  return request({
+    url: "donhangconno",
+    methods: 'get',
+    params
+  })
+}

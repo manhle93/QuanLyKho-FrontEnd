@@ -343,7 +343,7 @@
                   type="primary"
                   icon="el-icon-postcard"
                   circle
-                  @click="thanhToanBoSung(scope.row)"
+                  @click="showThanhToanBoXung(scope.row)"
                 ></el-button>
               </el-tooltip>
             </template>
@@ -583,7 +583,7 @@ export default {
       this.page = val;
       this.updateDataTable();
     },
-    thanhToanBoXung(data) {
+    showThanhToanBoXung(data) {
       this.thanhToanTaiKhoan = data.user_id;
       this.showThanhToan = true;
       this.formThanhToan.id = data.id;
