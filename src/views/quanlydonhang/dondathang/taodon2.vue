@@ -18,11 +18,7 @@
           <el-row :gutter="20">
             <el-col :span="1">
               <el-form-item>
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="Danh sách đơn hàng"
-                >
+                <el-tooltip class="item" effect="dark" content="Danh sách đơn hàng">
                   <router-link to="/quanlydonhang/dathang">
                     <img
                       src="https://image.flaticon.com/icons/svg/3078/3078994.svg"
@@ -42,7 +38,7 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
               </el-form-item>
-            </el-col> -->
+            </el-col>-->
             <el-col :span="8">
               <el-form-item>
                 <el-select
@@ -65,14 +61,13 @@
                     :value="item.id"
                   >
                     <span style="float: left">{{ item.ten_san_pham }}</span>
-                    <span
-                      style="float: right; color: #8492a6; font-size: 13px"
-                      >{{
-                        item.thuong_hieu
-                          ? 'Thương hiệu: '+ item.thuong_hieu.ten
-                          : "Danh mục: " + item.danh_muc.ten_danh_muc
-                      }}</span
-                    >
+                    <span style="float: right; color: #8492a6; font-size: 13px">
+                      {{
+                      item.thuong_hieu
+                      ? 'Thương hiệu: '+ item.thuong_hieu.ten
+                      : "Danh mục: " + item.danh_muc.ten_danh_muc
+                      }}
+                    </span>
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -139,39 +134,25 @@
                 style="width: 100%"
                 :summary-method="tongTien"
               >
-                <el-table-column
-                  type="index"
-                  label="STT"
-                  width="100px"
-                ></el-table-column>
-                <el-table-column
-                  prop="hang_hoa.ten_san_pham"
-                  label="Hàng hóa"
-                ></el-table-column>
-                <el-table-column
-                  prop="hang_hoa.don_vi_tinh"
-                  label="Đơn vị tính"
-                ></el-table-column>
+                <el-table-column type="index" label="STT" width="100px"></el-table-column>
+                <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
+                <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
                 <el-table-column label="Số lượng" width="150px">
                   <template slot-scope="scope">
-                    <el-input-number
-                      size="small"
-                      :min="0.1"
-                      v-model="scope.row.so_luong"
-                    ></el-input-number>
+                    <el-input-number size="small" :min="0.1" v-model="scope.row.so_luong"></el-input-number>
                   </template>
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá">
-                  <template slot-scope="scope"
-                    >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
-                  >
+                  <template slot-scope="scope">{{ formate.formatCurrency(scope.row.don_gia) }} đ</template>
                 </el-table-column>
                 <el-table-column label="Thành tiền">
-                  <template slot-scope="scope">{{
+                  <template slot-scope="scope">
+                    {{
                     formate.formatCurrency(
-                      Math.ceil(scope.row.so_luong * scope.row.don_gia)
+                    Math.ceil(scope.row.so_luong * scope.row.don_gia)
                     )
-                  }}</template>
+                    }}
+                  </template>
                 </el-table-column>
                 <el-table-column label="Xóa">
                   <template slot-scope="scope">
@@ -192,10 +173,7 @@
       <div class="sanpham">
         <transition name="bounce" v-for="item in hangHoas" :key="item.id">
           <div v-show="!kiemTraDaChon(item.id)">
-            <el-card
-              :body-style="{ padding: '0px' }"
-              style="width: 140px; margin-right: 20px"
-            >
+            <el-card :body-style="{ padding: '0px' }" style="width: 140px; margin-right: 20px">
               <a @click="doiSanPham(item.id)">
                 <img
                   :src="
@@ -214,12 +192,9 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis;
                   "
-                  >{{ item.ten_san_pham }}</span
-                >
+                >{{ item.ten_san_pham }}</span>
                 <div class="bottom clearfix">
-                  <time class="time"
-                    >{{ formate.formatCurrency(item.gia_ban) }} đ</time
-                  >
+                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ</time>
                 </div>
                 <!-- <div class="bottom clearfix">
                   <el-button
@@ -247,9 +222,7 @@
       "
     >
       <div style="margin-top: 10px">
-        <div style="font-size: 16px; color: #196f3d; font-weight: bold">
-          Thông tin đơn hàng
-        </div>
+        <div style="font-size: 16px; color: #196f3d; font-weight: bold">Thông tin đơn hàng</div>
         <br />
         <br />
         <br />
@@ -271,7 +244,7 @@
               filterable
               clearable
               remote
-              :remote-method="remoteMethod"
+              :remote-method="remoteMethodKH"
               reserve-keyword
               style="width: 80%"
               placeholder="Chọn khách hàng"
@@ -285,12 +258,8 @@
                 :value="item.user_id"
               >
                 <div>
-                  <div style="font-size: 16px; font-weight: bold">
-                    {{ item.ten }}
-                  </div>
-                  <div style="font-size: 12px; color: gray">
-                    SĐT: {{ item.so_dien_thoai }}
-                  </div>
+                  <div style="font-size: 16px; font-weight: bold">{{ item.ten }}</div>
+                  <div style="font-size: 12px; color: gray">SĐT: {{ item.so_dien_thoai }}</div>
                 </div>
               </el-option>
             </el-select>
@@ -312,11 +281,7 @@
             ></el-button>
           </el-form-item>
           <el-form-item label="Ghi chú">
-            <el-input
-              size="small"
-              type="textarea"
-              v-model="form.ghi_chu"
-            ></el-input>
+            <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
           </el-form-item>
           <el-form-item label="Giảm giá">
             <el-input
@@ -335,9 +300,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="Tổng tiền">
-            <span style="color: green; font-size: 20px; font-weight: bold"
-              >{{ formate.formatCurrency(form.tong_tien) }} đ</span
-            >
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{ formate.formatCurrency(form.tong_tien) }} đ</span>
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="!mua_hang">
             <el-input
@@ -348,43 +313,30 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="Tổng thanh toán" v-else>
-            <span style="color: green; font-size: 20px; font-weight: bold"
-              >{{
-                formate.formatCurrency(
-                  form.tong_tien - form.giam_gia + Number(form.phu_thu)
-                )
+            <span style="color: green; font-size: 20px; font-weight: bold">
+              {{
+              formate.formatCurrency(
+              form.tong_tien - form.giam_gia + Number(form.phu_thu)
+              )
               }}
-              đ</span
-            >
+              đ
+            </span>
           </el-form-item>
           <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
-            <span style="color: green; font-size: 20px; font-weight: bold"
-              >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span
-            >
+            <span
+              style="color: green; font-size: 20px; font-weight: bold"
+            >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span>
           </el-form-item>
           <el-form-item label="Phương thúc" v-if="mua_hang" prop="thanh_toan">
-            <el-select
-              v-model="form.thanh_toan"
-              placeholder="Phương thức thanh toán"
-            >
+            <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
-              <el-option
-                value="chuyen_khoan"
-                label="Chuyển khoản/Quẹt thẻ"
-              ></el-option>
+              <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
               <!-- <el-option value="cod" label="Ship COD"></el-option> -->
-              <el-option
-                value="tai_khoan"
-                label="Tài khoản"
-                :disabled="!form.khach_hang_id"
-              ></el-option>
+              <el-option value="tai_khoan" label="Tài khoản" :disabled="!form.khach_hang_id"></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item
-            label="Đã thanh toán"
-            v-if="form.thanh_toan == 'tra_sau'"
-          >
+          <el-form-item label="Đã thanh toán" v-if="form.thanh_toan == 'tra_sau'">
             <el-input-number
               :min="0"
               style="width: 100%"
@@ -400,12 +352,7 @@
               filterable
               placeholder="Chọn nhân viên giao hàng"
             >
-              <el-option
-                v-for="item in shipper"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
+              <el-option v-for="item in shipper" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="ĐC nhận hàng">
@@ -436,25 +383,18 @@
             icon="el-icon-plus"
             class="success-button"
             @click="submit('form')"
-            >ĐẶT HÀNG</el-button
-          >
+          >ĐẶT HÀNG</el-button>
           <el-button
             v-else
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
-            >THANH TOÁN</el-button
-          >
+          >THANH TOÁN</el-button>
         </el-col>
       </el-row>
     </div>
-    <el-dialog
-      title="THÔNG TIN KHÁCH HÀNG"
-      :visible.sync="showUserDetail"
-      width="600px"
-      center
-    >
+    <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
       <div style="display: flex; align-items: center; flex-direction: column">
         <div v-if="UserInfo.user && UserInfo.user.avatar_url">
           <img
@@ -470,20 +410,19 @@
         </div>
 
         <div>
-          <el-rate
-            disabled
-            :value="+UserInfo.tin_nhiem"
-            :colors="colors"
-          ></el-rate>
+          <el-rate disabled :value="+UserInfo.tin_nhiem" :colors="colors"></el-rate>
         </div>
       </div>
       <br />
       <el-row>
-        <el-col :span="22" :offset="1"
-          ><div style="font-weight: bold">
-            Ghi chú: <span style="color: green">{{ UserInfo.ghi_chu }}</span>
-          </div></el-col
-        >
+        <el-col :span="22" :offset="1">
+          <hr><br>
+          <div style="font-weight: bold">
+            Ghi chú:
+            <span style="color: green">{{ UserInfo.ghi_chu }}</span>
+          </div><br>
+          <hr>
+        </el-col>
       </el-row>
       <el-row style="margin-top: 30px">
         <el-form label-position="left" label-width="110px" size="small">
@@ -491,34 +430,33 @@
             <el-form-item label="Khách hàng: ">{{ UserInfo.ten }}</el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="Số điện thoại: ">{{
+            <el-form-item label="Số điện thoại: ">
+              {{
               UserInfo.so_dien_thoai
-            }}</el-form-item>
+              }}
+            </el-form-item>
           </el-col>
           <el-col :span="14" :offset="1">
-            <el-form-item label="Địa chỉ Email: ">{{
+            <el-form-item label="Địa chỉ Email: ">
+              {{
               UserInfo.email
-            }}</el-form-item>
+              }}
+            </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="Số dư TK: "
-              >{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item
-            >
+            <el-form-item label="Số dư TK: ">{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item>
           </el-col>
           <el-col :span="23" :offset="1">
-            <el-form-item label="Địa chỉ: ">{{
+            <el-form-item label="Địa chỉ: ">
+              {{
               UserInfo.dia_chi
-            }}</el-form-item>
+              }}
+            </el-form-item>
           </el-col>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button
-          class="primary-button"
-          @click="showUserDetail = false"
-          icon="el-icon-close"
-          >Đóng</el-button
-        >
+        <el-button class="primary-button" @click="showUserDetail = false" icon="el-icon-close">Đóng</el-button>
       </span>
     </el-dialog>
 
@@ -537,30 +475,14 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã khách hàng" prop="ma">
-              <el-input
-                size="small"
-                v-model="formKhaHang.ma"
-                :disabled="true"
-              ></el-input>
+              <el-input size="small" v-model="formKhaHang.ma" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Loại khách hàng">
               <br />
-              <el-radio
-                v-model="formKhaHang.ca_nhan"
-                :label="true"
-                border
-                size="small"
-                >Cá nhân</el-radio
-              >
-              <el-radio
-                v-model="formKhaHang.ca_nhan"
-                :label="false"
-                border
-                size="small"
-                >Tổ chức</el-radio
-              >
+              <el-radio v-model="formKhaHang.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
+              <el-radio v-model="formKhaHang.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -570,37 +492,19 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Mã số thuế">
-              <el-input
-                size="small"
-                v-model="formKhaHang.ma_so_thue"
-              ></el-input>
+              <el-input size="small" v-model="formKhaHang.ma_so_thue"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input
-                size="small"
-                v-model="formKhaHang.so_dien_thoai"
-              ></el-input>
+              <el-input size="small" v-model="formKhaHang.so_dien_thoai"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Giới tính">
               <br />
-              <el-radio
-                v-model="formKhaHang.gioi_tinh"
-                :label="true"
-                border
-                size="small"
-                >Nam</el-radio
-              >
-              <el-radio
-                v-model="formKhaHang.gioi_tinh"
-                :label="false"
-                border
-                size="small"
-                >Nữ</el-radio
-              >
+              <el-radio v-model="formKhaHang.gioi_tinh" :label="true" border size="small">Nam</el-radio>
+              <el-radio v-model="formKhaHang.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -627,12 +531,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ghi chú">
-              <el-input
-                size="small"
-                type="textarea"
-                v-model="formKhaHang.mo_ta"
-                :rows="2"
-              ></el-input>
+              <el-input size="small" type="textarea" v-model="formKhaHang.mo_ta" :rows="2"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -644,21 +543,12 @@
           </el-col>
           <el-col :span="14" :offset="5">
             <el-form-item label="Mật khẩu" prop="password">
-              <el-input
-                type="password"
-                v-model="formKhaHang.password"
-              ></el-input>
+              <el-input type="password" v-model="formKhaHang.password"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="5">
-            <el-form-item
-              label="Nhập lại mật khẩu"
-              prop="password_confirmation"
-            >
-              <el-input
-                type="password"
-                v-model="formKhaHang.password_confirmation"
-              ></el-input>
+            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
+              <el-input type="password" v-model="formKhaHang.password_confirmation"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -673,24 +563,21 @@
           v-if="next"
           icon="el-icon-right"
           @click="next = !next"
-          >Tiếp theo</el-button
-        >
+        >Tiếp theo</el-button>
         <el-button
           type="warning"
           size="small"
           v-if="!next"
           icon="el-icon-back"
           @click="next = !next"
-          >Quay lại</el-button
-        >
+        >Quay lại</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-if="!next"
           icon="el-icon-plus"
           @click="addKhachHang('formKhaHang')"
-          >THÊM MỚI</el-button
-        >
+        >THÊM MỚI</el-button>
       </span>
     </el-dialog>
   </div>
@@ -1028,13 +915,12 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });
     },
 
-    async remoteMethod(query) {
+    async remoteMethodKH(query) {
       this.loading = true;
       let data = await getKhachHang({
         per_page: 999999,
@@ -1151,11 +1037,8 @@ export default {
               }
               this.resetForm();
             })
-            .catch((error) => {
-              
-            });
+            .catch((error) => {});
         } else {
-          
           return false;
         }
       });
@@ -1189,7 +1072,7 @@ export default {
         trang_thai: "moi_tao",
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
-        phu_thu: null,
+        phu_thu: 0,
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;

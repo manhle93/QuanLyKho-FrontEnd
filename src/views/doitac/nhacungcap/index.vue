@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green">DANH SÁCH NHÀ CUNG CẤP</i></h4>
+    <h4>
+      <i style="color: green">DANH SÁCH NHÀ CUNG CẤP</i>
+    </h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="9">
         <el-input
@@ -17,8 +19,7 @@
           class="primary-button"
           icon="el-icon-search"
           @click="searchData()"
-          >Tìm kiếm</el-button
-        >
+        >Tìm kiếm</el-button>
       </el-col>
       <el-col :span="10">
         <el-button
@@ -27,8 +28,7 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-          >THÊM MỚI</el-button
-        >
+        >THÊM MỚI</el-button>
       </el-col>
     </el-row>
     <br />
@@ -48,59 +48,27 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="STT"
-        min-width="65"
-        type="index"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        sortable
-        prop="ten"
-        min-width="170"
-        label="Tên nhà cung cấp"
-      >
+      <el-table-column label="STT" min-width="65" type="index" align="center"></el-table-column>
+      <el-table-column sortable prop="ten" min-width="170" label="Tên nhà cung cấp">
         <template slot-scope="scope">
           <a @click="showUpdate(scope.row)">{{ scope.row.ten }}</a>
         </template>
       </el-table-column>
-      <el-table-column
-        label="Địa chỉ"
-        prop="dia_chi"
-        min-width="197"
-      ></el-table-column>
-      <el-table-column
-        label="Số điện thoại"
-        prop="so_dien_thoai"
-        min-width="130"
-        align="center"
-      ></el-table-column>
+      <el-table-column label="Địa chỉ" prop="dia_chi" min-width="197"></el-table-column>
+      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="130" align="center"></el-table-column>
       <el-table-column label="Trạng thái" min-width="130" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain"
-            >HOẠT ĐỘNG</el-tag
-          >
+          <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain">HOẠT ĐỘNG</el-tag>
           <el-tag v-else effect="plain" type="danger">KHÔNG HOẠT ĐỘNG</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        label="Công ty"
-        min-width="157"
-        prop="cong_ty"
-      ></el-table-column>
+      <el-table-column label="Công ty" min-width="157" prop="cong_ty"></el-table-column>
       <el-table-column label="Công nợ phải trả" min-width="157" prop="cong_no">
-        <template slot-scope="scope"
-          >{{ formate.formatCurrency(scope.row.cong_no) }} đ</template
-        >
+        <template slot-scope="scope">{{ formate.formatCurrency(scope.row.cong_no) }} đ</template>
       </el-table-column>
       <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="Chỉnh sửa"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
               size="small"
               style="background-color: #2e86c1; color: white"
@@ -135,7 +103,7 @@
     <el-dialog
       :title="edit ? 'CẬP NHẬT NHÀ CUNG CẤP' : 'THÊM MỚI NHÀ CUNG CẤP'"
       :visible.sync="showForm"
-      width="60%"
+      width="800px"
       center
     >
       <el-form :model="form" :rules="rules" ref="form">
@@ -147,11 +115,7 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã nhà cung cấp" prop="ma">
-              <el-input
-                size="small"
-                :disabled="true"
-                v-model="form.ma"
-              ></el-input>
+              <el-input size="small" :disabled="true" v-model="form.ma"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -168,8 +132,7 @@
                 type="date"
                 format="'Ngày:' dd 'Hàng tháng'"
                 placeholder="Ngày chốt công nợ"
-              >
-              </el-date-picker>
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -181,14 +144,13 @@
                 type="date"
                 format="'Ngày:' dd 'Hàng tháng'"
                 placeholder="Ngày thanh toán"
-              >
-              </el-date-picker>
+              ></el-date-picker>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input size="small" v-model="form.so_dien_thoai"></el-input>
+              <el-input size="small" type="number" v-model="form.so_dien_thoai"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -209,22 +171,12 @@
           <el-col :span="12">
             <el-form-item label="Trạng thái">
               <br />
-              <el-checkbox
-                size="small"
-                v-model="form.trang_thai"
-                label="Hoạt động"
-                border
-              ></el-checkbox>
+              <el-checkbox size="small" v-model="form.trang_thai" label="Hoạt động" border></el-checkbox>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ghi chú">
-              <el-input
-                size="small"
-                type="textarea"
-                v-model="form.mo_ta"
-                :rows="2"
-              ></el-input>
+              <el-input size="small" type="textarea" v-model="form.mo_ta" :rows="2"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -290,14 +242,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="5">
-            <el-form-item
-              label="Nhập lại mật khẩu"
-              prop="password_confirmation"
-            >
-              <el-input
-                type="password"
-                v-model="form.password_confirmation"
-              ></el-input>
+            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
+              <el-input type="password" v-model="form.password_confirmation"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -313,32 +259,28 @@
           v-if="next && !edit"
           icon="el-icon-right"
           @click="next = !next"
-          >Tiếp theo</el-button
-        >
+        >Tiếp theo</el-button>
         <el-button
           type="warning"
           size="small"
           v-if="!next && !edit"
           icon="el-icon-back"
           @click="next = !next"
-          >Quay lại</el-button
-        >
+        >Quay lại</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit && !next"
           icon="el-icon-plus"
           @click="addNhaCungCap('form')"
-          >THÊM MỚI</el-button
-        >
+        >THÊM MỚI</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-if="edit"
           icon="el-icon-check"
           @click="updateNhaCungCap('form')"
-          >Cập nhật</el-button
-        >
+        >Cập nhật</el-button>
       </span>
     </el-dialog>
   </div>
@@ -460,6 +402,19 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+        so_dien_thoai: [
+          {
+            required: true,
+            message: "Hãy nhập số điện thoại",
+            trigger: "change",
+          },
+          {
+            min: 10,
+            max: 11,
+            message: "Số điện thoại không hợp lệ",
+            trigger: "blur",
+          },
+        ],
         username: [
           {
             required: true,
@@ -563,7 +518,6 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });
@@ -580,7 +534,6 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });

@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green">DANH SÁCH KHÁCH HÀNG</i></h4>
+    <h4>
+      <i style="color: green">DANH SÁCH KHÁCH HÀNG</i>
+    </h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="9">
         <el-input
@@ -40,11 +42,11 @@
       highlight-current-row
       style="font-size: 13px"
     >
-        <el-table-column type="expand">
-      <template slot-scope="props">
-        <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
-      </template>
-    </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <chi-tiet :data="props.row" @capNhatThongTin="showUpdate"></chi-tiet>
+        </template>
+      </el-table-column>
       <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column prop="ten" min-width="160" label="Tên khách hàng">
         <template slot-scope="scope">
@@ -68,11 +70,9 @@
       </el-table-column>
       <el-table-column sortable label="Tổng nợ" min-width="157" prop="tong_no">
         <template slot-scope="scope">
-          <div v-if="scope.row.tong_no == 0">
-             {{formate.formatCurrency(scope.row.tong_no)}} đ
-          </div>
+          <div v-if="scope.row.tong_no == 0">{{formate.formatCurrency(scope.row.tong_no)}} đ</div>
           <el-tag v-else type="danger">{{formate.formatCurrency(scope.row.tong_no)}} đ</el-tag>
-          </template>
+        </template>
       </el-table-column>
       <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
@@ -104,6 +104,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :page-sizes="[5, 10, 15, 20]"
+        :page-size="5"
         layout="total, sizes, prev, pager, next"
         :total="total"
       ></el-pagination>
@@ -149,7 +150,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input size="small" v-model="form.so_dien_thoai"></el-input>
+              <el-input size="small" type="number" v-model="form.so_dien_thoai"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -355,9 +356,9 @@ import {
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
-import ChiTiet from "./chitiet"
+import ChiTiet from "./chitiet";
 export default {
-  components: {ChiTiet},
+  components: { ChiTiet },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -472,6 +473,19 @@ export default {
           {
             required: true,
             message: "Tên đăng nhập không thể bỏ trống",
+            trigger: "blur",
+          },
+        ],
+        so_dien_thoai: [
+          {
+            required: true,
+            message: "Hãy nhập số điện thoại",
+            trigger: "change",
+          },
+          {
+            min: 10,
+            max: 11,
+            message: "Số điện thoại không hợp lệ",
             trigger: "blur",
           },
         ],
@@ -599,7 +613,6 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });

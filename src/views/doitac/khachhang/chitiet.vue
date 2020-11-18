@@ -53,9 +53,11 @@
           </div>
           <div class="tieu-de">
             <div class="sub-title">Trạng thái:</div>
-            <label>{{
+            <label>
+              {{
               data.user.active ? "Hoạt động" : "Không hoạt động"
-            }}</label>
+              }}
+            </label>
           </div>
           <div class="tieu-de">
             <div class="sub-title">Facebook :</div>
@@ -69,92 +71,55 @@
         class="primary-button"
         icon="el-icon-edit"
         @click="capNhatTT(data)"
-        >Cập nhật thông tin</el-button
-      >
+      >Cập nhật thông tin</el-button>
     </el-tab-pane>
     <el-tab-pane label="Giao dịch">
       <el-table :data="data.don_dat_hangs" style="max-height: 500px">
         <el-table-column label="STT" type="index"></el-table-column>
-        <el-table-column
-          property="ma"
-          label="Mã đơn hàng"
-          min-width="125"
-        ></el-table-column>
-        <el-table-column
-          property="ten"
-          label="Tên đơn hàng"
-          min-width="123"
-        ></el-table-column>
-        <el-table-column
-          prop="created_at"
-          label="Thời gian tạo"
-        ></el-table-column>
+        <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
+        <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
+        <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
         <el-table-column property="ghi_chu" label="Ghi chú"></el-table-column>
         <el-table-column label="Đã thanh toán" prop="da_thanh_toan">
-          <template slot-scope="scope"
-            >{{ formate.formatCurrency(scope.row.da_thanh_toan) }} đ</template
-          >
+          <template slot-scope="scope">{{ formate.formatCurrency(scope.row.da_thanh_toan) }} đ</template>
         </el-table-column>
-        <el-table-column
-          label="Còn phải thanh toán"
-          min-width="115"
-          prop="con_phai_thanh_toan"
-        >
-          <template slot-scope="scope"
-            >{{
-              formate.formatCurrency(scope.row.con_phai_thanh_toan)
+        <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan">
+          <template slot-scope="scope">
+            {{
+            formate.formatCurrency(scope.row.con_phai_thanh_toan)
             }}
-            đ</template
-          >
+            đ
+          </template>
         </el-table-column>
-        <el-table-column
-          property="trang_thai"
-          label="Trạng thái"
-          min-width="125"
-        >
+        <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
           <template slot-scope="scope">
             <el-tag
               type="success"
               effect="plain"
               v-if="scope.row.trang_thai == 'mua_hang_online'"
-              >Mua hàng online</el-tag
-            >
+            >Mua hàng online</el-tag>
             <el-tag
               type="primary"
               effect="plain"
               v-if="scope.row.trang_thai == 'dat_hang_online'"
-              >Đặt hàng online</el-tag
-            >
-            <el-tag
-              type="success"
-              effect="plain"
-              v-if="scope.row.trang_thai == 'moi_tao'"
-              >Mới tạo</el-tag
-            >
-            <el-tag
-              effect="plain"
-              type="danger"
-              v-if="scope.row.trang_thai == 'huy_bo'"
-              >Hủy bỏ</el-tag
-            >
+            >Đặt hàng online</el-tag>
+            <el-tag type="success" effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
+            <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
             <el-tag
               effect="plain"
               v-if="scope.row.trang_thai == 'huy_hoa_don'"
               type="warning"
-              >Hủy hóa đơn</el-tag
-            >
+            >Hủy hóa đơn</el-tag>
             <el-tag
               effect="plain"
               v-if="scope.row.trang_thai == 'khach_huy'"
               type="warning"
-              >Khách huỷ đơn</el-tag
-            >
+            >Khách huỷ đơn</el-tag>
             <el-tag
               effect="plain"
               type="success"
               v-if="scope.row.trang_thai == 'hoa_don'"
-              >Đã chuyển hóa đơn</el-tag
-            >
+            >Đã chuyển hóa đơn</el-tag>
           </template>
         </el-table-column>
       </el-table>
@@ -162,92 +127,56 @@
     <el-tab-pane label="Công nợ">
       <el-table :data="congNos" style="max-height: 500px">
         <el-table-column label="STT" type="index"></el-table-column>
-        <el-table-column
-          property="ma"
-          label="Mã đơn hàng"
-          min-width="125"
-        ></el-table-column>
-        <el-table-column
-          property="ten"
-          label="Tên đơn hàng"
-          min-width="123"
-        ></el-table-column>
-        <el-table-column
-          prop="created_at"
-          label="Thời gian tạo"
-        ></el-table-column>
+        <el-table-column property="ma" label="Mã đơn hàng" min-width="125"></el-table-column>
+        <el-table-column property="ten" label="Tên đơn hàng" min-width="123"></el-table-column>
+        <el-table-column prop="created_at" label="Thời gian tạo"></el-table-column>
         <el-table-column property="ghi_chu" label="Ghi chú"></el-table-column>
         <el-table-column label="Đã thanh toán" prop="da_thanh_toan">
-          <template slot-scope="scope"
-            >{{ formate.formatCurrency(scope.row.da_thanh_toan) }} đ</template
-          >
+          <template slot-scope="scope">{{ formate.formatCurrency(scope.row.da_thanh_toan) }} đ</template>
         </el-table-column>
-        <el-table-column
-          label="Còn phải thanh toán"
-          min-width="115"
-          prop="con_phai_thanh_toan"
-        >
-          <template slot-scope="scope"
-            ><el-tag type="danger"
-              >{{
-                formate.formatCurrency(scope.row.con_phai_thanh_toan)
+        <el-table-column label="Còn phải thanh toán" min-width="115" prop="con_phai_thanh_toan">
+          <template slot-scope="scope">
+            <el-tag type="danger">
+              {{
+              formate.formatCurrency(scope.row.con_phai_thanh_toan)
               }}
-              đ</el-tag
-            ></template
-          >
+              đ
+            </el-tag>
+          </template>
         </el-table-column>
-        <el-table-column
-          property="trang_thai"
-          label="Trạng thái"
-          min-width="125"
-        >
+        <el-table-column property="trang_thai" label="Trạng thái" min-width="125">
           <template slot-scope="scope">
             <el-tag
               type="success"
               effect="plain"
               v-if="scope.row.trang_thai == 'mua_hang_online'"
-              >Mua hàng online</el-tag
-            >
+            >Mua hàng online</el-tag>
             <el-tag
               type="primary"
               effect="plain"
               v-if="scope.row.trang_thai == 'dat_hang_online'"
-              >Đặt hàng online</el-tag
-            >
-            <el-tag
-              type="success"
-              effect="plain"
-              v-if="scope.row.trang_thai == 'moi_tao'"
-              >Mới tạo</el-tag
-            >
-            <el-tag
-              effect="plain"
-              type="danger"
-              v-if="scope.row.trang_thai == 'huy_bo'"
-              >Hủy bỏ</el-tag
-            >
+            >Đặt hàng online</el-tag>
+            <el-tag type="success" effect="plain" v-if="scope.row.trang_thai == 'moi_tao'">Mới tạo</el-tag>
+            <el-tag effect="plain" type="danger" v-if="scope.row.trang_thai == 'huy_bo'">Hủy bỏ</el-tag>
             <el-tag
               effect="plain"
               v-if="scope.row.trang_thai == 'huy_hoa_don'"
               type="warning"
-              >Hủy hóa đơn</el-tag
-            >
+            >Hủy hóa đơn</el-tag>
             <el-tag
               effect="plain"
               v-if="scope.row.trang_thai == 'khach_huy'"
               type="warning"
-              >Khách huỷ đơn</el-tag
-            >
+            >Khách huỷ đơn</el-tag>
             <el-tag
               effect="plain"
               type="success"
               v-if="scope.row.trang_thai == 'hoa_don'"
-              >Đã chuyển hóa đơn</el-tag
-            >
+            >Đã chuyển hóa đơn</el-tag>
           </template>
         </el-table-column>
-      </el-table></el-tab-pane
-    >
+      </el-table>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>

@@ -255,42 +255,42 @@ export const asyncRoutes = [
           icon: "mathang"
         }
       },
-      {
-        path: "management",
-        name: "Quản lý người dùng",
-        component: () => import("@/views/user/index"),
-        meta: {
-          title: "Quản lý người dùng",
-          icon: "quanlynguoidung"
-        }
-      },
-      {
-        path: "nhanvien",
-        name: "Quản lý nhân viên",
-        component: () => import("@/views/user/nhanvien/index"),
-        meta: {
-          title: "Quản lý nhân viên",
-          icon: "quanlynguoidung"
-        }
-      },
-      {
-        path: "nhacungcap",
-        name: "Nhà cung cấp",
-        component: () => import("@/views/doitac/nhacungcap/index"),
-        meta: {
-          title: "Nhà cung cấp",
-          icon: "nhacungcap"
-        }
-      },
-      {
-        path: "khachhang",
-        name: "Khách hàng",
-        component: () => import("@/views/doitac/khachhang/index"),
-        meta: {
-          title: "Khách hàng",
-          icon: "khachhang"
-        }
-      },
+      // {
+      //   path: "management",
+      //   name: "Quản lý người dùng",
+      //   component: () => import("@/views/user/index"),
+      //   meta: {
+      //     title: "Quản lý người dùng",
+      //     icon: "quanlynguoidung"
+      //   }
+      // },
+      // {
+      //   path: "nhanvien",
+      //   name: "Quản lý nhân viên",
+      //   component: () => import("@/views/user/nhanvien/index"),
+      //   meta: {
+      //     title: "Quản lý nhân viên",
+      //     icon: "quanlynguoidung"
+      //   }
+      // },
+      // {
+      //   path: "nhacungcap",
+      //   name: "Nhà cung cấp",
+      //   component: () => import("@/views/doitac/nhacungcap/index"),
+      //   meta: {
+      //     title: "Nhà cung cấp",
+      //     icon: "nhacungcap"
+      //   }
+      // },
+      // {
+      //   path: "khachhang",
+      //   name: "Khách hàng",
+      //   component: () => import("@/views/doitac/khachhang/index"),
+      //   meta: {
+      //     title: "Khách hàng",
+      //     icon: "khachhang"
+      //   }
+      // },
       {
         path: "baogia",
         name: "Báo giá",

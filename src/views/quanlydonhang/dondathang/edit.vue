@@ -259,7 +259,7 @@
               v-model="form.khach_hang_id"
               filterable
               remote
-              :remote-method="remoteMethod"
+              :remote-method="remoteMethodKH"
               reserve-keyword
               style="width: 80%"
               placeholder="Chọn khách hàng"
@@ -799,7 +799,6 @@ export default {
         ten: null,
         ghi_chu: null,
         tong_tien: null,
-        da_thanh_toan: null,
         danhSachHang: [],
         khach_hang_id: null,
         da_thanh_toan: 0,
@@ -1222,7 +1221,7 @@ export default {
         ten: null,
         ghi_chu: null,
         tong_tien: null,
-        da_thanh_toan: null,
+        da_thanh_toan: 0,
         danhSachHang: [],
         khach_hang_id: null,
         da_thanh_toan: 0,
@@ -1246,7 +1245,7 @@ export default {
       this.nhaCungCaps = data.data.data;
     },
 
-    async remoteMethod(query) {
+    async remoteMethodKH(query) {
       this.loading = true;
       let data = await getKhachHang({
         per_page: 999999,

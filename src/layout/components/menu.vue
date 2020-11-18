@@ -76,3 +76,13 @@ export default {
 }
 </style>
 
+<style>
+/* .is-opened .el-submenu__title {
+  background-color: red !important;
+}
+.el-menu-item:hover {
+    background-color: red !important;
+
+} */
+</style>
+

@@ -288,6 +288,7 @@ export default {
       let data = await getChiTietBaoGia(this.$route.params.id);
       this.form.ma = data.data.ma;
       this.form.ten = data.data.ten;
+      this.form.ghi_chu = data.data.ghi_chu
       this.form.nha_cung_cap_id = data.data.user_id;
       this.form.danhSachHang = [];
       for (let sp of data.data.san_phams) {
