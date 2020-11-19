@@ -228,6 +228,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "dinhmucsanxuat",
+        name: "Định mức sản xuất",
+        component: () => import("@/views/quanlykho/dinhmuc/index"),
+        meta: {
+          title: "Định mức sản xuất",
+          icon: "danhmuc"
+        }
+      },
+      {
         path: "thietlapgia",
         name: "Thiết lập giá",
         component: () => import("@/views/quanlykho/thietlapgia/index"),

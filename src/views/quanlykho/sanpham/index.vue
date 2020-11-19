@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green"> DANH SÁCH SẢN PHẨM/ HÀNG HÓA</i></h4>
+    <h4>
+      <i style="color: green">DANH SÁCH SẢN PHẨM/ HÀNG HÓA</i>
+    </h4>
     <el-row :gutter="20" justify="space-around">
       <el-col :span="5">
         <el-input
@@ -32,8 +34,7 @@
           class="primary-button"
           icon="el-icon-search"
           @click="getData()"
-          >Tìm kiếm</el-button
-        >
+        >Tìm kiếm</el-button>
       </el-col>
       <el-col :span="10">
         <router-link to="themsanpham">
@@ -42,40 +43,23 @@
             size="small"
             icon="el-icon-plus"
             class="primary-button"
-            >THÊM HÀNG HÓA</el-button
-          >
+          >THÊM HÀNG HÓA</el-button>
         </router-link>
       </el-col>
     </el-row>
     <h5>Nhập dữ liệu từ excel</h5>
     <el-row :gutter="20">
-      <input
-        ref="upload-image"
-        class="upload-image"
-        type="file"
-        @change="handleChange($event)"
-      />
+      <input ref="upload-image" class="upload-image" type="file" @change="handleChange($event)" />
       <el-col :span="20">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="Tải xuống file Excel mẫu"
-          placement="top"
-        >
+        <el-tooltip class="item" effect="dark" content="Tải xuống file Excel mẫu" placement="top">
           <el-button
             size="mini"
             class="primary-button block"
             :icon="iconDowload"
             @click="downloadMau"
-            >Tải dữ liệu</el-button
-          >
+          >Tải dữ liệu</el-button>
         </el-tooltip>
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="Chọn file để tải lên"
-          placement="top"
-        >
+        <el-tooltip class="item" effect="dark" content="Chọn file để tải lên" placement="top">
           <el-button
             :disabled="loadingUpload"
             size="mini"
@@ -83,8 +67,7 @@
             class="block"
             :icon="iconUpload"
             @click="handleUpload"
-            >Import dữ liệu</el-button
-          >
+          >Import dữ liệu</el-button>
         </el-tooltip>
       </el-col>
     </el-row>
@@ -99,12 +82,7 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column
-        label="STT"
-        min-width="55"
-        type="index"
-        align="center"
-      ></el-table-column>
+      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
@@ -117,53 +95,30 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        prop="ten_san_pham"
-        min-width="160"
-        label="Tên sản phẩm"
-      ></el-table-column>
-      <el-table-column
-        prop="danh_muc.ten_danh_muc"
-        min-width="160"
-        label="Danh mục"
-      ></el-table-column>
+      <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
+      <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
-        <template slot-scope="scope">{{
-          formate.formatCurrency(scope.row.gia_ban) + " đ"
-        }}</template>
-      </el-table-column>
-      <el-table-column
-        prop="don_vi_tinh"
-        min-width="160"
-        label="Đơn vị tính"
-      ></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
-        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">{{
-          scope.row.mo_ta_san_pham.length > 70
-            ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
-            : scope.row.mo_ta_san_pham
-        }}</template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        min-width="110"
-        fixed="right"
-        label="Hoạt động"
-      >
         <template slot-scope="scope">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="Chỉnh sửa"
-            placement="top"
-          >
+          {{
+          formate.formatCurrency(scope.row.gia_ban) + " đ"
+          }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
+      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
+        <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">
+          {{
+          scope.row.mo_ta_san_pham.length > 70
+          ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
+          : scope.row.mo_ta_san_pham
+          }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <router-link :to="'capnhatsanpham/' + scope.row.id">
-              <el-button
-                size="small"
-                class="primary-button"
-                icon="el-icon-edit"
-                circle
-              ></el-button>
+              <el-button size="small" class="primary-button" icon="el-icon-edit" circle></el-button>
             </router-link>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
@@ -200,7 +155,12 @@ import {
   upAnhDanhMuc,
   xoaDanhMuc,
 } from "@/api/danhmucsanpham";
-import { listSanPham, addSanPham, xoaSanPham, uploadSanPham } from "@/api/sanpham";
+import {
+  listSanPham,
+  addSanPham,
+  xoaSanPham,
+  uploadSanPham,
+} from "@/api/sanpham";
 
 export default {
   filters: {
@@ -273,7 +233,6 @@ export default {
             });
           })
           .catch((error) => {
-            
             this.iconUpload = "el-icon-bottom";
             this.loadingUpload = false;
           });
@@ -283,8 +242,8 @@ export default {
     handleUpload() {
       this.$refs["upload-image"].click();
     },
-   downloadMau() {
-       window.location.assign(process.env.VUE_APP_BASE_API + "exportsanpham");
+    downloadMau() {
+      window.location.assign(process.env.VUE_APP_BASE_API + "exportsanpham");
     },
     async getDanhMuc() {
       let data = await index();
