@@ -255,15 +255,6 @@ export const asyncRoutes = [
           icon: "mathang"
         }
       },
-      {
-        path: "phieuthu",
-        name: "Quản lý phiếu thu",
-        component: () => import("@/views/quanlydonhang/phieuthu/index"),
-        meta: {
-          title: "Quản lý phiếu thu",
-          icon: "mathang"
-        }
-      },
       // {
       //   path: "management",
       //   name: "Quản lý người dùng",
@@ -406,7 +397,16 @@ export const asyncRoutes = [
           title: "Thu chi nội bộ",
           icon: "thongtin "
         }
-      }
+      },
+      {
+        path: "phieuthu",
+        name: "Quản lý phiếu thu",
+        component: () => import("@/views/quanlydonhang/phieuthu/index"),
+        meta: {
+          title: "Quản lý phiếu thu",
+          icon: "mathang"
+        }
+      },
     ]
   },
   {
