@@ -1,35 +1,38 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green"> DANH SÁCH NHÓM HÀNG HÓA</i></h4>
-      <el-row :gutter="20" justify="space-around">
-        <el-col :span="5">
-          <el-input
-            size="small"
-            placeholder="Thông tin tìm kiếm"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="searchData"
-          ></el-input>
-        </el-col>
-        <el-col :span="7">
-          <el-button
-            size="small"
-            class="primary-button"
-            icon="el-icon-search"
-            @click="searchData()"
-          >Tìm kiếm</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button
-            style="float: right"
-            @click="showFormAdd"
-            size="small"
-            icon="el-icon-plus"
-            class="primary-button"
-          >THÊM MỚI</el-button>
-        </el-col>
-      </el-row>
-      <br><br>
+    <h4>
+      <i style="color: green">DANH SÁCH NHÓM HÀNG HÓA</i>
+    </h4>
+    <el-row :gutter="20" justify="space-around">
+      <el-col :span="5">
+        <el-input
+          size="small"
+          placeholder="Thông tin tìm kiếm"
+          v-model="search"
+          suffix-icon="el-icon-search"
+          @keyup.enter.native="searchData"
+        ></el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-button
+          size="small"
+          class="primary-button"
+          icon="el-icon-search"
+          @click="searchData()"
+        >Tìm kiếm</el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button
+          style="float: right"
+          @click="showFormAdd"
+          size="small"
+          icon="el-icon-plus"
+          class="primary-button"
+        >THÊM MỚI</el-button>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -39,12 +42,7 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column
-        label="STT"
-        min-width="55"
-        type="index"
-        align="center"
-      ></el-table-column>
+      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
@@ -57,38 +55,17 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="ten_danh_muc"
-        min-width="160"
-        label="Tên"
-      ></el-table-column>
-      <el-table-column
-        label="Mô tả"
-        prop="mo_ta"
-        min-width="157"
-      ></el-table-column>
+      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
+      <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
       <el-table-column label="Số mặt hàng" min-width="157">
-        <template slot-scope="scope"
-          >{{ scope.row.so_mat_hang }} sản phẩm</template
-        >
+        <template slot-scope="scope">{{ scope.row.so_mat_hang }} sản phẩm</template>
       </el-table-column>
-      <el-table-column label="Thứ tự hiển thị" >
+      <el-table-column label="Thứ tự hiển thị">
         <template slot-scope="scope">{{ scope.row.thu_tu_hien_thi }}</template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        min-width="110"
-        fixed="right"
-        label="Hoạt động"
-      >
+      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="Chỉnh sửa"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button
               size="small"
               class="primary-button"
@@ -158,39 +135,30 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="Mô tả thêm">
-              <el-input
-                type="textarea"
-                v-model="form.mo_ta"
-                :rows="2"
-              ></el-input>
+              <el-input type="textarea" v-model="form.mo_ta" :rows="2"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="24">
+              <el-checkbox v-model="form.kinh_doanh" label="Có kinh doanh" border size="small"></el-checkbox>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button
-          size="small"
-          type="warning"
-          icon="el-icon-close"
-          @click="showForm = false"
-          >Hủy</el-button
-        >
+        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="addDanhMuc('form')"
-          >THÊM MỚI</el-button
-        >
+        >THÊM MỚI</el-button>
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="updateDanhMuc('form')"
-          >Cập nhật</el-button
-        >
+        >Cập nhật</el-button>
       </span>
     </el-dialog>
   </div>
@@ -239,6 +207,7 @@ export default {
         mo_ta: "",
         ten_danh_muc: "",
         thu_tu_hien_thi: null,
+        kinh_doanh: true
       },
       rules: {
         ten_danh_muc: [
@@ -265,6 +234,7 @@ export default {
       this.form.id = data.id;
       this.form.thu_tu_hien_thi = data.thu_tu_hien_thi;
       this.form.anh_dai_dien = data.anh_dai_dien;
+      this.form.kinh_doanh = data.kinh_doanh
       if (data.anh_dai_dien) {
         this.srcForm = process.env.VUE_APP_BASE + data.anh_dai_dien;
       } else {
@@ -326,7 +296,6 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });
@@ -343,7 +312,6 @@ export default {
             });
           });
         } else {
-          
           return false;
         }
       });
@@ -357,6 +325,7 @@ export default {
         mo_ta: "",
         ten_danh_muc: "",
         thu_tu_hien_thi: null,
+        kinh_doanh: true
       };
     },
     handleChange(e) {

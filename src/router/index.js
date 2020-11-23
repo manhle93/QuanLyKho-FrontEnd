@@ -93,6 +93,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "homnayangi",
+        name: "Hôm nay ăn gì",
+        component: () => import("@/views/caidat/homnayangi/index"),
+        meta: {
+          title: "Hôm nay ăn gì",
+          icon: "slider"
+        }
+      },
+      {
         path: "monngonmoingay",
         name: "Món ngon mỗi ngày",
         component: () => import("@/views/caidat/monngon/index"),

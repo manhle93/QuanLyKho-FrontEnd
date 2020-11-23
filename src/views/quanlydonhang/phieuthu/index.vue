@@ -32,9 +32,9 @@
           size="small"
         >
           <el-option value="tra_truoc" label="Trả trước"></el-option>
-          <el-option value="tien_mat" label="[Trả sau] Tiền mặt"></el-option>
-          <el-option value="chuyen_khoan" label="[Trả sau] Chuyển khoản/Quẹt thẻ"></el-option>
-          <el-option value="tai_khoan" label="[Trả sau] Tài khoản"></el-option>
+          <el-option value="tien_mat" label="Tiền mặt"></el-option>
+          <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
+          <el-option value="tai_khoan" label="Tài khoản"></el-option>
         </el-select>
       </el-col>
       <el-col :span="3">
