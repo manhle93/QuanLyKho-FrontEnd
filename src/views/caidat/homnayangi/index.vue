@@ -20,7 +20,6 @@
           icon="el-icon-search"
           @click="getData()"
         >Tìm kiếm</el-button>
-        <el-button @click="showTable" size="small" icon="el-icon-view" type="warning">HIỂN THỊ</el-button>
       </el-col>
       <el-col :span="7">
         <el-button
@@ -118,16 +117,6 @@
         :total="total"
       ></el-pagination>
     </div>
-    <el-dialog
-      title="DANH SÁCH HIỂN THỊ TRÊN TRANG CHỦ"
-      width="600px"
-      center
-      :visible.sync="viewShow"
-    >
-    <el-table>
-
-    </el-table>
-    </el-dialog>
     <el-dialog
       :title="edit ? 'THÊM MỚI MÓN ĂN' :'CẬP NHẬT MÓN ĂN'"
       :visible.sync="showForm"
@@ -266,7 +255,6 @@ export default {
       srcForm: process.env.VUE_APP_BASE + "images/avatar/product.png",
       endPointImage: process.env.VUE_APP_BASE,
       loading: false,
-      viewShow: false,
       thanhPhams: [],
       nguyenLieus: [],
       list: [],
@@ -309,9 +297,6 @@ export default {
         (el) => el.id == this.nguyen_lieu_id
       );
       this.don_vi = nguyenLieu.don_vi_tinh;
-    },
-    showTable(){
-      this.viewShow = true
     },
     remoteMethodNguyenLieu(query) {
       this.loading = true;
