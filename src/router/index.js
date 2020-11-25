@@ -93,15 +93,6 @@ export const asyncRoutes = [
         }
       },
       {
-        path: "homnayangi",
-        name: "Hôm nay ăn gì",
-        component: () => import("@/views/caidat/homnayangi/index"),
-        meta: {
-          title: "Hôm nay ăn gì",
-          icon: "slider"
-        }
-      },
-      {
         path: "monngonmoingay",
         name: "Sản phẩm bán chạy",
         component: () => import("@/views/caidat/monngon/index"),
@@ -243,6 +234,15 @@ export const asyncRoutes = [
         meta: {
           title: "Định mức sản xuất",
           icon: "danhmuc"
+        }
+      },
+      {
+        path: "homnayangi",
+        name: "Hôm nay ăn gì",
+        component: () => import("@/views/caidat/homnayangi/index"),
+        meta: {
+          title: "Hôm nay ăn gì",
+          icon: "slider"
         }
       },
       {
