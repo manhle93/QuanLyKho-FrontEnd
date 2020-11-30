@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green">DANH SÁCH NHÂN VIÊN</i></h4>
+    <h4>
+      <i style="color: green">DANH SÁCH NHÂN VIÊN</i>
+    </h4>
     <el-form class="search" :model="form">
       <el-row :gutter="20" justify="space-around">
         <el-col :span="5">
@@ -37,6 +39,9 @@
             icon="el-icon-search"
             @click="fetchData()"
           >Tìm kiếm</el-button>
+        </el-col>
+        <el-col :span="8">
+          <CreateUser style="float: right" />
         </el-col>
       </el-row>
     </el-form>
@@ -77,6 +82,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="username" label="Tên đăng nhập" min-width="140"></el-table-column>
+      <el-table-column prop="role.name" label="Vai trò" min-width="140"></el-table-column>
       <el-table-column label="Số điện thoại" min-width="110" prop="phone" align="center"></el-table-column>
       <el-table-column prop="nhan_vien.so_cmt" label="CMND" min-width="100" align="center"></el-table-column>
       <el-table-column min-width="157" label="Địa chỉ" prop="nhan_vien.dia_chi"></el-table-column>
@@ -312,6 +318,7 @@
 </template>
 
 <script>
+import CreateUser from "../create";
 import { getUser, deleteUser, updateNhanVien } from "@/api/user";
 import { getInfor } from "@/api/taikhoan";
 import HoatDong from "./hoatdong";
@@ -328,6 +335,7 @@ export default {
   },
   components: {
     HoatDong,
+    CreateUser,
   },
   data() {
     return {
@@ -491,15 +499,20 @@ export default {
       await getInfor().then((res) => {
         this.user_login = res.data;
       });
-      getUser({ page: this.page, per_page: this.per_page, role: [2, 5], search: this.form.search,  active: this.form.active}).then(
-        (response) => {
-          this.list = response.data.data;
-          this.page = response.data.current_page;
-          this.per_page = response.data.per_page;
-          this.total = response.data.total;
-          this.listLoading = false;
-        }
-      );
+      getUser({
+        page: this.page,
+        per_page: this.per_page,
+        role: [2, 5],
+        search: this.form.search,
+        active: this.form.active,
+      }).then((response) => {
+        this.list = response.data.data;
+        console.log(this.list)
+        this.page = response.data.current_page;
+        this.per_page = response.data.per_page;
+        this.total = response.data.total;
+        this.listLoading = false;
+      });
     },
     handleCreateUser(result) {
       if (result === true) {
@@ -552,5 +565,8 @@ export default {
 <style>
 .search {
   margin-bottom: 20px;
+}
+.upload-image {
+  display: none;
 }
 </style>

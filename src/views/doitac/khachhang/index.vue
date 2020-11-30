@@ -134,36 +134,37 @@
           <el-col :span="12">
             <el-form-item label="Loại khách hàng">
               <br />
-              <el-radio v-model="form.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
-              <el-radio v-model="form.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
+              <el-radio v-model="form.ca_nhan" :label="true" border size="small" :disabled="edit && role_id !=1">Cá nhân</el-radio>
+              <el-radio v-model="form.ca_nhan" :label="false" border size="small" :disabled="edit && role_id !=1">Tổ chức</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Tên khách hàng" prop="ten">
-              <el-input size="small" v-model="form.ten"></el-input>
+              <el-input size="small" v-model="form.ten" :disabled="edit && role_id !=1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Facebook">
-              <el-input size="small" v-model="form.facebook"></el-input>
+              <el-input size="small" v-model="form.facebook" :disabled="edit && role_id !=1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input size="small" type="number" v-model="form.so_dien_thoai"></el-input>
+              <el-input size="small" type="number" v-model="form.so_dien_thoai" :disabled="edit && role_id !=1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Giới tính">
               <br />
-              <el-radio v-model="form.gioi_tinh" :label="true" border size="small">Nam</el-radio>
-              <el-radio v-model="form.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
+              <el-radio v-model="form.gioi_tinh" :label="true" border size="small" :disabled="edit && role_id !=1">Nam</el-radio>
+              <el-radio v-model="form.gioi_tinh" :label="false" border size="small" :disabled="edit && role_id !=1">Nữ</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ngày sinh">
               <br />
               <el-date-picker
+              :disabled="edit && role_id !=1"
                 size="small"
                 style="width: 100%"
                 v-model="form.ngay_sinh"
@@ -174,12 +175,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Địa chỉ email">
-              <el-input size="small" v-model="form.email"></el-input>
+              <el-input size="small" :disabled="edit && role_id !=1" v-model="form.email"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Địa chỉ">
-              <el-input size="small" v-model="form.dia_chi"></el-input>
+              <el-input size="small" :disabled="edit && role_id !=1" v-model="form.dia_chi"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -355,6 +356,7 @@ import {
   xoaKhachHang,
 } from "@/api/khachhang";
 import { getInfor } from "@/api/taikhoan";
+import { getToken } from "@/utils/auth";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
 import ChiTiet from "./chitiet";
 export default {
@@ -405,6 +407,7 @@ export default {
       user: null,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       formate: formate,
+      role_id: null,
       form: {
         id: null,
         ten: null,
@@ -503,6 +506,7 @@ export default {
   },
   created() {
     this.getData();
+    this.getInfo()
   },
   methods: {
     showUpdate(data) {
@@ -546,6 +550,11 @@ export default {
       this.total = data.data.total;
       this.list = data.data.data;
       this.listLoading = false;
+    },
+    async getInfo() {
+      let data = await getInfor();
+      console.log(data)
+      this.role_id = data.data.role_id
     },
     searchData() {
       this.listLoading = true;
