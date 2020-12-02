@@ -78,3 +78,18 @@ export function editBaiViet(id, data) {
       data
   })
 }
+
+export function addMonBepNhaRuong(data) {
+  return request({
+      url: 'bepnharuong',
+      method: 'post',
+      data
+  })
+}
+
+export function getMonBepNhaRuong() {
+  return request({
+      url: 'bepnharuong',
+      method: 'get',
+  })
+}

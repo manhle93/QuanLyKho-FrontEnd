@@ -93,11 +93,20 @@ export const asyncRoutes = [
         }
       },
       {
-        path: "monngonmoingay",
+        path: "sanphambanchay",
         name: "Sản phẩm bán chạy",
         component: () => import("@/views/caidat/monngon/index"),
         meta: {
           title: "Sản phẩm bán chạy",
+          icon: "monngonmoingay"
+        }
+      },
+      {
+        path: "bepnharuong",
+        name: "Bếp nhà ruộng",
+        component: () => import("@/views/caidat/bepnharuong/index"),
+        meta: {
+          title: "Bếp nhà ruộng",
           icon: "monngonmoingay"
         }
       },
