@@ -1045,7 +1045,7 @@ export default {
       this.form.ten = data.data.ten;
       this.form.ghi_chu = data.data.ghi_chu;
       this.form.tong_tien = data.data.tong_tien;
-      this.form.da_thanh_toan = data.data.da_thanh_toan;
+      this.form.da_thanh_toan = data.data.da_thanh_toan ? data.data.da_thanh_toan : 0;
       this.form.trang_thai = data.data.trang_thai;
       this.trang_thai = data.data.trang_thai;
       this.form.khach_hang_id = data.data.user_id;
@@ -1224,7 +1224,6 @@ export default {
         da_thanh_toan: 0,
         danhSachHang: [],
         khach_hang_id: null,
-        da_thanh_toan: 0,
         giam_gia: 0,
         con_phai_thanh_toan: 0,
         thanh_toan: null,
