@@ -132,14 +132,14 @@
             </template>
           </el-table-column>
           <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
-          <el-table-column property="ma" label="Mã đơn hàng" min-width="125" v-if="showColumn.ma"></el-table-column>
+          <el-table-column property="ma" label="Mã đơn hàng" width="140" v-if="showColumn.ma"></el-table-column>
           <el-table-column
             property="ten"
             label="Tên đơn hàng"
-            min-width="123"
+            width="120"
             v-if="showColumn.ten"
           ></el-table-column>
-          <el-table-column prop="created_at" label="Thời gian tạo" v-if="showColumn.thoi_gian"></el-table-column>
+          <el-table-column width="120" prop="created_at" label="Thời gian tạo" v-if="showColumn.thoi_gian"></el-table-column>
           <el-table-column
             property="ghi_chu"
             label="Ghi chú"
@@ -170,7 +170,7 @@
           <el-table-column
             property="trang_thai"
             label="Trạng thái"
-            min-width="125"
+            width="140"
             v-if="showColumn.trang_thai"
           >
             <template slot-scope="scope">
@@ -205,24 +205,25 @@
           </el-table-column>
           <el-table-column
             label="Khách hàng"
-            min-width="120"
+            min-width="170"
             prop="user.name"
             v-if="showColumn.khach_hang"
           >
             <template slot-scope="scope">
               <div v-if="scope.row.user && scope.row.user.name ">
-                <span>{{scope.row.user.name}}</span>
+                <span><strong style="color: #16A085">Tài khoản: </strong>{{scope.row.user.name}}</span>
                 <br />
-                <span>SĐT: <strong>{{scope.row.user.phone}}</strong></span>
+                <span>SĐT: <strong>{{scope.row.user.phone}}</strong></span><br>
+                <span>{{'Đ/c nhận hàng: '+scope.row.dia_chi}}</span>
               </div>
               <div v-else>
-                <span>{{ 'Khách lẻ: '+scope.row.nguoi_mua_hang}}</span><br>
+                <span><strong>Khách lẻ: </strong>{{ scope.row.nguoi_mua_hang}}</span><br>
                 <span>SĐT: <strong>{{scope.row.so_dien_thoai}}</strong></span><br>
-                <span>{{'Địa chỉ:  '+scope.row.dia_chi}}</span>
+                <span>{{'Đ/c nhận hàng:  '+scope.row.dia_chi}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="200">
+          <el-table-column label="Hành động" align="center" fixed="right" width="170">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" content="Hủy đơn" placement="top">
                 <el-button
