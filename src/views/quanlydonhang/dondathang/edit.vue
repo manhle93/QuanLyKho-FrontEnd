@@ -225,8 +225,8 @@
         <el-button
           v-if="!cap_nhat"
           size="small"
-          :class="form.trang_thai == 'moi_tao' ? 'success-button' : ''"
-          @click="form.trang_thai = 'moi_tao'"
+          :class="form.trang_thai == 'moi_tao' || form.trang_thai == 'mua_hang_online' || form.trang_thai == 'dat_hang_online' ? 'success-button' : ''"
+          @click="form.trang_thai == 'mua_hang_online' || form.trang_thai == 'dat_hang_online' ? form.trang_thai = 'moi_tao': form.trang_thai = datMuaOnline"
           >ĐẶT HÀNG</el-button
         >
         <br />
@@ -429,7 +429,7 @@
       <el-row>
         <el-col
           :span="23"
-          v-if="form.trang_thai == 'moi_tao' || form.trang_thai == 'hoa_don'"
+          v-if="form.trang_thai == 'moi_tao' || form.trang_thai == 'hoa_don' || form.trang_thai == 'dat_hang_online' || form.trang_thai == 'mua_hang_online'"
         >
           <el-button
             v-if="form.trang_thai == 'moi_tao'"
@@ -440,7 +440,7 @@
             >ĐẶT HÀNG</el-button
           >
           <el-button
-            v-if="form.trang_thai != 'moi_tao' && !cap_nhat"
+            v-if="form.trang_thai == 'hoa_don' && !cap_nhat"
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
@@ -448,7 +448,7 @@
             >THANH TOÁN</el-button
           >
           <el-button
-            v-if="cap_nhat"
+            v-if="cap_nhat || form.trang_thai == 'dat_hang_online' || form.trang_thai == 'mua_hang_online'"
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
@@ -820,6 +820,7 @@ export default {
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       trang_thai: "moi_tao",
+      datMuaOnline: null,
       admin: false,
       timKiem: null,
       nhaCungCaps: [],
@@ -1069,6 +1070,9 @@ export default {
       }
       if (data.data.trang_thai == "hoa_don") {
         this.cap_nhat = true;
+      }
+      if(data.data.trang_thai == 'mua_hang_online' || data.data.trang_thai == 'dat_hang_online'){
+        this.datMuaOnline = data.data.trang_thai
       }
       this.tongTienCu =
         Number(this.form.tong_tien) +
@@ -1329,7 +1333,14 @@ export default {
         });
       } catch (error) {}
     },
-
+    async remoteMethod(query) {
+      let data = await listSanPham({
+        per_page: 12,
+        search: query,
+        danh_muc_id: this.danh_muc_id,
+      });
+      this.hangHoas = data.data.data;
+    },
     resetFormKhaHang() {
       this.showFormAddKhachHang = false;
       (this.next = true),

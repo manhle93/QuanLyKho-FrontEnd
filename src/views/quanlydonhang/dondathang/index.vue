@@ -2,7 +2,13 @@
   <div class="app-container" v-on:keyup.enter="getDonHang">
     <el-form :model="form">
       <el-row :gutter="20" justify="space-around">
-        <el-col :span="6">
+        <el-col :span="4">
+          <el-select size="small" style="width: 100%" v-model="form.typeDate">
+            <el-option value="tao_don" label="Thời gian tạo đơn"></el-option>
+            <el-option value="nhan_hang" label="Thời gian nhận hàng"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="5">
           <el-date-picker
             style="width: 100%"
             v-model="form.date"
@@ -47,7 +53,7 @@
             @click="getDonHang()"
           >Tìm kiếm</el-button>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="3">
           <el-button
             style="float: right"
             size="small"
@@ -133,13 +139,15 @@
           </el-table-column>
           <el-table-column sortable type="index" label="STT" v-if="showColumn.stt"></el-table-column>
           <el-table-column property="ma" label="Mã đơn hàng" width="140" v-if="showColumn.ma"></el-table-column>
+          <el-table-column property="ten" label="Tên đơn hàng" width="120" v-if="showColumn.ten"></el-table-column>
           <el-table-column
-            property="ten"
-            label="Tên đơn hàng"
             width="120"
-            v-if="showColumn.ten"
-          ></el-table-column>
-          <el-table-column width="120" prop="created_at" label="Thời gian tạo" v-if="showColumn.thoi_gian"></el-table-column>
+            prop="created_at"
+            label="Thời gian tạo"
+            v-if="showColumn.thoi_gian"
+          >
+          <template slot-scope="scope">{{formatDateTime(scope.row.created_at)}}</template>
+          </el-table-column>
           <el-table-column
             property="ghi_chu"
             label="Ghi chú"
@@ -211,15 +219,38 @@
           >
             <template slot-scope="scope">
               <div v-if="scope.row.user && scope.row.user.name ">
-                <span><strong style="color: #16A085">Tài khoản: </strong>{{scope.row.user.name}}</span>
+                <span>
+                  <strong style="color: #16A085">Tài khoản:</strong>
+                  {{scope.row.user.name}}
+                </span>
                 <br />
-                <span>SĐT: <strong>{{scope.row.user.phone}}</strong></span><br>
+                <span>
+                  SĐT:
+                  <strong>{{scope.row.user.phone}}</strong>
+                </span>
+                <br />
                 <span>{{'Đ/c nhận hàng: '+scope.row.dia_chi}}</span>
+                <br />
+                <span
+                  v-if=" scope.row.thoi_gian_nhan_hang"
+                >{{'Thời gian nhận hàng: '+ formatDateTime(scope.row.thoi_gian_nhan_hang)}}</span>
               </div>
               <div v-else>
-                <span><strong>Khách lẻ: </strong>{{ scope.row.nguoi_mua_hang}}</span><br>
-                <span>SĐT: <strong>{{scope.row.so_dien_thoai}}</strong></span><br>
-                <span>{{'Đ/c nhận hàng:  '+scope.row.dia_chi}}</span>
+                <span>
+                  <strong>Khách lẻ:</strong>
+                  {{ scope.row.nguoi_mua_hang}}
+                </span>
+                <br />
+                <span>
+                  SĐT:
+                  <strong>{{scope.row.so_dien_thoai}}</strong>
+                </span>
+                <br />
+                <span>{{'Đ/c nhận hàng: '+scope.row.dia_chi}}</span>
+                <br />
+                <span
+                  v-if=" scope.row.thoi_gian_nhan_hang"
+                >{{'Thời gian nhận hàng: '+ formatDateTime(scope.row.thoi_gian_nhan_hang)}}</span>
               </div>
             </template>
           </el-table-column>
@@ -301,6 +332,7 @@ export default {
       list: [],
       form: {
         date: [],
+        typeDate: "nhan_hang",
         khach_hang: null,
         search: "",
       },
@@ -391,6 +423,33 @@ export default {
   mounted() {},
 
   methods: {
+    formatDateTime(time) {
+      try {
+        var date = new Date(time);
+        var h = date.getHours();
+        var min = date.getMinutes();
+        if (h < 10) {
+          h = "0" + h;
+        }
+        if (min < 10) {
+          min = "0" + min;
+        }
+        return (
+          h +
+          ":" +
+          min +
+          " Ngày " +
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getUTCFullYear()
+        );
+      } catch (error) {
+        return "";
+      }
+    },
+
     handleCurrentChange(val) {
       this.page = val;
       this.updateDataTable();
@@ -442,6 +501,7 @@ export default {
         per_page: this.per_page,
         page: this.page,
         khach_hang: this.form.khach_hang,
+        typeDate: this.form.typeDate,
         date: this.form.date,
         don_hang: true,
         search: this.form.search,
