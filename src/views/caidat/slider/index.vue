@@ -8,7 +8,8 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
       </el-col>
     </el-row>
     <br />
@@ -22,17 +23,49 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
       <el-table-column min-width="100" label="Hình ảnh">
         <template slot-scope="scope">
-          <el-image style="width: 150px; height: 100px" :src="endPointImage + scope.row.hinh_anh" fit="container"></el-image>
+          <el-image
+            style="width: 150px; height: 100px"
+            :src="endPointImage + scope.row.hinh_anh"
+            fit="container"
+          ></el-image>
         </template>
       </el-table-column>
-      <el-table-column label="Dòng chữ" prop="dong_chu" min-width="157"></el-table-column>
-      <el-table-column label="Đường link" prop="link" min-width="157"></el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column
+        label="Dòng chữ"
+        prop="dong_chu"
+        min-width="157"
+      ></el-table-column>
+      <el-table-column
+        label="Đường link"
+        prop="link"
+        min-width="157"
+      ></el-table-column>
+      <el-table-column
+        label="Vị trí"
+        prop="stt"
+        min-width="100"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        min-width="110"
+        fixed="right"
+        label="Hoạt động"
+      >
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
             <el-button
               size="small"
               class="primary-button"
@@ -53,8 +86,157 @@
         </template>
       </el-table-column>
     </el-table>
+    <h4><i style="color: green"> HÌNH ẢNH BANNER</i></h4>
+    <el-table
+      v-loading="listLoading"
+      :data="banners"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+      style="font-size: 13px"
+    >
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
+      <el-table-column min-width="100" label="Hình ảnh">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 150px; height: 100px"
+            :src="endPointImage + scope.row.hinh_anh"
+            fit="container"
+          ></el-image>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="Dòng chữ"
+        prop="dong_chu"
+        min-width="157"
+      ></el-table-column>
+      <el-table-column
+        label="Đường link"
+        prop="link"
+        min-width="157"
+      ></el-table-column>
+      <el-table-column
+        label="Vị trí"
+        prop="stt"
+        min-width="100"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        min-width="110"
+        fixed="right"
+        label="Hoạt động"
+      >
+        <template slot-scope="scope">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
+            <el-button
+              size="small"
+              class="primary-button"
+              icon="el-icon-edit"
+              circle
+              @click="showUpdateBanner(scope.row)"
+            ></el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+
     <el-dialog
-      :title="edit ? 'CẬP NHẬT SLIDER' :'THÊM MỚI SLIDER'"
+      title="CẬP NHẬT ẢNH BANNER"
+      :visible.sync="showBaner"
+      width="600px"
+      center
+    >
+      <el-form :model="form">
+        <el-row></el-row>
+        <el-row :gutter="20">
+          <el-col :span="24" style="text-align: center">
+            <el-form-item label="Hình ảnh">
+              <br />
+              <el-upload
+                v-if="!form.url_slider"
+                class="upload-demo"
+                drag
+                :action="uploadSlider"
+                :headers="this.token"
+                :on-change="handleUpload"
+                multiple
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  Kéo ảnh vào đây hoặc
+                  <em>click để upload</em>
+                </div>
+              </el-upload>
+              <img
+                v-else
+                style="width: 550px; max-height: 550px"
+                :src="endPointImage + form.url_slider"
+                fit="contain"
+              />
+              <br />
+              <el-button
+                v-if="form.url_slider"
+                size="small"
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="form.url_slider = null"
+              ></el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Thứ tự hiển thị"
+              ><br />
+              <el-input-number
+                :step="1"
+                v-model="form.stt"
+                :min="0"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Dòng chữ">
+              <el-input v-model="form.dong_chu"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Link">
+              <el-input v-model="form.link"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showBaner = false"
+          >Hủy</el-button
+        >
+        <el-button
+          class="primary-button"
+          size="small"
+          icon="el-icon-check"
+          @click="updateBanner('form')"
+          >Cập nhật</el-button
+        >
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      :title="edit ? 'CẬP NHẬT SLIDER' : 'THÊM MỚI SLIDER'"
       :visible.sync="showForm"
       width="600px"
       center
@@ -98,6 +280,16 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
+            <el-form-item label="Thứ tự hiển thị"
+              ><br />
+              <el-input-number
+                :step="1"
+                v-model="form.stt"
+                :min="0"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
             <el-form-item label="Dòng chữ">
               <el-input v-model="form.dong_chu"></el-input>
             </el-form-item>
@@ -110,28 +302,43 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showForm = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showForm = false"
+          >Hủy</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!edit"
           icon="el-icon-plus"
           @click="addKhoHang()"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-else
           icon="el-icon-check"
           @click="updateKhoHang('form')"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { addSlider, xoaSlider, getSlider, updateSlider } from "@/api/caidat";
+import {
+  addSlider,
+  xoaSlider,
+  getSlider,
+  updateSlider,
+  getBanner,
+  updateBanner
+} from "@/api/caidat";
 import { getInfor } from "@/api/taikhoan";
 import { getToken } from "@/utils/auth";
 
@@ -141,10 +348,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger",
+        deleted: "danger"
       };
       return statusMap[status];
-    },
+    }
   },
   data() {
     return {
@@ -158,22 +365,26 @@ export default {
       token: "",
       per_page: 10,
       total: 0,
+      banners: [],
       search: "",
       listLoading: true,
       labelPosition: "top",
       user: null,
+      showBaner: false,
       form: {
         id: null,
         url_slider: null,
         dong_chu: "",
         link: "",
-      },
+        stt: null
+      }
     };
   },
   created() {
     this.getData();
+    this.getBanner();
     this.token = {
-      Authorization: "Bearer " + getToken(),
+      Authorization: "Bearer " + getToken()
     };
   },
   methods: {
@@ -185,6 +396,11 @@ export default {
       this.form.dong_chu = data.dong_chu;
       this.form.link = data.link;
       this.form.id = data.id;
+      this.form.stt = data.stt;
+    },
+    async getBanner() {
+      let data = await getBanner();
+      this.banners = data;
     },
     async getData() {
       this.listLoading = true;
@@ -195,26 +411,31 @@ export default {
 
     deleteAppUserID(item) {
       this.$confirm(
-        "Bạn chắc chán muốn xóa hình ảnh này ? "+"</br> <br>" +"<img style='width: 100px; height: 100px' src='" + this.endPointImage + item.hinh_anh + "'/>",
+        "Bạn chắc chán muốn xóa hình ảnh này ? " +
+          "</br> <br>" +
+          "<img style='width: 100px; height: 100px' src='" +
+          this.endPointImage +
+          item.hinh_anh +
+          "'/>",
 
         "Xóa ảnh slider",
         {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xóa",
           cancelButtonText: "Hủy",
-          type: "warning",
+          type: "warning"
         }
       )
-        .then((_) => {
-          xoaSlider(item.id).then((res) => {
+        .then(_ => {
+          xoaSlider(item.id).then(res => {
             this.$message({
               message: "Xóa thành công",
-              type: "success",
+              type: "success"
             });
             this.getData();
           });
         })
-        .catch((_) => {});
+        .catch(_ => {});
     },
     showFormAdd() {
       this.resetForm();
@@ -225,16 +446,16 @@ export default {
       if (!this.form.url_slider) {
         this.$message({
           message: "Hình ảnh không tồn tại",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
-      addSlider(this.form).then((res) => {
+      addSlider(this.form).then(res => {
         this.resetForm();
         this.getData();
         this.$message({
           type: "success",
-          message: "Thêm mới thành công",
+          message: "Thêm mới thành công"
         });
       });
     },
@@ -242,34 +463,62 @@ export default {
       if (!this.form.url_slider) {
         this.$message({
           message: "Hình ảnh không tồn tại",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
-      updateSlider(this.form.id, this.form).then((res) => {
+      updateSlider(this.form).then(res => {
         this.resetForm();
         this.getData();
         this.$message({
           type: "success",
-          message: "Cập nhật thành công",
+          message: "Cập nhật thành công"
         });
       });
     },
     resetForm() {
       this.showForm = false;
+      this.showBaner = false;
       this.form = {
         id: null,
         url_slider: null,
         dong_chu: "",
         link: "",
+        stt: null
       };
+    },
+    showUpdateBanner(data) {
+      this.resetForm();
+      this.showBaner = true;
+      this.form.url_slider = data.hinh_anh;
+      this.form.dong_chu = data.dong_chu;
+      this.form.link = data.link;
+      this.form.id = data.id;
+      this.form.stt = data.stt;
+    },
+    updateBanner() {
+      if (!this.form.url_slider) {
+        this.$message({
+          message: "Hình ảnh không tồn tại",
+          type: "warning"
+        });
+        return;
+      }
+      updateBanner(this.form).then(res => {
+        this.resetForm();
+        this.getBanner();
+        this.$message({
+          type: "success",
+          message: "Cập nhật thành công"
+        });
+      });
     },
     handleUpload(e) {
       if (e.response) {
         this.form.url_slider = e.response;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

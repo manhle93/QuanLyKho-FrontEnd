@@ -93,3 +93,17 @@ export function getMonBepNhaRuong() {
       method: 'get',
   })
 }
+
+export function getBanner() {
+  return request({
+      url: 'banner',
+      method: 'get',
+  })
+}
+export function updateBanner(data) {
+  return request({
+      url: 'updatebanner',
+      method: 'post',
+      data
+  })
+}
