@@ -95,3 +95,11 @@ export function donHangConNo(params) {
     params
   })
 }
+
+export function importKhachHang(data) {
+  return request({
+      url: 'importkhachhang',
+      method: 'post',
+      data
+  })
+}
