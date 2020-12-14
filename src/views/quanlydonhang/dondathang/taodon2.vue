@@ -2,7 +2,7 @@
   <div
     class="c-flex fh ttch maint"
     :style="{
-      height: hideSidebar ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)',
+      height: hideSidebar ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)'
     }"
   >
     <div
@@ -18,7 +18,11 @@
           <el-row :gutter="20">
             <el-col :span="1">
               <el-form-item>
-                <el-tooltip class="item" effect="dark" content="Danh sách đơn hàng">
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="Danh sách đơn hàng"
+                >
                   <router-link to="/quanlydonhang/dathang">
                     <img
                       src="https://image.flaticon.com/icons/svg/3078/3078994.svg"
@@ -63,9 +67,9 @@
                     <span style="float: left">{{ item.ten_san_pham }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">
                       {{
-                      item.thuong_hieu
-                      ? 'Thương hiệu: '+ item.thuong_hieu.ten
-                      : "Danh mục: " + item.danh_muc.ten_danh_muc
+                        item.thuong_hieu
+                          ? "Thương hiệu: " + item.thuong_hieu.ten
+                          : "Danh mục: " + item.danh_muc.ten_danh_muc
                       }}
                     </span>
                   </el-option>
@@ -134,23 +138,39 @@
                 style="width: 100%"
                 :summary-method="tongTien"
               >
-                <el-table-column type="index" label="STT" width="100px"></el-table-column>
-                <el-table-column prop="hang_hoa.ten_san_pham" label="Hàng hóa"></el-table-column>
-                <el-table-column prop="hang_hoa.don_vi_tinh" label="Đơn vị tính"></el-table-column>
+                <el-table-column
+                  type="index"
+                  label="STT"
+                  width="100px"
+                ></el-table-column>
+                <el-table-column
+                  prop="hang_hoa.ten_san_pham"
+                  label="Hàng hóa"
+                ></el-table-column>
+                <el-table-column
+                  prop="hang_hoa.don_vi_tinh"
+                  label="Đơn vị tính"
+                ></el-table-column>
                 <el-table-column label="Số lượng" width="150px">
                   <template slot-scope="scope">
-                    <el-input-number size="small" :min="0.1" v-model="scope.row.so_luong"></el-input-number>
+                    <el-input-number
+                      size="small"
+                      :min="0.1"
+                      v-model="scope.row.so_luong"
+                    ></el-input-number>
                   </template>
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá">
-                  <template slot-scope="scope">{{ formate.formatCurrency(scope.row.don_gia) }} đ</template>
+                  <template slot-scope="scope"
+                    >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
+                  >
                 </el-table-column>
                 <el-table-column label="Thành tiền">
                   <template slot-scope="scope">
                     {{
-                    formate.formatCurrency(
-                    Math.ceil(scope.row.so_luong * scope.row.don_gia)
-                    )
+                      formate.formatCurrency(
+                        Math.ceil(scope.row.so_luong * scope.row.don_gia)
+                      )
                     }}
                   </template>
                 </el-table-column>
@@ -170,10 +190,41 @@
           </div>
         </el-form>
       </div>
-      <div class="sanpham">
+      <div style="text-align: center">
+        <el-button
+          v-if="showProductBar"
+          icon="el-icon-bottom"
+          size="small"
+          @click="showProductBar = false"
+          class="primary-button"
+        ></el-button>
+        <el-button
+          v-else
+          icon="el-icon-top"
+          size="small"
+          @click="showProductBar = true"
+          class="primary-button"
+        ></el-button>
+        <el-input
+          size="mini"
+          style="width: 150px"
+          placeholder="Tiền khách đưa"
+          v-model="khach_tra"
+          type="number"
+        ></el-input>
+        <span style="width: 200px; padding-left: 20px"
+          ><strong style="font-size: 14px"
+            >Tiền thừa trả khách: {{ formate.formatCurrency(tra_lai) != 0 ? formate.formatCurrency(tra_lai) : '' }} đ</strong
+          ></span
+        >
+      </div>
+      <div class="sanpham" v-show="showProductBar">
         <transition name="bounce" v-for="item in hangHoas" :key="item.id">
           <div v-show="!kiemTraDaChon(item.id)">
-            <el-card :body-style="{ padding: '0px' }" style="width: 140px; margin-right: 20px">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              style="width: 140px; margin-right: 20px"
+            >
               <a @click="doiSanPham(item.id)">
                 <img
                   :src="
@@ -192,9 +243,12 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis;
                   "
-                >{{ item.ten_san_pham }}</span>
+                  >{{ item.ten_san_pham }}</span
+                >
                 <div class="bottom clearfix">
-                  <time class="time">{{ formate.formatCurrency(item.gia_ban) }} đ</time>
+                  <time class="time"
+                    >{{ formate.formatCurrency(item.gia_ban) }} đ</time
+                  >
                 </div>
                 <!-- <div class="bottom clearfix">
                   <el-button
@@ -222,9 +276,9 @@
       "
     >
       <div style="margin-top: 10px">
-        <div style="font-size: 16px; color: #196f3d; font-weight: bold">Thông tin đơn hàng</div>
-        <br />
-        <br />
+        <div style="font-size: 16px; color: #196f3d; font-weight: bold">
+          Thông tin đơn hàng
+        </div>
         <br />
         <el-form
           label-position="left"
@@ -258,8 +312,12 @@
                 :value="item.user_id"
               >
                 <div>
-                  <div style="font-size: 16px; font-weight: bold">{{ item.ten }}</div>
-                  <div style="font-size: 12px; color: gray">SĐT: {{ item.so_dien_thoai }}</div>
+                  <div style="font-size: 16px; font-weight: bold">
+                    {{ item.ten }}
+                  </div>
+                  <div style="font-size: 12px; color: gray">
+                    SĐT: {{ item.so_dien_thoai }}
+                  </div>
                 </div>
               </el-option>
             </el-select>
@@ -281,7 +339,11 @@
             ></el-button>
           </el-form-item>
           <el-form-item label="Ghi chú">
-            <el-input size="small" type="textarea" v-model="form.ghi_chu"></el-input>
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="form.ghi_chu"
+            ></el-input>
           </el-form-item>
           <el-form-item label="Giảm giá">
             <el-input
@@ -300,9 +362,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="Tổng tiền">
-            <span
-              style="color: green; font-size: 20px; font-weight: bold"
-            >{{ formate.formatCurrency(form.tong_tien) }} đ</span>
+            <span style="color: green; font-size: 20px; font-weight: bold"
+              >{{ formate.formatCurrency(form.tong_tien) }} đ</span
+            >
           </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="!mua_hang">
             <el-input
@@ -315,28 +377,41 @@
           <el-form-item label="Tổng thanh toán" v-else>
             <span style="color: green; font-size: 20px; font-weight: bold">
               {{
-              formate.formatCurrency(
-              form.tong_tien - form.giam_gia + Number(form.phu_thu)
-              )
+                formate.formatCurrency(
+                  form.tong_tien - form.giam_gia + Number(form.phu_thu)
+                )
               }}
               đ
             </span>
           </el-form-item>
           <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
-            <span
-              style="color: green; font-size: 20px; font-weight: bold"
-            >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span>
+            <span style="color: green; font-size: 20px; font-weight: bold"
+              >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span
+            >
           </el-form-item>
           <el-form-item label="Phương thúc" v-if="mua_hang" prop="thanh_toan">
-            <el-select v-model="form.thanh_toan" placeholder="Phương thức thanh toán">
+            <el-select
+              v-model="form.thanh_toan"
+              placeholder="Phương thức thanh toán"
+            >
               <el-option value="tien_mat" label="Tiền mặt"></el-option>
-              <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
+              <el-option
+                value="chuyen_khoan"
+                label="Chuyển khoản/Quẹt thẻ"
+              ></el-option>
               <!-- <el-option value="cod" label="Ship COD"></el-option> -->
-              <el-option value="tai_khoan" label="Tài khoản" :disabled="!form.khach_hang_id"></el-option>
+              <el-option
+                value="tai_khoan"
+                label="Tài khoản"
+                :disabled="!form.khach_hang_id"
+              ></el-option>
               <el-option value="tra_sau" label="Trả sau"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Đã thanh toán" v-if="form.thanh_toan == 'tra_sau'">
+          <el-form-item
+            label="Đã thanh toán"
+            v-if="form.thanh_toan == 'tra_sau'"
+          >
             <el-input-number
               :min="0"
               style="width: 100%"
@@ -352,7 +427,12 @@
               filterable
               placeholder="Chọn nhân viên giao hàng"
             >
-              <el-option v-for="item in shipper" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option
+                v-for="item in shipper"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="ĐC nhận hàng">
@@ -383,18 +463,25 @@
             icon="el-icon-plus"
             class="success-button"
             @click="submit('form')"
-          >ĐẶT HÀNG</el-button>
+            >ĐẶT HÀNG</el-button
+          >
           <el-button
             v-else
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
-          >THANH TOÁN</el-button>
+            >THANH TOÁN</el-button
+          >
         </el-col>
       </el-row>
     </div>
-    <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
+    <el-dialog
+      title="THÔNG TIN KHÁCH HÀNG"
+      :visible.sync="showUserDetail"
+      width="600px"
+      center
+    >
       <div style="display: flex; align-items: center; flex-direction: column">
         <div v-if="UserInfo.user && UserInfo.user.avatar_url">
           <img
@@ -410,18 +497,24 @@
         </div>
 
         <div>
-          <el-rate disabled :value="+UserInfo.tin_nhiem" :colors="colors"></el-rate>
+          <el-rate
+            disabled
+            :value="+UserInfo.tin_nhiem"
+            :colors="colors"
+          ></el-rate>
         </div>
       </div>
       <br />
       <el-row>
         <el-col :span="22" :offset="1">
-          <hr><br>
+          <hr />
+          <br />
           <div style="font-weight: bold">
             Ghi chú:
             <span style="color: green">{{ UserInfo.ghi_chu }}</span>
-          </div><br>
-          <hr>
+          </div>
+          <br />
+          <hr />
         </el-col>
       </el-row>
       <el-row style="margin-top: 30px">
@@ -431,32 +524,33 @@
           </el-col>
           <el-col :span="9">
             <el-form-item label="Số điện thoại: ">
-              {{
-              UserInfo.so_dien_thoai
-              }}
+              {{ UserInfo.so_dien_thoai }}
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="1">
             <el-form-item label="Địa chỉ Email: ">
-              {{
-              UserInfo.email
-              }}
+              {{ UserInfo.email }}
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="Số dư TK: ">{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item>
+            <el-form-item label="Số dư TK: "
+              >{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item
+            >
           </el-col>
           <el-col :span="23" :offset="1">
             <el-form-item label="Địa chỉ: ">
-              {{
-              UserInfo.dia_chi
-              }}
+              {{ UserInfo.dia_chi }}
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="primary-button" @click="showUserDetail = false" icon="el-icon-close">Đóng</el-button>
+        <el-button
+          class="primary-button"
+          @click="showUserDetail = false"
+          icon="el-icon-close"
+          >Đóng</el-button
+        >
       </span>
     </el-dialog>
 
@@ -475,14 +569,30 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã khách hàng" prop="ma">
-              <el-input size="small" v-model="formKhaHang.ma" :disabled="true"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.ma"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Loại khách hàng">
               <br />
-              <el-radio v-model="formKhaHang.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
-              <el-radio v-model="formKhaHang.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
+              <el-radio
+                v-model="formKhaHang.ca_nhan"
+                :label="true"
+                border
+                size="small"
+                >Cá nhân</el-radio
+              >
+              <el-radio
+                v-model="formKhaHang.ca_nhan"
+                :label="false"
+                border
+                size="small"
+                >Tổ chức</el-radio
+              >
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -492,19 +602,37 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Mã số thuế">
-              <el-input size="small" v-model="formKhaHang.ma_so_thue"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.ma_so_thue"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input size="small" v-model="formKhaHang.so_dien_thoai"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.so_dien_thoai"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Giới tính">
               <br />
-              <el-radio v-model="formKhaHang.gioi_tinh" :label="true" border size="small">Nam</el-radio>
-              <el-radio v-model="formKhaHang.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
+              <el-radio
+                v-model="formKhaHang.gioi_tinh"
+                :label="true"
+                border
+                size="small"
+                >Nam</el-radio
+              >
+              <el-radio
+                v-model="formKhaHang.gioi_tinh"
+                :label="false"
+                border
+                size="small"
+                >Nữ</el-radio
+              >
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -531,7 +659,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ghi chú">
-              <el-input size="small" type="textarea" v-model="formKhaHang.mo_ta" :rows="2"></el-input>
+              <el-input
+                size="small"
+                type="textarea"
+                v-model="formKhaHang.mo_ta"
+                :rows="2"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -543,12 +676,21 @@
           </el-col>
           <el-col :span="14" :offset="5">
             <el-form-item label="Mật khẩu" prop="password">
-              <el-input type="password" v-model="formKhaHang.password"></el-input>
+              <el-input
+                type="password"
+                v-model="formKhaHang.password"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="5">
-            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
-              <el-input type="password" v-model="formKhaHang.password_confirmation"></el-input>
+            <el-form-item
+              label="Nhập lại mật khẩu"
+              prop="password_confirmation"
+            >
+              <el-input
+                type="password"
+                v-model="formKhaHang.password_confirmation"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -563,21 +705,24 @@
           v-if="next"
           icon="el-icon-right"
           @click="next = !next"
-        >Tiếp theo</el-button>
+          >Tiếp theo</el-button
+        >
         <el-button
           type="warning"
           size="small"
           v-if="!next"
           icon="el-icon-back"
           @click="next = !next"
-        >Quay lại</el-button>
+          >Quay lại</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!next"
           icon="el-icon-plus"
           @click="addKhachHang('formKhaHang')"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -594,7 +739,7 @@ import { debounce } from "lodash";
 import { addKhachHang } from "@/api/khachhang";
 export default {
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(vm => {
       vm.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
     });
   },
@@ -626,6 +771,8 @@ export default {
       loading: false,
       next: true,
       showFormAddKhachHang: false,
+      showProductBar: true,
+      khach_tra: null,
       formKhaHang: {
         id: null,
         ten: null,
@@ -652,7 +799,7 @@ export default {
         loai_thanh_vien_id: null,
         tin_nhiem: null,
         diem_quy_doi: null,
-        tien_vay: null,
+        tien_vay: null
       },
       idSanPham: null,
       form: {
@@ -671,7 +818,7 @@ export default {
         thanh_toan: null,
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
-        phu_thu: 0,
+        phu_thu: 0
       },
       formate: formate,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -694,58 +841,59 @@ export default {
       isInputDaThanhToan: null,
       isInputPhuThu: null,
       isInputGiamGia: null,
+      tra_lai: null,
       rulesKhachHang: {
         ten: [
           {
             required: true,
             message: "Tên khách hàng không thể bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
         ],
         ma: [
           {
             required: true,
             message: "Mã khách hàng không thể bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
         ],
         so_dien_thoai: [
           {
             required: true,
             message: "Số điện thoại không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         email: [
           {
             required: true,
             message: "Email không được bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email hợp lệ",
-            trigger: ["blur", "change"],
-          },
+            trigger: ["blur", "change"]
+          }
         ],
         username: [
           {
             required: true,
             message: "Tên đăng nhập không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         password: [
           { validator: validatePass, trigger: "blur" },
           {
             min: 6,
             message: "Độ dài tối thiểu 6 kí tự",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
-        password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
+        password_confirmation: [{ validator: validatePass2, trigger: "blur" }]
       },
       rules: {
         ten: [
@@ -753,26 +901,27 @@ export default {
           {
             min: 5,
             message: "Tên đơn hàng tối thiểu 5 ký tự",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change",
-          },
-        ],
-      },
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
+  computed: {},
   created() {
     this.getSanPham();
     this.getKhachHang();
     this.getBangGia();
     this.nhanVienGiaoHang();
     this.getDanhMuc();
-    getInfor().then((res) => {
+    getInfor().then(res => {
       this.role_id = res.data.role_id;
       if (
         this.$route.path == "/quanlydonhang/taodondathang" &&
@@ -785,42 +934,51 @@ export default {
     });
   },
   watch: {
-    timKiem: debounce(async function (val) {
+    timKiem: debounce(async function(val) {
       let data = await listSanPham({
         per_page: 12,
         search: val,
-        danh_muc_id: this.danh_muc_id,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     }, 300),
-    "form.giam_gia": function (val) {
+    khach_tra(val) {
+      if (val) {
+        this.tra_lai =
+          val -
+          (this.form.tong_tien -
+            this.form.giam_gia +
+            Number(this.form.phu_thu));
+      } else this.tra_lai = null;
+    },
+    "form.giam_gia": function(val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.da_thanh_toan -
         val +
         +Number(this.form.phu_thu);
     },
-    "form.da_thanh_toan": function (val) {
+    "form.da_thanh_toan": function(val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.giam_gia -
         val +
         Number(this.form.phu_thu);
     },
-    "form.tong_tien": function (val) {
+    "form.tong_tien": function(val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.giam_gia -
         this.form.da_thanh_toan +
         Number(this.form.phu_thu);
     },
-    "form.phu_thu": function (val) {
+    "form.phu_thu": function(val) {
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.giam_gia -
         this.form.da_thanh_toan +
         Number(this.form.phu_thu);
-    },
+    }
   },
   computed: {
     mua_hang() {
@@ -849,7 +1007,7 @@ export default {
           newValue = 0;
         }
         this.form.da_thanh_toan = newValue;
-      },
+      }
     },
     phuThu: {
       get() {
@@ -874,7 +1032,7 @@ export default {
           newValue = 0;
         }
         this.form.phu_thu = newValue;
-      },
+      }
     },
     giamGia: {
       get() {
@@ -899,19 +1057,19 @@ export default {
           newValue = 0;
         }
         this.form.giam_gia = newValue;
-      },
-    },
+      }
+    }
   },
   methods: {
     addKhachHang(formKhaHang) {
-      this.$refs[formKhaHang].validate((valid) => {
+      this.$refs[formKhaHang].validate(valid => {
         if (valid) {
-          addKhachHang(this.formKhaHang).then((res) => {
+          addKhachHang(this.formKhaHang).then(res => {
             this.resetFormKhaHang();
             this.getKhachHang();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công",
+              message: "Thêm mới thành công"
             });
           });
         } else {
@@ -924,7 +1082,7 @@ export default {
       this.loading = true;
       let data = await getKhachHang({
         per_page: 999999,
-        search: query,
+        search: query
       });
       this.nhaCungCaps = data.data.data;
       this.loading = false;
@@ -941,19 +1099,19 @@ export default {
       let data = await listSanPham({
         per_page: 10,
         search: this.timKiem,
-        danh_muc_id: this.danh_muc_id,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     },
     doiSanPham(id) {
       const cBangGia = this.bangGias.find(
-        (el) => el.id === this.form.bang_gia_id
+        el => el.id === this.form.bang_gia_id
       );
       this.hang_hoa_id = id;
-      this.hangHoa = this.hangHoas.find((el) => el.id == id);
+      this.hangHoa = this.hangHoas.find(el => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
       if (cBangGia) {
-        const findSp = cBangGia.san_pham.find((i) => i.san_pham_id === id);
+        const findSp = cBangGia.san_pham.find(i => i.san_pham_id === id);
         if (findSp) this.don_gia = findSp.gia_ban;
         else this.don_gia = this.hangHoa.gia_ban;
       } else {
@@ -963,7 +1121,7 @@ export default {
       this.idSanPham = null;
     },
     kiemTraDaChon(SanPhamID) {
-      let a = this.form.danhSachHang.find((el) => el.hang_hoa.id == SanPhamID);
+      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
       if (a) return true;
       return false;
     },
@@ -1004,12 +1162,12 @@ export default {
       return sums;
     },
     submit(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning",
+              type: "warning"
             });
             return;
           }
@@ -1018,16 +1176,16 @@ export default {
             if (!this.form.thanh_toan) {
               this.$message({
                 message: "Chưa chọn phương thức thanh toán",
-                type: "warning",
+                type: "warning"
               });
               return;
             }
           }
           addDonDatHang(this.form)
-            .then((res) => {
+            .then(res => {
               this.$message({
                 message: "Tạo đơn hàng thành công",
-                type: "success",
+                type: "success"
               });
               if (this.form.trang_thai == "hoa_don") {
                 window.open(
@@ -1037,7 +1195,7 @@ export default {
               }
               this.resetForm();
             })
-            .catch((error) => {});
+            .catch(error => {});
         } else {
           return false;
         }
@@ -1050,7 +1208,7 @@ export default {
       let data = await listSanPham({
         per_page: 12,
         search: query,
-        danh_muc_id: this.danh_muc_id,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data.data;
     },
@@ -1072,8 +1230,10 @@ export default {
         trang_thai: "moi_tao",
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
-        phu_thu: 0,
+        phu_thu: 0
       };
+      this.tra_lai = null
+      this.khach_tra = null
       this.hangHoa = {};
       this.hang_hoa_id = null;
       this.so_luong = 1;
@@ -1082,7 +1242,7 @@ export default {
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 999999
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -1094,13 +1254,13 @@ export default {
     },
     async getBangGia() {
       let data = await getBangGia({
-        per_page: 9999999,
+        per_page: 9999999
       });
       this.bangGias = data.data.data;
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
-        (el) => el.user_id == this.form.khach_hang_id
+        el => el.user_id == this.form.khach_hang_id
       );
       if (this.UserInfo) {
         this.showUserDetail = true;
@@ -1108,23 +1268,23 @@ export default {
     },
     chonBangGia(id) {
       if (id) {
-        let bangGia = this.bangGias.find((el) => el.id == id);
-        this.form.danhSachHang.map((el) => {
+        let bangGia = this.bangGias.find(el => el.id == id);
+        this.form.danhSachHang.map(el => {
           const findIndex = bangGia.san_pham.findIndex(
-            (i) => i.san_pham_id === el.hang_hoa.id
+            i => i.san_pham_id === el.hang_hoa.id
           );
           if (findIndex !== -1) {
             el.don_gia = bangGia.san_pham[findIndex].gia_ban;
           }
         });
       } else {
-        this.form.danhSachHang.map((el) => {
+        this.form.danhSachHang.map(el => {
           el.don_gia = el.hang_hoa.gia_ban;
         });
       }
     },
     nhanVienGiaoHang() {
-      getShipper().then((res) => {
+      getShipper().then(res => {
         this.shipper = res;
       });
     },
@@ -1165,10 +1325,10 @@ export default {
           tin_nhiem: null,
           diem_quy_doi: null,
           tien_vay: null,
-          trang_thai: null,
+          trang_thai: null
         });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
