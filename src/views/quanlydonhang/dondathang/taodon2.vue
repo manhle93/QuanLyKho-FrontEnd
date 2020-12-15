@@ -1135,10 +1135,13 @@ export default {
       let khacHang = this.nhaCungCaps.find(
         el => el.user_id == this.form.khach_hang_id
       );
-      if (khacHang) {
+      if (khacHang && khacHang.tin_nhiem != null) {
         let data = await getChietKhauKH(khacHang.tin_nhiem);
-        this.giamGiaTinNhiem = data.phan_tram;
-        this.form.giam_gia = (data.phan_tram * this.form.tong_tien) / 100;
+        if (data) {
+          this.giamGiaTinNhiem = data.phan_tram;
+          this.form.giam_gia = (data.phan_tram * this.form.tong_tien) / 100;
+        }else
+        this.giamGiaTinNhiem = 0;
       } else this.giamGiaTinNhiem = 0;
     },
     async remoteMethodKH(query) {
