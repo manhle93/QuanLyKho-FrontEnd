@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green"> HÌNH ẢNH BANNER</i></h4>
+    <h4><i style="color: green"> CHIẾT KHẤU CHO KHÁCH HÀNG</i></h4>
     <el-table
       v-loading="listLoading"
       :data="tableData"
@@ -25,7 +25,7 @@
           ></el-rate>
         </template>
       </el-table-column>
-      <el-table-column label="Mức chiết khâu">
+      <el-table-column label="Mức chiết khấu">
         <template slot-scope="scope"
           >{{ scope.row.phan_tram }} %</template
         >

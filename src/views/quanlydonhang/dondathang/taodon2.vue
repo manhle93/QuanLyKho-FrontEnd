@@ -284,10 +284,6 @@
       "
     >
       <div style="margin-top: 10px">
-        <div style="font-size: 16px; color: #196f3d; font-weight: bold">
-          Thông tin đơn hàng
-        </div>
-        <br />
         <el-form
           label-position="left"
           label-width="130px"
@@ -370,24 +366,6 @@
               placeholder="Phụ thu"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Tiền khách đưa">
-            <el-input
-              type="number"
-              :min="0"
-              v-model="khach_tra"
-              placeholder="Tiền khách đưa"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="Tiền thừa trả khách">
-            <span style="color: orange; font-size: 20px; font-weight: bold"
-              >{{
-                formate.formatCurrency(tra_lai) != 0
-                  ? formate.formatCurrency(tra_lai)
-                  : ""
-              }}
-              đ</span
-            >
-          </el-form-item>
           <el-form-item label="Tổng tiền">
             <span style="color: green; font-size: 20px; font-weight: bold"
               >{{ formate.formatCurrency(form.tong_tien) }} đ</span
@@ -401,7 +379,7 @@
               @focus="isInputDaThanhToan = true"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Tổng thanh toán" v-else>
+          <el-form-item class="strongLabel" label="Tổng thanh toán" v-else>
             <span style="color: green; font-size: 20px; font-weight: bold">
               {{
                 formate.formatCurrency(
@@ -410,6 +388,24 @@
               }}
               đ
             </span>
+          </el-form-item>
+          <el-form-item label="Tiền khách đưa">
+            <el-input
+              v-model="tienKhachDua"
+              placeholder="Tiền khách đưa"
+              @blur="isInputTienKhachDua = false"
+              @focus="isInputTienKhachDua = true"
+            ></el-input>
+          </el-form-item>
+          <el-form-item class="strongLabel" label="Hoàn tiền">
+            <span style="color: red; font-size: 20px; font-weight: bold"
+              >{{
+                formate.formatCurrency(tra_lai) != 0
+                  ? formate.formatCurrency(tra_lai)
+                  : ""
+              }}
+              đ</span
+            >
           </el-form-item>
           <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
             <span style="color: green; font-size: 20px; font-weight: bold"
@@ -799,7 +795,7 @@ export default {
       next: true,
       showFormAddKhachHang: false,
       showProductBar: true,
-      khach_tra: null,
+      khach_tra: 0,
       formKhaHang: {
         id: null,
         ten: null,
@@ -869,6 +865,7 @@ export default {
       isInputDaThanhToan: null,
       isInputPhuThu: null,
       isInputGiamGia: null,
+      isInputTienKhachDua: null,
       tra_lai: null,
       rulesKhachHang: {
         ten: [
@@ -980,6 +977,9 @@ export default {
       } else this.tra_lai = null;
     },
     "form.giam_gia": function(val) {
+      this.tra_lai =
+        this.khach_tra -
+        (this.form.tong_tien - this.form.giam_gia + Number(this.form.phu_thu));
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.da_thanh_toan -
@@ -994,7 +994,7 @@ export default {
         Number(this.form.phu_thu);
     },
     "form.tong_tien": function(val) {
-      this.form.giam_gia = (this.giamGiaTinNhiem * val)/100
+      this.form.giam_gia = (this.giamGiaTinNhiem * val) / 100;
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.giam_gia -
@@ -1087,6 +1087,31 @@ export default {
         }
         this.form.giam_gia = newValue;
       }
+    },
+    tienKhachDua: {
+      get() {
+        if (this.isInputTienKhachDua) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.khach_tra.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return String(this.khach_tra).replace(
+            /(\d)(?=(\d{3})+(?:\.\d+)?$)/g,
+            "$1."
+          );
+        }
+      },
+      set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        let newValue = parseFloat(
+          String(modifiedValue).replace(/[^\d\.]/g, "")
+        );
+        // Ensure that it is not NaN
+        if (isNaN(newValue)) {
+          newValue = 0;
+        }
+        this.khach_tra = newValue;
+      }
     }
   },
   methods: {
@@ -1107,14 +1132,13 @@ export default {
       });
     },
     async changeKhachHang() {
-     let khacHang = this.nhaCungCaps.find(
+      let khacHang = this.nhaCungCaps.find(
         el => el.user_id == this.form.khach_hang_id
       );
-      console.log(khacHang.tin_nhiem)
       if (khacHang) {
         let data = await getChietKhauKH(khacHang.tin_nhiem);
         this.giamGiaTinNhiem = data.phan_tram;
-        this.form.giam_gia = (data.phan_tram * this.form.tong_tien)/100
+        this.form.giam_gia = (data.phan_tram * this.form.tong_tien) / 100;
       } else this.giamGiaTinNhiem = 0;
     },
     async remoteMethodKH(query) {
@@ -1272,7 +1296,7 @@ export default {
         phu_thu: 0
       };
       this.tra_lai = null;
-      this.khach_tra = null;
+      this.khach_tra = 0;
       this.hangHoa = {};
       this.hang_hoa_id = null;
       this.so_luong = 1;
@@ -1370,6 +1394,14 @@ export default {
   }
 };
 </script>
+<style>
+.ttch label {
+  font-weight: 200 !important;
+}
+.strongLabel label {
+  font-weight: 700 !important;
+}
+</style>
 <style scoped>
 .flex-collumn {
   flex-direction: column;
@@ -1447,6 +1479,7 @@ export default {
 .el-form-item--small.el-form-item {
   margin-bottom: 5px;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);
