@@ -21,7 +21,6 @@ import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
 import formate from './utils/transform'
 Vue.component('vue-simplemde', VueSimplemde)
-
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -37,6 +36,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+Vue.use(require('vue-shortkey'))
 
 Vue.config.productionTip = false
 window.formate = formate;

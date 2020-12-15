@@ -192,6 +192,7 @@
       </div>
       <div style="text-align: center">
         <el-button
+          style="width: 100px"
           v-if="showProductBar"
           icon="el-icon-bottom"
           size="small"
@@ -199,13 +200,14 @@
           class="primary-button"
         ></el-button>
         <el-button
+          style="width: 100px"
           v-else
           icon="el-icon-top"
           size="small"
           @click="showProductBar = true"
           class="primary-button"
         ></el-button>
-        <el-input
+        <!-- <el-input
           size="mini"
           style="width: 150px"
           placeholder="Tiền khách đưa"
@@ -214,9 +216,15 @@
         ></el-input>
         <span style="width: 200px; padding-left: 20px"
           ><strong style="font-size: 14px"
-            >Tiền thừa trả khách: {{ formate.formatCurrency(tra_lai) != 0 ? formate.formatCurrency(tra_lai) : '' }} đ</strong
+            >Tiền thừa trả khách:
+            {{
+              formate.formatCurrency(tra_lai) != 0
+                ? formate.formatCurrency(tra_lai)
+                : ""
+            }}
+            đ</strong
           ></span
-        >
+        > -->
       </div>
       <div class="sanpham" v-show="showProductBar">
         <transition name="bounce" v-for="item in hangHoas" :key="item.id">
@@ -303,6 +311,7 @@
               style="width: 80%"
               placeholder="Chọn khách hàng"
               :loading="loading"
+              @change="changeKhachHang()"
             >
               <el-option
                 class="khachhang"
@@ -360,6 +369,24 @@
               @focus="isInputPhuThu = true"
               placeholder="Phụ thu"
             ></el-input>
+          </el-form-item>
+          <el-form-item label="Tiền khách đưa">
+            <el-input
+              type="number"
+              :min="0"
+              v-model="khach_tra"
+              placeholder="Tiền khách đưa"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="Tiền thừa trả khách">
+            <span style="color: orange; font-size: 20px; font-weight: bold"
+              >{{
+                formate.formatCurrency(tra_lai) != 0
+                  ? formate.formatCurrency(tra_lai)
+                  : ""
+              }}
+              đ</span
+            >
           </el-form-item>
           <el-form-item label="Tổng tiền">
             <span style="color: green; font-size: 20px; font-weight: bold"
@@ -470,8 +497,10 @@
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
+            v-shortkey.once="['f9']"
             @click="submit('form')"
-            >THANH TOÁN</el-button
+            @shortkey.native="submit('form')"
+            >[F9] THANH TOÁN</el-button
           >
         </el-col>
       </el-row>
@@ -497,11 +526,7 @@
         </div>
 
         <div>
-          <el-rate
-            disabled
-            :value="+UserInfo.tin_nhiem"
-            :colors="colors"
-          ></el-rate>
+          <el-rate disabled :value="+UserInfo.tin_nhiem" :max="10"></el-rate>
         </div>
       </div>
       <br />
@@ -737,6 +762,8 @@ import { addDonDatHang, getShipper } from "@/api/dondathang";
 import { getBangGia } from "@/api/banggia";
 import { debounce } from "lodash";
 import { addKhachHang } from "@/api/khachhang";
+import { getChietKhauKH } from "@/api/caidat";
+
 export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -827,6 +854,7 @@ export default {
       admin: false,
       nhaCungCaps: [],
       hangHoa: {},
+      giamGiaTinNhiem: 0,
       hang_hoa_id: null,
       hangHoas: [],
       bangGias: [],
@@ -966,6 +994,7 @@ export default {
         Number(this.form.phu_thu);
     },
     "form.tong_tien": function(val) {
+      this.form.giam_gia = (this.giamGiaTinNhiem * val)/100
       this.form.con_phai_thanh_toan =
         this.form.tong_tien -
         this.form.giam_gia -
@@ -1077,7 +1106,17 @@ export default {
         }
       });
     },
-
+    async changeKhachHang() {
+     let khacHang = this.nhaCungCaps.find(
+        el => el.user_id == this.form.khach_hang_id
+      );
+      console.log(khacHang.tin_nhiem)
+      if (khacHang) {
+        let data = await getChietKhauKH(khacHang.tin_nhiem);
+        this.giamGiaTinNhiem = data.phan_tram;
+        this.form.giam_gia = (data.phan_tram * this.form.tong_tien)/100
+      } else this.giamGiaTinNhiem = 0;
+    },
     async remoteMethodKH(query) {
       this.loading = true;
       let data = await getKhachHang({
@@ -1232,8 +1271,8 @@ export default {
         thoi_gian_nhan_hang: new Date(),
         phu_thu: 0
       };
-      this.tra_lai = null
-      this.khach_tra = null
+      this.tra_lai = null;
+      this.khach_tra = null;
       this.hangHoa = {};
       this.hang_hoa_id = null;
       this.so_luong = 1;
@@ -1403,6 +1442,10 @@ export default {
 .maint {
   padding-left: 10px;
   overflow: hidden;
+}
+.el-form-item--mini.el-form-item,
+.el-form-item--small.el-form-item {
+  margin-bottom: 5px;
 }
 @keyframes bounce-in {
   0% {

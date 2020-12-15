@@ -441,15 +441,7 @@
               <br />
               <el-rate
                 v-model="form.tin_nhiem"
-                show-text
-                :colors="colors"
-                :texts="[
-                  'Thường',
-                  'Trung bình',
-                  'Tốt',
-                  'Tính nhiệm cao',
-                  'Rất cao'
-                ]"
+                :max="10"
               ></el-rate>
             </el-form-item>
           </el-col>
@@ -682,7 +674,7 @@ export default {
       this.form.giao_dich_cuoi = data.giao_dich_cuoi;
       this.form.nhom_id = data.nhom_id;
       this.form.loai_thanh_vien_id = data.loai_thanh_vien_id;
-      this.form.tin_nhiem = data.tin_nhiem;
+      this.form.tin_nhiem = Number(data.tin_nhiem);
       this.form.diem_quy_doi = data.diem_quy_doi;
       this.form.tien_vay = data.tien_vay;
       this.form.trang_thai = data.trang_thai;

@@ -107,3 +107,25 @@ export function updateBanner(data) {
       data
   })
 }
+
+export function getChietKhau() {
+  return request({
+      url: 'chietkhau',
+      method: 'get',
+  })
+}
+
+export function updateChietKhau(data) {
+  return request({
+      url: 'chietkhau',
+      method: 'put',
+      data
+  })
+}
+
+export function getChietKhauKH(id) {
+  return request({
+      url: 'chietkhaukhachhang/' + id,
+      method: 'get',
+  })
+}

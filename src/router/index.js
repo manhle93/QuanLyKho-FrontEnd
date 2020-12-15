@@ -102,6 +102,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "chietkhau",
+        name: "Chiết khấu khách hàng",
+        component: () => import("@/views/caidat/chietkhau/index"),
+        meta: {
+          title: "Chiết khấu khách hàng",
+          icon: "monngonmoingay"
+        }
+      },
+      {
         path: "bepnharuong",
         name: "Bếp nhà ruộng",
         component: () => import("@/views/caidat/bepnharuong/index"),
