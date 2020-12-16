@@ -224,7 +224,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao",
+        trang_thai: "moi_tao"
       },
       idSanPham: null,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -248,28 +248,28 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đợt kiểm kê",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             min: 5,
             message: "Tên đơn hàng tối thiểu 5 ký tự",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "change",
-          },
-        ],
-      },
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
   watch: {
     timKiem(val) {
       this.getSanPham();
-    },
+    }
   },
   created() {
     this.getSanPham();
@@ -286,20 +286,28 @@ export default {
       let data = await getSanPhamTonKho({
         per_page: 12,
         search: this.timKiem,
-        danh_muc: this.danh_muc_id,
+        danh_muc: this.danh_muc_id
+      });
+      this.hangHoas = data.data;
+    },
+    async remoteMethod(query) {
+      let data = await getSanPhamTonKho({
+        per_page: 12,
+        search: query,
+        danh_muc_id: this.danh_muc_id
       });
       this.hangHoas = data.data;
     },
     doiSanPham(id) {
-      this.idSanPham = null
+      this.idSanPham = null;
       this.hang_hoa_id = id;
-      this.hangHoa = this.hangHoas.find((el) => el.id == id);
+      this.hangHoa = this.hangHoas.find(el => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
       this.so_luong = 1;
       this.addSanPham();
     },
     kiemTraDaChon(SanPhamID) {
-      let a = this.form.danhSachHang.find((el) => el.hang_hoa.id == SanPhamID);
+      let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
       if (a) return true;
       return false;
     },
@@ -329,28 +337,25 @@ export default {
       }
     },
     submit(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning",
+              type: "warning"
             });
             return;
           }
           addKiemKho(this.form)
-            .then((res) => {
+            .then(res => {
               this.$message({
                 message: "Tạo kiểm kho thành công",
-                type: "success",
+                type: "success"
               });
               this.resetForm();
             })
-            .catch((error) => {
-              
-            });
+            .catch(error => {});
         } else {
-          
           return false;
         }
       });
@@ -365,7 +370,7 @@ export default {
         ghi_chu: null,
         danhSachHang: [],
         user_nhan_vien_id: null,
-        trang_thai: "moi_tao",
+        trang_thai: "moi_tao"
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -383,13 +388,13 @@ export default {
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
-        (el) => el.user_id == this.form.khach_hang_id
+        el => el.user_id == this.form.khach_hang_id
       );
       if (this.UserInfo) {
         this.showUserDetail = true;
       } else this.UserInfo = {};
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

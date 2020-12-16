@@ -46,6 +46,7 @@
             <el-col :span="8">
               <el-form-item>
                 <el-select
+                  ref="selectSp"
                   size="small"
                   style="width: 100%"
                   clearable
@@ -54,7 +55,9 @@
                   v-model="idSanPham"
                   :remote-method="remoteMethod"
                   placeholder="Hàng hóa, sản phẩm"
+                  @keyup.enter.native="enterSanPham"
                   filterable
+                  @blur="handOutSanPham()"
                   @change="doiSanPham(idSanPham)"
                 >
                   <el-option
@@ -796,6 +799,7 @@ export default {
       showFormAddKhachHang: false,
       showProductBar: true,
       khach_tra: 0,
+      scanCode: null,
       formKhaHang: {
         id: null,
         ten: null,
@@ -824,7 +828,7 @@ export default {
         diem_quy_doi: null,
         tien_vay: null
       },
-      idSanPham: null,
+      idSanPham: undefined,
       form: {
         ma: "ĐĐH_" + new Date().getTime(),
         ten: "Đơn hàng tại quầy ",
@@ -1140,14 +1144,13 @@ export default {
         if (data) {
           this.giamGiaTinNhiem = data.phan_tram;
           this.form.giam_gia = (data.phan_tram * this.form.tong_tien) / 100;
-        }else
-        this.giamGiaTinNhiem = 0;
+        } else this.giamGiaTinNhiem = 0;
       } else this.giamGiaTinNhiem = 0;
     },
     async remoteMethodKH(query) {
       this.loading = true;
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 10,
         search: query
       });
       this.nhaCungCaps = data.data.data;
@@ -1184,7 +1187,18 @@ export default {
         this.don_gia = this.hangHoa.gia_ban;
       }
       this.addSanPham();
-      this.idSanPham = null;
+      this.idSanPham = undefined;
+    },
+    handOutSanPham() {
+      this.getSanPham();
+    },
+    async enterSanPham() {
+      if (this.hangHoas && this.hangHoas.length > 0) {
+        this.doiSanPham(this.hangHoas[0].id);
+        this.$refs.selectSp.blur();
+        await this.getSanPham();
+        this.$refs.selectSp.focus();
+      }
     },
     kiemTraDaChon(SanPhamID) {
       let a = this.form.danhSachHang.find(el => el.hang_hoa.id == SanPhamID);
@@ -1192,6 +1206,12 @@ export default {
       return false;
     },
     addSanPham() {
+      if(this.scanCode && this.scanCode.length == 12){
+        let kl = this.scanCode.substring(6)
+        if(Number(kl)){
+           this.so_luong = Number(kl)/10000
+        }
+      }
       if (this.hang_hoa_id && this.so_luong && this.don_gia) {
         let data = {};
         data.hang_hoa = this.hangHoa;
@@ -1271,6 +1291,7 @@ export default {
       this.$router.push("/quanlydonhang/nhacungcap");
     },
     async remoteMethod(query) {
+      this.scanCode = query
       let data = await listSanPham({
         per_page: 12,
         search: query,
@@ -1308,7 +1329,7 @@ export default {
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999
+        per_page: 10
       });
       this.nhaCungCaps = data.data.data;
     },

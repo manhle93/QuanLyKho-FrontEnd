@@ -1243,7 +1243,7 @@ export default {
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 10,
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -1251,7 +1251,7 @@ export default {
     async remoteMethodKH(query) {
       this.loading = true;
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 10,
         search: query,
       });
       this.nhaCungCaps = data.data.data;
