@@ -144,11 +144,12 @@
                 <el-table-column
                   type="index"
                   label="STT"
-                  width="100px"
+                  width="50px"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.ten_san_pham"
                   label="Hàng hóa"
+                  width="200px"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.don_vi_tinh"
@@ -1193,7 +1194,10 @@ export default {
       this.getSanPham();
     },
     async enterSanPham() {
-      if (this.hangHoas && this.hangHoas.length > 0) {
+      if (
+        this.hangHoas &&
+        this.hangHoas.length > 0 &&  !this.kiemTraDaChon(this.hangHoas[0].id)
+      ) {
         this.doiSanPham(this.hangHoas[0].id);
         this.$refs.selectSp.blur();
         await this.getSanPham();
@@ -1206,10 +1210,10 @@ export default {
       return false;
     },
     addSanPham() {
-      if(this.scanCode && this.scanCode.length == 12){
-        let kl = this.scanCode.substring(6)
-        if(Number(kl)){
-           this.so_luong = Number(kl)/10000
+      if (this.scanCode && this.scanCode.length == 12) {
+        let kl = this.scanCode.substring(6);
+        if (Number(kl)) {
+          this.so_luong = Number(kl) / 10000;
         }
       }
       if (this.hang_hoa_id && this.so_luong && this.don_gia) {
@@ -1291,7 +1295,7 @@ export default {
       this.$router.push("/quanlydonhang/nhacungcap");
     },
     async remoteMethod(query) {
-      this.scanCode = query
+      this.scanCode = query;
       let data = await listSanPham({
         per_page: 12,
         search: query,
