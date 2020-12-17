@@ -55,6 +55,9 @@
               v-model="hang_hoa_id"
               filterable
               clearable
+              remote
+              reserve-keyword
+              :remote-method="remoteMethod"
               placeholder="Chọn hàng hóa, sản phẩm"
               @change="doiSanPham(hang_hoa_id)"
             >
@@ -81,14 +84,18 @@
               @focus="isInputActive = true"
               :min="0"
             >
-              <template slot="append">VNĐ</template>
+              <template slot="append"
+                >VNĐ</template
+              >
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="Giá khuyến cáo">
             <el-input v-model="gia_khuyen_cao" :min="0" type="number">
-              <template slot="append">VNĐ</template>
+              <template slot="append"
+                >VNĐ</template
+              >
             </el-input>
           </el-form-item>
         </el-col>
@@ -188,7 +195,7 @@ export default {
         ten: null,
         ghi_chu: null,
         danhSachHang: [],
-        nha_cung_cap_id: null,
+        nha_cung_cap_id: null
       },
       isInputActive: null,
       formate: formate,
@@ -203,12 +210,12 @@ export default {
       rules: {
         ten: [
           { required: true, message: "Hãy nhập tên báo giá", trigger: "blur" },
-          { min: 5, message: "Tên báo giá tối thiểu 5 ký tự", trigger: "blur" },
-        ],
-      },
+          { min: 5, message: "Tên báo giá tối thiểu 5 ký tự", trigger: "blur" }
+        ]
+      }
     };
   },
-    computed: {
+  computed: {
     displayValue: {
       get() {
         if (this.isInputActive) {
@@ -232,8 +239,8 @@ export default {
           newValue = 0;
         }
         this.don_gia = newValue;
-      },
-    },
+      }
+    }
   },
   created() {
     this.getSanPham();
@@ -243,12 +250,12 @@ export default {
   methods: {
     async getSanPham() {
       let data = await listSanPham({
-        per_page: 9999999,
+        per_page: 20
       });
       this.hangHoas = data.data.data;
     },
     async doiSanPham(id) {
-      this.hangHoa = this.hangHoas.find((el) => el.id == id);
+      this.hangHoa = this.hangHoas.find(el => el.id == id);
       this.don_vi_tinh = this.hangHoa.don_vi_tinh;
     },
     addSanPham() {
@@ -278,29 +285,34 @@ export default {
         }
       }
     },
+    async remoteMethod(query) {
+      console.log(query)
+      let data = await listSanPham({
+        per_page: 20,
+        search: query
+      });
+      this.hangHoas = data.data.data;
+    },
     submit(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.form.danhSachHang.length == 0) {
             this.$message({
               message: "Danh sách hàng hóa không thể bỏ trống",
-              type: "warning",
+              type: "warning"
             });
             return;
           }
           addBaoGia(this.form)
-            .then((res) => {
+            .then(res => {
               this.$message({
                 message: "Tạo báo giá thành công",
-                type: "success",
+                type: "success"
               });
               this.resetForm();
             })
-            .catch((error) => {
-              
-            });
+            .catch(error => {});
         } else {
-          
           return false;
         }
       });
@@ -314,7 +326,7 @@ export default {
         ten: null,
         ghi_chu: null,
         tong_tien: null,
-        danhSachHang: [],
+        danhSachHang: []
       };
       this.hangHoa = {};
       this.hang_hoa_id = null;
@@ -325,7 +337,7 @@ export default {
     },
     async getNhaCungCap() {
       let data = await getNhaCungCap({
-        per_page: 999999,
+        per_page: 999999
       });
       this.nhaCungCaps = data.data.data;
     },
@@ -335,9 +347,8 @@ export default {
       if (data.data.role_id == 1 || data.data.role_id == 2) {
         this.admin = true;
       }
-    },
-  },
+    }
+  }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

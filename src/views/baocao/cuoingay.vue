@@ -109,12 +109,12 @@
         label="Tên hóa đơn"
         min-width="85"
       ></el-table-column>
-      <el-table-column prop="so_luong" label="Số lượng sản phẩm" min-width="45">
+      <!-- <el-table-column prop="so_luong" label="Số lượng sản phẩm" min-width="45">
         <template slot-scope="scope">
           {{ formate.formatCurrency(scope.row.so_luong) + " "
           }}{{ scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : "" }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="tong_tien" label="Thành tiền" min-width="45">
         <template slot-scope="scope">
           {{ formate.formatCurrency(scope.row.tong_tien) + " đ" }}
