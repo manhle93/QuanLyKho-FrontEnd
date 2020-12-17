@@ -375,6 +375,11 @@
               >{{ formate.formatCurrency(form.tong_tien) }} đ</span
             >
           </el-form-item>
+          <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
+            <span style="color: green; font-size: 20px; font-weight: bold"
+              >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span
+            >
+          </el-form-item>
           <el-form-item label="Đã thanh toán" v-if="!mua_hang">
             <el-input
               size="small"
@@ -409,11 +414,6 @@
                   : ""
               }}
               đ</span
-            >
-          </el-form-item>
-          <el-form-item size="mini" v-if="!mua_hang" label="Phải thanh toán">
-            <span style="color: green; font-size: 20px; font-weight: bold"
-              >{{ formate.formatCurrency(form.con_phai_thanh_toan) }} đ</span
             >
           </el-form-item>
           <el-form-item label="Phương thúc" v-if="mua_hang" prop="thanh_toan">
@@ -843,7 +843,7 @@ export default {
         nhan_vien_giao_hang: null,
         trang_thai: "moi_tao",
         bang_gia_id: null,
-        thanh_toan: 'tien_mat',
+        thanh_toan: "tien_mat",
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
         phu_thu: 0
@@ -1196,7 +1196,8 @@ export default {
     async enterSanPham() {
       if (
         this.hangHoas &&
-        this.hangHoas.length > 0 &&  !this.kiemTraDaChon(this.hangHoas[0].id)
+        this.hangHoas.length > 0 &&
+        !this.kiemTraDaChon(this.hangHoas[0].id)
       ) {
         this.doiSanPham(this.hangHoas[0].id);
         this.$refs.selectSp.blur();
@@ -1306,7 +1307,7 @@ export default {
     resetForm() {
       this.form = {
         ma: "ĐĐH_" + new Date().getTime(),
-        ten: 'Đơn hàng tại quầy',
+        ten: "Đơn hàng tại quầy",
         ghi_chu: null,
         tong_tien: null,
         danhSachHang: [],
@@ -1317,7 +1318,7 @@ export default {
         bang_gia_id: null,
         nhan_vien_giao_hang: null,
         trang_thai: null,
-        thanh_toan: 'tien_mat',
+        thanh_toan: "tien_mat",
         trang_thai: "moi_tao",
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
