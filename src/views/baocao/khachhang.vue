@@ -21,6 +21,9 @@
           filterable
           clearable
           size="small"
+          remote
+          reserve-keyword
+          :remote-method="remoteMethod"
           v-model="form.khach_hang"
           placeholder="Chọn khách hàng"
           style="width: 100%"
@@ -66,30 +69,34 @@
       <el-col :span="5">
         <span style="color: green;">
           {{
-            form.don_hang == "hoa_don"
-              ? "Tổng doanh thu: "
-              : "Tổng doanh thu: "
+            form.don_hang == "hoa_don" ? "Tổng doanh thu: " : "Tổng doanh thu: "
           }}
         </span>
-        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
-          (VND)
+        <span style="color: red;">
+          {{ formate.formatCurrency(doanhThuDatHang) }}</span
+        >
+        (VND)
       </el-col>
       <el-col :span="5">
         <span style="color: green;">
           Số lượng đơn:
         </span>
-        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
-          (Đơn)
+        <span style="color: red;">
+          {{ formate.formatCurrency(doanhThuDatHang) }}</span
+        >
+        (Đơn)
       </el-col>
       <el-col :span="5">
         <span style="color: green;">
           Số lượng sản phẩm
         </span>
-        <span style="color: red;">  {{formate.formatCurrency(doanhThuDatHang)}}</span>
-          (Sản phẩm)
+        <span style="color: red;">
+          {{ formate.formatCurrency(doanhThuDatHang) }}</span
+        >
+        (Sản phẩm)
       </el-col>
-      <br>
-      <br>
+      <br />
+      <br />
     </el-row>
     <el-table
       :data="form.don_hang == 'hoa_don' ? dataBanHang : dataDatHang"
@@ -99,16 +106,34 @@
     >
       <el-table-column type="index" label="STT"></el-table-column>
       <el-table-column prop="created_at" label="Họ và Tên"></el-table-column>
-      <el-table-column prop="created_at" label="Số điện thoại"></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Số điện thoại"
+      ></el-table-column>
       <el-table-column
         prop="san_pham.ten_san_pham"
         label="Số lượng SP đã mua"
       ></el-table-column>
-      <el-table-column prop="created_at" label="Giá trị mua hàng"></el-table-column>
-      <el-table-column prop="created_at" label="Doanh số bán hàng"></el-table-column>
-      <el-table-column prop="created_at" label="Số lượng HĐ trả hàng"></el-table-column>
-      <el-table-column prop="created_at" label="Giá trị trả hàng"></el-table-column>
-      <el-table-column prop="created_at" label="Tổng doanh thu"></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Giá trị mua hàng"
+      ></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Doanh số bán hàng"
+      ></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Số lượng HĐ trả hàng"
+      ></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Giá trị trả hàng"
+      ></el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Tổng doanh thu"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -120,7 +145,7 @@ export default {
     form: {
       date: [new Date(), new Date()],
       orderBy: "doanh_thu",
-      don_hang: "hoa_don",
+      don_hang: "hoa_don"
     },
     dataBanHang: [],
     dataDatHang: [],
@@ -128,7 +153,7 @@ export default {
     formate: formate,
     tableLoading: false,
     doanhThuBanHang: 0,
-    doanhThuDatHang: 0,
+    doanhThuDatHang: 0
   }),
   created() {
     this.getData();
@@ -144,31 +169,45 @@ export default {
       this.doanhThuBanHang = 0;
       this.doanhThuDatHang = 0;
       this.dataBanHang.forEach(
-        (el) =>
+        el =>
           (this.doanhThuBanHang =
             +this.doanhThuBanHang + el.gia_ban * el.so_luong)
       );
       this.dataDatHang.forEach(
-        (el) =>
+        el =>
           (this.doanhThuDatHang =
             +this.doanhThuDatHang + el.gia_ban * el.so_luong)
       );
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 20
+      });
+      this.khachHangs = data.data.data;
+    },
+    async remoteMethod(query) {
+      let data = await getKhachHang({
+        per_page: 20,
+        search: query
       });
       this.khachHangs = data.data.data;
     },
     taiBaoCao() {
-      let start = new Date(this.form.date[0]).toISOString()
-      let end = new Date(this.form.date[1]).toISOString()
+      let start = new Date(this.form.date[0]).toISOString();
+      let end = new Date(this.form.date[1]).toISOString();
       window.location.assign(
         process.env.VUE_APP_BASE_API +
-          "downloadbaocaobanhang?date[]=" +start + "&date[]=" + end + "&orderBy=" + this.form.orderBy + "&don_hang="+this.form.don_hang);
-    },
-  },
+          "downloadbaocaobanhang?date[]=" +
+          start +
+          "&date[]=" +
+          end +
+          "&orderBy=" +
+          this.form.orderBy +
+          "&don_hang=" +
+          this.form.don_hang
+      );
+    }
+  }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

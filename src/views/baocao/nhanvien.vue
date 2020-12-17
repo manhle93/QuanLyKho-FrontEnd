@@ -198,7 +198,7 @@ export default {
     async remoteMethod(query) {
       this.loading = true;
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 20,
         search: query,
       });
       this.nhaCungCaps = data.data.data;
