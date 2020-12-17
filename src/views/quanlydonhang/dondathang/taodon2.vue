@@ -1306,7 +1306,7 @@ export default {
     resetForm() {
       this.form = {
         ma: "ĐĐH_" + new Date().getTime(),
-        ten: null,
+        ten: 'Đơn hàng tại quầy',
         ghi_chu: null,
         tong_tien: null,
         danhSachHang: [],
