@@ -2,7 +2,9 @@
   <div class="app-container">
     <el-row>
       <el-col :span="20" :offset="2">
-        <h4><i style="color: green"> CẬP NHẬT THÔNG TIN SẢN PHẨM/ HÀNG HÓA</i></h4>
+        <h4>
+          <i style="color: green"> CẬP NHẬT THÔNG TIN SẢN PHẨM/ HÀNG HÓA</i>
+        </h4>
         <el-form :model="form" :rules="rules" ref="form">
           <el-row :gutter="20">
             <el-col :span="6">
@@ -273,7 +275,7 @@ import {
   getThuongHieu,
   xoaThuongHieu,
   addThuongHieu,
-  editThuongHieu,
+  editThuongHieu
 } from "@/api/thuonghieu";
 import { getToken } from "@/utils/auth";
 import {
@@ -281,7 +283,7 @@ import {
   addSanPham,
   chiTietSP,
   xoaAnh,
-  editSanPham,
+  editSanPham
 } from "@/api/sanpham";
 import { upAnhDanhMuc } from "@/api/danhmucsanpham";
 export default {
@@ -315,12 +317,12 @@ export default {
         gia_von: "",
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1,
+        thoi_gian_bao_quan: 1
       },
       thuongHieus: [],
       formAddThuongHieu: {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       },
       editThuongHieu: false,
       rules: {
@@ -328,31 +330,38 @@ export default {
           {
             required: true,
             message: "Nhóm hàng hóa không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         ten_san_pham: [
           {
             required: true,
             message: "Tên sản phẩm không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         don_vi_tinh: [
           {
             required: true,
             message: "Đơn vị tính không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
+        ],
+        gia_ban: [
+          {
+            required: true,
+            message: "Giá bán không thể bỏ trống",
+            trigger: "blur"
+          }
         ],
         ten: [
           {
             required: true,
             message: "Tên thương hiệu không thể bỏ trống",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   computed: {
@@ -379,7 +388,7 @@ export default {
           newValue = 0;
         }
         this.form.gia_ban = newValue;
-      },
+      }
     },
     giaVon: {
       get() {
@@ -404,14 +413,14 @@ export default {
           newValue = 0;
         }
         this.form.gia_von = newValue;
-      },
-    },
+      }
+    }
   },
   created() {
     this.getDanhMuc();
     this.getThuongHieu();
     this.token = {
-      Authorization: "Bearer " + getToken(),
+      Authorization: "Bearer " + getToken()
     };
     this.urlUploadSanPham =
       process.env.VUE_APP_BASE_API + "uploadedit/" + this.$route.params.id;
@@ -423,7 +432,7 @@ export default {
       this.showThuongHieu = true;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       };
     },
     huyThuongHieu() {
@@ -431,14 +440,14 @@ export default {
       this.showThuongHieu = false;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       };
     },
     async xoaThuongHieu() {
       await xoaThuongHieu(this.form.thuong_hieu_id);
       this.$message({
         type: "success",
-        message: "Xóa thương hiệu thành công",
+        message: "Xóa thương hiệu thành công"
       });
       this.showThuongHieu = false;
       this.form.thuong_hieu_id = null;
@@ -449,44 +458,42 @@ export default {
       this.thuongHieus = data.data;
     },
     themThuongHieu(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          addThuongHieu(this.formAddThuongHieu).then((res) => {
+          addThuongHieu(this.formAddThuongHieu).then(res => {
             this.$message({
               type: "success",
-              message: "Thêm thương hiệu thành công",
+              message: "Thêm thương hiệu thành công"
             });
           });
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          
           return false;
         }
       });
     },
     updateThuongHieu(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           editThuongHieu(this.form.thuong_hieu_id, this.formAddThuongHieu).then(
-            (res) => {
+            res => {
               this.$message({
                 type: "success",
-                message: "Cập nhật thương hiệu thành công",
+                message: "Cập nhật thương hiệu thành công"
               });
             }
           );
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          
           return false;
         }
       });
     },
     showEditThuongHieu() {
       let thuonghieu = this.thuongHieus.find(
-        (el) => el.id == this.form.thuong_hieu_id
+        el => el.id == this.form.thuong_hieu_id
       );
       this.editThuongHieu = true;
       this.showThuongHieu = true;
@@ -495,13 +502,13 @@ export default {
     },
     handleRemove(file, fileList) {
       xoaAnh({ id: file.id })
-        .then((res) => {
+        .then(res => {
           this.$message({
             type: "success",
-            message: "Xóa ảnh thành công",
+            message: "Xóa ảnh thành công"
           });
         })
-        .catch((res) => {});
+        .catch(res => {});
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -512,11 +519,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then((res) => {
+        .then(res => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch((error) => {});
+        .catch(error => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -546,24 +553,23 @@ export default {
         gia_von: "",
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1,
+        thoi_gian_bao_quan: 1
       };
       this.src = process.env.VUE_APP_BASE + res;
       this.$refs.upload.clearFiles();
     },
     addSanPham(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           editSanPham(this.$route.params.id, this.form)
-            .then((res) => {
+            .then(res => {
               this.$message({
                 type: "success",
-                message: "Cập nhật thành công",
+                message: "Cập nhật thành công"
               });
             })
-            .catch((res) => {});
+            .catch(res => {});
         } else {
-          
           return false;
         }
       });
@@ -571,7 +577,9 @@ export default {
     async getChiTietSanPham() {
       let data = await chiTietSP(this.$route.params.id);
       this.form = data;
-      this.form.gia_von = data.gia_von ?  data.gia_von : ""
+      this.form.gia_von = data.gia_von ? data.gia_von : "";
+      this.form.mo_ta_san_pham = data.mo_ta_san_pham ? data.mo_ta_san_pham : "";
+      this.form.gia_ban = data.gia_ban ? data.gia_ban : "";
       this.form.fileList = [];
       if (this.form.anh_dai_dien) {
         this.src = process.env.VUE_APP_BASE + this.form.anh_dai_dien;
@@ -584,8 +592,8 @@ export default {
           this.form.fileList.push(ob);
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

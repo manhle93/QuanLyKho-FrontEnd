@@ -301,7 +301,7 @@ import {
   getThuongHieu,
   xoaThuongHieu,
   addThuongHieu,
-  editThuongHieu,
+  editThuongHieu
 } from "@/api/thuonghieu";
 import { getToken } from "@/utils/auth";
 import { listSanPham, addSanPham } from "@/api/sanpham";
@@ -335,14 +335,14 @@ export default {
         gia_von: "",
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1,
+        thoi_gian_bao_quan: 1
       },
       isInputActive: null,
       isInputActiveGiaVon: null,
       thuongHieus: [],
       formAddThuongHieu: {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       },
       editThuongHieu: false,
       rules: {
@@ -350,38 +350,45 @@ export default {
           {
             required: true,
             message: "Nhóm hàng hóa không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         ten_san_pham: [
           {
             required: true,
             message: "Tên sản phẩm không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         don_vi_tinh: [
           {
             required: true,
             message: "Đơn vị tính không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
+        ],
+        gia_ban: [
+          {
+            required: true,
+            message: "Giá bán không thể bỏ trống",
+            trigger: "blur"
+          }
         ],
         ten: [
           {
             required: true,
             message: "Tên thương hiệu không thể bỏ trống",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
     this.getDanhMuc();
     this.getThuongHieu();
     this.token = {
-      Authorization: "Bearer " + getToken(),
+      Authorization: "Bearer " + getToken()
     };
   },
   computed: {
@@ -408,7 +415,7 @@ export default {
           newValue = 0;
         }
         this.form.gia_ban = newValue;
-      },
+      }
     },
     giaVon: {
       get() {
@@ -433,8 +440,8 @@ export default {
           newValue = 0;
         }
         this.form.gia_von = newValue;
-      },
-    },
+      }
+    }
   },
   methods: {
     showFormAddThuongHieu() {
@@ -442,7 +449,7 @@ export default {
       this.showThuongHieu = true;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       };
     },
     huyThuongHieu() {
@@ -450,14 +457,14 @@ export default {
       this.showThuongHieu = false;
       this.formAddThuongHieu = {
         ten: null,
-        mo_ta: null,
+        mo_ta: null
       };
     },
     async xoaThuongHieu() {
       await xoaThuongHieu(this.form.thuong_hieu_id);
       this.$message({
         type: "success",
-        message: "Xóa thương hiệu thành công",
+        message: "Xóa thương hiệu thành công"
       });
       this.showThuongHieu = false;
       this.form.thuong_hieu_id = null;
@@ -468,52 +475,49 @@ export default {
       this.thuongHieus = data.data;
     },
     themThuongHieu(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          addThuongHieu(this.formAddThuongHieu).then((res) => {
+          addThuongHieu(this.formAddThuongHieu).then(res => {
             this.$message({
               type: "success",
-              message: "Thêm thương hiệu thành công",
+              message: "Thêm thương hiệu thành công"
             });
             this.getThuongHieu();
           });
           this.showThuongHieu = false;
         } else {
-          
           return false;
         }
       });
     },
     updateThuongHieu(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           editThuongHieu(this.form.thuong_hieu_id, this.formAddThuongHieu).then(
-            (res) => {
+            res => {
               this.$message({
                 type: "success",
-                message: "Cập nhật thương hiệu thành công",
+                message: "Cập nhật thương hiệu thành công"
               });
             }
           );
           this.getThuongHieu();
           this.showThuongHieu = false;
         } else {
-          
           return false;
         }
       });
     },
     showEditThuongHieu() {
       let thuonghieu = this.thuongHieus.find(
-        (el) => el.id == this.form.thuong_hieu_id
+        el => el.id == this.form.thuong_hieu_id
       );
       this.editThuongHieu = true;
       this.showThuongHieu = true;
       this.formAddThuongHieu.ten = thuonghieu.ten;
       this.formAddThuongHieu.mo_ta = thuonghieu.mo_ta;
     },
-    handleRemove(file, fileList) {
-    },
+    handleRemove(file, fileList) {},
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogAlbum = true;
@@ -523,11 +527,11 @@ export default {
       let data = new FormData();
       data.append("file", files[0]);
       upAnhDanhMuc(data)
-        .then((res) => {
+        .then(res => {
           this.form.anh_dai_dien = res;
           this.src = process.env.VUE_APP_BASE + res;
         })
-        .catch((error) => {});
+        .catch(error => {});
     },
     handleUpload() {
       this.$refs["upload-image"].click();
@@ -557,30 +561,29 @@ export default {
         gia_von: null,
         vi_tri: null,
         ton_kho_thap_nhat: 0,
-        thoi_gian_bao_quan: 1,
+        thoi_gian_bao_quan: 1
       };
       this.src = process.env.VUE_APP_BASE + res;
       this.$refs.upload.clearFiles();
     },
     addSanPham(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           addSanPham(this.form)
-            .then((res) => {
+            .then(res => {
               this.$message({
                 type: "success",
-                message: "Thêm mới thành công",
+                message: "Thêm mới thành công"
               });
               this.resetForm();
             })
-            .catch((res) => {});
+            .catch(res => {});
         } else {
-          
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

@@ -159,7 +159,7 @@
                   <template slot-scope="scope">
                     <el-input-number
                       size="small"
-                      :min="0.1"
+                      :min="0.0001"
                       v-model="scope.row.so_luong"
                     ></el-input-number>
                   </template>
