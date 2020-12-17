@@ -10,7 +10,7 @@
           placeholder="Thông tin tìm kiếm"
           v-model="search"
           suffix-icon="el-icon-search"
-          @keyup.enter.native="getData()"
+          @keyup.enter.native="searchData()"
         ></el-input>
       </el-col>
       <el-col :span="4">
@@ -33,7 +33,7 @@
           size="small"
           class="primary-button"
           icon="el-icon-search"
-          @click="getData()"
+          @click="searchData()"
         >Tìm kiếm</el-button>
       </el-col>
       <el-col :span="10">
@@ -142,6 +142,7 @@
         :page-sizes="[5, 10, 15, 20]"
         layout="total, sizes, prev, pager, next"
         :total="total"
+        :current-page.sync="currentPage"
       ></el-pagination>
     </div>
   </div>
@@ -191,6 +192,7 @@ export default {
       iconDowload: "el-icon-bottom",
       iconUpload: "el-icon-upload",
       loadingUpload: false,
+      currentPage: 1
     };
   },
   created() {
@@ -200,7 +202,7 @@ export default {
   methods: {
     handleCurrentChange(val) {
       this.page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
     },
     handleChange(e) {
       const files = e.target.files;
@@ -251,7 +253,12 @@ export default {
     },
     handleSizeChange(val) {
       this.per_page = val;
-      this.getData(this.page, this.per_page);
+      this.getData();
+    },
+    searchData(){
+      this.page = 1
+      this.currentPage = 1
+      this.getData()
     },
     async getData() {
       this.listLoading = true;

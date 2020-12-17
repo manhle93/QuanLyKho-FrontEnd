@@ -8,7 +8,7 @@
           placeholder="Thông tin tìm kiếm"
           v-model="search"
           suffix-icon="el-icon-search"
-          @keyup.enter.native="getData"
+          @keyup.enter.native="searchData"
         ></el-input>
       </el-col>
       <el-col :span="7">
@@ -16,7 +16,7 @@
           size="small"
           class="primary-button"
           icon="el-icon-search"
-          @click="getData()"
+          @click="searchData()"
         >Tìm kiếm</el-button>
       </el-col>
     </el-row>
@@ -67,6 +67,7 @@
         :page-sizes="[5, 10, 15, 20]"
         layout="total, sizes, prev, pager, next"
         :total="total"
+        :current-page.sync="currentPage"
       ></el-pagination>
     </div>
   </div>
@@ -101,6 +102,7 @@ export default {
       labelPosition: "top",
       user: null,
       formate: formate,
+      currentPage: 1,
       form: {
         id: null,
         anh_dai_dien: "",
@@ -158,6 +160,11 @@ export default {
       this.per_page = val;
       this.getData();
     },
+    searchData(){
+      this.page = 1
+      this.currentPage = 1
+      this.getData()
+    }
   },
 };
 </script>

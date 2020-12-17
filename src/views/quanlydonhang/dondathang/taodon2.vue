@@ -843,7 +843,7 @@ export default {
         nhan_vien_giao_hang: null,
         trang_thai: "moi_tao",
         bang_gia_id: null,
-        thanh_toan: null,
+        thanh_toan: 'tien_mat',
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
         phu_thu: 0
@@ -1317,7 +1317,7 @@ export default {
         bang_gia_id: null,
         nhan_vien_giao_hang: null,
         trang_thai: null,
-        thanh_toan: null,
+        thanh_toan: 'tien_mat',
         trang_thai: "moi_tao",
         dia_chi: "Tại quầy",
         thoi_gian_nhan_hang: new Date(),
