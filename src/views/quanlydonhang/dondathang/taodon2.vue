@@ -134,7 +134,7 @@
                 style="height: 200px"
               />
             </div>-->
-            <div style="width: 100%">
+            <div style="width: 100%" class="so-luong">
               <el-table
                 show-summary
                 :data="form.danhSachHang"
@@ -149,19 +149,48 @@
                 <el-table-column
                   prop="hang_hoa.ten_san_pham"
                   label="Hàng hóa"
-                  width="200px"
+                  min-width="250px"
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.don_vi_tinh"
-                  label="Đơn vị tính"
+                  label="ĐVT"
+                  max-width="50px"
                 ></el-table-column>
-                <el-table-column label="Số lượng" width="150px">
+                <el-table-column label="Số lượng" width="350px" align="center">
                   <template slot-scope="scope">
                     <el-input-number
                       size="small"
                       :min="0.0001"
+                      style="min-width: 150px"
                       v-model="scope.row.so_luong"
                     ></el-input-number>
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      content="Thêm số lượng"
+                      placement="top-start"
+                      v-show="scope.row.them"
+                    >
+                      <el-button
+                        type="success"
+                        icon="el-icon-plus"
+                        circle
+                        size="mini"
+                        @click="themSoLuong(scope.$index, scope.row)"
+                      ></el-button>
+                    </el-tooltip>
+                      <el-input
+                        @keyup.enter.native="blurThemSoLuong(scope.row)"
+                        @blur="blurThemSoLuong(scope.row)"
+                        v-show="!scope.row.them"
+                        placeholder="Mua thêm"
+                        type="number"
+                        :ref="scope.$index + 'themsl'"
+                        :min="0"
+                        size="mini"
+                        style="width: 150px"
+                        v-model="scope.row.so_luong_them"
+                      ></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column prop="don_gia" label="Đơn giá">
@@ -169,7 +198,7 @@
                     >{{ formate.formatCurrency(scope.row.don_gia) }} đ</template
                   >
                 </el-table-column>
-                <el-table-column label="Thành tiền">
+                <el-table-column label="Thành tiền" min-width="150px">
                   <template slot-scope="scope">
                     {{
                       formate.formatCurrency(
@@ -1136,6 +1165,18 @@ export default {
         }
       });
     },
+    blurThemSoLuong(row) {
+      row.them = true;
+      if (Number(row.so_luong_them)) {
+        row.so_luong = Number(row.so_luong_them) + Number(row.so_luong);
+      }
+      row.so_luong_them = 0;
+    },
+    themSoLuong(index, row) {
+      row.them = false;
+      row.so_luong_them = null;
+      this.$refs[index + "themsl"].focus();
+    },
     async changeKhachHang() {
       let khacHang = this.nhaCungCaps.find(
         el => el.user_id == this.form.khach_hang_id
@@ -1222,6 +1263,8 @@ export default {
         data.hang_hoa = this.hangHoa;
         data.so_luong = this.so_luong;
         data.don_gia = this.don_gia;
+        data.them = true;
+        data.so_luong_them = 0;
         this.form.danhSachHang.push(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
@@ -1424,6 +1467,11 @@ export default {
 };
 </script>
 <style>
+.so-luong .el-input__inner {
+  color: #33830e;
+  font-weight: bold;
+  font-size: 20px;
+}
 .ttch label {
   font-weight: 200 !important;
 }
