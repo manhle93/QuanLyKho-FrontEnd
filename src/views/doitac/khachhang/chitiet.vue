@@ -39,16 +39,7 @@
               :value="+data.tin_nhiem"
               @input="data.tin_nhiem = $event"
               disabled
-              show-text
-              :colors="colors"
-              text-color="#ff9900"
-              :texts="[
-                'Thường',
-                'Trung bình',
-                'Tốt',
-                'Tính nhiệm cao',
-                'Rất cao',
-              ]"
+              :max="10"
             ></el-rate>
           </div>
           <div class="tieu-de">

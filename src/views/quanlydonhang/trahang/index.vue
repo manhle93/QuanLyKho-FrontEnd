@@ -232,7 +232,7 @@
                   circle
                 ></el-button>
               </el-tooltip>
-              <el-tooltip
+              <!-- <el-tooltip
                 class="item"
                 effect="dark"
                 content="Xóa"
@@ -245,7 +245,7 @@
                   circle
                   @click="handleDelete(scope.row)"
                 ></el-button>
-              </el-tooltip>
+              </el-tooltip> -->
             </template>
           </el-table-column>
         </el-table>

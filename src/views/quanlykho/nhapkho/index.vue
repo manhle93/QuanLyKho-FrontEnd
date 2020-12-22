@@ -57,7 +57,13 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table
-            :data="props.row.don_hang ? props.row.don_hang.san_phams : []"
+            :data="
+              props.row.don_hang_id && props.row.don_hang
+                ? props.row.don_hang.san_phams
+                : props.row.don_dat_hang_id && props.row.don_dat_hang
+                ? props.row.don_dat_hang.san_phams
+                : []
+            "
             style="width: 60%"
           >
             <el-table-column label="STT" type="index"></el-table-column>
@@ -117,11 +123,15 @@
         align="center"
         prop="ma"
       ></el-table-column>
-      <el-table-column
-        label="Mã đơn hàng"
-        align="center"
-        prop="don_hang.ma"
-      ></el-table-column>
+      <el-table-column label="Mã đơn hàng" align="center" prop="don_hang.ma">
+        <template slot-scope="scope">{{
+          scope.row.don_hang
+            ? scope.row.don_hang.ma
+            : scope.row.don_dat_hang && scope.row.don_dat_hang.ma
+            ? scope.row.don_dat_hang.ma
+            : ""
+        }}</template>
+      </el-table-column>
       <el-table-column
         label="Thời gian nhập"
         align="center"
@@ -170,7 +180,9 @@
             placement="top"
           >
             <el-button
-              v-if="scope.row.don_hang_id"
+              v-if="
+                scope.row.don_hang_id || scope.row.don_dat_hang_id
+              "
               size="small"
               class="primary-button"
               icon="el-icon-view"
@@ -435,7 +447,13 @@ export default {
   },
   methods: {
     showUpdate(data) {
-      this.$router.push("/quanlydonhang/capnhatdonhang/" + data.don_hang_id);
+      if (data.don_hang_id) {
+        this.$router.push("/quanlydonhang/capnhatdonhang/" + data.don_hang_id);
+      } else if (data.don_dat_hang_id) {
+        this.$router.push(
+          "/quanlydonhang/capnhatdondathang/" + data.don_dat_hang_id
+        );
+      }
     },
     async getSanPham() {
       let data = await listSanPham({
@@ -489,7 +507,7 @@ export default {
       this.addSanPham.hang_hoa_id = null;
       this.addSanPham.so_luong = null;
       this.addSanPham.don_gia = "";
-      this.getSanPham()
+      this.getSanPham();
       this.$refs.selectSp.focus();
     },
     checkDaChon(id) {
