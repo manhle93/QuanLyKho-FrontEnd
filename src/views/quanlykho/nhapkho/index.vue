@@ -197,7 +197,7 @@
         @current-change="handleCurrentChange"
         :page-sizes="[5, 10, 15, 20]"
         background
-        layout="prev, pager, next"
+        layout="total, prev, pager, next"
         :total="total"
       ></el-pagination>
     </div>
@@ -475,6 +475,7 @@ export default {
       this.list = data.data.data;
       this.page = data.data.current_page;
       this.per_page = data.data.per_page;
+      this.total = data.data.total
       this.listLoading = false;
     },
     themSanPham() {
