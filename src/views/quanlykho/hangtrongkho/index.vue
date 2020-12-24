@@ -35,7 +35,7 @@
       <el-table-column label="Hình ảnh" min-width="150px" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.san_pham.anh_dai_dien ? endPointImage + scope.row.san_pham.anh_dai_dien: src"
+            :src="scope.row.san_pham && scope.row.san_pham.anh_dai_dien ? endPointImage + scope.row.san_pham.anh_dai_dien: src"
             style="max-height: 90px; max-width: 90px"
           />
         </template>
@@ -148,7 +148,7 @@ export default {
       });
       this.list = data.data.data;
       this.page = data.data.current_page;
-      this.per_page = data.data.per_page;
+        this.per_page = data.data.per_page;
       this.total = data.data.total
       this.listLoading = false;
     },

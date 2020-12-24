@@ -114,7 +114,63 @@
           </div>
         </div>
       </div>
-      <div
+            <div style="text-align: center">
+        <el-button
+          style="width: 100px"
+          v-if="showProductBar"
+          icon="el-icon-bottom"
+          size="small"
+          @click="showProductBar = false"
+          class="primary-button"
+        ></el-button>
+        <el-button
+          style="width: 100px"
+          v-else
+          icon="el-icon-top"
+          size="small"
+          @click="showProductBar = true"
+          class="primary-button"
+        ></el-button>
+      </div>
+            <div class="sanpham"  v-show="showProductBar">
+        <transition name="bounce" v-for="item in hangHoas" :key="item.id">
+          <div v-show="!kiemTraDaChon(item.id)">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              style="width: 140px; margin-right: 20px"
+            >
+              <a @click="doiSanPham(item.id)">
+                <img
+                  :src="
+                    item.anh_dai_dien ? endPointImage + item.anh_dai_dien : src
+                  "
+                  class="image"
+                />
+              </a>
+              <div style="padding: 14px">
+                <span
+                  style="
+                    font-size: 14px;
+                    display: inline-block;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis;
+                  "
+                  >{{ item.ten_san_pham }}</span
+                >
+                <div class="bottom clearfix">
+                  <time class="time"
+                    >{{ formate.formatCurrency(item.gia_ban) }} đ</time
+                  >
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </transition>
+      </div>
+
+      <!-- <div
         class="c-column"
         style="
           padding-bottom: 20px;
@@ -176,7 +232,7 @@
             </el-card>
           </el-col>
         </el-row>
-      </div>
+      </div> -->
     </div>
     <div
       class="fh c-flex c-column"
@@ -258,6 +314,7 @@ export default {
       UserInfo: {},
       timKiem: null,
       admin: false,
+      showProductBar: true,
       nhaCungCaps: [],
       hangHoa: {},
       hang_hoa_id: null,
@@ -312,11 +369,11 @@ export default {
         per_page: 12,
         danh_muc: this.danh_muc_id,
       });
-      this.hangHoas = data.data.data;
+      this.hangHoas = data.data;
     },
     async getSanPham() {
       let data = await getSanPhamTonKho({
-        per_page: 6,
+        per_page: 12,
         search: this.timKiem,
         danh_muc: this.danh_muc_id,
       });
@@ -420,6 +477,19 @@ export default {
 };
 </script>
 <style scoped>
+.sanpham {
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+  border-top: 1px solid #2e86c1;
+  background-color: #58d68d;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  scroll-behavior: smooth;
+}
 .flex-collumn {
   flex-direction: column;
 }
@@ -460,5 +530,22 @@ export default {
 
 .clearfix:after {
   clear: both;
+}
+.bounce-enter-active {
+  animation: bounce-in 0.8s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.8s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

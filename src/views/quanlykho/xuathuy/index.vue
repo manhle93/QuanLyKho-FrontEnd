@@ -77,7 +77,7 @@
         @current-change="handleCurrentChange"
         background
         :page-sizes="[5, 10, 15, 20]"
-        layout="prev, pager, next"
+        layout="total, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
     </div>

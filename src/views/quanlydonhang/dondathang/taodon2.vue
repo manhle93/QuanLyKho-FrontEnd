@@ -291,14 +291,6 @@
                     >{{ formate.formatCurrency(item.gia_ban) }} đ</time
                   >
                 </div>
-                <!-- <div class="bottom clearfix">
-                  <el-button
-                    :disabled="kiemTraDaChon(item.id)"
-                    type="text"
-                    class="button"
-                    @click="doiSanPham(item.id)"
-                  >Lựa chọn</el-button>
-                </div>-->
               </div>
             </el-card>
           </div>
@@ -1265,7 +1257,7 @@ export default {
         data.don_gia = this.don_gia;
         data.them = true;
         data.so_luong_them = 0;
-        this.form.danhSachHang.push(data);
+        this.form.danhSachHang.unshift(data);
         for (let el of this.hangHoas) {
           if (this.hang_hoa_id == el.id) {
             el.disabled = true;

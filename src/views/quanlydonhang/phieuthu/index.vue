@@ -33,7 +33,10 @@
         >
           <el-option value="tra_truoc" label="Trả trước"></el-option>
           <el-option value="tien_mat" label="Tiền mặt"></el-option>
-          <el-option value="chuyen_khoan" label="Chuyển khoản/Quẹt thẻ"></el-option>
+          <el-option
+            value="chuyen_khoan"
+            label="Chuyển khoản/Quẹt thẻ"
+          ></el-option>
           <el-option value="tai_khoan" label="Tài khoản"></el-option>
         </el-select>
       </el-col>
@@ -43,7 +46,8 @@
           class="primary-button"
           icon="el-icon-search"
           @click="searchData()"
-        >Tìm kiếm</el-button>
+          >Tìm kiếm</el-button
+        >
       </el-col>
       <el-col :span="11">
         <el-button
@@ -52,7 +56,8 @@
           class="primary-button"
           icon="el-icon-plus"
           @click="showFormAdd()"
-        >TẠO PHIẾU THU</el-button>
+          >TẠO PHIẾU THU</el-button
+        >
       </el-col>
     </el-row>
     <br />
@@ -68,17 +73,32 @@
           style="width: 100%; font-size: 13px"
           border
         >
-          <el-table-column sortable type="index" label="STT" align="center"></el-table-column>
-          <el-table-column property="created_at" label="Thời gian" min-width="75" align="center"></el-table-column>
-          <el-table-column prop="so_tien" label="Số tiền" min-width="55" align="center">
-            <template slot-scope="scope">{{formate.formatCurrency(scope.row.so_tien)}} đ</template>
+          <el-table-column
+            sortable
+            type="index"
+            label="STT"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            property="created_at"
+            label="Thời gian"
+            min-width="75"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="so_tien"
+            label="Số tiền"
+            min-width="55"
+            align="center"
+          >
+            <template slot-scope="scope"
+              >{{ formate.formatCurrency(scope.row.so_tien) }} đ</template
+            >
           </el-table-column>
           <el-table-column property="noi_dung" label="Nội dung" min-width="200">
             <template slot-scope="scope">
               <span style="white-space: pre-line">
-                {{
-                scope.row.noi_dung
-                }}
+                {{ scope.row.noi_dung }}
               </span>
             </template>
           </el-table-column>
@@ -117,10 +137,25 @@
             min-width="120"
             align="center"
           ></el-table-column>
-           <el-table-column property="nguoi_tao.name" label="Người tạo" min-width="75" align="center"></el-table-column>
-          <el-table-column label="Hành động" align="center" fixed="right" width="120">
+          <el-table-column
+            property="nguoi_tao.name"
+            label="Người tạo"
+            min-width="75"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            label="Hành động"
+            align="center"
+            fixed="right"
+            width="120"
+          >
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="Chi tiết" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Chi tiết"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="showUpdate(scope.row)"
@@ -129,7 +164,12 @@
                   circle
                 ></el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Xóa"
+                placement="top"
+              >
                 <el-button
                   v-if="scope.row.type == 'tu_nhap'"
                   size="small"
@@ -139,7 +179,12 @@
                   circle
                 ></el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="In phiếu thu" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="In phiếu thu"
+                placement="top"
+              >
                 <el-button
                   size="small"
                   @click="inPhieuThu(scope.row.id)"
@@ -175,8 +220,15 @@
           <div
             v-if="formAdd.type != 'tu_nhap'"
             style="font-size: 13px; font-weight: bold"
-          >{{formate.formatCurrency(formAdd.so_tien)}} đ</div>
-          <el-input type="number" :min="0" v-model="formAdd.so_tien" v-else></el-input>
+          >
+            {{ formate.formatCurrency(formAdd.so_tien) }} đ
+          </div>
+          <el-input
+            type="number"
+            :min="0"
+            v-model="formAdd.so_tien"
+            v-else
+          ></el-input>
         </el-form-item>
         <el-form-item label="Nội dung" prop="noi_dung">
           <el-input
@@ -184,7 +236,7 @@
             v-model="formAdd.noi_dung"
             type="textarea"
             style="width: 100%"
-            :autosize="{ minRows: 2, maxRows: 4}"
+            :autosize="{ minRows: 2, maxRows: 4 }"
           ></el-input>
         </el-form-item>
         <el-form-item label="Thông tin giao dịch">
@@ -192,7 +244,7 @@
             v-model="formAdd.thong_tin_giao_dich"
             type="textarea"
             style="width: 100%"
-            :autosize="{ minRows: 2, maxRows: 4}"
+            :autosize="{ minRows: 2, maxRows: 4 }"
           ></el-input>
         </el-form-item>
         <el-form-item label="Khách hàng">
@@ -202,6 +254,9 @@
             placeholder="Chọn khách hàng"
             style="width: 90%"
             clearable
+            remote
+            :remote-method="remoteMethodKH"
+            reserve-keyword
           >
             <el-option
               v-for="item in khachHang"
@@ -216,36 +271,68 @@
             content="Chi tiết khách hàng"
             placement="top-start"
           >
-            <el-button circle icon="el-icon-info" class="success-button" @click="showInfo"></el-button>
+            <el-button
+              circle
+              icon="el-icon-info"
+              class="success-button"
+              @click="showInfo"
+            ></el-button>
           </el-tooltip>
-          <el-tooltip v-else effect="dark" content="Thêm mới khách hàng" placement="top-start">
-            <el-button circle icon="el-icon-plus" class="primary-button" @click="showAddKhachHang"></el-button>
+          <el-tooltip
+            v-else
+            effect="dark"
+            content="Thêm mới khách hàng"
+            placement="top-start"
+          >
+            <el-button
+              circle
+              icon="el-icon-plus"
+              class="primary-button"
+              @click="showAddKhachHang"
+            ></el-button>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="Thông tin khách hàng">
-          <el-input v-model="formAdd.thong_tin_khach_hang" type="textarea" style="width: 100%"></el-input>
+          <el-input
+            v-model="formAdd.thong_tin_khach_hang"
+            type="textarea"
+            style="width: 100%"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="warning" icon="el-icon-close" @click="showCreate = false">Hủy</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          icon="el-icon-close"
+          @click="showCreate = false"
+          >Hủy</el-button
+        >
         <el-button
           v-if="edit"
           class="primary-button"
           size="small"
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
         <el-button
           v-else
           class="primary-button"
           size="small"
           icon="el-icon-plus"
           @click="add('formAdd')"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
       </span>
     </el-dialog>
 
-    <el-dialog title="THÔNG TIN KHÁCH HÀNG" :visible.sync="showUserDetail" width="600px" center>
+    <el-dialog
+      title="THÔNG TIN KHÁCH HÀNG"
+      :visible.sync="showUserDetail"
+      width="600px"
+      center
+    >
       <div style="display: flex; align-items: center; flex-direction: column">
         <div v-if="UserInfo.user && UserInfo.user.avatar_url">
           <img
@@ -261,7 +348,11 @@
         </div>
 
         <div>
-          <el-rate disabled :value="+UserInfo.tin_nhiem" :colors="colors"></el-rate>
+          <el-rate
+            disabled
+            :value="+UserInfo.tin_nhiem"
+            :colors="colors"
+          ></el-rate>
         </div>
       </div>
       <el-row style="margin-top: 50px">
@@ -271,32 +362,33 @@
           </el-col>
           <el-col :span="9">
             <el-form-item label="Số điện thoại: ">
-              {{
-              UserInfo.so_dien_thoai
-              }}
+              {{ UserInfo.so_dien_thoai }}
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="1">
             <el-form-item label="Địa chỉ Email: ">
-              {{
-              UserInfo.email
-              }}
+              {{ UserInfo.email }}
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="Số dư TK: ">{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item>
+            <el-form-item label="Số dư TK: "
+              >{{ formate.formatCurrency(UserInfo.so_du) }} đ</el-form-item
+            >
           </el-col>
           <el-col :span="23" :offset="1">
             <el-form-item label="Địa chỉ: ">
-              {{
-              UserInfo.dia_chi
-              }}
+              {{ UserInfo.dia_chi }}
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="primary-button" @click="showUserDetail = false" icon="el-icon-close">Đóng</el-button>
+        <el-button
+          class="primary-button"
+          @click="showUserDetail = false"
+          icon="el-icon-close"
+          >Đóng</el-button
+        >
       </span>
     </el-dialog>
 
@@ -315,14 +407,30 @@
         <el-row :gutter="40" v-show="next">
           <el-col :span="12">
             <el-form-item label="Mã khách hàng" prop="ma">
-              <el-input size="small" v-model="formKhaHang.ma" :disabled="true"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.ma"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Loại khách hàng">
               <br />
-              <el-radio v-model="formKhaHang.ca_nhan" :label="true" border size="small">Cá nhân</el-radio>
-              <el-radio v-model="formKhaHang.ca_nhan" :label="false" border size="small">Tổ chức</el-radio>
+              <el-radio
+                v-model="formKhaHang.ca_nhan"
+                :label="true"
+                border
+                size="small"
+                >Cá nhân</el-radio
+              >
+              <el-radio
+                v-model="formKhaHang.ca_nhan"
+                :label="false"
+                border
+                size="small"
+                >Tổ chức</el-radio
+              >
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -332,19 +440,37 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Mã số thuế">
-              <el-input size="small" v-model="formKhaHang.ma_so_thue"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.ma_so_thue"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số điện thoại" prop="so_dien_thoai">
-              <el-input size="small" v-model="formKhaHang.so_dien_thoai"></el-input>
+              <el-input
+                size="small"
+                v-model="formKhaHang.so_dien_thoai"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Giới tính">
               <br />
-              <el-radio v-model="formKhaHang.gioi_tinh" :label="true" border size="small">Nam</el-radio>
-              <el-radio v-model="formKhaHang.gioi_tinh" :label="false" border size="small">Nữ</el-radio>
+              <el-radio
+                v-model="formKhaHang.gioi_tinh"
+                :label="true"
+                border
+                size="small"
+                >Nam</el-radio
+              >
+              <el-radio
+                v-model="formKhaHang.gioi_tinh"
+                :label="false"
+                border
+                size="small"
+                >Nữ</el-radio
+              >
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -371,7 +497,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Ghi chú">
-              <el-input size="small" type="textarea" v-model="formKhaHang.mo_ta" :rows="2"></el-input>
+              <el-input
+                size="small"
+                type="textarea"
+                v-model="formKhaHang.mo_ta"
+                :rows="2"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -383,12 +514,21 @@
           </el-col>
           <el-col :span="14" :offset="5">
             <el-form-item label="Mật khẩu" prop="password">
-              <el-input type="password" v-model="formKhaHang.password"></el-input>
+              <el-input
+                type="password"
+                v-model="formKhaHang.password"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="14" :offset="5">
-            <el-form-item label="Nhập lại mật khẩu" prop="password_confirmation">
-              <el-input type="password" v-model="formKhaHang.password_confirmation"></el-input>
+            <el-form-item
+              label="Nhập lại mật khẩu"
+              prop="password_confirmation"
+            >
+              <el-input
+                type="password"
+                v-model="formKhaHang.password_confirmation"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -403,21 +543,24 @@
           v-if="next"
           icon="el-icon-right"
           @click="next = !next"
-        >Tiếp theo</el-button>
+          >Tiếp theo</el-button
+        >
         <el-button
           type="warning"
           size="small"
           v-if="!next"
           icon="el-icon-back"
           @click="next = !next"
-        >Quay lại</el-button>
+          >Quay lại</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="!next"
           icon="el-icon-plus"
           @click="addKhachHang('formKhaHang')"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -427,7 +570,7 @@ import {
   getPhieuThu,
   updatePhieuThu,
   addPhieuThu,
-  xoaPhieuThu,
+  xoaPhieuThu
 } from "@/api/donhangnhacungcap";
 import { getKhachHang, addKhachHang } from "@/api/khachhang";
 export default {
@@ -467,7 +610,7 @@ export default {
       form: {
         date: [],
         nha_cung_cap: [],
-        search: "",
+        search: ""
       },
       next: true,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
@@ -498,7 +641,7 @@ export default {
         loai_thanh_vien_id: null,
         tin_nhiem: null,
         diem_quy_doi: null,
-        tien_vay: null,
+        tien_vay: null
       },
       showUserDetail: false,
       rulesKhachHang: {
@@ -506,53 +649,53 @@ export default {
           {
             required: true,
             message: "Tên khách hàng không thể bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
         ],
         ma: [
           {
             required: true,
             message: "Mã khách hàng không thể bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
-          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },
+          { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" }
         ],
         so_dien_thoai: [
           {
             required: true,
             message: "Số điện thoại không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         email: [
           {
             required: true,
             message: "Email không được bỏ trống",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             type: "email",
             message: "Hãy nhập một địa chỉ email hợp lệ",
-            trigger: ["blur", "change"],
-          },
+            trigger: ["blur", "change"]
+          }
         ],
         username: [
           {
             required: true,
             message: "Tên đăng nhập không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         password: [
           { validator: validatePass, trigger: "blur" },
           {
             min: 6,
             message: "Độ dài tối thiểu 6 kí tự",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
-        password_confirmation: [{ validator: validatePass2, trigger: "blur" }],
+        password_confirmation: [{ validator: validatePass2, trigger: "blur" }]
       },
       formAdd: {
         id: null,
@@ -561,7 +704,7 @@ export default {
         thong_tin_giao_dich: null,
         user_id_khach_hang: null,
         thong_tin_khach_hang: null,
-        type: null,
+        type: null
       },
       khachHang: [],
       nhaCungCaps: [],
@@ -571,18 +714,18 @@ export default {
           {
             required: true,
             message: "Số tiền không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         noi_dung: [
           {
             required: true,
             message: "Nội dung không thể bỏ trống",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
-      UserInfo: {},
+      UserInfo: {}
     };
   },
 
@@ -614,8 +757,8 @@ export default {
           newValue = 0;
         }
         this.formAdd.so_tien = newValue;
-      },
-    },
+      }
+    }
   },
   mounted() {},
 
@@ -629,16 +772,22 @@ export default {
     },
     showInfo() {
       this.UserInfo = this.khachHang.find(
-        (el) => el.user_id == this.formAdd.user_id_khach_hang
+        el => el.user_id == this.formAdd.user_id_khach_hang
       );
       if (this.UserInfo) {
         this.showUserDetail = true;
       } else this.UserInfo = {};
     },
-
+    async remoteMethodKH(query) {
+      let data = await getKhachHang({
+        per_page: 15,
+        search: query
+      });
+      this.khachHang = data.data.data;
+    },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 15
       });
       this.khachHang = data.data.data;
     },
@@ -663,7 +812,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
-        hinh_thuc: this.form.hinh_thuc,
+        hinh_thuc: this.form.hinh_thuc
       });
       this.tableData = data.data.data;
       this.page = data.data.page;
@@ -677,7 +826,7 @@ export default {
       this.getDonHang();
       this.$message({
         type: "success",
-        message: "Cập nhật thành công",
+        message: "Cập nhật thành công"
       });
     },
     async xoa(data) {
@@ -697,14 +846,14 @@ export default {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning",
+            type: "warning"
           }
         );
         let status = await xoaPhieuThu(data.id);
         this.getDonHang();
         this.$message({
           message: "Thành công",
-          type: "success",
+          type: "success"
         });
       } catch (error) {}
     },
@@ -713,23 +862,22 @@ export default {
       this.showFormAddKhachHang = true;
     },
     addKhachHang(formKhaHang) {
-      this.$refs[formKhaHang].validate((valid) => {
+      this.$refs[formKhaHang].validate(valid => {
         if (valid) {
-          addKhachHang(this.formKhaHang).then((res) => {
+          addKhachHang(this.formKhaHang).then(res => {
             this.resetFormKhaHang();
             this.getKhachHang();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công",
+              message: "Thêm mới thành công"
             });
           });
         } else {
-          
           return false;
         }
       });
     },
-    showUpdate(data) {
+    async showUpdate(data) {
       this.edit = true;
       this.showCreate = true;
       this.formAdd.id = data.id;
@@ -739,6 +887,13 @@ export default {
       this.formAdd.user_id_khach_hang = data.user_id_khach_hang;
       this.formAdd.thong_tin_khach_hang = data.thong_tin_khach_hang;
       this.formAdd.type = data.type;
+      if (this.formAdd.user_id_khach_hang) {
+        let khs = await getKhachHang({
+          per_page: 10,
+          khach_hang_id: this.formAdd.user_id_khach_hang
+        });
+        this.khachHang = khs.data;
+      }
     },
     resetFormKhaHang() {
       this.showFormAddKhachHang = false;
@@ -769,7 +924,7 @@ export default {
           tin_nhiem: null,
           diem_quy_doi: null,
           tien_vay: null,
-          trang_thai: null,
+          trang_thai: null
         });
     },
     showFormAdd() {
@@ -784,24 +939,22 @@ export default {
       this.formAdd.type = "tu_nhap";
     },
     add(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          addPhieuThu(this.formAdd).then((res) => {
+          addPhieuThu(this.formAdd).then(res => {
             this.showCreate = false;
             this.getDonHang();
             this.$message({
               type: "success",
-              message: "Thêm mới thành công",
+              message: "Thêm mới thành công"
             });
           });
         } else {
-          
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

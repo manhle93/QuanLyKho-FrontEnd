@@ -263,7 +263,7 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           var date = new Date();
-          date.setDate(date.getDate() - 1);
+          date.setDate(date.getDate() - 7);
           return time.getTime() < new Date(date);
         }
       },
