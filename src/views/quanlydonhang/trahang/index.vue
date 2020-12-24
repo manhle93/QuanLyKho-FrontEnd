@@ -22,6 +22,9 @@
             v-model="form.khach_hang"
             placeholder="Chọn khách hàng"
             style="width: 100%"
+            remote
+            :remote-method="remoteMethodKH"
+            reserve-keyword
           >
             <el-option
               v-for="item in nhaCungCaps"
@@ -208,7 +211,7 @@
                 <el-button
                   v-if="
                     scope.row.trang_thai != 'huy_bo' &&
-                    scope.row.trang_thai != 'huy_hoa_don'
+                      scope.row.trang_thai != 'huy_hoa_don'
                   "
                   size="small"
                   type="warning"
@@ -271,7 +274,7 @@ import {
   getDonDathang,
   xoaDonDathang,
   huyDon,
-  chuyenHoaDon,
+  chuyenHoaDon
 } from "@/api/dondathang";
 import { getKhachHang } from "@/api/khachhang";
 
@@ -309,7 +312,7 @@ export default {
         thoi_gian: null,
         nguoi_mua_hang: "",
         tong_tien: 0,
-        hinh_anhs: [],
+        hinh_anhs: []
       },
       nhaCungCaps: [],
       showCreate: false,
@@ -318,45 +321,45 @@ export default {
           {
             required: true,
             message: "Hãy nhập tên đơn hàng",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         ma: [
           {
             required: true,
             message: "Mã đơn hàng không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         tinh_thanh_id: [
           {
             required: true,
             message: "Hãy chọn một tỉnh thành",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         toa_nha_id: [
           {
             required: true,
             message: "Hãy chọn một tòa nhà",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         thoi_gian: [
           {
             required: true,
             message: "Thời gian không thể bỏ trống",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         trang_thai: [
           {
             required: true,
             message: "Trạng thái không thể bỏ trống",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
 
@@ -396,7 +399,7 @@ export default {
             confirmButtonText: "Xóa",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning",
+            type: "warning"
           }
         );
         this.listLoading = true;
@@ -404,7 +407,7 @@ export default {
         this.getDonHang();
         this.$message({
           message: "Xóa thành công",
-          type: "success",
+          type: "success"
         });
       } catch (error) {
         this.listLoading = false;
@@ -441,16 +444,23 @@ export default {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning",
+            type: "warning"
           }
         );
         let status = await huyDon(data.id);
         this.getDonHang();
         this.$message({
           message: "Thành công",
-          type: "success",
+          type: "success"
         });
       } catch (error) {}
+    },
+    async remoteMethodKH(query) {
+      let data = await getKhachHang({
+        per_page: 10,
+        search: query
+      });
+      this.nhaCungCaps = data.data.data;
     },
     async hoaDon(data) {
       try {
@@ -464,27 +474,25 @@ export default {
             confirmButtonText: "Đồng ý",
             dangerouslyUseHTMLString: true,
             cancelButtonText: "Hủy",
-            type: "warning",
+            type: "warning"
           }
         );
         let status = await chuyenHoaDon(data.id);
         this.getDonHang();
         this.$message({
           message: "Hủy đơn thành công",
-          type: "success",
+          type: "success"
         });
       } catch (error) {}
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 10
       });
       this.nhaCungCaps = data.data.data;
-    },
-  },
+    }
+  }
 };
 </script>
 
-
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

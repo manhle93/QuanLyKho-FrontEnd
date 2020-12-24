@@ -215,6 +215,9 @@
             clearable
             size="small"
             v-model="formHoaDon.khach_hang"
+            remote
+            :remote-method="remoteMethodKH"
+            reserve-keyword
             placeholder="Chọn khách hàng"
             style="width: 100%"
             @change="getHoaDon()"
@@ -299,13 +302,13 @@ export default {
       formHoaDon: {
         date: [],
         khach_hang: [],
-        search: "",
+        search: ""
       },
       form: {
         date: [],
         nha_cung_cap: [],
-        search: "",
-      },
+        search: ""
+      }
     };
   },
 
@@ -324,7 +327,14 @@ export default {
     },
     async getKhachHang() {
       let data = await getKhachHang({
-        per_page: 999999,
+        per_page: 10
+      });
+      this.khachHangs = data.data.data;
+    },
+    async remoteMethodKH(query) {
+      let data = await getKhachHang({
+        per_page: 10,
+        search: query
       });
       this.khachHangs = data.data.data;
     },
@@ -362,7 +372,7 @@ export default {
         page: this.page,
         nha_cung_cap: this.form.nha_cung_cap,
         date: this.form.date,
-        search: this.form.search,
+        search: this.form.search
       });
       this.tableData = data.data.data;
       this.page = data.data.page;
@@ -383,14 +393,12 @@ export default {
         khach_hang: this.formHoaDon.khach_hang,
         date: this.formHoaDon.date,
         search: this.formHoaDon.search,
-        hoa_don: true,
+        hoa_don: true
       });
       this.hoaDons = data.data.data;
-    },
-  },
+    }
+  }
 };
 </script>
 
-
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

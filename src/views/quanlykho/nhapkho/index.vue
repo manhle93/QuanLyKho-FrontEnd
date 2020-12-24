@@ -145,7 +145,7 @@
           đ</template
         >
       </el-table-column>
-      <el-table-column label="Ghi chú" align="center">
+      <el-table-column label="Ghi chú">
         <template slot-scope="scope">
           <el-tag
             type="success"
@@ -157,15 +157,15 @@
             "
             >Nhập từ nhà cung cấp</el-tag
           >
-          <el-tag
-            type="success"
-            effect="plain"
+          <div
             v-if="
               scope.row.don_hang &&
                 scope.row.don_hang.trang_thai == 'nhap_kho_ngoai'
             "
-            >Nhập kho ngoài</el-tag
           >
+            <div style="color: green; font-weight: bold">Nhập kho hàng mua ngoài</div>
+            <span>{{scope.row.ghi_chu}}</span>
+          </div>
           <el-tag type="warning" effect="plain" v-if="!scope.row.don_hang_id"
             >Hoàn hàng</el-tag
           >
@@ -180,9 +180,7 @@
             placement="top"
           >
             <el-button
-              v-if="
-                scope.row.don_hang_id || scope.row.don_dat_hang_id
-              "
+              v-if="scope.row.don_hang_id || scope.row.don_dat_hang_id"
               size="small"
               class="primary-button"
               icon="el-icon-view"
@@ -319,9 +317,15 @@
         </el-table-column>
       </el-table>
       <br />
-      <span
-        >Tổng tiền:<b> {{ formate.formatCurrency(tongTien) }} </b>đ</span
-      >
+      <el-input
+        type="textarea"
+        placeholder="Ghi chú nhập kho ngoài"
+        v-model="formAdd.ghi_chu"
+      ></el-input>
+      <br />
+      <div style="margin-top: 20px">
+        Tổng tiền:<b> {{ formate.formatCurrency(tongTien) }} </b>đ
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button
           size="small"
@@ -400,7 +404,8 @@ export default {
       },
       formAdd: {
         tong_tien: 0,
-        hangHoas: []
+        hangHoas: [],
+        ghi_chu: ""
       },
       rules: {
         ten_danh_muc: [
