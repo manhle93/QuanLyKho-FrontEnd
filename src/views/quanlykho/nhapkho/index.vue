@@ -20,7 +20,7 @@
           placeholder="Thông tin tìm kiếm"
           v-model="search"
           suffix-icon="el-icon-search"
-          @keyup.enter.native="searchData()"
+          @keyup.enter.native="getData()"
         ></el-input>
       </el-col>
       <el-col :span="7">
@@ -28,8 +28,11 @@
           size="small"
           class="primary-button"
           icon="el-icon-search"
-          @click="searchData()"
+          @click="getData()"
           >Tìm kiếm</el-button
+        >
+        <el-button size="small" type="warning" icon="el-icon-download" @click="downloadExcel()"
+          >Tải xuống Excel</el-button
         >
       </el-col>
       <el-col :span="6">
@@ -138,12 +141,17 @@
         prop="created_at"
       ></el-table-column>
       <el-table-column label="Tổng tiền" prop="don_hang.tong_tien">
-        <template v-if="scope.row.don_hang" slot-scope="scope"
-          >{{
-            formate.formatCurrency(scope.row.don_hang.tong_tien)
-          }}
-          đ</template
-        >
+        <template slot-scope="scope"
+          ><div v-if="scope.row.don_hang">
+            {{ formate.formatCurrency(scope.row.don_hang.tong_tien) }} đ
+          </div>
+          <div v-if="scope.row.don_dat_hang">
+            {{
+              formate.formatCurrency(scope.row.don_dat_hang.con_phai_thanh_toan)
+            }}
+            đ
+          </div>
+        </template>
       </el-table-column>
       <el-table-column label="Ghi chú">
         <template slot-scope="scope">
@@ -163,8 +171,10 @@
                 scope.row.don_hang.trang_thai == 'nhap_kho_ngoai'
             "
           >
-            <div style="color: green; font-weight: bold">Nhập kho hàng mua ngoài</div>
-            <span>{{scope.row.ghi_chu}}</span>
+            <div style="color: green; font-weight: bold">
+              Nhập kho hàng mua ngoài
+            </div>
+            <span>{{ scope.row.ghi_chu }}</span>
           </div>
           <el-tag type="warning" effect="plain" v-if="!scope.row.don_hang_id"
             >Hoàn hàng</el-tag
@@ -357,6 +367,7 @@
 
 <script>
 import { getPhieuNhap, nhapKhoNgoai } from "@/api/quanlykho";
+import { downloadNhapKho } from "@/api/kho";
 import { listSanPham } from "@/api/sanpham";
 export default {
   filters: {
@@ -451,6 +462,15 @@ export default {
     this.getSanPham();
   },
   methods: {
+    async downloadExcel() {
+      let data = await downloadNhapKho({date: this.date});
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Danh sách nhập kho.xlsx");
+      document.body.appendChild(link);
+      link.click();
+    },
     showUpdate(data) {
       if (data.don_hang_id) {
         this.$router.push("/quanlydonhang/capnhatdonhang/" + data.don_hang_id);
@@ -470,12 +490,13 @@ export default {
       this.listLoading = true;
       let data = await getPhieuNhap({
         page: this.page,
-        per_page: this.per_page
+        per_page: this.per_page,
+        search: this.search, date: this.date
       });
       this.list = data.data.data;
       this.page = data.data.current_page;
       this.per_page = data.data.per_page;
-      this.total = data.data.total
+      this.total = data.data.total;
       this.listLoading = false;
     },
     themSanPham() {
@@ -526,13 +547,6 @@ export default {
         this.tongTien -
         this.dataMuaHang[index].so_luong * this.dataMuaHang[index].don_gia;
       this.dataMuaHang.splice(index, 1);
-    },
-    searchData() {
-      this.listLoading = true;
-      getPhieuNhap({ search: this.search, date: this.date }).then(response => {
-        this.list = response.data.data;
-        this.listLoading = false;
-      });
     },
     deleteAppUserID(item) {
       this.$confirm(

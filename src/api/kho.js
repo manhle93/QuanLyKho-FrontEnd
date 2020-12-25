@@ -121,3 +121,12 @@ export function chiTietXuatHuy(id) {
       method: 'put',
   })
 }
+
+export function downloadNhapKho(params) {
+  return request({
+      url: 'bcnhapkho',
+      method: 'get',
+      params,
+      responseType: "blob"
+  })
+}
