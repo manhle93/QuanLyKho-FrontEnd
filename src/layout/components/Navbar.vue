@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar" style="display:flex;flex-direction: row;background: green;margin-bottom: 0px;">
+  <div class="navbar" style="display:flex;flex-direction: row;margin-bottom: 0px; background-color: #388E3C">
     <div style="width: 60%; display:flex; justify-content: center; align-items: center">
       <Menu/>
     </div>

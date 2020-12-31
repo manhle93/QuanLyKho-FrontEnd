@@ -5,7 +5,7 @@
   >
     <div style="display: flex;">
       <div class="danhmuc" style="margin-left: 0px">
-        <div class="item-danhmuc" style="background-color: #B2DFDB">
+        <div class="item-danhmuc" style="background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%);">
           <div>
             <div class="so-item">
               {{(data.doanh_thu/1000000).toFixed(2)}}
@@ -13,16 +13,16 @@
             </div>
             <div class="ten-item">Doanh thu: {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/3208/3208954.svg" style="height: 80px;" />
+          <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387057/RBT/3208954_hm9zyx.svg" style="height: 80px;" />
         </div>
       </div>
       <div class="danhmuc">
-        <div class="item-danhmuc" style="background-color: #80CBC4">
+        <div class="item-danhmuc" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);">
           <div>
             <div class="so-item">{{data.hoa_don}}</div>
             <div class="ten-item">Hóa đơn: {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/3081/3081305.svg" style="height: 100px;" />
+          <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387099/RBT/3081305_hxhb7k.svg" style="height: 100px;" />
         </div>
       </div>
 
@@ -32,7 +32,7 @@
             <div class="so-item">{{data.don_hang}}</div>
             <div class="ten-item">Đơn hàng: {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/3225/3225094.svg" style="height: 100px;" />
+          <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387100/RBT/3225094_cc3rwy.svg" style="height: 100px;" />
         </div>
       </div>
 
@@ -42,7 +42,7 @@
             <div class="so-item">{{data.don_online}}</div>
             <div class="ten-item">Đặt hàng Online {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/3126/3126589.svg" style="height: 100px;" />
+          <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387100/RBT/3126589_teb0vg.svg" style="height: 100px;" />
         </div>
       </div>
 
@@ -52,7 +52,7 @@
             <div class="so-item">{{data.san_pham}}</div>
             <div class="ten-item">Nhập kho {{month}}/{{year}}</div>
           </div>
-          <img src="https://image.flaticon.com/icons/svg/743/743007.svg" style="height: 80px;" />
+          <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387099/RBT/743007_qqyvph.svg" style="height: 80px;" />
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@
         </div>
         <chart2 ref="doanhthu" height="100%" width="100%" />
       </div>
-      <div style="flex: 1; margin-left: 20px">
+      <div style="flex: 1; margin-left: 20px;">
         <!-- <div
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
         >TỔNG DOANH THU</div>
@@ -105,7 +105,7 @@
           <div style="color: #515A5A; font-weight: bold;" center><h4><i style="color: green">TRẠNG THÁI HOẠT ĐỘNG</i></h4></div>
         </div>
         <br />
-        <el-table :data="dataUser" height="100%" style="font-size: 13px">
+        <el-table :data="dataUser" max-height="500px" style="font-size: 13px;">
           <!-- <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column> -->
           <el-table-column prop="user.name" width="230" label="Họ và tên">
             <template slot-scope="scope">

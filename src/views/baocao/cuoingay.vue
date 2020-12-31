@@ -2,7 +2,7 @@
   <div class="app-container">
     <h4><i style="color: green;">BÁO CÁO CUỐI NGÀY</i></h4>
     <el-row :gutter="20" justify="space-around">
-      <el-col :span="4">
+      <el-col :span="6">
         <el-date-picker
           @change="getData()"
           style="width: 100%"
@@ -41,7 +41,7 @@
           <el-option value="so_luong" label="Sản phẩm bán chạy"></el-option>
         </el-select>
       </el-col> -->
-      <el-col :span="17">
+      <el-col :span="15">
         <el-button
           style="float: right"
           class="primary-button"
@@ -53,13 +53,9 @@
       </el-col>
     </el-row>
     <br />
-    <el-row :gutter="20" justify="space-around">
-      <el-col :span="5">
-        <span style="color: black; font-weight: bold;">
-          Chi nhánh RBT
-        </span>
-      </el-col>
-      <el-col :span="5">
+    <br>
+    <el-row justify="space-around">
+      <el-col :span="6">
         <span style="color: green;">
           {{
             form.don_hang == "hoa_don"
@@ -67,29 +63,43 @@
               : "Tổng doanh thu đặt hàng: "
           }}
         </span>
-        <span style="color: red;">
-          {{ formate.formatCurrency(doanhThu) }}</span
-        >
+        <span style="color: red;"> {{ formate.formatCurrency(doanhThu) }}</span>
         (VND)
       </el-col>
-      <el-col :span="5">
+      <el-col :span="4">
         <span style="color: green;">
           Số lượng đơn:
         </span>
-        <span style="color: red;">
-          {{ formate.formatCurrency(total) }}</span
-        >
+        <span style="color: red;"> {{ formate.formatCurrency(total) }}</span>
         (Đơn)
       </el-col>
-      <!-- <el-col :span="5">
+      <el-col :span="6">
         <span style="color: green;">
-          Số lượng sản phẩm
+          Chiết khâu, giảm giá cho khách hàng:
         </span>
         <span style="color: red;">
-          {{ formate.formatCurrency(doanhThuDatHang) }}</span
+          {{ formate.formatCurrency(chietKhau) }}</span
         >
-        (Sản phẩm)
-      </el-col> -->
+        (đ)
+      </el-col>
+      <el-col :span="4">
+        <span style="color: green;">
+          Số tiền đã thu:
+        </span>
+        <span style="color: red;">
+          {{ formate.formatCurrency(daThanhToan) }}</span
+        >
+        (đ)
+      </el-col>
+      <el-col :span="4">
+        <span style="color: green;">
+          Khách hàng còn nợ:
+        </span>
+        <span style="color: red;">
+          {{ formate.formatCurrency(phaiThu) }}</span
+        >
+        (đ)
+      </el-col>
       <br />
       <br />
     </el-row>
@@ -128,7 +138,7 @@
       >
       </el-table-column>
     </el-table>
-    <br>
+    <br />
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
@@ -156,8 +166,11 @@ export default {
     total: 0,
     tableData: [],
     doanhThu: 0,
+    chietKhau: 0,
+    daThanhToan: 0,
+    phaiThu: 0,
     formate: formate,
-    tableLoading: false,
+    tableLoading: false
   }),
   created() {
     this.getData();
@@ -179,7 +192,10 @@ export default {
         date: this.form.date,
         don_hang: this.form.don_hang
       });
-      this.doanhThu = data.tong_tien
+      this.doanhThu = data.tong_tien;
+      this.chietKhau = data.tien.chiet_khau;
+      this.daThanhToan = data.tien.da_thanh_toan;
+      this.phaiThu = data.tien.con_phai_thanh_toan;
       this.per_page = data.data.per_page;
       this.page = data.data.page;
       this.tableData = data.data.data;

@@ -153,10 +153,15 @@
                 ></el-table-column>
                 <el-table-column
                   prop="hang_hoa.don_vi_tinh"
-                  label="ĐVT"
+                  label="Tồn kho hiện tại"
                   max-width="50px"
-                ></el-table-column>
-                <el-table-column label="Số lượng" width="350px" align="center">
+                >
+                <template slot-scope="scope">
+                  <div v-if="scope.row.hang_hoa && scope.row.hang_hoa.san_pham_ton_kho">{{scope.row.hang_hoa.san_pham_ton_kho.so_luong}} {{scope.row.hang_hoa.don_vi_tinh}}</div>
+                  <div v-else>0 {{scope.row.hang_hoa.don_vi_tinh}}</div>
+                </template>
+                </el-table-column>
+                <el-table-column label="Số lượng bán" width="350px" align="center">
                   <template slot-scope="scope">
                     <el-input-number
                       size="small"
@@ -1263,6 +1268,7 @@ export default {
             el.disabled = true;
           }
         }
+        console.log(this.form.danhSachHang)
         this.hang_hoa_id = null;
         this.so_luong = 1;
         this.don_gia = null;

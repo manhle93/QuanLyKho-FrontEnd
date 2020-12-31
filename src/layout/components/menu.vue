@@ -7,7 +7,7 @@
       class="el-menu-demo"
       :default-active="activeIndex"
       mode="horizontal"
-      background-color="green"
+      background-color="#388E3C"
       text-color="#fff"
       active-text-color="yellow"
       style="width: 100%; display:flex; justify-content:center; align-items: center"
