@@ -68,7 +68,7 @@
                     :value="item.id"
                   >
                     <span style="float: left">{{ item.ten_san_pham }}</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">
+                    <span style="float: right; color: #CFD8DC; font-size: 13px">
                       {{
                         item.thuong_hieu
                           ? "Thương hiệu: " + item.thuong_hieu.ten
@@ -350,7 +350,7 @@
                   <div style="font-size: 16px; font-weight: bold">
                     {{ item.ten }}
                   </div>
-                  <div style="font-size: 12px; color: gray">
+                  <div style="font-size: 12px; color: #CFD8DC">
                     SĐT: {{ item.so_dien_thoai }}
                   </div>
                 </div>
@@ -1527,18 +1527,23 @@ export default {
   flex-direction: row;
   padding-bottom: 20px;
   border-top: 1px solid #2e86c1;
-  background-color: #58d68d;
+  /* background-color: #58d68d; */
+  background-image: linear-gradient(to top, #9be15d 0%, #00e3ae 100%);
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
   scroll-behavior: smooth;
 }
 .el-select-dropdown__item {
-  background-color: #fad7a0;
+  /* background-color: #4CAF50; */
+  background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  color: white;
+  font-weight: bold;
 }
 .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
-  background-color: #fcf3cf !important;
+  /* background-color: #1B5E20 !important; */
+  background-image: linear-gradient(to top, #505285 0%, #585e92 12%, #65689f 25%, #7474b0 37%, #7e7ebb 50%, #8389c7 62%, #9795d4 75%, #a2a1dc 87%, #b5aee4 100%);
 }
 .bounce-enter-active {
   animation: bounce-in 0.8s;

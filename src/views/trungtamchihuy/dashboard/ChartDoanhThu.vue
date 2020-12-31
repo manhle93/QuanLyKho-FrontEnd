@@ -15,22 +15,22 @@ export default {
   props: {
     className: {
       type: String,
-      default: "chart",
+      default: "chart"
     },
     width: {
       type: String,
-      default: "100%",
+      default: "100%"
     },
     height: {
       type: String,
-      default: "100px",
+      default: "100px"
     },
     dataX: {
-      type: Array,
+      type: Array
     },
     dataY: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   watch: {
     dataX(val) {
@@ -40,12 +40,12 @@ export default {
     dataY(val) {
       this.Y = val;
       this.initChart();
-    },
+    }
   },
   data() {
     return {
       chart: null,
-      data: [],
+      data: []
     };
   },
   mounted() {
@@ -81,28 +81,41 @@ export default {
             formatter: "{a} <br/>{b} : {c} ( đồng )",
             axisPointer: {
               // 坐标轴指示器，坐标轴触发有效
-              type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
-            },
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
           },
           grid: {
             left: "3%",
             right: "4%",
             bottom: "3%",
-            containLabel: true,
+            containLabel: true
           },
           xAxis: [
             {
               type: "category",
-              data: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+              data: [
+                "Tháng 1",
+                "Tháng 2",
+                "Tháng 3",
+                "Tháng 4",
+                "Tháng 5",
+                "Tháng 6",
+                "Tháng 7",
+                "Tháng 8",
+                "Tháng 9",
+                "Tháng 10",
+                "Tháng 11",
+                "Tháng 12"
+              ],
               axisTick: {
-                alignWithLabel: true,
-              },
-            },
+                alignWithLabel: true
+              }
+            }
           ],
           yAxis: [
             {
-              type: "value",
-            },
+              type: "value"
+            }
           ],
           series: [
             {
@@ -110,12 +123,12 @@ export default {
               type: "bar",
               barWidth: "60%",
               data: this.data,
-            },
-          ],
+            }
+          ]
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -124,6 +137,6 @@ export default {
   width: 100%;
   height: 100%;
   /* padding-top: 10px; */
-  top: -20px
+  top: -20px;
 }
 </style>

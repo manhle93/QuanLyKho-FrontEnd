@@ -14,12 +14,11 @@
     >
       <el-menu-item index="22" style="margin-right: 50px">
         <router-link :to="'/tongquan'">
+          <img src="http://rbt.skymapglobal.vn/_nuxt/img/logo.9d901d8.jpg" height="35px" style="border: 2px solid white; border-radius: 4px; margin-right: 5px">
           <b style="font-size: 18px">Tổng quan</b>
         </router-link>
       </el-menu-item>
       <el-submenu
-        class="sub-menu"
-        style="background-color:green;"
         v-for="(route, index) in permission_routes"
         :key="index"
         :index="String(index)"
@@ -27,7 +26,7 @@
         <template slot="title" v-if="!route.hidden && route.name">
           <span
             :style="{color: index == activeIndex ? 'yellow': 'white'}"
-            style="font-size: 15px; padding-right: 10px; padding-left: 10px;"
+            style="font-size: 15px; font-weight: 600; padding-right: 12px; padding-left: 12px;"
           >{{ route.name }}</span>
         </template>
         <router-link
@@ -96,12 +95,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.sub-menu:hover {
-  background-color: red !important;
-}
-.sub-menu:hover li > ul > li {
-  background: red !important;
-}
+
 </style>
 
 <style>

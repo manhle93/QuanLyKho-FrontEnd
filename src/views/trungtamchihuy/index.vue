@@ -27,17 +27,17 @@
       </div>
 
       <div class="danhmuc">
-        <div class="item-danhmuc" style="background-color: #B2DFDB">
+        <div class="item-danhmuc" style="background-image: linear-gradient(to right, #3ab5b0 0%, #3d99be 31%, #56317a 100%);">
           <div>
-            <div class="so-item">{{data.don_hang}}</div>
-            <div class="ten-item">Đơn hàng: {{month}}/{{year}}</div>
+            <div class="so-item" style="color: white">{{data.don_hang}}</div>
+            <div class="ten-item" style="color: white">Đơn hàng: {{month}}/{{year}}</div>
           </div>
           <img src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387100/RBT/3225094_cc3rwy.svg" style="height: 100px;" />
         </div>
       </div>
 
       <div class="danhmuc">
-        <div class="item-danhmuc" style="background-color: #80CBC4">
+        <div class="item-danhmuc" style="background-image: linear-gradient(to top, #50cc7f 0%, #f5d100 100%);">
           <div>
             <div class="so-item">{{data.don_online}}</div>
             <div class="ten-item">Đặt hàng Online {{month}}/{{year}}</div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="danhmuc" style="background-color: #B2DFDB">
+      <div class="danhmuc" style="background-image: linear-gradient(-225deg, #CBBACC 0%, #2580B3 100%);">
         <div class="item-danhmuc">
           <div>
             <div class="so-item">{{data.san_pham}}</div>
@@ -89,7 +89,7 @@
         </div>
         <chart2 ref="doanhthu" height="100%" width="100%" />
       </div>
-      <div style="flex: 1; margin-left: 20px;">
+      <el-card class="box-card" style="flex: 1; margin-left: 20px;">
         <!-- <div
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
         >TỔNG DOANH THU</div>
@@ -137,7 +137,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
+      </el-card>
     </div>
 
     <el-dialog title="Thông tin tài khoản" :visible.sync="showUserDetail" width="30%" center>

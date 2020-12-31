@@ -1537,7 +1537,8 @@ export default {
   flex-direction: row;
   padding-bottom: 20px;
   border-top: 1px solid #2e86c1;
-  background-color: #58d68d;
+  /* background-color: #58d68d; */
+  background-image: linear-gradient(to top, #9be15d 0%, #00e3ae 100%);
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
