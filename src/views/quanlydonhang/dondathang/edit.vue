@@ -113,7 +113,7 @@
                   prop="hang_hoa.don_vi_tinh"
                   label="Đơn vị tính"
                 ></el-table-column>
-                <el-table-column label="Số lượng" width="150px">
+                <el-table-column label="Số lượng" width="165px">
                   <template slot-scope="scope">
                     <el-input-number
                       size="small"
