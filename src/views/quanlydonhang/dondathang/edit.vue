@@ -154,7 +154,7 @@
           </div>
         </el-form>
       </div>
-            <div style="text-align: center">
+      <div style="text-align: center">
         <el-button
           style="width: 100px"
           v-if="showProductBar"
@@ -191,7 +191,6 @@
         > -->
       </div>
       <div class="sanpham" v-if="!cap_nhat" v-show="showProductBar">
-
         <transition name="bounce" v-for="item in hangHoas" :key="item.id">
           <div v-show="!kiemTraDaChon(item.id)">
             <el-card
@@ -1076,7 +1075,7 @@ export default {
         this.form.tong_tien - this.form.giam_gia - val;
     },
     "form.tong_tien": function(val) {
-       this.form.giam_gia = (this.giamGiaTinNhiem * val) / 100;
+      this.form.giam_gia = (this.giamGiaTinNhiem * val) / 100;
       this.form.con_phai_thanh_toan =
         this.form.tong_tien - this.form.giam_gia - this.form.da_thanh_toan;
     }
@@ -1150,13 +1149,19 @@ export default {
         Number(this.form.tong_tien) +
         Number(this.form.phu_thu) -
         Number(this.form.giam_gia);
-
-      let khs = await getKhachHang({
-        per_page: 10,
-        khach_hang_id: this.form.khach_hang_id
-      });
-      this.nhaCungCaps = khs.data;
-      this.changeKhachHang()
+      if (this.form.khach_hang_id) {
+        let khs = await getKhachHang({
+          per_page: 10,
+          khach_hang_id: this.form.khach_hang_id
+        });
+        this.nhaCungCaps = khs.data;
+        this.changeKhachHang();
+      } else {
+        let khs = await getKhachHang({
+          per_page: 10
+        });
+        this.nhaCungCaps = khs.data.data;
+      }
     },
     showInfo() {
       this.UserInfo = this.nhaCungCaps.find(
