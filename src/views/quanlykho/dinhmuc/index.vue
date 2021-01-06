@@ -19,7 +19,8 @@
           class="primary-button"
           icon="el-icon-search"
           @click="getData()"
-        >Tìm kiếm</el-button>
+          >Tìm kiếm</el-button
+        >
       </el-col>
       <el-col :span="10">
         <el-button
@@ -28,7 +29,8 @@
           size="small"
           icon="el-icon-plus"
           class="primary-button"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
       </el-col>
     </el-row>
     <br />
@@ -47,7 +49,12 @@
           <chi-tiet :data="props.row.nguyen_lieus"></chi-tiet>
         </template>
       </el-table-column>
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column
+        label="STT"
+        min-width="55"
+        type="index"
+        align="center"
+      ></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
@@ -60,27 +67,38 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
+      <el-table-column
+        prop="ten_san_pham"
+        min-width="160"
+        label="Tên sản phẩm"
+      ></el-table-column>
       <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
         <template slot-scope="scope">
-          {{
-          formate.formatCurrency(scope.row.gia_ban) + " đ"
-          }}
+          {{ formate.formatCurrency(scope.row.gia_ban) + " đ" }}
         </template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
+      <el-table-column
+        prop="don_vi_tinh"
+        min-width="160"
+        label="Đơn vị tính"
+      ></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
         <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">
           {{
-          scope.row.mo_ta_san_pham.length > 70
-          ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
-          : scope.row.mo_ta_san_pham
+            scope.row.mo_ta_san_pham.length > 70
+              ? scope.row.mo_ta_san_pham.substr(0, 70) + "..."
+              : scope.row.mo_ta_san_pham
           }}
         </template>
       </el-table-column>
       <el-table-column align="center" min-width="110" label="Hoạt động">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Chỉnh sửa"
+            placement="top"
+          >
             <el-button
               size="small"
               style="background-color: #2E86C1; color: white"
@@ -89,7 +107,12 @@
               @click="showUpdate(scope.row)"
             ></el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="Khóa tài khoản" placement="top">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Xóa định mức"
+            placement="top"
+          >
             <el-button
               size="small"
               type="danger"
@@ -114,7 +137,7 @@
       ></el-pagination>
     </div>
     <el-dialog
-      :title="edit ? 'CẬP NHẬT ĐỊNH MỨC SẢN XUẤT' :'NGUYÊN LIỆU SẢN XUẤT'"
+      :title="edit ? 'CẬP NHẬT ĐỊNH MỨC SẢN XUẤT' : 'NGUYÊN LIỆU SẢN XUẤT'"
       :visible.sync="showForm"
       width="700px"
       center
@@ -170,7 +193,7 @@
             v-model="so_luong"
             size="small"
           ></el-input-number>
-          {{don_vi}}
+          {{ don_vi }}
         </el-col>
         <el-col :span="2">
           <el-button
@@ -187,7 +210,9 @@
         <el-table-column type="index" label="STT"></el-table-column>
         <el-table-column prop="ten" label="Nguyên liệu"></el-table-column>
         <el-table-column label="Số lượng" prop="so_luong" width="200">
-          <template slot-scope="scope">{{scope.row.so_luong}} {{scope.row.don_vi}}</template>
+          <template slot-scope="scope"
+            >{{ scope.row.so_luong }} {{ scope.row.don_vi }}</template
+          >
         </el-table-column>
         <el-table-column label="Xóa" width="100" align="center">
           <template slot-scope="scope">
@@ -208,14 +233,16 @@
           v-if="!edit"
           icon="el-icon-plus"
           @click="create()"
-        >THÊM MỚI</el-button>
+          >THÊM MỚI</el-button
+        >
         <el-button
           class="primary-button"
           size="small"
           v-if="edit"
           icon="el-icon-check"
           @click="update()"
-        >Cập nhật</el-button>
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -228,7 +255,7 @@ import {
   taoDinhMuc,
   dsDinhMuc,
   editDinhMuc,
-  xoaDinhMuc,
+  xoaDinhMuc
 } from "@/api/dinhmuc";
 import ChiTiet from "./chitiet";
 export default {
@@ -258,8 +285,8 @@ export default {
       form: {
         id: null,
         san_pham_id: null,
-        nguyen_lieus: [],
-      },
+        nguyen_lieus: []
+      }
     };
   },
   created() {
@@ -275,7 +302,7 @@ export default {
     },
     chonNguyenLieu() {
       let nguyenLieu = this.nguyenLieus.find(
-        (el) => el.id == this.nguyen_lieu_id
+        el => el.id == this.nguyen_lieu_id
       );
       this.don_vi = nguyenLieu.don_vi_tinh;
     },
@@ -294,12 +321,12 @@ export default {
       if (!this.nguyen_lieu_id || !this.so_luong) {
         this.$message({
           message: "Hãy nhập nguyên liệu và số lượng",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       let nguyenLieu = this.nguyenLieus.find(
-        (el) => el.id == this.nguyen_lieu_id
+        el => el.id == this.nguyen_lieu_id
       );
       let nl = {};
       nl.don_vi = this.don_vi;
@@ -311,7 +338,7 @@ export default {
       this.so_luong = null;
     },
     checkNguyenLieuDaChon(id) {
-      let check = this.dataNguyenLieu.find((el) => el.nguyen_lieu_id == id);
+      let check = this.dataNguyenLieu.find(el => el.nguyen_lieu_id == id);
       if (!check) {
         return false;
       }
@@ -322,18 +349,22 @@ export default {
       this.loading = false;
       this.nguyenLieus = data;
     },
-    showUpdate(data) {
+    async showUpdate(data) {
       this.resetForm();
       this.edit = true;
       this.showForm = true;
       this.form.san_pham_id = data.id;
-      data.nguyen_lieus.forEach((el) => {
+      let tp = await getSanPham({ id_san_pham: this.form.san_pham_id });
+      this.thanhPhams = tp;
+      data.nguyen_lieus.forEach(el => {
         let nl = {};
-        (nl.don_vi = el.nguyen_lieus.don_vi_tinh),
-          (nl.nguyen_lieu_id = el.nguyen_lieus.id);
-        nl.so_luong = el.so_luong;
-        nl.ten = el.nguyen_lieus.ten_san_pham;
-        this.dataNguyenLieu.push(nl);
+        if (el.nguyen_lieus) {
+          (nl.don_vi = el.nguyen_lieus ? el.nguyen_lieus.don_vi_tinh : ""),
+            (nl.nguyen_lieu_id = el.nguyen_lieus.id);
+          nl.so_luong = el.so_luong;
+          nl.ten = el.nguyen_lieus.ten_san_pham;
+          this.dataNguyenLieu.push(nl);
+        }
       });
     },
     async getData(page, per_page) {
@@ -341,7 +372,7 @@ export default {
       let data = await dsDinhMuc({
         page: this.page,
         per_page: this.per_page,
-        search: this.search,
+        search: this.search
       });
       this.page = data.data.page;
       this.per_page = data.data.per_page;
@@ -353,14 +384,14 @@ export default {
       if (!this.form.san_pham_id) {
         this.$message({
           message: "Chưa chọn sản phẩm sản xuất",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       if (!this.dataNguyenLieu.length) {
         this.$message({
           message: "Chưa chọn nguyên liệu sản xuất",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -368,14 +399,14 @@ export default {
       let data = await taoDinhMuc(this.form);
       this.$message({
         message: "Tạo định mức thành công",
-        type: "success",
+        type: "success"
       });
       this.showForm = false;
       this.getData();
       this.getSanPham();
     },
     checkSanPhamDaChon(id) {
-      let check = this.list.find((el) => el.id == id);
+      let check = this.list.find(el => el.id == id);
       if (!check) {
         return false;
       }
@@ -385,14 +416,14 @@ export default {
       if (!this.form.san_pham_id) {
         this.$message({
           message: "Chưa chọn sản phẩm sản xuất",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       if (!this.dataNguyenLieu.length) {
         this.$message({
           message: "Chưa chọn nguyên liệu sản xuất",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -400,7 +431,7 @@ export default {
       let data = await editDinhMuc(this.form);
       this.$message({
         message: "Tạo định mức thành công",
-        type: "success",
+        type: "success"
       });
       this.showForm = false;
       this.getData();
@@ -408,7 +439,7 @@ export default {
     },
     searchData() {
       this.listLoading = true;
-      getKhachHang({ search: this.search }).then((response) => {
+      getKhachHang({ search: this.search }).then(response => {
         this.list = response.data;
         this.listLoading = false;
       });
@@ -425,20 +456,20 @@ export default {
           dangerouslyUseHTMLString: true,
           confirmButtonText: "Xác nhận",
           cancelButtonText: "Hủy",
-          type: "warning",
+          type: "warning"
         }
       )
-        .then((_) => {
-          xoaDinhMuc({ san_pham_id: item.id }).then((res) => {
+        .then(_ => {
+          xoaDinhMuc({ san_pham_id: item.id }).then(res => {
             this.$message({
               message: "Xóa thành công",
-              type: "success",
+              type: "success"
             });
             this.getData();
             this.getSanPham();
           });
         })
-        .catch((_) => {});
+        .catch(_ => {});
     },
     showFormAdd() {
       this.resetForm();
@@ -450,7 +481,7 @@ export default {
       this.form = {
         id: null,
         san_pham_id: null,
-        nguyen_lieus: [],
+        nguyen_lieus: []
       };
       this.dataNguyenLieu = [];
     },
@@ -462,8 +493,8 @@ export default {
     handleSizeChange(val) {
       this.per_page = val;
       this.getData();
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
