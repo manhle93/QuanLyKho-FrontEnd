@@ -8,16 +8,18 @@ export function topSanPham(params) {
     })
 }
 
-export function getDoanhThu() {
+export function getDoanhThu(params) {
   return request({
       url: 'doanhthu',
       method: 'get',
+      params
   })
 }
 
-export function dashboard() {
+export function dashboard(params) {
   return request({
       url: 'dashboard',
       method: 'get',
+      params
   })
 }

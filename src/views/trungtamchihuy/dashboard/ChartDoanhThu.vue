@@ -45,7 +45,8 @@ export default {
   data() {
     return {
       chart: null,
-      data: []
+      data: [],
+      time: []
     };
   },
   mounted() {
@@ -69,10 +70,13 @@ export default {
     render() {
       this.chart.resize();
     },
-    async initChart() {
+    async initChart(type) {
       this.chart = echarts.init(this.$el, "macarons");
-      let res = await getDoanhThu();
-      this.data = res;
+      console.log(type);
+      let res = await getDoanhThu({ type: type });
+      console.log(res);
+      this.data = res.data;
+      this.time = res.time;
       if (this.chart) {
         this.chart.setOption({
           color: ["#3398DB"],
@@ -90,23 +94,16 @@ export default {
             bottom: "3%",
             containLabel: true
           },
+          dataZoom: [
+            {
+              type: "inside"
+            }
+          ],
           xAxis: [
             {
               type: "category",
-              data: [
-                "Tháng 1",
-                "Tháng 2",
-                "Tháng 3",
-                "Tháng 4",
-                "Tháng 5",
-                "Tháng 6",
-                "Tháng 7",
-                "Tháng 8",
-                "Tháng 9",
-                "Tháng 10",
-                "Tháng 11",
-                "Tháng 12"
-              ],
+              name: "Thời gian",
+              data: this.time,
               axisTick: {
                 alignWithLabel: true
               }
@@ -114,7 +111,8 @@ export default {
           ],
           yAxis: [
             {
-              type: "value"
+              type: "value",
+              name: "Doanh thu (VnĐ)"
             }
           ],
           series: [
@@ -122,7 +120,7 @@ export default {
               name: "Doanh thu",
               type: "bar",
               barWidth: "60%",
-              data: this.data,
+              data: this.data
             }
           ]
         });
