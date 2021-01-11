@@ -14,7 +14,10 @@
               {{ (data.doanh_thu / 1000000).toFixed(2) }}
               <span style="font-size: 14px">(triệu)</span>
             </div>
-            <div class="ten-item">Doanh thu: <span class="type-time">{{ this.typeTime }}</span></div>
+            <div class="ten-item">
+              Doanh thu
+              <!-- <span class="type-time">{{ this.typeTime }}</span> -->
+            </div>
           </div>
           <img
             src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387057/RBT/3208954_hm9zyx.svg"
@@ -29,7 +32,10 @@
         >
           <div>
             <div class="so-item">{{ data.hoa_don }}</div>
-            <div class="ten-item">Hóa đơn: <span class="type-time">{{ this.typeTime }}</span></div>
+            <div class="ten-item">
+              Hóa đơn
+              <!-- <span class="type-time">{{ this.typeTime }}</span> -->
+            </div>
           </div>
           <img
             src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387099/RBT/3081305_hxhb7k.svg"
@@ -46,7 +52,8 @@
           <div>
             <div class="so-item" style="color: white">{{ data.don_hang }}</div>
             <div class="ten-item" style="color: white">
-              Đơn hàng: <span class="type-time">{{ this.typeTime }}</span>
+              Đơn hàng
+              <!-- <span class="type-time">{{ this.typeTime }}</span> -->
             </div>
           </div>
           <img
@@ -63,7 +70,10 @@
         >
           <div>
             <div class="so-item">{{ data.don_online }}</div>
-            <div class="ten-item">Đặt hàng Online <span class="type-time">{{ this.typeTime }}</span></div>
+            <div class="ten-item">
+              Đặt hàng Online
+              <!-- <span class="type-time">{{ this.typeTime }}</span> -->
+            </div>
           </div>
           <img
             src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387100/RBT/3126589_teb0vg.svg"
@@ -79,8 +89,7 @@
         <div class="item-danhmuc">
           <div>
             <div class="so-item">{{ data.san_pham }}</div>
-            <!-- <div class="ten-item">Nhập kho <span class="type-time">{{ this.typeTime }}</span></div> -->
-            <div class="ten-item">Tổng số sản phẩm </div>
+            <div class="ten-item">Tổng số sản phẩm</div>
           </div>
           <img
             src="https://res.cloudinary.com/dsobei3hp/image/upload/v1609387099/RBT/743007_qqyvph.svg"
@@ -334,7 +343,7 @@ export default {
       this.$refs["banchay"].getData(this.date, e);
     },
     async getData() {
-      let data = await dashboard({type: this.timeSelect});
+      let data = await dashboard({ type: this.timeSelect });
       this.data = data;
     },
     async getInfo() {
@@ -354,6 +363,9 @@ export default {
         case "bay_ngay_truoc":
           this.typeTime = "BẢY NGÀY TRƯỚC";
           break;
+        case "thang_truoc":
+          this.typeTime = "THÁNG TRƯỚC";
+          break;
         case "tuan_nay":
           this.typeTime = "TUẦN NÀY";
           break;
@@ -367,7 +379,7 @@ export default {
           this.typeTime = "NĂM TRƯỚC";
           break;
       }
-      this.getData()
+      this.getData();
       this.$refs["doanhthu"].initChart(this.timeSelect);
     },
     formatDateTime(time) {
@@ -432,13 +444,12 @@ export default {
 }
 
 @media only screen and (max-width: 1200px) {
-.type-time {
-  font-weight: bold;
-  font-size: 9px;
-}
-.ten-item {
-  font-size: 10px;
-}
-
+  .type-time {
+    font-weight: bold;
+    font-size: 9px;
+  }
+  .ten-item {
+    font-size: 10px;
+  }
 }
 </style>

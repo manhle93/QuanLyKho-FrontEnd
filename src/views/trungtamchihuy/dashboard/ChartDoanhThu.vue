@@ -74,7 +74,6 @@ export default {
       this.chart = echarts.init(this.$el, "macarons");
       console.log(type);
       let res = await getDoanhThu({ type: type });
-      console.log(res);
       this.data = res.data;
       this.time = res.time;
       if (this.chart) {
@@ -89,9 +88,9 @@ export default {
             }
           },
           grid: {
-            left: "3%",
-            right: "4%",
-            bottom: "3%",
+            left: "5%",
+            right: "7%",
+            bottom: "6%",
             containLabel: true
           },
           dataZoom: [
@@ -112,7 +111,7 @@ export default {
           yAxis: [
             {
               type: "value",
-              name: "Doanh thu (VnĐ)"
+              name: "Doanh thu (VND)"
             }
           ],
           series: [
