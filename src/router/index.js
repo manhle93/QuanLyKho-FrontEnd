@@ -144,56 +144,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: "/users/management",
     name: "Người dùng",
+    hidden: true,
     meta: {
       title: "Người dùng",
       icon: "nguoidung"
     },
     children: [
-      {
-        path: "taikhoan",
-        name: "Thông tin tài khoản",
-        component: () => import("@/views/user/thongtintaikhoan/index"),
-        meta: {
-          title: "Thông tin tài khoản",
-          icon: "thongtin "
-        }
-      },
-      {
-        path: "management",
-        name: "Tài khoản người dùng",
-        component: () => import("@/views/user/index"),
-        meta: {
-          title: "Tài khoản người dùng",
-          icon: "quanlynguoidung"
-        }
-      },
-      {
-        path: "nhanvien",
-        name: "Quản lý nhân viên",
-        component: () => import("@/views/user/nhanvien/index"),
-        meta: {
-          title: "Quản lý nhân viên",
-          icon: "quanlynguoidung"
-        }
-      },
-      {
-        path: "nhacungcap",
-        name: "Nhà cung cấp",
-        component: () => import("@/views/doitac/nhacungcap/index"),
-        meta: {
-          title: "Nhà cung cấp",
-          icon: "nhacungcap"
-        }
-      },
-      {
-        path: "khachhang",
-        name: "Khách hàng",
-        component: () => import("@/views/doitac/khachhang/index"),
-        meta: {
-          title: "Khách hàng",
-          icon: "khachhang"
-        }
-      },
+
     ]
   },
   {
@@ -236,6 +193,51 @@ export const asyncRoutes = [
       icon: "hanghoa"
     },
     children: [
+      {
+        path: "nhanvien",
+        name: "Quản lý nhân viên",
+        component: () => import("@/views/user/nhanvien/index"),
+        meta: {
+          title: "Quản lý nhân viên",
+          icon: "quanlynguoidung"
+        }
+      },
+      {
+        path: "nhacungcap",
+        name: "Nhà cung cấp",
+        component: () => import("@/views/doitac/nhacungcap/index"),
+        meta: {
+          title: "Nhà cung cấp",
+          icon: "nhacungcap"
+        }
+      },
+      {
+        path: "khachhang",
+        name: "Khách hàng",
+        component: () => import("@/views/doitac/khachhang/index"),
+        meta: {
+          title: "Khách hàng",
+          icon: "khachhang"
+        }
+      },
+      {
+        path: "taikhoan",
+        name: "Thông tin tài khoản",
+        component: () => import("@/views/user/thongtintaikhoan/index"),
+        meta: {
+          title: "Thông tin tài khoản",
+          icon: "thongtin "
+        }
+      },
+      {
+        path: "management",
+        name: "Tài khoản người dùng",
+        component: () => import("@/views/user/index"),
+        meta: {
+          title: "Tài khoản người dùng",
+          icon: "quanlynguoidung"
+        }
+      },
       {
         path: "loaihanghoa",
         name: "Nhóm hàng hóa",
@@ -829,6 +831,35 @@ export const asyncRoutes = [
           icon: "report"
         }
       }
+    ]
+  },
+  {
+    path: "/noibo",
+    component: Layout,
+    meta: {
+      title: "Nội bộ",
+      icon: "graph"
+    },
+    name: "Nội bộ",
+    children: [
+      {
+        path: "giaoviec",
+        name: "Giao việc",
+        component: () => import("@/views/baocao/cuoingay"),
+        meta: {
+          title: "Giao việc",
+          icon: "report"
+        }
+      },
+      {
+        path: "baocaocuoingay",
+        name: "Chat",
+        component: () => import("@/views/baocao/cuoingay"),
+        meta: {
+          title: "Chat",
+          icon: "report"
+        }
+      },
     ]
   },
 

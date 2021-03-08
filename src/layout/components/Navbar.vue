@@ -5,7 +5,7 @@
     </div>
     <div style="width: 40%; display:flex; justify-content: flex-end; align-items: center">
         <div style="margin-right:50px;">
-          <el-button size="small" class="primary-button" @click="banHang()">BÁN HÀNG</el-button>
+          <el-button size="small" class="primary-button" @click="banHang()" style="margin-right: 150px">BÁN HÀNG</el-button>
           <el-button size="small" type="warning" @click="datHang()">ĐẶT HÀNG</el-button>
         </div>
         <div class="right-menu">

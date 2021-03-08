@@ -259,65 +259,6 @@
         label="Nội dung"
         min-width="150"
       ></el-table-column>
-      <el-table-column label="Đối tượng" min-width="100">
-        <template slot-scope="scope">
-          <div v-if="scope.row.type == 'diem_lay_nuoc'">
-            Điểm lấy nước ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'user'">
-            User ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'can_bo_chien_si'">
-            Cán bộ chiến sĩ ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'phuong_tien_pccc'">
-            Phương tiện PCCC ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'don_vi_ho_tro'">
-            Đơn vị hỗ trợ ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'don_vi_pccc'">
-            Đơn vị PCCC (PC07) ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'cam_bien'">
-            Cảm biến ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'thiet_bi'">
-            Thiết bị trung tâm ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'thiet_bi_quay'">
-            Thiết bị quay ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'kiem_tra_toa_nha'">
-            Kiểm tra tòa nhà ID: {{ scope.row.reference_id }}
-          </div>
-
-          <div v-if="scope.row.type == 'dan_cu'">
-            Thiết bị trung tâm ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'huan_luyen_boi_duong'">
-            Huấn luyện bồi dưỡng PCCC ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'tham_duyet'">
-            Thẩm duyệt cấp giấy phép PCCC ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'xu_ly_vi_pham'">
-            Xử lý vi phạm PCCC ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'diem_chay'">
-            Điểm cháy ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'toa_nha'">
-            Cơ sở công trình ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'lich_truc'">
-            Lịch trực ID: {{ scope.row.reference_id }}
-          </div>
-          <div v-if="scope.row.type == 'cuu_ho_cuu_nan'">
-            Cứu nạn cứu hộ ID: {{ scope.row.reference_id }}
-          </div>
-        </template>
-      </el-table-column>
     </el-table>
     <br />
     <div class="block">
