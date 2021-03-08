@@ -654,11 +654,12 @@ export default {
     resetForm() {
       this.showForm = false;
       this.src = process.env.VUE_APP_BASE + "images/avatar/avatar_for_none.png";
+      this.tongTien = 0
       this.form = {
         id: null,
         anh_dai_dien: "",
         mo_ta: "",
-        ten_danh_muc: ""
+        ten_danh_muc: "",
       };
     },
     handleChange(e) {
@@ -687,6 +688,7 @@ export default {
     showNhapKho() {
       this.showCreate = true;
       this.dataMuaHang = [];
+      this.tongTien = 0
       this.addSanPham = {
         hang_hoa_id: null,
         so_luong: null,
