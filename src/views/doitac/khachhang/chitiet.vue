@@ -168,6 +168,9 @@
         </el-table-column>
       </el-table>
     </el-tab-pane>
+    <el-tab-pane label="Đơn đặt hàng">
+      <h1>--không có thông tin--</h1>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>

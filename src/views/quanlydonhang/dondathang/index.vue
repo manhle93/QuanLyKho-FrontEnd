@@ -195,22 +195,22 @@
           <el-table-column
             width="120"
             prop="created_at"
-            label="Thời gian tạo"
+            label="T/G giao hàng"
             v-if="showColumn.thoi_gian"
           >
             <template slot-scope="scope">{{
-              formatDateTime(scope.row.created_at)
+              formatDateTime(scope.row.thoi_gian_nhan_hang)
             }}</template>
           </el-table-column>
           <el-table-column
             property="ghi_chu"
             label="Ghi chú"
-            min-width="123"
+            min-width="100"
             v-if="showColumn.ghi_chu"
           ></el-table-column>
           <el-table-column
             label="Đã thanh toán"
-            min-width="115"
+            min-width="65"
             prop="da_thanh_toan"
             v-if="showColumn.da_tt"
           >
@@ -220,7 +220,7 @@
           </el-table-column>
           <el-table-column
             label="Còn phải thanh toán"
-            min-width="115"
+            min-width="85"
             prop="con_phai_thanh_toan"
             v-if="showColumn.con_phai_tt"
           >
@@ -229,7 +229,7 @@
               đ
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             property="trang_thai"
             label="Trạng thái"
             width="140"
@@ -277,6 +277,19 @@
                 type="success"
                 v-if="scope.row.trang_thai == 'hoa_don'"
                 >Đã chuyển hóa đơn</el-tag
+              >
+            </template>
+          </el-table-column> -->
+          <el-table-column
+            label="Nhân viên tạo đơn"
+            width="168"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                type="success"
+                effect="plain"
+                v-if="scope.row.nhan_vien"
+                >{{scope.row.nhan_vien.name}}</el-tag
               >
             </template>
           </el-table-column>
@@ -359,11 +372,11 @@
                 placement="top"
               >
                 <el-button
-                  size="small"
                   @click="edit(scope.row.id)"
                   class="primary-button"
-                  icon="el-icon-edit"
+                  icon="el-icon-goods"
                   circle
+                  style="font-size: 30px"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
