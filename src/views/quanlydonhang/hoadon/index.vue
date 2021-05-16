@@ -209,7 +209,7 @@
           <el-table-column
             property="ma"
             label="Mã đơn hàng"
-            min-width="125"
+            min-width="90"
             v-if="showColumn.ma"
           ></el-table-column>
           <el-table-column
@@ -222,17 +222,18 @@
             v-if="showColumn.thoi_gian"
             prop="created_at"
             label="Thời gian tạo"
+            min-width="100"
           ></el-table-column>
           <el-table-column
             v-if="showColumn.ghi_chu"
             property="ghi_chu"
             label="Ghi chú"
-            min-width="123"
+            min-width="150"
           ></el-table-column>
           <el-table-column
             v-if="showColumn.da_tt"
             label="Đã thanh toán"
-            min-width="115"
+            min-width="80"
             prop="da_thanh_toan"
           >
             <template slot-scope="scope"
@@ -242,7 +243,7 @@
           <el-table-column
             v-if="showColumn.con_phai_tt"
             label="Còn phải thanh toán"
-            min-width="115"
+            min-width="90"
             prop="con_phai_thanh_toan"
           >
             <template slot-scope="scope">
@@ -259,7 +260,7 @@
             v-if="showColumn.trang_thai"
             property="trang_thai"
             label="Trạng thái"
-            min-width="125"
+            min-width="100"
           >
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.trang_thai == 'moi_tao'"
@@ -282,6 +283,43 @@
                 type="success"
                 v-if="scope.row.trang_thai == 'hoa_don'"
                 >Đã chuyển hóa đơn</el-tag
+              >
+              
+              <el-tag 
+                effect="dark" 
+                type="success"
+                v-if="scope.row.trang_thai_giao_hang == null"
+                >Không vận chuyển</el-tag
+              >
+              <el-tag
+                effect="dark"
+                type=""
+                v-if="scope.row.trang_thai_giao_hang == 'nhan_don'"
+                >Đang giao hàng</el-tag
+              >
+              <el-tag
+                effect="dark"
+                type=""
+                v-if="scope.row.trang_thai_giao_hang == 'cho_xu_ly'"
+                >Chờ xử lý</el-tag
+              >
+              <el-tag
+                effect="dark"
+                v-if="scope.row.trang_thai_giao_hang == 'tu_choi'"
+                type="danger"
+                >Từ chối giao hàng</el-tag
+              >
+              <el-tag
+                effect="dark"
+                type="success"
+                v-if="scope.row.trang_thai_giao_hang == 'hoan_thanh'"
+                >Giao hàng thành công</el-tag
+              >
+              <el-tag
+                effect="dark"
+                type="danger"
+                v-if="scope.row.trang_thai_giao_hang == 'huy_don'"
+                >Khách hủy đơn</el-tag
               >
             </template>
           </el-table-column>

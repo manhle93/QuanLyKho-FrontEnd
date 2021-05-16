@@ -368,7 +368,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="Chi tiết"
+                content="Chuyển bán hàng"
                 placement="top"
               >
                 <el-button
