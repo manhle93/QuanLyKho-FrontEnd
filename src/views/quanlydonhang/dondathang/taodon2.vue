@@ -713,7 +713,7 @@
               <el-input
                 size="small"
                 type="textarea"
-                v-model="formKhaHang.mo_ta"
+                v-model="formKhaHang.ghi_chu"
                 :rows="2"
               ></el-input>
             </el-form-item>
@@ -853,7 +853,7 @@ export default {
         loai_thanh_vien_id: null,
         tin_nhiem: null,
         diem_quy_doi: null,
-        tien_vay: null
+        tien_vay: null,
       },
       idSanPham: undefined,
       form: {
