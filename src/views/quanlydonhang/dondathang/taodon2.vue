@@ -540,7 +540,7 @@
             @click="submit('form')"
             >ĐẶT HÀNG</el-button
           >
-          <el-button
+          <!-- <el-button
             v-else
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
@@ -549,6 +549,15 @@
             @click="submit('form')"
             @shortkey.native="submit('form')"
             >[F9] THANH TOÁN</el-button
+          > -->
+
+          <el-button
+            v-else
+            style="float: right; width: 100%; height: 80px; font-size: 20px"
+            icon="el-icon-check"
+            class="success-button"
+            @click="submit('form')"
+            >THANH TOÁN</el-button
           >
         </el-col>
       </el-row>
@@ -1002,7 +1011,7 @@ export default {
     this.getBangGia();
     this.nhanVienGiaoHang();
     this.getDanhMuc();
-    this.getDataFromLocalStorage()
+    this.getDataFromLocalStorage();
     getInfor().then((res) => {
       this.role_id = res.data.role_id;
       if (
@@ -1318,12 +1327,12 @@ export default {
       let data = JSON.stringify(this.form.danhSachHang);
       localStorage.setItem(this.tabName, data);
     },
-    getDataFromLocalStorage(){
+    getDataFromLocalStorage() {
       let data = localStorage.getItem(this.tabName);
-      if(data){
-        this.form.danhSachHang = JSON.parse(data)
-      }else {
-        this.form.danhSachHang = []
+      if (data) {
+        this.form.danhSachHang = JSON.parse(data);
+      } else {
+        this.form.danhSachHang = [];
       }
     },
     xoaSanPham(index, data) {
