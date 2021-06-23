@@ -26,6 +26,7 @@
         <tao-don
           :tabName="'tab' + item.name"
           :dataHangHoa="dataHangHoa"
+          v-if="editableTabsValue == item.name"
         ></tao-don>
       </el-tab-pane>
     </el-tabs>

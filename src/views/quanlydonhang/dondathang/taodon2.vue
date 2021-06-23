@@ -540,7 +540,7 @@
             @click="submit('form')"
             >ĐẶT HÀNG</el-button
           >
-          <!-- <el-button
+          <el-button
             v-else
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
@@ -549,16 +549,16 @@
             @click="submit('form')"
             @shortkey.native="submit('form')"
             >[F9] THANH TOÁN</el-button
-          > -->
+          >
 
-          <el-button
+          <!-- <el-button
             v-else
             style="float: right; width: 100%; height: 80px; font-size: 20px"
             icon="el-icon-check"
             class="success-button"
             @click="submit('form')"
             >THANH TOÁN</el-button
-          >
+          > -->
         </el-col>
       </el-row>
     </div>
