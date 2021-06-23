@@ -25,7 +25,7 @@
       <el-menu-item index="22" style="margin-right: 50px">
         <router-link :to="'/tongquan'">
           <img
-            src="http://rbt.skymapglobal.vn/_nuxt/img/logo.9d901d8.jpg"
+            :src="LogoSanPham"
             height="35px"
             style="
               border: 2px solid white;
@@ -159,9 +159,9 @@
 <script>
 import { mapGetters } from "vuex";
 import Logo from "./Sidebar/Logo";
+import LogoSanPham from '@/assets/logo/logorbt.jpg'
 import SidebarItem from "./Sidebar/SidebarItem";
 import variables from "@/styles/variables.scss";
-
 export default {
   data() {
     return {
@@ -173,6 +173,7 @@ export default {
         "taikhoan",
         "management",
       ],
+      LogoSanPham,
       giaoDichNCC: ["nhacungcap", "trahangnhacungcap", "thanhtoannhacungcap"],
       giaoDichKho: ["nhapkho", "kiemke", "xuathuy", "trahang"],
       giaoDichKH: ["dathang", "lichsunoptien", "doitrahang", "hoadon"],

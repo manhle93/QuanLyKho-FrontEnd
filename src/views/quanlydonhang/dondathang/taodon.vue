@@ -95,6 +95,9 @@ export default {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
       }
       let max =  Math.max.apply(Math,  this.editableTabs.map(function(o) { return o.name; }))
+      if(max == '-Infinity'){
+        max = 0
+      }
       this.editableTabs.push({
         title: "HĐ " + (max + 1),
         name: newTabName,

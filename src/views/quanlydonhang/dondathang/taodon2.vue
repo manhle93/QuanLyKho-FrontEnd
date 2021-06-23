@@ -1032,7 +1032,7 @@ export default {
         danh_muc_id: this.danh_muc_id,
       });
       this.hangHoas = data.data.data;
-    }, 300),
+    }, 200),
     khach_tra(val) {
       if (val) {
         this.tra_lai =
