@@ -180,6 +180,7 @@
                       :min="0.0001"
                       style="min-width: 150px"
                       v-model="scope.row.so_luong"
+                      @change="saveDataLocalStorage()"
                     ></el-input-number>
                     <el-tooltip
                       class="item"
@@ -813,6 +814,7 @@ import { addKhachHang } from "@/api/khachhang";
 import { getChietKhauKH } from "@/api/caidat";
 
 export default {
+  props: ["tabName"],
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
@@ -1000,6 +1002,7 @@ export default {
     this.getBangGia();
     this.nhanVienGiaoHang();
     this.getDanhMuc();
+    this.getDataFromLocalStorage()
     getInfor().then((res) => {
       this.role_id = res.data.role_id;
       if (
@@ -1030,8 +1033,8 @@ export default {
             Number(this.form.phu_thu));
       } else this.tra_lai = null;
     },
-    phanTramGiamGia(val){
-      this.form.giam_gia = this.form.tong_tien*val/100
+    phanTramGiamGia(val) {
+      this.form.giam_gia = (this.form.tong_tien * val) / 100;
     },
     "form.giam_gia": function (val) {
       this.tra_lai =
@@ -1069,6 +1072,9 @@ export default {
       if (val) {
         this.formKhaHang.username = val;
       }
+    },
+    "form.danhSachHang": function () {
+      this.saveDataLocalStorage();
     },
   },
   computed: {
@@ -1199,6 +1205,7 @@ export default {
         row.so_luong = Number(row.so_luong_them) + Number(row.so_luong);
       }
       row.so_luong_them = 0;
+      this.saveDataLocalStorage();
     },
     themSoLuong(index, row) {
       row.them = false;
@@ -1299,12 +1306,24 @@ export default {
             el.disabled = true;
           }
         }
-        console.log(this.form.danhSachHang);
         this.hang_hoa_id = null;
         this.so_luong = 1;
         this.don_gia = null;
         this.don_vi_tinh = null;
         this.hangHoa = {};
+      }
+    },
+    saveDataLocalStorage() {
+      localStorage.removeItem(this.tabName);
+      let data = JSON.stringify(this.form.danhSachHang);
+      localStorage.setItem(this.tabName, data);
+    },
+    getDataFromLocalStorage(){
+      let data = localStorage.getItem(this.tabName);
+      if(data){
+        this.form.danhSachHang = JSON.parse(data)
+      }else {
+        this.form.danhSachHang = []
       }
     },
     xoaSanPham(index, data) {

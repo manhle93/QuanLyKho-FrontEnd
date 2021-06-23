@@ -1,21 +1,32 @@
 <template>
-  <div class="main" :style="{height: hideSidebar ? '100vh' : 'calc(100vh - 50px)'}">
+  <div
+    class="main"
+    :style="{ height: hideSidebar ? '100vh' : 'calc(100vh - 50px)' }"
+  >
     <el-button
-      :style="{left: khoangCach + 'px'}"
+      :style="{ left: khoangCach + 'px' }"
       circle
       size="small"
       class="primary-button buttonAdd"
       icon="el-icon-plus"
-      @click="addTab(editableTabsValue)"
+      @click="addTab()"
     ></el-button>
-    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+    <el-tabs
+      v-model="editableTabsValue"
+      type="card"
+      closable
+      @tab-remove="removeTab"
+    >
       <el-tab-pane
         v-for="item in editableTabs"
         :key="item.name"
         :label="item.title"
         :name="item.name"
       >
-        <tao-don></tao-don>
+        <tao-don
+          :tabName="'tab' + item.name"
+          :dataHangHoa="dataHangHoa"
+        ></tao-don>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -44,9 +55,11 @@ export default {
       ],
       tabIndex: 2,
       khoangCach: 204,
+      dataHangHoa: [],
     };
   },
   created() {
+    this.getTabList();
     getInfor().then((res) => {
       this.role_id = res.data.role_id;
       if (
@@ -59,23 +72,36 @@ export default {
       }
     });
   },
-  watch: {},
+  watch: {
+    editableTabs: function (val) {
+      localStorage.removeItem("tabList");
+      localStorage.setItem("tabList", JSON.stringify(val));
+    },
+    editableTabsValue: function (val) {
+      localStorage.removeItem("currentTab");
+      localStorage.setItem("currentTab", JSON.stringify(val));
+    },
+  },
   methods: {
-    addTab(targetName) {
-      let newTabName = ++this.tabIndex + "";
+    addTab() {
+      let newTabName = this.tabIndex + 1;
+      newTabName = newTabName.toString();
+      this.tabIndex++;
       let soTab = this.editableTabs.length + 1;
       if (soTab < 10) {
         this.khoangCach = soTab * 82 + 40;
       } else {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
       }
+      let max =  Math.max.apply(Math,  this.editableTabs.map(function(o) { return o.name; }))
       this.editableTabs.push({
-        title: "HĐ " + (this.editableTabs.length + 1),
+        title: "HĐ " + (max + 1),
         name: newTabName,
       });
       this.editableTabsValue = newTabName;
     },
     removeTab(targetName) {
+      localStorage.removeItem("tab" + targetName);
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
       if (activeName === targetName) {
@@ -95,6 +121,40 @@ export default {
         this.khoangCach = soTab * 82 + 40;
       } else {
         this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
+      }
+    },
+    getTabList() {
+      let tabList = localStorage.getItem("tabList");
+      let currentTab = localStorage.getItem("currentTab");
+      currentTab = currentTab ? JSON.parse(currentTab) : "1";
+      if (tabList && tabList != "[]") {
+        this.editableTabs = JSON.parse(tabList);
+        this.tabIndex = Math.max.apply(Math,  this.editableTabs.map(function(o) { return o.name; }))
+        this.editableTabsValue = currentTab;
+        let soTab = this.editableTabs.length + 1;
+        if (soTab < 10) {
+          this.khoangCach = soTab * 82 + 40;
+        } else {
+          this.khoangCach = 9 * 82 + (soTab - 9) * 90 + 40;
+        }
+      } else {
+        this.editableTabs = [
+          {
+            title: "HĐ 1",
+            name: "1",
+          },
+          {
+            title: "HĐ 2",
+            name: "2",
+          },
+        ];
+        this.tabIndex = 2;
+        this.editableTabsValue = "2";
+        localStorage.removeItem("currentTab");
+        localStorage.setItem(
+          "currentTab",
+          JSON.stringify(this.editableTabsValue)
+        );
       }
     },
   },
