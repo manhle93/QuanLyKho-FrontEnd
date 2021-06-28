@@ -61,10 +61,10 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" align="center">
+      <el-table-column label="STT" width="85" align="center">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column sortable prop="name" min-width="220" label="Họ Tên">
+      <el-table-column sortable prop="name" min-width="120" label="Họ Tên">
         <template slot-scope="scope">
           <div style="display: flex; flex-wrap: nowrap; align-items: center;">
             <img
@@ -83,18 +83,18 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="140">
+      <el-table-column sortable prop="username" label="Tên đăng nhập" min-width="70">
         <template slot-scope="scope">{{ scope.row.username }}</template>
       </el-table-column>
-      <el-table-column label="Vai trò" min-width="120">
+      <el-table-column label="Vai trò" min-width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.role.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Số điện thoại" min-width="110" align="center">
+      <el-table-column label="Số điện thoại" min-width="80" align="center">
         <template slot-scope="scope">{{ scope.row.phone }}</template>
       </el-table-column>
-      <el-table-column min-width="157" label="Địa chỉ">
+      <el-table-column min-width="220" label="Địa chỉ">
         <template slot-scope="scope">{{scope.row.khach_hang ? scope.row.khach_hang.dia_chi : ""}}</template>
       </el-table-column>
       <el-table-column
@@ -103,14 +103,14 @@
         class-name="status-col"
         label="Trạng thái"
         align="center"
-        min-width="125"
+        min-width="70"
       >
         <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.active">Hoạt động</el-tag>
           <el-tag type="danger" v-else>Không hoạt động</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" fixed="right" label="Hoạt động">
+      <el-table-column align="center" min-width="60" fixed="right" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
             <el-button

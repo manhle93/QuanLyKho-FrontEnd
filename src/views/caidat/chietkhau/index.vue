@@ -25,12 +25,12 @@
           ></el-rate>
         </template>
       </el-table-column>
-      <el-table-column label="Mức chiết khấu">
+      <el-table-column label="Mức chiết khấu" width="250">
         <template slot-scope="scope"
           >{{ scope.row.phan_tram }} %</template
         >
       </el-table-column>
-      <el-table-column label="Trạng thái" prop="dong_chu"
+      <el-table-column label="Trạng thái" prop="dong_chu" width="250" align="center"
         ><template slot-scope="scope">
           <div v-if="scope.row.active">
             <el-tag effect="plain" type="success">Đang áp dụng</el-tag>
@@ -41,9 +41,13 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column label="Ghi chú"
+        ><template>
+        </template>
+      </el-table-column>
       <el-table-column
         align="center"
-        min-width="110"
+        min-width="50"
         fixed="right"
         label="Hoạt động"
       >

@@ -50,12 +50,12 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column sortable prop="ma" min-width="160" label="Mã voucher"></el-table-column>
-      <el-table-column label="Số lượng" prop="so_luong" min-width="157"></el-table-column>
-      <el-table-column label="Ngày bắt đầu" prop="bat_dau" min-width="157"></el-table-column>
-      <el-table-column label="Ngày kết thúc" prop="ket_thuc" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157">
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
+      <el-table-column sortable prop="ma" width="260" label="Mã voucher"></el-table-column>
+      <el-table-column label="Số lượng" prop="so_luong" width="168"></el-table-column>
+      <el-table-column label="Ngày bắt đầu" prop="bat_dau" align="center" min-width="157"></el-table-column>
+      <el-table-column label="Ngày kết thúc" prop="ket_thuc" align="center" min-width="157"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="157" align="center">
         <template slot-scope="scope">
           <el-tag
             effect="plain"
@@ -137,7 +137,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Số lượng" prop="so_luong">
-              <el-input size="small" v-model="form.so_luong"></el-input>
+              <el-input size="small" v-model="form.so_luong" type="number"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -199,7 +199,7 @@
           </el-col>
           <el-col :span="form.ap_dung_cho == 'toan_bo' ? 24 : 12">
             <el-form-item label="Đơn hàng tối thiểu" prop="don_toi_thieu">
-              <el-input size="small" v-model="form.don_toi_thieu"></el-input>
+              <el-input size="small" v-model="form.don_toi_thieu" type="number"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">

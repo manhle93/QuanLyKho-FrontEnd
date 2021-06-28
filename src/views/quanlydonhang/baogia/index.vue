@@ -74,7 +74,10 @@
           <el-table-column
             sortable type="index"
             label="STT"
-            align="center">
+            align="center"
+            width="85"
+            >
+            
           </el-table-column>
           <el-table-column
             property="ma"
@@ -105,7 +108,7 @@
             label="Hành động"
             align="center"
             fixed="right"
-            width="120"
+            width="168"
           >
             <template slot-scope="scope">
               <el-tooltip

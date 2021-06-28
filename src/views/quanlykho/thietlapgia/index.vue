@@ -52,12 +52,12 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên bảng giá"></el-table-column>
-      <el-table-column label="Thời gian bắt đầu" prop="ngay_bat_dau" min-width="150" align="center"></el-table-column>
-      <el-table-column label="Thời gian kết thúc" prop="ngay_ket_thuc" min-width="150" align="center"></el-table-column>
+      <el-table-column label="Thời gian bắt đầu" prop="ngay_bat_dau" min-width="130" align="center"></el-table-column>
+      <el-table-column label="Thời gian kết thúc" prop="ngay_ket_thuc" min-width="130" align="center"></el-table-column>
       <el-table-column label="Số sản phẩm" prop="so_san_pham" min-width="80" align="center"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="120" align="center">
+      <el-table-column label="Trạng thái" min-width="90" align="center">
         <template slot-scope="scope">
           <el-tag effect="plain" v-if="scope.row.ap_dung" type="success">Đang áp dụng</el-tag>
           <el-tag effect="plain" v-else type="warning">Chưa áp dụng</el-tag>
@@ -289,7 +289,7 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
@@ -303,7 +303,7 @@
       <el-table-column prop="gia_ban" min-width="160" label="Đơn giá bán mặc định" align="center">
         <template slot-scope="scope" color: blue>{{formate.formatCurrency(scope.row.gia_ban) + ' đ'}}</template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" align="center" label="Đơn vị tính"></el-table-column>
+      <el-table-column prop="don_vi_tinh" min-width="100" align="center" label="Đơn vị tính"></el-table-column>
       <el-table-column label="Bảng giá" min-width="157">
         <template slot-scope="scope">
           <p v-for="item in scope.row.bang_gias" :key="item.id">{{item.ten}}</p>

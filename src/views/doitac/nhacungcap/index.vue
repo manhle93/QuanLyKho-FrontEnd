@@ -49,14 +49,14 @@
       </el-table-column>
 
       <el-table-column label="STT" min-width="65" type="index" align="center"></el-table-column>
-      <el-table-column sortable prop="ten" min-width="170" label="Tên nhà cung cấp">
+      <el-table-column sortable prop="ten" min-width="170" label="Tên nhà cung cấp" >
         <template slot-scope="scope">
-          <a @click="showUpdate(scope.row)">{{ scope.row.ten }}</a>
+          <a @click="showUpdate(scope.row)" style="font-weight:bold; font-style:italic;">{{ scope.row.ten }}</a>
         </template>
       </el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="197"></el-table-column>
-      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="130" align="center"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="130" align="center">
+      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="110" align="center"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="110" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.user && scope.row.user.active" effect="plain">HOẠT ĐỘNG</el-tag>
           <el-tag v-else effect="plain" type="danger">KHÔNG HOẠT ĐỘNG</el-tag>

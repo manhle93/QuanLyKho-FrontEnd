@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h4><i style="color: green"> THÔNG TIN</i></h4>
+    <h4><i style="color: green; padding-left:100px;"> THÔNG TIN TÀI KHOẢN TRÊN HỆ THỐNG</i></h4>
     <el-col :span="8" style="text-align:center; margin-top:30px;">
       <img class="avatar-image" :src="src" />
       <input ref="upload-image" class="upload-image" type="file" @change="handleChange($event)" />

@@ -50,12 +50,12 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
-      <el-table-column sortable prop="ma" min-width="160" label="Mã voucher"></el-table-column>
-      <el-table-column label="Số lượng" prop="so_luong" min-width="157"></el-table-column>
-      <el-table-column label="Ngày bắt đầu" prop="bat_dau" min-width="157"></el-table-column>
-      <el-table-column label="Ngày kết thúc" prop="ket_thuc" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157">
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
+      <el-table-column sortable prop="ma" min-width="200" label="Mã voucher"></el-table-column>
+      <el-table-column label="Số lượng" prop="so_luong" min-width="120"></el-table-column>
+      <el-table-column label="Ngày bắt đầu" prop="bat_dau" min-width="168" align="center"></el-table-column>
+      <el-table-column label="Ngày kết thúc" prop="ket_thuc" min-width="168" align="center"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="150" align="center">
         <template slot-scope="scope">
           <el-tag
             effect="plain"

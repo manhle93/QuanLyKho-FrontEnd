@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column
         label="STT"
-        min-width="55"
+        width="85"
         type="index"
         align="center"
       ></el-table-column>
@@ -72,17 +72,17 @@
         min-width="160"
         label="Tên sản phẩm"
       ></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
+      <el-table-column prop="gia_ban" min-width="120" label="Giá bán">
         <template slot-scope="scope">
           {{ formate.formatCurrency(scope.row.gia_ban) + " đ" }}
         </template>
       </el-table-column>
       <el-table-column
         prop="don_vi_tinh"
-        min-width="160"
+        min-width="120"
         label="Đơn vị tính"
       ></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
+      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="250">
         <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">
           {{
             scope.row.mo_ta_san_pham.length > 70
@@ -91,7 +91,7 @@
           }}
         </template>
       </el-table-column>
-      <el-table-column align="center" min-width="110" label="Hoạt động">
+      <el-table-column align="center" min-width="80" label="Hoạt động">
         <template slot-scope="scope">
           <el-tooltip
             class="item"

@@ -55,7 +55,14 @@
           />
         </template>
       </el-table-column>
-      <el-table-column sortable prop="ten_danh_muc" min-width="160" label="Tên"></el-table-column>
+      <el-table-column sortable min-width="160" label="Tên">
+        <template scope="scope">
+          <div style="font-weight: bold; font-style:italic;">
+            {{scope.row.ten_danh_muc}}
+          </div>
+          
+        </template>
+      </el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta" min-width="157"></el-table-column>
       <el-table-column label="Số mặt hàng" min-width="157">
         <template slot-scope="scope">{{ scope.row.so_mat_hang }} sản phẩm</template>
@@ -213,7 +220,7 @@ export default {
         ten_danh_muc: [
           {
             required: true,
-            message: "Tên danh mục không thể bỏ trống",
+            message: "Tên nhóm hàng hóa không thể bỏ trống",
             trigger: "blur",
           },
           { min: 3, message: "Độ dài tối thiểu 3 ký tự", trigger: "blur" },

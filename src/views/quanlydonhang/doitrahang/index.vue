@@ -71,8 +71,9 @@
                 <el-table-column
                   prop="created_at"
                   label="Thời gian đổi trả"
+                  align="center"
                 ></el-table-column>
-                <el-table-column label="Loại">
+                <el-table-column label="Loại" align="center">
                   <template slot-scope="scope">
                     <el-tag v-if="scope.row.type == 'doi_hang'" type="warning"
                       >Đổi hàng</el-tag
@@ -85,11 +86,12 @@
                 <el-table-column
                   prop="nguyen_nhan"
                   label="Nguyên nhân"
+                  min-width="123"
                 ></el-table-column>
                 <el-table-column
                   property="gia_ban"
                   label="Giá bán"
-                  min-width="123"
+                  min-width="60"
                 >
                   <template slot-scope="scope"
                     >{{ formate.formatCurrency(scope.row.gia_ban) }} đ</template
@@ -98,7 +100,7 @@
                 <el-table-column
                   property="so_luong"
                   label="Số lượng"
-                  min-width="123"
+                  min-width="60"
                 >
                   <template slot-scope="scope"
                     >{{ scope.row.so_luong }}
@@ -108,7 +110,7 @@
                 <el-table-column
                   property="doanh_thu"
                   label="Số tiền"
-                  min-width="123"
+                  min-width="80"
                 >
                   <template slot-scope="scope"
                     >{{
@@ -120,11 +122,12 @@
               </el-table>
             </template>
           </el-table-column>
-          <el-table-column sortable type="index" label="STT"></el-table-column>
+          <el-table-column sortable type="index" label="STT" width="85" align="center"></el-table-column>
           <el-table-column
             property="updated_at"
             label="Thời gian"
-            min-width="125"
+            min-width="85"
+            align="center"
           ></el-table-column>
           <el-table-column
             property="ma"

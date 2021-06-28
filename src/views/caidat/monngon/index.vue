@@ -87,7 +87,7 @@
       border
       fit
       highlight-current-row
-      style="font-size: 13px"
+      style="font-size: 13px;font-family: roboto;"
     >
       <el-table-column
         label="STT"
@@ -111,20 +111,24 @@
         prop="ten_san_pham"
         min-width="160"
         label="Tên sản phẩm"
-      ></el-table-column>
+      >
+      <template scope="scope">
+        <div style="font-weight: bold; font-style: italic">{{scope.row.ten_san_pham}}</div>
+      </template>
+      </el-table-column>
       <el-table-column
         prop="danh_muc.ten_danh_muc"
         min-width="160"
         label="Danh mục"
       ></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
+      <el-table-column prop="gia_ban" min-width="120" label="Giá bán">
         <template slot-scope="scope">{{
           formate.formatCurrency(scope.row.gia_ban) + " đ"
         }}</template>
       </el-table-column>
       <el-table-column
         prop="don_vi_tinh"
-        min-width="160"
+        min-width="120"
         label="Đơn vị tính"
       ></el-table-column>
       <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">

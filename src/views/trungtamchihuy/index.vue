@@ -163,12 +163,12 @@
         <div
           style="font-size: 18px; font-weight: bold; color: #1F618D; margin-bottom: 15px"
         >
-          NHÂN VIÊN, QUẢN LÝ
+          QUẢN LÝ NHÂN VIÊN
         </div>
         <br />
         <div style="display:flex; justify-content: space-between;">
           <div style="color: #515A5A; font-weight: bold;" center>
-            <h4><i style="color: green">TRẠNG THÁI HOẠT ĐỘNG</i></h4>
+            <h4><i style="color: green">TRẠNG THÁI ĐĂNG NHẬP HỆ THỐNG</i></h4>
           </div>
         </div>
         <br />
@@ -306,7 +306,7 @@ export default {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
       typeChart: "doanh_thu",
-      timeSelect: "tuan_nay",
+      timeSelect: "hom_nay",
       typeTime: "TUẦN NÀY",
       data: {
         khach_hang: 0,

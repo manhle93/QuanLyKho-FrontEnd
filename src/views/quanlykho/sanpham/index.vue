@@ -82,7 +82,7 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" width="200" align="center">
         <template slot-scope="scope">
           <img
@@ -96,16 +96,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="ten_san_pham" min-width="160" label="Tên sản phẩm"></el-table-column>
-      <el-table-column prop="danh_muc.ten_danh_muc" min-width="160" label="Danh mục"></el-table-column>
-      <el-table-column prop="gia_ban" min-width="160" label="Giá bán">
+      <el-table-column prop="danh_muc.ten_danh_muc" min-width="120" label="Danh mục"></el-table-column>
+      <el-table-column prop="gia_ban" min-width="80" label="Giá bán">
         <template slot-scope="scope">
           {{
           formate.formatCurrency(scope.row.gia_ban) + " đ"
           }}
         </template>
       </el-table-column>
-      <el-table-column prop="don_vi_tinh" min-width="160" label="Đơn vị tính"></el-table-column>
-      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="157">
+      <el-table-column prop="don_vi_tinh" min-width="90" label="Đơn vị tính"></el-table-column>
+      <el-table-column label="Mô tả" prop="mo_ta_san_pham" min-width="250">
         <template slot-scope="scope" v-if="scope.row.mo_ta_san_pham">
           {{
           scope.row.mo_ta_san_pham.length > 70

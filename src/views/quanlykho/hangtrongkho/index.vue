@@ -31,7 +31,7 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" width="80" type="index" align="center"></el-table-column>
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
       <el-table-column label="Hình ảnh" min-width="150px" align="center">
         <template slot-scope="scope">
           <img
@@ -56,7 +56,7 @@
         <template v-if="scope.row.san_pham" slot-scope="scope">{{formate.formatCurrency(scope.row.san_pham.gia_ban)}} đ</template>
       </el-table-column>
       <el-table-column label="Đã bán" align="center" prop="da_ban" min-width="110">
-          <template slot-scope="scope">{{scope.row.da_ban}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : null}}</template>
+          <template slot-scope="scope">{{ Math.round(Number(scope.row.da_ban) * 1000) / 1000}} {{scope.row.san_pham ? scope.row.san_pham.don_vi_tinh : null}}</template>
       </el-table-column>
     </el-table>
     <div class="block" style="margin-top: 20px">

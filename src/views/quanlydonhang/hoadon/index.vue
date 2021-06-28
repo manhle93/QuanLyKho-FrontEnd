@@ -122,6 +122,7 @@
                       sortable
                       type="index"
                       label="STT"
+                      align="center"
                     ></el-table-column>
                     <el-table-column
                       property="san_pham.ten_san_pham"
@@ -171,7 +172,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="Thanh toán">
                   <el-table border :data="scope.row.thanh_toan_bo_xung">
-                    <el-table-column type="index" label="STT"></el-table-column>
+                    <el-table-column type="index" label="STT" align="center"></el-table-column>
                     <el-table-column
                       prop="created_at"
                       label="Thời tian"
@@ -204,6 +205,7 @@
             sortable
             type="index"
             label="STT"
+            align="center"
             v-if="showColumn.stt"
           ></el-table-column>
           <el-table-column
@@ -223,6 +225,7 @@
             prop="created_at"
             label="Thời gian tạo"
             min-width="100"
+            align="center"
           ></el-table-column>
           <el-table-column
             v-if="showColumn.ghi_chu"

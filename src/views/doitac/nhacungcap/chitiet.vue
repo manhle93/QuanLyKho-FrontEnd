@@ -80,8 +80,9 @@
           <el-table-column
             prop="created_at"
             label="Thời gian"
+            align="center"
           ></el-table-column>
-          <el-table-column>
+          <el-table-column align="center">
             <template slot-scope="scope">
               <el-tag effect="plain" v-if="scope.row.hanh_dong == 'nhap_hang'"
                 >Nhập hàng</el-tag
@@ -94,7 +95,7 @@
               formate.formatCurrency(scope.row.so_tien)
             }} đ</template>
           </el-table-column>
-          <el-table-column label="Chi tiết">
+          <el-table-column label="Chi tiết" align="center">
             <template slot-scope="scope">
               <router-link
                 :to="'/quanlydonhang/capnhatdonhang/' + scope.row.id"
@@ -131,7 +132,7 @@
             {{ scope.row.ma }}
           </template>
         </el-table-column>
-        <el-table-column label="Hành động">
+        <el-table-column label="Hành động" align="center">
           <template slot-scope="scope">
             <el-tag effect="plain" v-if="scope.row.hanh_dong == 'nhap_hang'"
               >Nhập hàng</el-tag

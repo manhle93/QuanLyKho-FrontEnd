@@ -40,12 +40,12 @@
       highlight-current-row
       style="font-size: 13px"
     >
-      <el-table-column label="STT" min-width="55" type="index" align="center"></el-table-column>
+      <el-table-column label="STT" width="85" type="index" align="center"></el-table-column>
       <el-table-column sortable prop="ten" min-width="160" label="Tên kho"></el-table-column>
       <el-table-column label="Địa chỉ" prop="dia_chi" min-width="157"></el-table-column>
-      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="157"></el-table-column>
-      <el-table-column label="Người quản lý" prop="nguoi_quan_ly" min-width="157"></el-table-column>
-      <el-table-column label="Trạng thái" min-width="157">
+      <el-table-column label="Số điện thoại" prop="so_dien_thoai" min-width="120" align="center"></el-table-column>
+      <el-table-column label="Người quản lý" prop="nguoi_quan_ly" min-width="130"></el-table-column>
+      <el-table-column label="Trạng thái" min-width="120" align="center">
         <template slot-scope="scope">
           <el-tag type="danger" v-if="!scope.row.trang_thai">Không hoạt động</el-tag>
           <el-tag type="success" v-else>Đang hoạt động</el-tag>

@@ -74,7 +74,7 @@
       </el-table-column>
       <el-table-column
         label="STT"
-        min-width="55"
+        width="85"
         type="index"
         align="center"
       ></el-table-column>
@@ -86,16 +86,16 @@
       <el-table-column
         label="Địa chỉ"
         prop="dia_chi"
-        min-width="190"
+        min-width="210"
       ></el-table-column>
       <el-table-column
         label="Số điện thoại"
         prop="so_dien_thoai"
-        min-width="120"
+        min-width="100"
         align="center"
       ></el-table-column>
       <!-- <el-table-column label="Địa chỉ email" prop="email" min-width="157"></el-table-column> -->
-      <el-table-column label="Số dư" sortable prop="so_du" min-width="130">
+      <el-table-column label="Số dư" sortable prop="so_du" min-width="120">
         <template slot-scope="scope"
           >{{ formate.formatCurrency(scope.row.so_du) }} đ</template
         >
@@ -107,21 +107,21 @@
       </el-table-column>-->
       <el-table-column
         label="Giao dịch cuối"
-        min-width="157"
+        min-width="130"
         prop="giao_dich_cuoi"
         align="center"
       ></el-table-column>
       <el-table-column
         sortable
         label="Tổng hóa đơn"
-        min-width="157"
+        min-width="120"
         prop="tong_hoa_don"
       >
         <template slot-scope="scope"
           >{{ formate.formatCurrency(scope.row.tong_hoa_don) }} đ</template
         >
       </el-table-column>
-      <el-table-column sortable label="Tổng nợ" min-width="157" prop="tong_no">
+      <el-table-column sortable label="Tổng nợ" min-width="120" prop="tong_no">
         <template slot-scope="scope">
           <div v-if="scope.row.tong_no == 0">
             {{ formate.formatCurrency(scope.row.tong_no) }} đ
@@ -557,9 +557,9 @@ export default {
         dia_chi: null,
         ngay_sinh: null,
         ghi_chu: null,
-        ca_nhan: false,
+        ca_nhan: true,
         ma_so_thue: null,
-        gioi_tinh: true,
+        gioi_tinh: false,
         email: null,
         username: null,
         password: null,
@@ -810,9 +810,9 @@ export default {
         dia_chi: null,
         ngay_sinh: null,
         ghi_chu: null,
-        ca_nhan: false,
+        ca_nhan: true,
         ma_so_thue: null,
-        gioi_tinh: true,
+        gioi_tinh: false,
         email: null,
         username: null,
         password: null,

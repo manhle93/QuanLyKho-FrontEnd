@@ -128,6 +128,7 @@
                   sortable
                   type="index"
                   label="STT"
+                  
                 ></el-table-column>
                 <el-table-column
                   property="san_pham.ten_san_pham"
@@ -178,6 +179,8 @@
             sortable
             type="index"
             label="STT"
+            width="65"
+            align="center"
             v-if="showColumn.stt"
           ></el-table-column>
           <el-table-column
@@ -295,7 +298,7 @@
           </el-table-column>
           <el-table-column
             label="Khách hàng"
-            min-width="170"
+            min-width="130"
             prop="user.name"
             v-if="showColumn.khach_hang"
           >
