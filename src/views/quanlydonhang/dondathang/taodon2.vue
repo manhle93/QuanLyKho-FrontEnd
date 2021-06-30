@@ -1438,6 +1438,7 @@ export default {
       this.so_luong = 1;
       this.don_vi_tinh = null;
       this.don_gia = null;
+      this.giamGiaTinNhiem = 0;
     },
     async getKhachHang() {
       let data = await getKhachHang({
