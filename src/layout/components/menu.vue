@@ -175,7 +175,7 @@ export default {
       ],
       LogoSanPham,
       giaoDichNCC: ["nhacungcap", "trahangnhacungcap", "thanhtoannhacungcap"],
-      giaoDichKho: ["nhapkho", "kiemke", "xuathuy", "trahang"],
+      giaoDichKho: ["nhapkho", "kiemke", "xuathuy", "trahang", "nhapkhotam"],
       giaoDichKH: ["dathang", "lichsunoptien", "doitrahang", "hoadon"],
     };
   },

@@ -488,6 +488,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: "nhapkhotam",
+        name: "Nhập kho tạm",
+        component: () => import("@/views/quanlykho/nhapkhotam/index"),
+        meta: {
+          title: "Nhập kho tạm",
+          icon: "nhapkhotam"
+        }
+      },
+      {
         path: "doitrahang",
         name: "Đổi trả hàng",
         component: () => import("@/views/quanlydonhang/doitrahang/index"),

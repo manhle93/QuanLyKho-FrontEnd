@@ -23,3 +23,36 @@ export function nhapKhoNgoai(data) {
     data
   });
 }
+
+
+export function getNhapKhoTam(params) {
+  return request({
+    url: "getnhapkhotam",
+    method: "get",
+    params
+  });
+}
+
+export function nhapKhoTam(data) {
+  return request({
+    url: "nhapkhotam",
+    method: "post",
+    data
+  });
+}
+
+export function chotKhoTam(id,data) {
+  return request({
+    url: "chotkhotam/" + id,
+    method: "put",
+    data
+  });
+}
+
+export function huyKhoTam(id,data) {
+  return request({
+    url: "huykhotam/" + id,
+    method: "put",
+    data
+  });
+}
