@@ -904,6 +904,7 @@ export default {
         bang_gia_id: null,
         thanh_toan: "tien_mat",
         dia_chi: "Tại quầy",
+        source_order: "dat_hang_tai_quay",
         thoi_gian_nhan_hang: new Date(),
         phu_thu: 0
       },
